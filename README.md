@@ -1,5 +1,7 @@
 # Proxmox MCP Server
 
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/NightSquawk/proxmox-mcp-server/badge)](https://scorecard.dev/viewer/?uri=github.com/NightSquawk/proxmox-mcp-server)
+
 MCP server for **Proxmox VE** and **Proxmox Datacenter Manager (PDM)**, covering **every** API endpoint: **993** operations total behind **6 consolidated catalog-backed tools** rather than one tool per endpoint.
 
 | Surface | Endpoints | Read (GET) | Write (POST/PUT/DELETE) | Tools |
