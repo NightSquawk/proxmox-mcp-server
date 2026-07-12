@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_scan_lvmthin",
+  "usageNotes": "Use this endpoint to discover which LVM Thin Pools exist within a specific Volume Group on a node before adding LVM-thin storage to Proxmox. The `vg` parameter is required — you must already know the Volume Group name (use the LVM scan endpoint `get_nodes_node_scan_lvm` first if needed). The caller must have `Datastore.Allocate` on `/storage`; the target node must be online and reachable by the cluster.",
+  "examples": [
+    {
+      "summary": "List thin pools inside Volume Group 'pve' on node 'pve1'",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "vg": "pve"
+      }
+    }
+  ],
+  "tips": [
+    "The `vg` name must start with an alphanumeric, dot, plus, or underscore character and be at least 2 characters long (enforced by the pattern).",
+    "If the VG exists but has no thin pools, the response is an empty array — this is normal.",
+    "Use `get_nodes_node_scan_lvm` first to enumerate available Volume Groups if the VG name is unknown.",
+    "Results reflect the live state of the node's LVM metadata; no caching occurs."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_scan_lvm",
+    "get_nodes_node_storage",
+    "post_nodes_node_storage"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_pools",
+  "usageNotes": "Permanently deletes a resource pool from the cluster. The pool must be empty — all VMs, containers, and storage entries must be removed from the pool before deletion will succeed. Requires the Pool.Allocate privilege on /pool/{poolid}.",
+  "examples": [
+    {
+      "summary": "Delete an empty pool named 'dev-team'",
+      "path_params": {},
+      "params": {
+        "poolid": "dev-team"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the pool definition from the cluster; this action cannot be undone and any ACL entries scoped to /pool/{poolid} are also deleted.",
+  "tips": [
+    "The API returns null on success — absence of error is the confirmation.",
+    "Remove all member resources (VMs, CTs, storage) via update_pools before attempting deletion; a non-empty pool returns a 400 error.",
+    "Pool-scoped permission grants (user ACLs on /pool/{poolid}) are automatically cleaned up when the pool is deleted."
+  ],
+  "relatedOperations": [
+    "get_pools",
+    "get_pools_poolid",
+    "create_pools",
+    "update_pools"
+  ]
+}

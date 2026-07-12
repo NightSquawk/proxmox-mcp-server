@@ -1,0 +1,32 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_status_stop",
+  "usageNotes": "Issues an immediate hard stop of a QEMU VM by terminating the qemu process — equivalent to a power cut; use only when the guest OS is unresponsive or a graceful shutdown (post_nodes_node_qemu_vmid_status_shutdown) has failed. The call is asynchronous and returns a task UPID; poll the task endpoint to confirm completion. Requires VM.PowerMgmt on /vms/{vmid}; the node must be online and reachable.",
+  "examples": [
+    {
+      "summary": "Force-stop a hung VM (ID 105) on node pve1, overriding any in-progress shutdown task",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {
+        "overrule-shutdown": true,
+        "timeout": 30
+      }
+    }
+  ],
+  "destructiveReason": "Terminates the QEMU process without flushing disk write buffers or notifying the guest OS, which can corrupt in-flight I/O and leave the VM's filesystem in an inconsistent state.",
+  "tips": [
+    "Prefer post_nodes_node_qemu_vmid_status_shutdown for any VM whose guest OS is still responsive — it triggers a clean ACPI shutdown.",
+    "Set overrule-shutdown: true when a previous qmshutdown task is stuck; otherwise the stop may be blocked waiting for it to finish.",
+    "keepActive: true prevents Proxmox from deactivating storage volumes after the stop — useful during live migration teardown or when another process needs the volumes to remain mounted.",
+    "skiplock is root-only and should be treated as a last resort; holding locks usually signals another operation is in progress.",
+    "The returned UPID can be polled via GET /nodes/{node}/tasks/{upid}/status to confirm the stop completed before starting dependent operations."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_status_shutdown",
+    "post_nodes_node_qemu_vmid_status_reset",
+    "post_nodes_node_qemu_vmid_status_start",
+    "get_nodes_node_qemu_vmid_status_current",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

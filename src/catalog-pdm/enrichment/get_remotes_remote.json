@@ -1,0 +1,22 @@
+{
+  "operationId": "get_remotes_remote",
+  "usageNotes": "Use this to enumerate all remote PVE or PBS instances registered in Proxmox Datacenter Manager, including their node addresses, auth IDs, and type. No parameters are required and all authenticated users receive results filtered to the remotes they have access to. This is typically the first call when building remote-aware workflows such as migration, backup, or replication targeting.",
+  "examples": [
+    {
+      "summary": "List all configured remotes to discover available PVE clusters and PBS instances",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'token' field in each result is the API token secret — treat these values as credentials; mask them in logs.",
+    "Each remote's 'type' field will be either 'pve' (Proxmox VE cluster) or 'pbs' (Proxmox Backup Server) — filter by type before passing a remote ID to type-specific operations.",
+    "The 'nodes' array may contain multiple addresses for clustered remotes; PDM will attempt each in order for connectivity.",
+    "Use the returned 'id' value as the remote identifier in subsequent operations that require a remote parameter."
+  ],
+  "relatedOperations": [
+    "create_remotes_remote",
+    "get_remotes_remote_id",
+    "delete_remotes_remote_id"
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "operationId": "post_nodes_node_storage_storage_content_volume",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "copy",
+  "method": "POST",
+  "path": "/nodes/{node}/storage/{storage}/content/{volume}",
+  "description": "Copy a volume. This is experimental code - do not use.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": false,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    },
+    {
+      "name": "volume",
+      "type": "string",
+      "required": true,
+      "description": "Source volume identifier",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "target",
+      "type": "string",
+      "required": true,
+      "description": "Target volume identifier",
+      "typetext": "<string>"
+    },
+    {
+      "name": "target_node",
+      "type": "string",
+      "required": false,
+      "description": "Target node. Default is local node.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"target\":\"<target>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/content/<volume>'"
+}

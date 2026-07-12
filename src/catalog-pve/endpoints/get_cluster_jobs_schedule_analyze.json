@@ -1,0 +1,65 @@
+{
+  "operationId": "get_cluster_jobs_schedule_analyze",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "schedule-analyze",
+  "method": "GET",
+  "path": "/cluster/jobs/schedule-analyze",
+  "description": "Returns a list of future schedule runtimes.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "iterations",
+      "type": "integer",
+      "required": false,
+      "description": "Number of event-iteration to simulate and return.",
+      "default": 10,
+      "minimum": 1,
+      "maximum": 100,
+      "typetext": "<integer> (1 - 100)"
+    },
+    {
+      "name": "schedule",
+      "type": "string",
+      "required": true,
+      "description": "Job schedule. The format is a subset of `systemd` calendar events.",
+      "format": "pve-calendar-event",
+      "maxLength": 128,
+      "typetext": "<string>"
+    },
+    {
+      "name": "starttime",
+      "type": "integer",
+      "required": false,
+      "description": "UNIX timestamp to start the calculation from. Defaults to the current time.",
+      "typetext": "<integer>"
+    }
+  ],
+  "returns": {
+    "description": "An array of the next <iterations> events since <starttime>.",
+    "items": {
+      "properties": {
+        "timestamp": {
+          "description": "UNIX timestamp for the run.",
+          "type": "integer"
+        },
+        "utc": {
+          "description": "UTC timestamp for the run.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/jobs/schedule-analyze?schedule=<schedule>'"
+}

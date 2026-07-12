@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_mtunnelwebsocket",
+  "usageNotes": "This endpoint is an internal migration tunnel used exclusively by Proxmox's live migration subsystem to upgrade an HTTP connection to a WebSocket that proxies a Unix socket on the destination node. It should not be called directly by operators or tools — it is invoked automatically during a VM migration handshake. Both the `socket` path and `ticket` must be obtained from a prior `mtunnel` API call; the ticket is short-lived and scoped to the specific socket being forwarded.",
+  "examples": [
+    {
+      "summary": "WebSocket upgrade for VM 105 migration tunnel (internal use)",
+      "path_params": {
+        "node": "pve-hetzner-01",
+        "vmid": 105
+      },
+      "params": {
+        "socket": "/var/run/qemu-server/105.mtunnel",
+        "ticket": "MIGRATE:pve-hetzner-01:105:abc123def456"
+      }
+    }
+  ],
+  "tips": [
+    "Never call this endpoint directly from scripts or MCP tools — it is part of the internal migration protocol and requires a valid short-lived ticket from the mtunnel handshake.",
+    "The ticket is obtained via the POST /nodes/{node}/qemu/{vmid}/mtunnel endpoint or the 'ticket' tunnel command during migration setup.",
+    "The response may return a `port` or `socket` confirming the forwarding target, but the primary mechanism is the WebSocket protocol upgrade itself.",
+    "If a migration stalls or fails with a WebSocket-related error, check that the source and destination nodes can reach each other on the migration network and that the ticket has not expired."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_migrate",
+    "get_nodes_node_qemu_vmid_migrate",
+    "post_nodes_node_qemu_vmid_mtunnel"
+  ]
+}

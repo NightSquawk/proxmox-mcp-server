@@ -1,0 +1,20 @@
+{
+  "operationId": "get_pbs_remotes_remote_nodes_node_apt",
+  "usageNotes": "Returns the APT sub-resource directory index for a specific node on a PBS remote, listing the available APT-related sub-endpoints (such as update, versions, changelog). Use this to discover which APT operations are exposed for a given remote node before calling a more specific APT endpoint. The target remote must be reachable from PDM and the node must be online; the call requires no special privilege beyond authenticated access (user: all).",
+  "examples": [
+    {
+      "summary": "List APT sub-endpoints for node 'pbs01' on remote 'hetzner-pbs'",
+      "path_params": {
+        "remote": "hetzner-pbs",
+        "node": "pbs01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a directory index — it returns child endpoint names, not package data itself. Follow up with a child endpoint (e.g., /apt/update or /apt/versions) to retrieve actual APT information.",
+    "Because returns is typed as null in the schema, the MCP layer may return an empty or opaque response; the real value is the HTTP 200 confirmation that the path is valid and the remote/node combination is reachable.",
+    "Token-based auth (allowtoken: true) is supported, so API tokens scoped to the PDM instance can call this without interactive credentials."
+  ],
+  "relatedOperations": []
+}

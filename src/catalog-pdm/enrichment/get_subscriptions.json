@@ -1,0 +1,17 @@
+{
+  "operationId": "get_subscriptions",
+  "usageNotes": "Returns a directory index of subscription entries registered in Proxmox Datacenter Manager. Use this as a discovery call to determine which subscription resources are available before fetching or managing individual subscription details. No authentication role restrictions apply — any authenticated user or API token may call it.",
+  "examples": [
+    {
+      "summary": "List all PDM subscription directory entries",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returns type is 'null' in the spec, meaning the API may return an empty body or a bare list — inspect the raw response rather than expecting a typed schema.",
+    "This is a directory index, not a full subscription detail endpoint; a follow-up call may be needed to retrieve subscription key or status fields.",
+    "Accessible to all authenticated users, so no elevated privilege is required to probe subscription availability."
+  ],
+  "relatedOperations": []
+}

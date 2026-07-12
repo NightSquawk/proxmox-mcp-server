@@ -1,0 +1,29 @@
+{
+  "operationId": "put_cluster_sdn_prefix_lists_id",
+  "usageNotes": "Use this endpoint to update an existing SDN prefix list's entries or remove specific entries — for example, to add or prune CIDR prefixes used in BGP route filtering or firewall policy. Requires the SDN.Allocate privilege on the specific prefix-list path. Always supply the current `digest` in concurrent environments to prevent overwriting another operator's changes; after updating, apply the SDN configuration via the reload endpoint for changes to take effect.",
+  "examples": [
+    {
+      "summary": "Add a new CIDR entry to an existing prefix list",
+      "path_params": {
+        "id": "rfc1918-prefixes"
+      },
+      "params": {
+        "entries": ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"],
+        "digest": "a3f1c2b4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2"
+      }
+    }
+  ],
+  "tips": [
+    "After updating a prefix list, run the SDN apply/reload operation (POST /cluster/sdn) to push changes to all cluster nodes; the PUT alone does not activate changes.",
+    "Use the `delete` param to remove specific entries by name/key rather than resubmitting the full list.",
+    "The `lock-token` param is only needed when the SDN global config is locked by another operation; normal updates do not require it.",
+    "Prefix list IDs follow the pve-sdn-prefix-list-id format — typically lowercase alphanumeric with hyphens."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_prefix_lists_id",
+    "get_cluster_sdn_prefix_lists",
+    "post_cluster_sdn_prefix_lists",
+    "delete_cluster_sdn_prefix_lists_id",
+    "put_cluster_sdn"
+  ]
+}

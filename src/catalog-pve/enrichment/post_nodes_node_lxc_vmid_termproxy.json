@@ -1,0 +1,24 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_termproxy",
+  "usageNotes": "Creates a TCP terminal proxy session for an LXC container, returning a port, ticket, and UPID needed to open an interactive shell via the Proxmox terminal WebSocket endpoint. The calling user must hold VM.Console on the container's resource path. The container must be running on the target node — calling this against a stopped container or a node that doesn't host the container will fail.",
+  "examples": [
+    {
+      "summary": "Open a terminal proxy session for LXC container 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned ticket is short-lived; connect the WebSocket immediately after receiving it.",
+    "Use the returned port together with the ticket to authenticate the subsequent terminal WebSocket upgrade at /api2/json/nodes/{node}/lxc/{vmid}/vncwebsocket.",
+    "API tokens are supported (allowtoken: true), so automation scripts can obtain a terminal proxy ticket without an interactive login."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_vncproxy",
+    "get_nodes_node_lxc_vmid_status_current",
+    "post_nodes_node_lxc_vmid_status_start"
+  ]
+}

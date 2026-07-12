@@ -1,0 +1,36 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_migrate",
+  "usageNotes": "Use this to move a QEMU VM from one cluster node to another; set `online: true` for live migration of a running VM (brief network blip only), or omit it to migrate an offline VM with zero downtime risk. The call returns a UPID task ID immediately — poll `get_nodes_node_tasks_upid_status` to confirm completion before treating the VM as stable on the target. If the VM has local disks and no shared storage, you must also pass `with-local-disks: true` and a valid `targetstorage` mapping, or use `force: true` (root only) to override the guard.",
+  "examples": [
+    {
+      "summary": "Live-migrate a running VM to another node, moving its local disk to the target's local-lvm storage",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {
+        "target": "pve2",
+        "online": true,
+        "with-local-disks": true,
+        "targetstorage": "local-lvm",
+        "migration_type": "secure",
+        "bwlimit": 102400
+      }
+    }
+  ],
+  "destructiveReason": "Migrating with `online: false` (or when the VM is already stopped) shuts the VM down on the source node and deletes its local disk images there once copied to the target; a failed mid-migration transfer can leave disk data in an inconsistent state.",
+  "tips": [
+    "Both the source and target nodes must be members of the same Proxmox cluster; cross-cluster migration is not supported via this endpoint.",
+    "For VMs on shared storage (Ceph, NFS, iSCSI) you can omit `targetstorage` entirely — the disk stays in place and only the config is moved.",
+    "Use `migration_type: insecure` only on a fully isolated, private migration VLAN to get better throughput; the default `secure` tunnels traffic over SSH.",
+    "`with-conntrack-state` is useful for stateful firewalls (e.g., Proxmox VE firewall with NAT) — migrate connection tracking entries so existing TCP sessions survive the move.",
+    "A non-zero `bwlimit` (in KiB/s) prevents the migration from saturating your management network during business hours; 102400 = 100 MB/s."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log",
+    "get_nodes_node_qemu_vmid_status_current",
+    "get_nodes_node_qemu_vmid_migrate",
+    "post_nodes_node_qemu_vmid_status_stop"
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "operationId": "get_nodes_node_query_url_metadata",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "query_url_metadata",
+  "method": "GET",
+  "path": "/nodes/{node}/query-url-metadata",
+  "description": "Query metadata of an URL: file size, file name and mime type.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "url",
+      "type": "string",
+      "required": true,
+      "description": "The URL to query the metadata from.",
+      "pattern": "https?://.*"
+    },
+    {
+      "name": "verify-certificates",
+      "type": "boolean",
+      "required": false,
+      "description": "If false, no SSL/TLS certificates will be verified.",
+      "default": 1,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "filename": {
+        "optional": 1,
+        "type": "string"
+      },
+      "mimetype": {
+        "optional": 1,
+        "type": "string"
+      },
+      "size": {
+        "optional": 1,
+        "renderer": "bytes",
+        "type": "integer"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "perm",
+        "/",
+        [
+          "Sys.Audit",
+          "Sys.Modify"
+        ]
+      ],
+      [
+        "perm",
+        "/nodes/{node}",
+        [
+          "Sys.AccessNetwork"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/query-url-metadata?url=<url>'"
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_ceph_osd_osdid_metadata",
+  "usageNotes": "Use this endpoint to inspect the physical device layout and runtime state of a specific Ceph OSD — including whether it uses a separate db/wal device, supports TRIM, is LUKS-encrypted, and how much memory its daemon is consuming. The queried node must be online and must be the host that owns the OSD; `osd.hostname` in the response confirms the owning host. Requires `Sys.Audit` on `/`.",
+  "examples": [
+    {
+      "summary": "Get metadata for OSD 3 from its host node",
+      "path_params": {
+        "node": "pve-ceph01",
+        "osdid": 3
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Check `osd.pid` to determine whether the OSD daemon is currently running — the field is absent when the systemd unit is stopped.",
+    "`osd.mem_usage` is PSS (proportional set size) in bytes and reports 0 when the process is not running, not when memory usage is genuinely zero.",
+    "The `devices` array will include entries for `block`, `db`, and `wal` device roles when a BlueStore OSD uses dedicated fast devices for its metadata.",
+    "Query this from the node listed in `osd.hostname`; querying a different cluster member may return an error if the OSD is not visible there.",
+    "`physical_device` may be comma- or space-separated when the underlying device is a multi-path or software-RAID target — parse accordingly."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_osd",
+    "get_nodes_node_ceph_osd_osdid_lv_info",
+    "post_nodes_node_ceph_osd",
+    "delete_nodes_node_ceph_osd_osdid"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "operationId": "put_nodes_node_firewall_rules_pos",
+  "usageNotes": "Use this endpoint to modify an existing node-level firewall rule at a specific position, or to reorder it using the `moveto` parameter (when `moveto` is supplied, all other field arguments are ignored). The caller must hold `Sys.Modify` on `/nodes/{node}`. Pass the `digest` from a prior GET to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Disable a rule at position 2 and add a comment",
+      "path_params": {
+        "node": "pve01",
+        "pos": 2
+      },
+      "params": {
+        "enable": 0,
+        "comment": "Temporarily disabled for maintenance window",
+        "digest": "a3f1c2e9b4d7..."
+      }
+    }
+  ],
+  "tips": [
+    "Use `moveto` alone to reorder a rule without changing its content — other body fields are silently ignored when `moveto` is present.",
+    "Use the `delete` field (comma-separated config key names) to unset individual rule properties like `dest` or `dport` without rewriting the whole rule.",
+    "The `enable` field is an integer: 1 = enabled, 0 = disabled. Omitting it leaves the current value unchanged.",
+    "Rule positions are zero-indexed; verify the current position with GET /nodes/{node}/firewall/rules before updating.",
+    "Changes take effect immediately in the running firewall — no reload command is needed, but verify with GET after PUT since the call returns null."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_firewall_rules_pos",
+    "get_nodes_node_firewall_rules",
+    "post_nodes_node_firewall_rules",
+    "delete_nodes_node_firewall_rules_pos"
+  ]
+}

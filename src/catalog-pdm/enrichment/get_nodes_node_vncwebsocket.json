@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_vncwebsocket",
+  "usageNotes": "This endpoint upgrades an HTTP connection to a WebSocket tunnel for a node-level VNC console session. It must be called after obtaining a VNC ticket and port from the node's VNC proxy endpoint (e.g., POST /nodes/{node}/vncproxy); the ticket is short-lived and single-use. The caller must perform the WebSocket upgrade handshake — this is not a standard JSON REST call and returns null on success.",
+  "examples": [
+    {
+      "summary": "Open VNC WebSocket for node console using ticket from vncproxy",
+      "path_params": {
+        "node": "pdm01"
+      },
+      "params": {
+        "port": 5900,
+        "vncticket": "PVEVNC:65a3b2c1::abcdef1234567890abcdef1234567890"
+      }
+    }
+  ],
+  "tips": [
+    "Always call the node's vncproxy endpoint first to obtain both the port and vncticket before calling this endpoint.",
+    "The vncticket is single-use and expires quickly; initiate the WebSocket upgrade immediately after receiving it.",
+    "This endpoint must be used with a WebSocket client — a plain HTTP GET will not establish a usable session.",
+    "Requires Sys.Console on /system; API tokens are permitted (allowtoken: true)."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_vncproxy"
+  ]
+}

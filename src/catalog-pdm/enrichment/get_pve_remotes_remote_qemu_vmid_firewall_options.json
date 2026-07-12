@@ -1,0 +1,29 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_firewall_options",
+  "usageNotes": "Use this to read the current firewall configuration (enabled state, default policies, logging levels, and protocol-level options such as DHCP, NDP, MAC filtering, and IP filters) for a specific QEMU VM on a remote PVE cluster. The caller must hold the Resource.Audit privilege on the remote/vmid resource. If the VM spans multiple nodes, pass the optional 'node' query parameter to target the correct host; omitting it lets PDM resolve the node automatically.",
+  "examples": [
+    {
+      "summary": "Read firewall options for VM 101 on remote 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 101
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "All returned fields are optional — a field absent from the response means the cluster is using the documented default (e.g., macfilter defaults to true, enable defaults to false).",
+    "policy_in and policy_out have no documented default; if omitted the effective policy is determined by the cluster-level firewall configuration.",
+    "log_level_in and log_level_out default to 'nolog', so firewall hits are silent unless explicitly set to a syslog severity level.",
+    "ipfilter=true implicitly creates empty ipfilter-net ipsets per interface, which restrict IPv6 link-local addresses — useful hardening for multi-tenant environments.",
+    "This endpoint is read-only; use the corresponding PUT/POST endpoint to change options."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_firewall_rules",
+    "get_pve_remotes_remote_qemu_vmid_firewall_ipsets",
+    "get_pve_remotes_remote_qemu_vmid_firewall_aliases",
+    "get_pve_remotes_remote_qemu_vmid_firewall_log"
+  ]
+}

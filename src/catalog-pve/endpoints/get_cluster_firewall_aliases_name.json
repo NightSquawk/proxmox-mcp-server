@@ -1,0 +1,40 @@
+{
+  "operationId": "get_cluster_firewall_aliases_name",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "read_alias",
+  "method": "GET",
+  "path": "/cluster/firewall/aliases/{name}",
+  "description": "Read alias.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "Alias name.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/firewall/aliases/<name>'"
+}

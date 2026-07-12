@@ -1,0 +1,35 @@
+{
+  "operationId": "put_cluster_metrics_server_id",
+  "usageNotes": "Use this to modify an existing metrics server entry (InfluxDB, Graphite, or OpenTelemetry) in the cluster-wide metrics configuration; requires Sys.Modify on the root path (/). The 'port' and 'server' fields are always required even on updates — omitting them will fail. Use the 'delete' param (comma-separated field names) to unset optional fields rather than setting them to empty strings.",
+  "examples": [
+    {
+      "summary": "Switch an existing InfluxDB metrics server from UDP to HTTPS v2 API with token auth",
+      "path_params": {
+        "id": "influxdb-prod"
+      },
+      "params": {
+        "server": "metrics.internal.example.com",
+        "port": 8086,
+        "influxdbproto": "https",
+        "bucket": "proxmox",
+        "organization": "nightsquawk",
+        "token": "my-influxdb-api-token",
+        "verify-certificate": true
+      }
+    }
+  ],
+  "tips": [
+    "The 'delete' param accepts a comma-separated pve-configid-list — use it to clear fields like 'token' or 'bucket' when switching protocol types.",
+    "Pass 'digest' (obtained from the GET endpoint) to guard against concurrent edits overwriting each other.",
+    "InfluxDB v2 API requires 'influxdbproto' set to 'http' or 'https' plus 'bucket', 'organization', and 'token'; v1 compatibility uses 'user:password' in the token field.",
+    "For Graphite destinations, set 'path' to a dot-notation prefix (e.g. proxmox.mycluster) and optionally set 'proto' to 'tcp' for reliable delivery.",
+    "Set 'disable' to true to pause metric shipping without deleting the configuration.",
+    "OpenTelemetry params (otel-*) only apply when the server type is OTLP; mixing otel-* params with InfluxDB/Graphite configs has no effect but will not error."
+  ],
+  "relatedOperations": [
+    "get_cluster_metrics_server_id",
+    "get_cluster_metrics_server",
+    "post_cluster_metrics_server",
+    "delete_cluster_metrics_server_id"
+  ]
+}

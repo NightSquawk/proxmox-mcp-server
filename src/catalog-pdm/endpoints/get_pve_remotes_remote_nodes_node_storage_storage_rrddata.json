@@ -1,0 +1,107 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_storage_storage_rrddata",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "rrddata",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/nodes/{node}/storage/{storage}/rrddata",
+  "description": "Read storage stats",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "Storage ID.",
+      "pattern": "/^(?i:[a-z][a-z0-9\\-_.]*[a-z0-9])$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "cf",
+      "type": "string",
+      "required": true,
+      "description": "RRD consolidation mode",
+      "enum": [
+        "MAX",
+        "AVERAGE"
+      ]
+    },
+    {
+      "name": "timeframe",
+      "type": "string",
+      "required": true,
+      "description": "RRD time frame",
+      "enum": [
+        "hour",
+        "day",
+        "week",
+        "month",
+        "year",
+        "decade"
+      ]
+    }
+  ],
+  "returns": {
+    "description": "A list of RRD data points on a PVE remote's storage.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Single point in time with all known data points for a PVE storage.",
+      "properties": {
+        "disk-total": {
+          "description": "Total disk size",
+          "optional": 1,
+          "type": "number"
+        },
+        "disk-used": {
+          "description": "Disk utiliziation",
+          "optional": 1,
+          "type": "number"
+        },
+        "time": {
+          "description": "Timestamp (UNIX epoch)",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "storage",
+        "{storage}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/nodes/<node>/storage/<storage>/rrddata?cf=MAX&timeframe=hour'"
+}

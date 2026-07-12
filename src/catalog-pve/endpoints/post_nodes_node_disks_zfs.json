@@ -1,0 +1,126 @@
+{
+  "operationId": "post_nodes_node_disks_zfs",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "create",
+  "method": "POST",
+  "path": "/nodes/{node}/disks/zfs",
+  "description": "Create a ZFS pool.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "add_storage",
+      "type": "boolean",
+      "required": false,
+      "description": "Configure storage using the zpool.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "ashift",
+      "type": "integer",
+      "required": false,
+      "description": "Pool sector size exponent.",
+      "default": 12,
+      "minimum": 9,
+      "maximum": 16,
+      "typetext": "<integer> (9 - 16)"
+    },
+    {
+      "name": "compression",
+      "type": "string",
+      "required": false,
+      "description": "The compression algorithm to use.",
+      "enum": [
+        "on",
+        "off",
+        "gzip",
+        "lz4",
+        "lzjb",
+        "zle",
+        "zstd"
+      ],
+      "default": "on"
+    },
+    {
+      "name": "devices",
+      "type": "string",
+      "required": true,
+      "description": "The block devices you want to create the zpool on.",
+      "format": "string-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "draid-config",
+      "type": "string",
+      "required": false,
+      "format": {
+        "data": {
+          "description": "The number of data devices per redundancy group. (dRAID)",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "spares": {
+          "description": "Number of dRAID spares.",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "typetext": "data=<integer> ,spares=<integer>"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    },
+    {
+      "name": "raidlevel",
+      "type": "string",
+      "required": true,
+      "description": "The RAID level to use.",
+      "enum": [
+        "single",
+        "mirror",
+        "raid10",
+        "raidz",
+        "raidz2",
+        "raidz3",
+        "draid",
+        "draid2",
+        "draid3"
+      ]
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ],
+    "description": "Requires additionally 'Datastore.Allocate' on /storage when setting 'add_storage'"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"devices\":\"<devices>\",\"name\":\"<name>\",\"raidlevel\":\"single\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/disks/zfs'"
+}

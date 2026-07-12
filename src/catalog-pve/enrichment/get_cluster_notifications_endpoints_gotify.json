@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_notifications_endpoints_gotify",
+  "usageNotes": "Use this to list all Gotify push-notification endpoints configured at the cluster level. The caller must hold the `Mapping.Audit` privilege on `/mapping/notifications`; API tokens are supported. Each returned entry includes the endpoint name (used as the identifier in notification matchers), the target server URL, enabled/disabled state, and whether the entry is user-created or built-in.",
+  "examples": [
+    {
+      "summary": "List all Gotify endpoints in the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `name` field (format: pve-configid) is the stable identifier used when referencing this endpoint in notification matchers or rules — note it down for use with related create/update/delete operations.",
+    "Entries with `disable: true` exist in config but will not receive notifications; check this field when troubleshooting missing alerts.",
+    "The `origin` field distinguishes user-created endpoints from built-in or modified-built-in ones; built-in endpoints cannot be deleted."
+  ],
+  "relatedOperations": [
+    "create_cluster_notifications_endpoints_gotify",
+    "get_cluster_notifications_endpoints_gotify_name",
+    "update_cluster_notifications_endpoints_gotify_name",
+    "delete_cluster_notifications_endpoints_gotify_name",
+    "get_cluster_notifications_matchers"
+  ]
+}

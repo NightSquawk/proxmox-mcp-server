@@ -1,0 +1,29 @@
+{
+  "operationId": "post_pve_remotes_remote_qemu_vmid_shutdown",
+  "usageNotes": "Sends an ACPI shutdown signal to a remote QEMU VM — equivalent to pressing the power button, allowing the guest OS to shut down gracefully. Returns a remote UPID that must be polled to confirm completion; the call returns immediately and does not wait for the guest to finish shutting down. Requires Resource.Manage privilege on the remote+vmid combination; the VM must be in a running state on the target PVE remote.",
+  "examples": [
+    {
+      "summary": "Gracefully shut down VM 105 on the prod-hetzner remote",
+      "path_params": {
+        "remote": "prod-hetzner",
+        "vmid": 105
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "destructiveReason": "Initiates a guest OS shutdown, which stops all running services and workloads on the VM; if the guest ignores the ACPI signal or hangs, the VM remains in a transitional state until manually killed.",
+  "tips": [
+    "Poll the returned UPID via the task-status endpoint to determine when the shutdown has actually completed before taking follow-up actions (migrate, snapshot, etc.).",
+    "The 'node' body param is optional — omit it to let PDM resolve the node automatically, or supply it to target a specific PVE cluster node when the VM could be on multiple nodes.",
+    "This sends an ACPI signal (graceful); use the stop endpoint instead if the guest is unresponsive and you need a hard power-off.",
+    "Token-based auth is supported (allowtoken: true), making this safe to call from automation without interactive credentials."
+  ],
+  "relatedOperations": [
+    "post_pve_remotes_remote_qemu_vmid_stop",
+    "post_pve_remotes_remote_qemu_vmid_start",
+    "post_pve_remotes_remote_qemu_vmid_reboot",
+    "get_pve_remotes_remote_qemu_vmid_status"
+  ]
+}

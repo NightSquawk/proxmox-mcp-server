@@ -1,0 +1,26 @@
+{
+  "operationId": "put_access_acl",
+  "usageNotes": "Use this to grant or revoke a role on an ACL path for a specific auth-id (user or API token) or group — supply exactly one of `auth-id` or `group`, not both. Set `delete: true` to remove the permission instead of adding it. Use the `digest` parameter when making changes in scripts to guard against concurrent modifications overwriting each other.",
+  "examples": [
+    {
+      "summary": "Grant the Administrator role to a user at the root path with propagation enabled",
+      "path_params": {},
+      "params": {
+        "path": "/",
+        "role": "Administrator",
+        "auth-id": "admin@pam",
+        "propagate": true
+      }
+    }
+  ],
+  "tips": [
+    "Only one of `auth-id` or `group` should be provided per call; supplying neither results in an error.",
+    "The `path` must match the ACL path hierarchy used by PDM (e.g., `/`, `/mapping`, `/remotes/my-remote`); invalid paths are rejected.",
+    "Tokens (auth-id with `!` separator, e.g., `admin@pam!mytoken`) can only be granted roles that are a subset of the owning user's roles — PDM enforces this automatically.",
+    "Returns null on success; no confirmation body is returned, so verify with get_access_acl after making changes.",
+    "Setting `propagate: false` scopes the permission strictly to that path and does not cascade to child paths."
+  ],
+  "relatedOperations": [
+    "get_access_acl"
+  ]
+}

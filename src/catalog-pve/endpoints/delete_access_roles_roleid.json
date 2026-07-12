@@ -1,0 +1,38 @@
+{
+  "operationId": "delete_access_roles_roleid",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "delete_role",
+  "method": "DELETE",
+  "path": "/access/roles/{roleid}",
+  "description": "Delete role.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "roleid",
+      "type": "string",
+      "required": true,
+      "format": "pve-roleid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/access",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/roles/<roleid>'"
+}

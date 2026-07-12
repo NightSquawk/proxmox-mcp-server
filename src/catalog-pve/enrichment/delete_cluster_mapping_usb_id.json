@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_cluster_mapping_usb_id",
+  "usageNotes": "Permanently removes a cluster-level USB hardware mapping by its config ID. Before deleting, ensure no VMs or containers reference this mapping, as removal does not automatically detach it from running guests. Requires the Mapping.Modify privilege on /mapping/usb.",
+  "examples": [
+    {
+      "summary": "Delete a USB mapping named 'usb-dongle-license'",
+      "path_params": {
+        "id": "usb-dongle-license"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the named USB hardware mapping from the cluster; any VM configurations still referencing this mapping ID will have a dangling reference and may fail to start.",
+  "tips": [
+    "Use get_cluster_mapping_usb_id to inspect the mapping and identify which nodes/VMs reference it before deleting.",
+    "The id must match a pve-configid format (alphanumeric plus hyphens/underscores, no spaces).",
+    "Deletion returns null — confirm removal by listing mappings with list_cluster_mapping_usb afterward."
+  ],
+  "relatedOperations": [
+    "list_cluster_mapping_usb",
+    "get_cluster_mapping_usb_id",
+    "create_cluster_mapping_usb",
+    "update_cluster_mapping_usb_id"
+  ]
+}

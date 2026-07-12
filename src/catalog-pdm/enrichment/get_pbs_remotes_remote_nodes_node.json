@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pbs_remotes_remote_nodes_node",
+  "usageNotes": "Returns the directory index for a specific node on a PBS remote, serving as a navigation entry point that lists available sub-resources (e.g., apt, subscription, termproxy). Use this to confirm a PBS remote node is reachable via PDM and to discover what child endpoints are exposed for that node. The remote must already be configured in PDM and the named node must be a member of that remote's cluster.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for node 'pbs-hetzner' on the remote named 'hetzner-pbs'",
+      "path_params": {
+        "remote": "hetzner-pbs",
+        "node": "pbs-hetzner"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The schema declares returns type null — in practice the response is an array of directory entries (route names); treat it as a navigation index, not a data object.",
+    "Token-based authentication is supported (allowtoken: true), so this call is safe in automated scripts and health checks.",
+    "If the remote is unreachable or the node name is wrong, PDM will return an error rather than an empty index — a successful response is a lightweight connectivity check."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_nodes_node_apt",
+    "get_pbs_remotes_remote_nodes_node_apt_update",
+    "get_pbs_remotes_remote_nodes_node_subscription",
+    "get_pbs_remotes_remote_nodes_node_vncwebsocket"
+  ]
+}

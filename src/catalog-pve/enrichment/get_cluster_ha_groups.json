@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_ha_groups",
+  "usageNotes": "Returns the list of configured HA groups on the cluster. This endpoint is deprecated in favor of HA rules but remains useful for auditing legacy HA group assignments. Requires the Sys.Audit privilege at the root path (/); no parameters are accepted — the response is always the full group list.",
+  "examples": [
+    {
+      "summary": "List all HA groups on the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response includes only the group identifier (name); fetch individual group details with the sibling get_cluster_ha_groups_{group} endpoint.",
+    "This endpoint is marked deprecated by Proxmox — prefer HA rules (get_cluster_ha_rules) for new automation.",
+    "API tokens are supported (allowtoken: true), making this safe to call from read-only monitoring tokens."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_rules",
+    "get_cluster_ha_resources",
+    "get_cluster_ha_status_current"
+  ]
+}

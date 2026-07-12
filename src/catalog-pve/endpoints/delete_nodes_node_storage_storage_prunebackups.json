@@ -1,0 +1,71 @@
+{
+  "operationId": "delete_nodes_node_storage_storage_prunebackups",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "delete",
+  "method": "DELETE",
+  "path": "/nodes/{node}/storage/{storage}/prunebackups",
+  "description": "Prune backups. Only those using the standard naming scheme are considered.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [
+    {
+      "name": "prune-backups",
+      "type": "string",
+      "required": false,
+      "description": "Use these retention options instead of those from the storage configuration.",
+      "format": "prune-backups",
+      "typetext": "[keep-all=<1|0>] [,keep-daily=<N>] [,keep-hourly=<N>] [,keep-last=<N>] [,keep-monthly=<N>] [,keep-weekly=<N>] [,keep-yearly=<N>]"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "description": "Either 'qemu' or 'lxc'. Only consider backups for guests of this type.",
+      "enum": [
+        "qemu",
+        "lxc"
+      ]
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": false,
+      "description": "Only prune backups for this VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "description": "You need the 'Datastore.Allocate' privilege on the storage (or if a VM ID is specified, 'Datastore.AllocateSpace' and 'VM.Backup' for the VM).",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/prunebackups'"
+}

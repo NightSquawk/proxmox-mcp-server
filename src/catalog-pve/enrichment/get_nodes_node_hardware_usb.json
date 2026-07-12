@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_hardware_usb",
+  "usageNotes": "Use this endpoint to enumerate all USB devices physically connected to a specific cluster node — useful before configuring USB passthrough to a VM or LXC container. The node must be online and reachable, and the caller requires the Sys.Modify privilege at the root path (/). The response includes bus/device numbers, vendor/product IDs, speed, and optional serial numbers that are needed when adding a usb device to a VM config.",
+  "examples": [
+    {
+      "summary": "List all USB devices on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Use vendid and prodid from the response when configuring USB passthrough by vendor/product ID (usb: host=vendid:prodid) — this is more stable than bus/device numbers which can change on reboot.",
+    "If serial is present, prefer it for unique device identification when multiple identical USB devices are attached to the same node.",
+    "The usbpath field (when present) allows port-based passthrough (usb: host=bus-port) — useful when you need a specific physical port regardless of which device is plugged in."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_hardware_pci",
+    "get_nodes_node_qemu_vmid_config",
+    "post_nodes_node_qemu_vmid_config"
+  ]
+}

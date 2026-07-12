@@ -1,0 +1,48 @@
+{
+  "operationId": "delete_cluster_ha_resources_sid",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete",
+  "method": "DELETE",
+  "path": "/cluster/ha/resources/{sid}",
+  "description": "Delete resource configuration.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "sid",
+      "type": "string",
+      "required": true,
+      "description": "HA resource ID. This consists of a resource type followed by a resource specific name, separated with colon (example: vm:100 / ct:100). For virtual machines and containers, you can simply use the VM or CT id as a shortcut (example: 100).",
+      "format": "pve-ha-resource-or-vm-id",
+      "typetext": "<type>:<name>"
+    }
+  ],
+  "params": [
+    {
+      "name": "purge",
+      "type": "boolean",
+      "required": false,
+      "description": "Remove this resource from rules that reference it, deleting the rule if this resource is the only resource in the rule",
+      "default": 1,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Console"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/ha/resources/<sid>'"
+}

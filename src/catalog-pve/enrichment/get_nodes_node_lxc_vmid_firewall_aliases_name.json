@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_aliases_name",
+  "usageNotes": "Retrieves a single named firewall alias defined at the LXC container level, returning its CIDR value and any comment. Use this to inspect or verify a specific alias before referencing it in firewall rules. Alias names must start with a letter and match the pattern [A-Za-z][A-Za-z0-9\\-\\_]+; the caller must hold VM.Audit on the container.",
+  "examples": [
+    {
+      "summary": "Read the 'WebBackend' alias on LXC container 110 hosted on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110,
+        "name": "WebBackend"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Aliases defined at the container level are scoped only to that container's firewall — they are not shared with the node or datacenter alias pools.",
+    "If the alias name does not exist, the API returns a 500 error rather than a 404; handle accordingly in error logic.",
+    "Use the list endpoint (get_nodes_node_lxc_vmid_firewall_aliases) first to confirm an alias exists before reading it by name."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_aliases",
+    "post_nodes_node_lxc_vmid_firewall_aliases",
+    "put_nodes_node_lxc_vmid_firewall_aliases_name",
+    "delete_nodes_node_lxc_vmid_firewall_aliases_name"
+  ]
+}

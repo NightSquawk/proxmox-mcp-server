@@ -1,0 +1,146 @@
+{
+  "operationId": "post_cluster_sdn_fabrics_node_fabric_id",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "add_node",
+  "method": "POST",
+  "path": "/cluster/sdn/fabrics/node/{fabric_id}",
+  "description": "Add a node",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "fabric_id",
+      "type": "string",
+      "required": true,
+      "description": "Identifier for SDN fabrics",
+      "format": "pve-sdn-fabric-id",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]"
+    }
+  ],
+  "params": [
+    {
+      "name": "allowed_ips",
+      "type": "array",
+      "required": false,
+      "description": "A list of IPs that are routable via this node in the WireGuard fabric.",
+      "typetext": "<array>"
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "endpoint",
+      "type": "string",
+      "required": false,
+      "description": "The endpoint used for connecting to this node.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "interfaces",
+      "type": "array",
+      "required": true,
+      "typetext": "<array>"
+    },
+    {
+      "name": "ip",
+      "type": "string",
+      "required": false,
+      "description": "IPv4 address for this node",
+      "format": "ipv4",
+      "typetext": "<string>"
+    },
+    {
+      "name": "ip6",
+      "type": "string",
+      "required": false,
+      "description": "IPv6 address for this node",
+      "format": "ipv6",
+      "typetext": "<string>"
+    },
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    },
+    {
+      "name": "node_id",
+      "type": "string",
+      "required": true,
+      "description": "Identifier for nodes in an SDN fabric",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "peers",
+      "type": "array",
+      "required": false,
+      "typetext": "<array>"
+    },
+    {
+      "name": "protocol",
+      "type": "string",
+      "required": true,
+      "description": "Type of configuration entry in an SDN Fabric section config",
+      "enum": [
+        "openfabric",
+        "ospf",
+        "wireguard",
+        "bgp"
+      ]
+    },
+    {
+      "name": "public_key",
+      "type": "string",
+      "required": false,
+      "description": "The public key for the external node.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "role",
+      "type": "string",
+      "required": false,
+      "description": "The role of this node in the WireGuard fabric.",
+      "enum": [
+        "internal",
+        "external"
+      ]
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "and",
+      [
+        "perm",
+        "/sdn/fabrics/{fabric_id}",
+        [
+          "SDN.Allocate"
+        ]
+      ],
+      [
+        "perm",
+        "/nodes/{node_id}",
+        [
+          "Sys.Modify"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"interfaces\":\"<interfaces>\",\"node_id\":\"<node_id>\",\"protocol\":\"openfabric\"}' 'https://PVE_HOST:8006/api2/json/cluster/sdn/fabrics/node/<fabric_id>'"
+}

@@ -1,0 +1,48 @@
+{
+  "operationId": "get_cluster_firewall_ipset_name_cidr",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "read_ip",
+  "method": "GET",
+  "path": "/cluster/firewall/ipset/{name}/{cidr}",
+  "description": "Read IP or Network settings from IPSet.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "IP set name.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    },
+    {
+      "name": "cidr",
+      "type": "string",
+      "required": true,
+      "description": "Network/IP specification in CIDR format.",
+      "format": "IPorCIDRorAlias",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/firewall/ipset/<name>/<cidr>'"
+}

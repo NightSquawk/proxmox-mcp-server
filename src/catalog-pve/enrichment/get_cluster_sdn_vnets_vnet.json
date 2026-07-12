@@ -1,0 +1,29 @@
+{
+  "operationId": "get_cluster_sdn_vnets_vnet",
+  "usageNotes": "Use this to inspect the stored configuration of a specific SDN VNet, including its zone membership, VLAN tag or VXLAN VNI, and port-isolation settings. Pass `pending=true` to see unapplied changes (e.g., after editing but before running `apply_cluster_sdn`) or `running=true` to see the configuration currently active in the dataplane. Requires `SDN.Audit` or `SDN.Allocate` on `/sdn/zones/<zone>/<vnet>`; the vnet identifier must be 2–8 alphanumeric characters starting with a letter.",
+  "examples": [
+    {
+      "summary": "Fetch stored config for a VXLAN VNet called 'vnet01', also showing any pending changes",
+      "path_params": {
+        "vnet": "vnet01"
+      },
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "The `state` field in the response indicates lifecycle status: 'new' means created but never applied, 'changed' means edited since last apply, 'deleted' means queued for removal.",
+    "Use `pending=true` after any SDN edit to diff what will change before committing with the apply operation.",
+    "The `digest` field can be passed to update operations to enforce optimistic concurrency (prevents overwriting concurrent edits).",
+    "The `tag` field meaning depends on the zone type: it is a VLAN ID (1–4094) for VLAN/QinQ zones and a VXLAN VNI (1–16777215) for VXLAN/EVPN zones."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets",
+    "create_cluster_sdn_vnets",
+    "update_cluster_sdn_vnets_vnet",
+    "delete_cluster_sdn_vnets_vnet",
+    "apply_cluster_sdn",
+    "get_cluster_sdn_zones_zone"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_replication",
+  "usageNotes": "Use this to inspect the current status of all replication jobs running on a specific node, including last sync time, next scheduled run, and any error states. The target node must be online and reachable within the cluster; calling against an offline node will fail. Requires VM.Audit on each VM whose replication jobs you want to see — jobs for VMs the caller cannot audit are omitted from results.",
+  "examples": [
+    {
+      "summary": "List all replication jobs on node pve1, filtered to VM 105",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "guest": 105
+      }
+    }
+  ],
+  "tips": [
+    "Omit the 'guest' filter to see every replication job on the node at once — useful for a quick cluster health check.",
+    "Each returned object includes an 'id' in the form '<vmid>-<jobnum>' (e.g. '105-0'); use that id to drill into per-job details via the child endpoint.",
+    "A job with 'fail_count' > 0 and a non-null 'error' field indicates the last sync failed — check the node's replication log for details.",
+    "Replication only applies to VMs and containers configured with at least one replication target; VMs without replication jobs will not appear in the response."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_replication_id_log",
+    "get_nodes_node_replication_id_status",
+    "get_replication",
+    "post_nodes_node_replication_id_schedule_now"
+  ]
+}

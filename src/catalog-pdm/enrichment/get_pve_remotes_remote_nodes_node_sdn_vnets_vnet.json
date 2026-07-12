@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_sdn_vnets_vnet",
+  "usageNotes": "Returns the directory index for a specific VNet under a remote PVE node's SDN configuration, serving as a navigation endpoint to discover available sub-resources for that VNet. Because the return type is null, this endpoint is used for resource discovery rather than fetching VNet configuration data — actual VNet properties are retrieved via child endpoints. The remote and node must both be reachable from PDM at call time.",
+  "examples": [
+    {
+      "summary": "Inspect available sub-resources for VNet 'vnet10' on node 'pve1' of remote 'hetzner-prod'",
+      "path_params": {
+        "remote": "hetzner-prod",
+        "node": "pve1",
+        "vnet": "vnet10"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "VNet names in Proxmox SDN are lowercase alphanumeric and up to 8 characters (e.g., 'vnet10', 'dmz').",
+    "This endpoint returns a directory listing (null body), not VNet config — use child paths discovered here to read actual SDN VNet details.",
+    "Open permissions ('user: all') mean any authenticated PDM token can call this; no special SDN privilege is required."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_sdn_vnets",
+    "get_pve_remotes_remote_nodes_node_sdn"
+  ]
+}

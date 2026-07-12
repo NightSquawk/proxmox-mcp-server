@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_tasks_upid",
+  "usageNotes": "Returns the list of available sub-resources (child endpoints) for a specific task UPID on a node — essentially an index of what you can query about that task (e.g., status, log). The UPID must belong to the specified node; cross-node lookups will fail. Accessible by all authenticated users, so no special privilege is required beyond a valid API token.",
+  "examples": [
+    {
+      "summary": "List sub-resources for a known migration task UPID",
+      "path_params": {
+        "node": "pve01",
+        "upid": "UPID:pve01:00001A2B:012C3D4E:67890ABC:qmigrate:101:root@pam:"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The UPID format is colon-delimited and encodes node, PID, start time, task type, and user — obtain it from task-list endpoints like get_nodes_node_tasks.",
+    "The child links returned (e.g., 'status', 'log') are the actionable sub-endpoints; follow them to retrieve task output or wait-poll for completion.",
+    "This endpoint is a directory listing, not the task result itself — use get_nodes_node_tasks_upid_status for the actual task state."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks",
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log",
+    "delete_nodes_node_tasks_upid"
+  ]
+}

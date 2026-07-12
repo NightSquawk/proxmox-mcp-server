@@ -1,0 +1,33 @@
+{
+  "operationId": "post_cluster_notifications_endpoints_sendmail",
+  "usageNotes": "Use this to register a new sendmail endpoint in the cluster notification system so that alerts and notification rules can route email via the local sendmail binary. At least one of 'mailto' (explicit email addresses) or 'mailto-user' (Proxmox user accounts) must be provided to make the endpoint useful; an endpoint with neither will accept no mail. Requires 'Mapping.Modify' on '/mapping/notifications' plus either 'Sys.Audit'/'Sys.Modify' or 'Sys.AccessNetwork' at the root level.",
+  "examples": [
+    {
+      "summary": "Create a sendmail endpoint that routes cluster alerts to an admin address",
+      "path_params": {},
+      "params": {
+        "name": "admin-alerts",
+        "author": "NightSquawk Tech Alerts",
+        "from-address": "proxmox-alerts@nightsquawk.tech",
+        "mailto": ["hello@nightsquawk.tech"],
+        "comment": "Primary alert endpoint for cluster health notifications",
+        "disable": false
+      }
+    }
+  ],
+  "tips": [
+    "The 'name' field must satisfy the 'pve-configid' format: alphanumeric plus hyphens/underscores, no spaces.",
+    "sendmail relies on the local MTA (Postfix by default on PVE nodes); ensure the MTA is configured and able to relay before testing this endpoint.",
+    "After creation, wire this endpoint to a notification rule via the matchers/policies API — creating the endpoint alone does not cause any notifications to be sent.",
+    "To update an existing endpoint use PUT /cluster/notifications/endpoints/sendmail/{name} instead of re-POSTing; duplicate names return an error.",
+    "The 'disable' flag lets you temporarily silence an endpoint without deleting its references in notification rules."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_sendmail",
+    "get_cluster_notifications_endpoints_sendmail_name",
+    "put_cluster_notifications_endpoints_sendmail_name",
+    "delete_cluster_notifications_endpoints_sendmail_name",
+    "post_cluster_notifications_matchers",
+    "get_cluster_notifications_endpoints"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_sdn_fabrics_node",
+  "usageNotes": "Lists all node entries across all SDN fabrics the caller has access to; results are filtered by the caller's per-fabric SDN.Audit/SDN.Allocate and per-node Sys.Audit/Sys.Modify permissions, so different API tokens may see different subsets. Use the 'pending' flag to preview uncommitted SDN config changes before applying them, or 'running' to inspect the currently active (applied) state. The returned 'digest' field from each entry should be passed to write operations to prevent concurrent modification conflicts.",
+  "examples": [
+    {
+      "summary": "List all SDN fabric nodes with pending (uncommitted) config included",
+      "path_params": {},
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "Protocol-specific fields (allowed_ips, endpoint, peers, public_key, role) only appear on WireGuard-protocol entries; interfaces shape varies by protocol (openfabric, ospf, wireguard, bgp).",
+    "Omitting both 'pending' and 'running' returns the stored (committed) configuration — useful as a baseline before making changes.",
+    "The 'lock-token' field in the response is used to safely unlock the global SDN configuration if it was left locked by an interrupted write operation."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics",
+    "get_cluster_sdn_fabrics_fabric",
+    "get_cluster_sdn_fabrics_fabric_node",
+    "post_cluster_sdn_fabrics_fabric_node",
+    "put_cluster_sdn_fabrics_fabric_node"
+  ]
+}

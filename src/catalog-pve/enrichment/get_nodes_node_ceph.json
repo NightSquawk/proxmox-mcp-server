@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_ceph",
+  "usageNotes": "Returns the directory index of available Ceph API sub-resources for a specific node, acting as a navigation entry point rather than returning Ceph cluster state. The node must have Ceph configured and the caller needs Sys.Audit or Datastore.Audit on the root path. Use this to discover which Ceph sub-endpoints (e.g. status, osd, pools, mon) are available before querying them directly.",
+  "examples": [
+    {
+      "summary": "List Ceph API sub-resources available on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a pure index call — it does not reflect whether Ceph is actually healthy or running on the node; follow up with get_nodes_node_ceph_status for live cluster state.",
+    "If the node has no Ceph installation the response may still return child links but subsequent calls to those children will fail.",
+    "Requires only Sys.Audit or Datastore.Audit (any one), making it broadly accessible to monitoring tokens."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph_osd",
+    "get_nodes_node_ceph_pools",
+    "get_nodes_node_ceph_mon",
+    "get_nodes_node_ceph_config"
+  ]
+}

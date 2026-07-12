@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_access_groups_groupid",
+  "usageNotes": "Use this to permanently remove a Proxmox access group that is no longer needed. The group must exist; deleting a non-existent group returns an error. Removing a group immediately revokes all ACL entries assigned to that group across all nodes and resources — member users lose any privileges they held solely through this group.",
+  "examples": [
+    {
+      "summary": "Delete the 'helpdesk' access group",
+      "path_params": {
+        "groupid": "helpdesk"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the group and removes all associated ACL assignments, which may immediately revoke resource access for every user who was a member of this group.",
+  "tips": [
+    "Check group membership and ACL assignments before deleting (use get_access_groups_groupid) to understand the access impact.",
+    "There is no soft-delete or recycle bin — deletion is immediate and irreversible.",
+    "API tokens with the Group.Allocate privilege on /access/groups can perform this operation."
+  ],
+  "relatedOperations": [
+    "get_access_groups_groupid",
+    "get_access_groups",
+    "post_access_groups",
+    "put_access_groups_groupid",
+    "get_access_acl",
+    "put_access_acl"
+  ]
+}

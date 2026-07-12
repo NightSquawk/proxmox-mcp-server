@@ -1,0 +1,93 @@
+{
+  "operationId": "get_nodes_node_scan_pbs",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "pbsscan",
+  "method": "GET",
+  "path": "/nodes/{node}/scan/pbs",
+  "description": "Scan remote Proxmox Backup Server.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "fingerprint",
+      "type": "string",
+      "required": false,
+      "description": "Certificate SHA 256 fingerprint.",
+      "pattern": "([A-Fa-f0-9]{2}:){31}[A-Fa-f0-9]{2}"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": true,
+      "description": "User password or API token secret.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "port",
+      "type": "integer",
+      "required": false,
+      "description": "Optional port.",
+      "default": 8007,
+      "minimum": 1,
+      "maximum": 65535,
+      "typetext": "<integer> (1 - 65535)"
+    },
+    {
+      "name": "server",
+      "type": "string",
+      "required": true,
+      "description": "The server address (name or IP).",
+      "format": "pve-storage-server",
+      "typetext": "<string>"
+    },
+    {
+      "name": "username",
+      "type": "string",
+      "required": true,
+      "description": "User-name or API token-ID.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "comment": {
+          "description": "Comment from server.",
+          "optional": 1,
+          "type": "string"
+        },
+        "store": {
+          "description": "The datastore name.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage",
+      [
+        "Datastore.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/scan/pbs?password=<password>&server=<server>&username=<username>'"
+}

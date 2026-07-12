@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_capabilities",
+  "usageNotes": "Returns the top-level capabilities index for a specific node, exposing available sub-resources (such as QEMU machine types, CPU models, etc.) that the node supports. This is a discovery/enumeration call — use it to find which capability sub-categories exist before querying a specific child resource. The node must be online and reachable by the PVE API; no special privileges are required beyond being an authenticated user.",
+  "examples": [
+    {
+      "summary": "List capability sub-resources available on node 'pve01'",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is an array of objects with a 'name' property that maps to child API paths under /nodes/{node}/capabilities/{name} — follow those links to retrieve actual capability data.",
+    "Useful as a preflight check when building tooling that needs to conditionally support features (e.g., check if 'qemu' or 'cpu' sub-resources exist before querying machine types).",
+    "Works with API tokens (allowtoken: true) and requires no elevated permissions, making it safe to call from read-only service accounts."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_capabilities_qemu",
+    "get_nodes_node_capabilities_qemu_cpu",
+    "get_nodes_node_capabilities_qemu_machines"
+  ]
+}

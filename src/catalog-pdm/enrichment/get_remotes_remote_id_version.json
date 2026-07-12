@@ -1,0 +1,23 @@
+{
+  "operationId": "get_remotes_remote_id_version",
+  "usageNotes": "Use this to verify the Proxmox VE version running on a specific PDM-registered remote before performing operations that may require a minimum PVE version. Requires `Resource.Audit` privilege on the remote resource. The remote must be reachable from PDM at call time; a timeout or unreachable host will surface as an error rather than a stale cached value.",
+  "examples": [
+    {
+      "summary": "Get version info for remote 'pve-hetzner'",
+      "path_params": {
+        "id": "pve-hetzner"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `version` field is the full pve-manager package version string (e.g. '8.2.4'); `release` is the shorter `x.y` form (e.g. '8.2') useful for major/minor compatibility checks.",
+    "The `repoid` field is a short git hash useful when cross-referencing changelogs or bug reports against a specific build.",
+    "Remote IDs follow the pattern `[A-Za-z0-9_][A-Za-z0-9._-]*` with length 2–32; use list-remotes first if the ID is unknown."
+  ],
+  "relatedOperations": [
+    "get_remotes",
+    "get_remotes_remote_id",
+    "get_version"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_lxc",
+  "usageNotes": "Use this to enumerate all LXC containers on a specific node, including their running status, resource usage, and configuration metadata. Results are scoped to the caller's VM.Audit permissions — containers the caller cannot audit are silently omitted, so an empty list does not mean no containers exist. The target node must be online; requests to an offline or unreachable node will return an error.",
+  "examples": [
+    {
+      "summary": "List all LXC containers on node 'pve1'",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Entries with 'template': true are container templates, not running guests — filter these out when looking for active workloads.",
+    "The 'lock' field (e.g., 'backup', 'migrate', 'snapshot') indicates the container is mid-operation; avoid config changes or power actions until the lock clears.",
+    "CPU, mem, disk I/O, and network counters are only populated for running containers; stopped containers will have those fields absent or zero.",
+    "Pressure fields (pressurecpusome, pressureiosome, etc.) reflect Linux PSI metrics and are only available on nodes running a kernel with PSI support enabled."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_nodes_node_lxc_vmid_config",
+    "get_cluster_resources",
+    "get_nodes_node_qemu"
+  ]
+}

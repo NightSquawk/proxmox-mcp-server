@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_snapshot_snapname_config",
+  "usageNotes": "Returns the VM configuration that was captured at snapshot time, including CPU, memory, and disk settings as they existed when the snapshot was taken. Useful for auditing what changed between a snapshot and the current VM config, or verifying a snapshot captured the expected state before rolling back. Requires VM.Snapshot, VM.Snapshot.Rollback, or VM.Audit permission on the VM (any one suffices); the node must be online.",
+  "examples": [
+    {
+      "summary": "Retrieve the config captured in the 'pre-upgrade' snapshot for VM 105",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105,
+        "snapname": "pre-upgrade"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "snapname must follow the pve-configid format (alphanumeric, hyphens allowed, max 40 chars) — use list_nodes_node_qemu_vmid_snapshot to see valid snapshot names for the VM.",
+    "The returned object reflects the hardware config at snapshot creation time, not the current VM config; diff it against the live config endpoint to identify drift.",
+    "This endpoint has no query parameters; all required values are path parameters."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_snapshot",
+    "post_nodes_node_qemu_vmid_snapshot_snapname_rollback",
+    "delete_nodes_node_qemu_vmid_snapshot_snapname",
+    "get_nodes_node_qemu_vmid_config"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "operationId": "post_cluster_sdn_vnets_vnet_firewall_rules",
+  "usageNotes": "Use this endpoint to append a new firewall rule to a specific SDN VNet's ruleset. The caller must hold SDN.Allocate on the vnet's zone path ('/sdn/zones/<zone>/<vnet>'); without it the call returns 403. Rules are appended at the end by default — use 'pos' to insert at a specific index (0-based). The call returns null on success, so confirm insertion by reading back the rules list.",
+  "examples": [
+    {
+      "summary": "Block all inbound traffic from a known malicious subnet to vnet 'prod01'",
+      "path_params": {
+        "vnet": "prod01"
+      },
+      "params": {
+        "type": "in",
+        "action": "DROP",
+        "source": "198.51.100.0/24",
+        "proto": "tcp",
+        "comment": "Block malicious subnet - added 2026-06-29",
+        "log": "warning",
+        "enable": 1
+      }
+    }
+  ],
+  "tips": [
+    "The vnet identifier must be 2–8 alphanumeric characters starting with a letter — single-char names are rejected.",
+    "Rules are evaluated top-down; insert at 'pos' 0 to make a rule take effect before existing ones.",
+    "Use 'macro' (e.g. 'SSH', 'HTTP') to avoid specifying proto/dport manually for common services.",
+    "Set 'enable' to 0 to add a rule in disabled state for testing before activating it.",
+    "SDN firewall rules live at the cluster level and apply across all nodes — changes take effect cluster-wide after the next SDN apply cycle.",
+    "Use 'digest' from a prior GET to guard against concurrent edits overwriting each other."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_firewall_rules",
+    "get_cluster_sdn_vnets_vnet_firewall_rules_pos",
+    "put_cluster_sdn_vnets_vnet_firewall_rules_pos",
+    "delete_cluster_sdn_vnets_vnet_firewall_rules_pos",
+    "get_cluster_sdn_vnets_vnet_firewall"
+  ]
+}

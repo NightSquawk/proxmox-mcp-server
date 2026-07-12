@@ -1,0 +1,30 @@
+{
+  "operationId": "post_access_tfa_userid",
+  "usageNotes": "Use this to enroll a new TFA (two-factor authentication) entry for a user — supported types are totp, webauthn, u2f, recovery, and yubico. An admin needs Access.Modify on /access/users, or the caller must be the target user themselves. For TOTP, supply a valid totp URI and the current OTP value in the 'value' field so PDM can verify the key before saving; for WebAuthn/U2F, the registration is a two-step flow — call first without a challenge to receive one, then call again with the challenge response in 'value'.",
+  "examples": [
+    {
+      "summary": "Add a TOTP authenticator app entry for a user",
+      "path_params": {
+        "userid": "kevin@pve"
+      },
+      "params": {
+        "type": "totp",
+        "totp": "otpauth://totp/PDM:kevin@pve?secret=JBSWY3DPEHPK3PXP&issuer=PDM",
+        "value": "482910",
+        "description": "Authenticator app (phone)"
+      }
+    }
+  ],
+  "tips": [
+    "When type is 'recovery', the response includes a one-time-use integer code list — store these immediately; they cannot be retrieved again.",
+    "For WebAuthn/U2F, the first POST (no 'challenge' or 'value') returns a challenge string in the response; submit that as 'challenge' plus the device's signed response as 'value' in the second POST to complete enrollment.",
+    "The 'password' field may be required by PDM's TFA policy when a non-admin modifies their own account — supply the user's current login password if the API returns a permission or confirmation error.",
+    "A user can hold multiple TFA entries of different types; use the 'description' field to label each device so they are distinguishable in the UI and via list endpoints."
+  ],
+  "relatedOperations": [
+    "get_access_tfa_userid",
+    "delete_access_tfa_userid_id",
+    "get_access_tfa",
+    "post_access_tfa_userid_id"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_ceph_pool_name",
+  "usageNotes": "Use this endpoint to retrieve sub-resources or available actions exposed under a specific Ceph pool on a given node. The calling token or user must hold either Sys.Audit or Datastore.Audit on the root path ('/'). Ceph must be configured and the target node must be a member of the Ceph cluster.",
+  "examples": [
+    {
+      "summary": "List pool index entries for the 'rbd' pool on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "name": "rbd"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a pool index endpoint — it returns child resource links rather than raw pool metrics. To get detailed pool statistics use the sibling endpoint that returns pool status/detail.",
+    "Common pool names in Proxmox Ceph deployments are 'rbd' (VM disks), 'cephfs_data', and 'cephfs_metadata'.",
+    "API tokens are accepted (allowtoken: true), making this suitable for read-only monitoring automations."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_pools",
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph_osd"
+  ]
+}

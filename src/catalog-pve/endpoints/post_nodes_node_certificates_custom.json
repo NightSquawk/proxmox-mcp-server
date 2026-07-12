@@ -1,0 +1,131 @@
+{
+  "operationId": "post_nodes_node_certificates_custom",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "upload_custom_cert",
+  "method": "POST",
+  "path": "/nodes/{node}/certificates/custom",
+  "description": "Upload or update custom certificate chain and key.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "certificates",
+      "type": "string",
+      "required": true,
+      "description": "PEM encoded certificate (chain).",
+      "format": "pem-certificate-chain",
+      "typetext": "<string>"
+    },
+    {
+      "name": "force",
+      "type": "boolean",
+      "required": false,
+      "description": "Overwrite existing custom or ACME certificate files.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "key",
+      "type": "string",
+      "required": false,
+      "description": "PEM encoded private key.",
+      "format": "pem-string",
+      "typetext": "<string>"
+    },
+    {
+      "name": "restart",
+      "type": "boolean",
+      "required": false,
+      "description": "Restart pveproxy.",
+      "default": 0,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "filename": {
+        "optional": 1,
+        "type": "string"
+      },
+      "fingerprint": {
+        "description": "Certificate SHA 256 fingerprint.",
+        "optional": 1,
+        "pattern": "([A-Fa-f0-9]{2}:){31}[A-Fa-f0-9]{2}",
+        "type": "string"
+      },
+      "issuer": {
+        "description": "Certificate issuer name.",
+        "optional": 1,
+        "type": "string"
+      },
+      "notafter": {
+        "description": "Certificate's notAfter timestamp (UNIX epoch).",
+        "optional": 1,
+        "renderer": "timestamp",
+        "type": "integer"
+      },
+      "notbefore": {
+        "description": "Certificate's notBefore timestamp (UNIX epoch).",
+        "optional": 1,
+        "renderer": "timestamp",
+        "type": "integer"
+      },
+      "pem": {
+        "description": "Certificate in PEM format",
+        "format": "pem-certificate",
+        "optional": 1,
+        "type": "string"
+      },
+      "public-key-bits": {
+        "description": "Certificate's public key size",
+        "optional": 1,
+        "type": "integer"
+      },
+      "public-key-type": {
+        "description": "Certificate's public key algorithm",
+        "optional": 1,
+        "type": "string"
+      },
+      "san": {
+        "description": "List of Certificate's SubjectAlternativeName entries.",
+        "items": {
+          "type": "string"
+        },
+        "optional": 1,
+        "renderer": "yaml",
+        "type": "array"
+      },
+      "subject": {
+        "description": "Certificate subject name.",
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"certificates\":\"<certificates>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/certificates/custom'"
+}

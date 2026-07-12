@@ -1,0 +1,66 @@
+{
+  "operationId": "post_access_openid_login",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "login",
+  "method": "POST",
+  "path": "/access/openid/login",
+  "description": " Verify OpenID authorization code and create a ticket.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "code",
+      "type": "string",
+      "required": true,
+      "description": "OpenId authorization code.",
+      "maxLength": 4096,
+      "typetext": "<string>"
+    },
+    {
+      "name": "redirect-url",
+      "type": "string",
+      "required": true,
+      "description": "Redirection Url. The client should set this to the used server url (location.origin).",
+      "maxLength": 255,
+      "typetext": "<string>"
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "required": true,
+      "description": "OpenId state.",
+      "maxLength": 1024,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "CSRFPreventionToken": {
+        "type": "string"
+      },
+      "cap": {
+        "type": "object"
+      },
+      "clustername": {
+        "optional": 1,
+        "type": "string"
+      },
+      "ticket": {
+        "type": "string"
+      },
+      "username": {
+        "type": "string"
+      }
+    }
+  },
+  "permissions": {
+    "user": "world"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"code\":\"<code>\",\"redirect-url\":\"<redirect-url>\",\"state\":\"<state>\"}' 'https://PVE_HOST:8006/api2/json/access/openid/login'"
+}

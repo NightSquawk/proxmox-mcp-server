@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_firewall_options",
+  "usageNotes": "Returns the host-level firewall configuration for a specific node, including whether the firewall is enabled, log verbosity for in/out/forwarded traffic, conntrack settings, and DDoS mitigations (synflood, SMURFS, TCP-flag filters). Requires Sys.Audit on /nodes/{node} — readable by API tokens with that privilege. Use this before modifying node firewall options to capture the current state and avoid blind overwrites.",
+  "examples": [
+    {
+      "summary": "Read firewall options for node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "enable defaults to 1 (on) — an absent field in the response means the default is in effect, not that the option is unset.",
+    "nftables is a tech preview flag; enabling it changes the firewall backend and may affect existing iptables rules.",
+    "nf_conntrack_max defaults to 262144; on busy nodes with many VMs/CTs, a low conntrack limit causes dropped connections — check this when troubleshooting intermittent packet loss.",
+    "log_level_in/out/forward all default to 'nolog'; setting them to 'info' or 'debug' generates high syslog volume on active nodes."
+  ],
+  "relatedOperations": [
+    "set_nodes_node_firewall_options",
+    "get_nodes_node_firewall_rules",
+    "get_cluster_firewall_options"
+  ]
+}

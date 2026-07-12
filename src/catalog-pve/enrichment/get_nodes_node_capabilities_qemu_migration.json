@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_capabilities_qemu_migration",
+  "usageNotes": "Call this before initiating a QEMU live migration to determine whether the target node supports dbus-vmstate, which is required for migrating additional VM state (e.g., from QEMU guest agents or other dbus-connected helpers) without downtime. If `has-dbus-vmstate` returns false, any VM relying on dbus-vmstate transfer will fall back to offline migration or the state will be lost. Requires `Sys.Audit` on `/nodes/<node>`.",
+  "examples": [
+    {
+      "summary": "Check migration capabilities on node pve01 before live-migrating a VM",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Run this on the *destination* node — it tells you what that node can receive, not what the source node can send.",
+    "dbus-vmstate support requires the `dbus-broker` or `dbus-daemon` package and the qemu-server dbus-vmstate helper to be installed on the node.",
+    "A false result does not block migration entirely; it only means extra VM state carried via dbus will not transfer live."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_migrate",
+    "get_nodes_node_capabilities_qemu_cpu",
+    "get_nodes_node_status"
+  ]
+}

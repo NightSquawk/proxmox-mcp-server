@@ -1,0 +1,22 @@
+{
+  "operationId": "post_remotes_tasks_refresh",
+  "usageNotes": "Triggers an async refresh of the cached task list from one or more Proxmox remotes registered in PDM. Returns a UPID string — poll the resulting task to know when the cache is current before querying remote tasks. Omitting the `remotes` body field refreshes all remotes the authenticated user has `Resource.Modify` permission on; supplying a list restricts the refresh to exactly those remotes (each must grant that privilege).",
+  "examples": [
+    {
+      "summary": "Refresh tasks for two specific remotes",
+      "path_params": {},
+      "params": {
+        "remotes": ["pve-hetzner-de1", "pve-ovh-us1"]
+      }
+    }
+  ],
+  "tips": [
+    "With an empty body `{}`, the endpoint silently skips any remote the user lacks Resource.Modify on — no error is raised, those remotes are simply excluded.",
+    "The returned UPID encodes the PDM node, PID, and start time; use it with the PDM task-status endpoint to detect completion before consuming the refreshed data.",
+    "API tokens are supported (allowtoken: true), so automation scripts can trigger refreshes without an interactive session."
+  ],
+  "relatedOperations": [
+    "get_remotes_tasks",
+    "get_resources_tasks"
+  ]
+}

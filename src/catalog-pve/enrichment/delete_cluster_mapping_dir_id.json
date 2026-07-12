@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_cluster_mapping_dir_id",
+  "usageNotes": "Permanently removes a cluster-wide directory mapping by its config ID; the mapping must not be actively referenced by any guest or resource pool, or the delete may be blocked. Requires the `Mapping.Modify` privilege on `/mapping/dir` — typically held by the root user or a delegated administrator role. Returns null synchronously (no UPID); the mapping is gone immediately upon success.",
+  "examples": [
+    {
+      "summary": "Delete a directory mapping named 'shared-backups'",
+      "path_params": {
+        "id": "shared-backups"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Deletes the named directory mapping from the cluster configuration permanently; any guest storage reference pointing to this mapping will become unresolvable until reconfigured.",
+  "tips": [
+    "Use list_cluster_mapping_dir (GET /cluster/mapping/dir) first to confirm the exact config ID before deleting.",
+    "Check all guest storage configurations to ensure no VM/CT is actively using this mapping before removal.",
+    "The `id` must match the `pve-configid` format: alphanumeric with hyphens and underscores, no spaces."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_dir",
+    "get_cluster_mapping_dir_id",
+    "create_cluster_mapping_dir",
+    "update_cluster_mapping_dir_id"
+  ]
+}

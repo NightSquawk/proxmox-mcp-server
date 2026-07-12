@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_certificates_custom",
+  "usageNotes": "Use this to install a custom TLS certificate (and optionally its private key) on a PDM node, replacing the self-signed certificate used by the web UI. The `certificates` field must contain the full PEM chain (leaf + intermediates); if a cert already exists, set `force: true` to overwrite. Returns immediately with the new certificate info — there is no async UPID, but the UI will reflect the change on next reload.",
+  "examples": [
+    {
+      "summary": "Upload a Let's Encrypt cert chain and private key to the local PDM node",
+      "path_params": {
+        "node": "localhost"
+      },
+      "params": {
+        "certificates": "-----BEGIN CERTIFICATE-----\nMIIF...leaf cert...==\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIF...intermediate...==\n-----END CERTIFICATE-----\n",
+        "key": "-----BEGIN PRIVATE KEY-----\nMIIE...private key...==\n-----END PRIVATE KEY-----\n",
+        "force": true
+      }
+    }
+  ],
+  "tips": [
+    "The `restart` param is documented as a UI compatibility shim and has no effect — omit it.",
+    "If uploading a chain, order matters: leaf certificate first, then intermediates.",
+    "Omitting `key` leaves the existing private key in place, which is valid only when re-uploading a renewed cert for the same key pair.",
+    "Requires the `System.Modify` privilege on the calling token/user — API tokens scoped only to specific nodes will be rejected."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_certificates",
+    "delete_nodes_node_certificates_custom"
+  ]
+}

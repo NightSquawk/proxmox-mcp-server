@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_apt",
+  "usageNotes": "Returns the directory index of APT sub-endpoints available for a specific node on a managed PVE remote, acting as a discovery call before invoking child operations such as package listing or update checks. No query parameters are required, but the remote must be registered in PDM and the target node must be reachable. The response schema is typed as null in the current PDM spec, so treat the response as a navigation index rather than actionable data.",
+  "examples": [
+    {
+      "summary": "List APT sub-endpoints for node 'pve1' on the remote named 'hetzner-pve'",
+      "path_params": {
+        "remote": "hetzner-pve",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Use this endpoint to confirm which APT child routes are exposed before calling update/upgrade operations on the node.",
+    "If the call returns an error, verify the remote is online and healthy in PDM before troubleshooting node-level connectivity.",
+    "Token-based auth (allowtoken: true) is supported, making this safe to call from automation without a full user session."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_apt_update",
+    "get_pve_remotes_remote_nodes_node_apt_versions",
+    "get_pve_remotes_remote_nodes_node"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes",
+  "usageNotes": "Use this as the first call to discover all nodes in the cluster before making node-scoped requests. Any authenticated user or API token may call it. Offline or unreachable nodes are included in the response with status 'offline' and their resource fields (cpu, mem, uptime) omitted.",
+  "examples": [
+    {
+      "summary": "List all cluster nodes to check online/offline status",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Filter on status === 'online' before passing a node name to any node-scoped endpoint.",
+    "The 'node' field value is the exact string to use as the {node} path parameter in downstream calls.",
+    "cpu is returned as a fraction (e.g. 0.42 = 42%); convert before displaying.",
+    "mem and maxmem are raw bytes; divide by 1073741824 for GiB."
+  ],
+  "relatedOperations": [
+    "get_node_status",
+    "get_node_version",
+    "list_vms",
+    "list_containers"
+  ]
+}

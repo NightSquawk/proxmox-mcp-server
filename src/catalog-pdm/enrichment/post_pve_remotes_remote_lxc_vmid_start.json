@@ -1,0 +1,24 @@
+{
+  "operationId": "post_pve_remotes_remote_lxc_vmid_start",
+  "usageNotes": "Use this endpoint to start a stopped or paused LXC container on a remote PVE node managed by Proxmox Datacenter Manager. The caller must hold the Resource.Manage privilege on the remote/guest path. The operation is asynchronous — the response is a remote UPID string; poll the corresponding task endpoint to confirm the container reaches running state before depending on it.",
+  "examples": [
+    {
+      "summary": "Start LXC container 201 on remote 'hetzner-de' (let PDM pick the node)",
+      "path_params": {
+        "remote": "hetzner-de",
+        "vmid": 201
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If the target LXC is on a specific node in the remote cluster, pass 'node' to avoid ambiguity — otherwise PDM resolves the node automatically.",
+    "The returned UPID is scoped to the remote; use the remote task-status endpoint (not the local PVE one) to track completion.",
+    "Starting a container that is already running returns an error — check container status first if your workflow may call this redundantly."
+  ],
+  "relatedOperations": [
+    "post_pve_remotes_remote_lxc_vmid_stop",
+    "post_pve_remotes_remote_lxc_vmid_shutdown",
+    "get_pve_remotes_remote_lxc_vmid_status_current"
+  ]
+}

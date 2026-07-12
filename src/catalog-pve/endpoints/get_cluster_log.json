@@ -1,0 +1,38 @@
+{
+  "operationId": "get_cluster_log",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "log",
+  "method": "GET",
+  "path": "/cluster/log",
+  "description": "Read cluster log",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "max",
+      "type": "integer",
+      "required": false,
+      "description": "Maximum number of entries.",
+      "minimum": 1,
+      "typetext": "<integer> (1 - N)"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {},
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "The user needs 'Sys.Syslog' on '/' in order to get all logs.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/log'"
+}

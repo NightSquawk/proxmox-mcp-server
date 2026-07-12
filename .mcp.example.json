@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "proxmox": {
+      "command": "npx",
+      "args": ["-y", "@nightsquawktech/proxmox-mcp-server"],
+      "env": {
+        "PVE_HOST": "pve.example.com",
+        "PVE_TOKEN_ID": "root@pam!mcp",
+        "PVE_TOKEN_SECRET": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "PVE_TLS_REJECT_UNAUTHORIZED": "false",
+
+        "PDM_HOST": "pdm.example.com",
+        "PDM_TOKEN_ID": "root@pam!mcp",
+        "PDM_TOKEN_SECRET": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "PDM_TLS_REJECT_UNAUTHORIZED": "false",
+
+        "PROXMOX_ALLOW_WRITES": "false"
+      }
+    }
+  }
+}

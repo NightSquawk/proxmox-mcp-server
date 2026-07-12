@@ -1,0 +1,35 @@
+{
+  "operationId": "put_nodes_node_firewall_options",
+  "usageNotes": "Use this to configure the host-level firewall behavior on a specific PVE node — enabling or disabling the firewall, tuning conntrack limits, and adjusting log verbosity. Requires Sys.Modify on /nodes/{node}; settings take effect immediately without a reboot. Pass the digest from get_nodes_node_firewall_options to guard against concurrent modifications, and use the delete param to reset individual settings back to their defaults instead of re-specifying every value.",
+  "examples": [
+    {
+      "summary": "Enable the node firewall with synflood protection and info-level logging for inbound traffic",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "enable": true,
+        "protection_synflood": true,
+        "protection_synflood_rate": 200,
+        "protection_synflood_burst": 1000,
+        "log_level_in": "info",
+        "log_level_out": "nolog",
+        "nosmurfs": true,
+        "tcpflags": true
+      }
+    }
+  ],
+  "tips": [
+    "To disable the firewall without touching other settings, send only enable=false — all other options are preserved.",
+    "nftables is a tech preview; leave it at the default (false) on production nodes.",
+    "nf_conntrack_max default is 262144; increase it on high-traffic nodes running many VMs/containers to avoid 'table full' drops.",
+    "To reset a specific option (e.g. log_level_in) to its default, pass its name in the delete field rather than guessing the default value.",
+    "NDP should remain enabled (default true) on any node using IPv6; disabling it breaks IPv6 neighbor discovery for hosted VMs."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_firewall_options",
+    "get_nodes_node_firewall_rules",
+    "post_nodes_node_firewall_rules",
+    "get_cluster_firewall_options"
+  ]
+}

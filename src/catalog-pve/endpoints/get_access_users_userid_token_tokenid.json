@@ -1,0 +1,72 @@
+{
+  "operationId": "get_access_users_userid_token_tokenid",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "read_token",
+  "method": "GET",
+  "path": "/access/users/{userid}/token/{tokenid}",
+  "description": "Get specific API token information.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "Full User ID, in the `name@realm` format.",
+      "format": "pve-userid",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "tokenid",
+      "type": "string",
+      "required": true,
+      "description": "User-specific token identifier.",
+      "pattern": "(?^:[A-Za-z][A-Za-z0-9\\.\\-_]+)"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "properties": {
+      "comment": {
+        "optional": 1,
+        "type": "string"
+      },
+      "expire": {
+        "default": "same as user",
+        "description": "API token expiration date (seconds since epoch). '0' means no expiration date.",
+        "minimum": 0,
+        "optional": 1,
+        "type": "integer"
+      },
+      "privsep": {
+        "default": 1,
+        "description": "Restrict API token privileges with separate ACLs (default), or give full privileges of corresponding user.",
+        "optional": 1,
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "userid-param",
+        "self"
+      ],
+      [
+        "userid-group",
+        [
+          "User.Modify"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/users/<userid>/token/<tokenid>'"
+}

@@ -1,0 +1,66 @@
+{
+  "operationId": "delete_access_tfa_userid_id",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "{id}",
+  "method": "DELETE",
+  "path": "/access/tfa/{userid}/{id}",
+  "description": "Delete a single TFA entry.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "User ID",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "the tfa entry id"
+    }
+  ],
+  "params": [
+    {
+      "name": "password",
+      "type": "string",
+      "required": false,
+      "description": "Password.",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "/^[[:^cntrl:]]*$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "or": [
+      {
+        "check": {
+          "partial": false,
+          "path": [
+            "access",
+            "users"
+          ],
+          "privs": [
+            "Access.Modify"
+          ]
+        }
+      },
+      {
+        "userParam": "userid"
+      }
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/tfa/<userid>/<id>'"
+}

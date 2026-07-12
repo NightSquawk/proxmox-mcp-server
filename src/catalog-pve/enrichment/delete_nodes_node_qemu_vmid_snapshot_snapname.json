@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_nodes_node_qemu_vmid_snapshot_snapname",
+  "usageNotes": "Permanently deletes a named QEMU VM snapshot and its associated disk delta layers; requires `VM.Snapshot` privilege on `/vms/{vmid}`. The operation is asynchronous — the return value is a task UPID that should be polled to confirm completion before assuming the snapshot is gone. Use `force: true` only as a last resort when disk snapshot removal is failing but you still need the config entry cleared.",
+  "examples": [
+    {
+      "summary": "Delete the 'pre-update' snapshot from VM 102 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 102,
+        "snapname": "pre-update"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the named snapshot and its disk delta data; the VM state captured at that point-in-time cannot be recovered after deletion.",
+  "tips": [
+    "The returned UPID string can be passed to the task status endpoint (GET /nodes/{node}/tasks/{upid}/status) to poll for completion.",
+    "Deleting a snapshot while the VM is running is supported but may take longer as disk merging occurs live.",
+    "Child snapshots that depend on the deleted snapshot's disk delta will be rebased automatically by Proxmox — verify snapshot tree integrity afterward.",
+    "Avoid using `force` in production; it can leave orphaned disk data on storage backends that support external snapshots (e.g., Ceph RBD)."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_snapshot",
+    "post_nodes_node_qemu_vmid_snapshot",
+    "post_nodes_node_qemu_vmid_snapshot_snapname_rollback",
+    "get_nodes_node_qemu_vmid_snapshot_snapname_config"
+  ]
+}

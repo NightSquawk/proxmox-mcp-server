@@ -1,0 +1,30 @@
+{
+  "operationId": "post_nodes_node_disks_lvm",
+  "usageNotes": "Use this to initialize a raw block device as an LVM Volume Group (VG) on a specific node — a prerequisite before any LVM-backed or LVM-thin storage can be added. The target device must be unpartitioned and not in use; Proxmox will wipe it and create a new PV+VG. Returns a task UPID string (async); poll the task to confirm completion before using the new VG. Set add_storage=true to simultaneously register the VG as a Proxmox storage entry, which additionally requires Datastore.Allocate on /storage.",
+  "examples": [
+    {
+      "summary": "Create a VG named 'data-vg' on /dev/sdb and auto-register it as a storage pool",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "device": "/dev/sdb",
+        "name": "data-vg",
+        "add_storage": true
+      }
+    }
+  ],
+  "tips": [
+    "The device path must be an absolute block device path (e.g. /dev/sdb, /dev/nvme0n1) — partitions like /dev/sdb1 may be rejected.",
+    "If the disk has existing partition tables or LVM metadata, Proxmox will refuse to create the VG; wipe it first via the disk wipe endpoint (POST /nodes/{node}/disks/wipe).",
+    "The 'name' field follows pve-storage-id format: alphanumeric plus hyphens, no spaces.",
+    "If you omit add_storage, you must manually add the storage via the storage API (POST /storage) after the task completes."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_lvm",
+    "delete_nodes_node_disks_lvm_name",
+    "post_nodes_node_disks_lvmthin",
+    "post_nodes_node_disks_wipe",
+    "get_nodes_node_disks_list"
+  ]
+}

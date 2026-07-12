@@ -1,0 +1,27 @@
+{
+  "operationId": "put_nodes_node_apt_repositories",
+  "usageNotes": "Adds a named standard repository (identified by its handle) to the APT sources configuration on the target node. The target node must be online and reachable. Pass the digest returned by get_nodes_node_apt_repositories to guard against concurrent modifications — Proxmox will reject the write if the configuration has changed since you last read it.",
+  "examples": [
+    {
+      "summary": "Enable the no-subscription Proxmox VE repository on node 'pve1'",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "handle": "pve-no-subscription",
+        "digest": "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3"
+      }
+    }
+  ],
+  "tips": [
+    "Valid handle values are predefined by Proxmox and discoverable via the GET /nodes/{node}/apt/repositories response (look for 'standardRepos' entries with an 'handle' field).",
+    "This endpoint returns null on success — check HTTP 200 as your success indicator.",
+    "Adding a repository does not run 'apt-get update' automatically; call post_nodes_node_apt_update afterwards to refresh the package index.",
+    "The digest parameter is optional but strongly recommended in automation to prevent race conditions on shared clusters."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_repositories",
+    "post_nodes_node_apt_repositories",
+    "post_nodes_node_apt_update"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "operationId": "post_cluster_ha_rules",
+  "usageNotes": "Use this to define an HA placement rule that controls whether a set of HA-managed resources must share the same node (positive affinity) or must be kept on separate nodes (negative affinity). Requires the `Sys.Console` privilege at the root path — typically reserved for cluster administrators. Returns null on success; verify the rule was created with the corresponding GET /cluster/ha/rules endpoint.",
+  "examples": [
+    {
+      "summary": "Keep two VMs on the same node (positive node-affinity, strict)",
+      "path_params": {},
+      "params": {
+        "rule": "collocate-web-db",
+        "type": "node-affinity",
+        "affinity": "positive",
+        "resources": "vm:101,vm:102",
+        "nodes": "pve-node1:10,pve-node2:5",
+        "strict": true,
+        "comment": "Keep web and DB VMs colocated for low-latency access"
+      }
+    }
+  ],
+  "tips": [
+    "The `rule` identifier must be a valid pve-configid (alphanumeric, hyphens allowed, no spaces).",
+    "For `resource-affinity` type, the `nodes` param is ignored — only `resources` and `affinity` apply.",
+    "Setting `strict: true` means HA will refuse to migrate if the rule cannot be satisfied; use with caution in small clusters.",
+    "A disabled rule (`disable: true`) is stored but has no effect on HA scheduling — useful for temporarily suspending a rule without deleting it.",
+    "Nodes in the `nodes` list can include optional priority weights (e.g., `pve-node1:10`); higher priority nodes are preferred targets."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_rules",
+    "get_cluster_ha_rules_{rule}",
+    "put_cluster_ha_rules_{rule}",
+    "delete_cluster_ha_rules_{rule}",
+    "get_cluster_ha_resources",
+    "post_cluster_ha_resources"
+  ]
+}

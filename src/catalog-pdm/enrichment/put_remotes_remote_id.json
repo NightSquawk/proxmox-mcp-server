@@ -1,0 +1,28 @@
+{
+  "operationId": "put_remotes_remote_id",
+  "usageNotes": "Use this to update an existing PDM remote's configuration — credentials, cluster node addresses, auth token, or web URL — without recreating it. Requires the `Resource.Modify` privilege on the specific remote resource. Pass the `digest` field (from a prior GET) to guard against concurrent modifications overwriting each other; if the stored digest differs from what you submit, the update is rejected.",
+  "examples": [
+    {
+      "summary": "Rotate the API token secret for a managed PVE remote",
+      "path_params": {
+        "id": "pve-prod"
+      },
+      "params": {
+        "authid": "root@pam!automation",
+        "token": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "digest": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+      }
+    }
+  ],
+  "tips": [
+    "The `delete` array lets you unset optional properties (e.g. `web-url`) without touching the rest of the config.",
+    "Remote IDs are 2–32 characters and must match the pattern [A-Za-z0-9_][A-Za-z0-9._-]*; plan the ID at creation time since renaming requires delete-and-recreate.",
+    "Returns null on success — a 200 with no body is the expected response; treat any non-2xx as a failure.",
+    "The `nodes` array should list the Proxmox cluster node addresses that this remote exposes; keeping it accurate ensures PDM can reach the correct endpoints."
+  ],
+  "relatedOperations": [
+    "get_remotes_remote_id",
+    "post_remotes",
+    "delete_remotes_remote_id"
+  ]
+}

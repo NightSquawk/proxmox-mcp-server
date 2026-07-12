@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pbs_realms",
+  "usageNotes": "Use this before authenticating a user against a PBS remote — it discovers which authentication realms (pam, pbs, openid, ldap, ad) are available on that host so you can present a valid realm choice. The `hostname` param must match the remote exactly as PBS expects it (including port if non-default, e.g. `pbs.example.com:8007`). Requires `System.Modify` on `/` in PDM, so API tokens scoped to narrower paths will be rejected.",
+  "examples": [
+    {
+      "summary": "List auth realms on a PBS remote at pbs.nightsquawk.tech",
+      "path_params": {},
+      "params": {
+        "hostname": "pbs.nightsquawk.tech:8007",
+        "fingerprint": "A1:B2:C3:D4:E5:F6:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:01:02:03:04:05:06:07:08:09:0A"
+      }
+    }
+  ],
+  "tips": [
+    "If `fingerprint` is omitted and TLS verification fails, the call may be rejected — always supply the fingerprint when connecting to a self-signed PBS instance.",
+    "The `default` field on each returned realm indicates which realm PBS will use if none is specified at login; useful for pre-selecting the realm in a UI.",
+    "Realm type `pbs` is PBS's built-in user database; `pam` maps to the host OS users — both are always present on a standard PBS install."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes",
+    "get_pbs_users",
+    "get_pbs_datastores"
+  ]
+}

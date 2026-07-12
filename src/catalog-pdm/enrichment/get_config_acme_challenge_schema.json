@@ -1,0 +1,21 @@
+{
+  "operationId": "get_config_acme_challenge_schema",
+  "usageNotes": "Use this endpoint to discover which ACME challenge plugin types are available on the PDM instance and what configuration parameters each plugin expects. The returned schema objects are used as a reference when creating or updating ACME plugins via the config/acme/plugins endpoints — match the plugin `id` and populate fields according to the `schema` object. No authentication privileges beyond a valid API token are required (user: all).",
+  "examples": [
+    {
+      "summary": "List all available ACME challenge plugin schemas",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `schema` property within each item uses additionalProperties:true, so the shape varies per plugin type (e.g., dns-01 plugins expose provider-specific credential fields).",
+    "Cross-reference the returned `id` values with existing plugin configurations from get_config_acme_plugins to identify which schemas are already in use.",
+    "This endpoint is safe to call unauthenticated in practice (user: all), making it suitable for pre-flight checks before presenting a plugin-creation UI."
+  ],
+  "relatedOperations": [
+    "get_config_acme_plugins",
+    "get_config_acme_directories",
+    "get_config_acme_accounts"
+  ]
+}

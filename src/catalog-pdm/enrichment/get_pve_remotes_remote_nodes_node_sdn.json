@@ -1,0 +1,20 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_sdn",
+  "usageNotes": "Use this endpoint to retrieve the SDN (Software Defined Networking) directory index for a specific node on a registered PVE remote, listing available SDN sub-resources such as zones, vnets, or related objects. The target remote must be reachable by PDM and the node must be online; PDM proxies the request to the PVE cluster's SDN API. No query parameters are accepted — this is a pure index/navigation endpoint whose primary purpose is to enumerate available SDN child paths.",
+  "examples": [
+    {
+      "summary": "List SDN resources for node 'pve1' on remote 'hetzner-prod'",
+      "path_params": {
+        "remote": "hetzner-prod",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a directory-index endpoint; the actual SDN data (zones, vnets, subnets) is returned by child paths beneath /sdn/.",
+    "The 'permissions: user all' policy means any authenticated PDM user can call this — no special SDN privilege is required for the index itself.",
+    "If SDN is not configured on the target PVE cluster, this endpoint may return an empty array or a minimal index rather than an error."
+  ],
+  "relatedOperations": []
+}

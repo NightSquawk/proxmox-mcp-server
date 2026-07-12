@@ -1,0 +1,51 @@
+{
+  "operationId": "get_nodes_node_hosts",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "get_etc_hosts",
+  "method": "GET",
+  "path": "/nodes/{node}/hosts",
+  "description": "Get the content of /etc/hosts.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "properties": {
+      "data": {
+        "description": "The content of /etc/hosts.",
+        "type": "string"
+      },
+      "digest": {
+        "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+        "maxLength": 64,
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/hosts'"
+}

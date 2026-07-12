@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_acme_account",
+  "usageNotes": "Lists all ACME accounts registered on the cluster, returning their names as child links. Use this before issuing certificate operations to confirm which ACME account names are available; the names returned here are the values expected by certificate-related endpoints that require an account reference. No privileges beyond basic authentication are required.",
+  "examples": [
+    {
+      "summary": "List all registered ACME accounts on the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a name-index only — each entry links to a child resource; fetch individual accounts via get_cluster_acme_account_name to retrieve full details such as directory URL and contact email.",
+    "An empty array means no ACME accounts have been configured yet; you must create one before requesting certificates.",
+    "API tokens are supported (allowtoken: true), so automation scripts can safely call this endpoint without a full user session."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_account_name",
+    "post_cluster_acme_account",
+    "put_cluster_acme_account_name",
+    "delete_cluster_acme_account_name",
+    "get_cluster_acme_directories"
+  ]
+}

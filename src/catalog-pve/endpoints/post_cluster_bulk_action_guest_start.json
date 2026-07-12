@@ -1,0 +1,61 @@
+{
+  "operationId": "post_cluster_bulk_action_guest_start",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "start",
+  "method": "POST",
+  "path": "/cluster/bulk-action/guest/start",
+  "description": "Bulk start or resume all guests on the cluster.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "max-workers",
+      "type": "integer",
+      "required": false,
+      "description": "Defines the maximum number of tasks running concurrently.",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 64,
+      "typetext": "<integer> (1 - 64)"
+    },
+    {
+      "name": "maxworkers",
+      "type": "integer",
+      "required": false,
+      "description": "Defines the maximum number of tasks running concurrently. Deprecated, use 'max-workers' instead.",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 64,
+      "typetext": "<integer> (1 - 64)"
+    },
+    {
+      "name": "timeout",
+      "type": "integer",
+      "required": false,
+      "description": "Default start timeout in seconds. Only valid for VMs. (default depends on the guest configuration).",
+      "typetext": "<integer>"
+    },
+    {
+      "name": "vms",
+      "type": "array",
+      "required": false,
+      "description": "Only consider guests from this list of VMIDs.",
+      "typetext": "<array>"
+    }
+  ],
+  "returns": {
+    "description": "UPID of the worker",
+    "type": "string"
+  },
+  "permissions": {
+    "description": "The 'VM.PowerMgmt' permission is required on '/' or on '/vms/<ID>' for each ID passed via the 'vms' parameter.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/bulk-action/guest/start'"
+}

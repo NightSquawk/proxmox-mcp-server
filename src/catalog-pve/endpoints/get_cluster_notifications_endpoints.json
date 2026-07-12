@@ -1,0 +1,34 @@
+{
+  "operationId": "get_cluster_notifications_endpoints",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "endpoints_index",
+  "method": "GET",
+  "path": "/cluster/notifications/endpoints",
+  "description": "Index for all available endpoint types.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {},
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{name}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/notifications/endpoints'"
+}

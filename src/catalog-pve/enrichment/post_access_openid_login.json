@@ -1,0 +1,27 @@
+{
+  "operationId": "post_access_openid_login",
+  "usageNotes": "Call this after the user completes the OpenID Connect authorization flow in the browser — it exchanges the authorization code for a PVE ticket and CSRF token. The `code`, `state`, and `redirect-url` must match exactly what the IdP returned and what was registered as the callback URL; a mismatch will cause the IdP to reject the code. The returned `ticket` and `CSRFPreventionToken` replace a standard username/password login for all subsequent API calls.",
+  "examples": [
+    {
+      "summary": "Exchange an OpenID authorization code for a PVE session ticket",
+      "path_params": {},
+      "params": {
+        "code": "4/0AY0e-g7Kv2eQ1rZmX9bLpNwTsU8dFhOcJiMaVbRqPwXzYeNkLdCuSmTnOoKjIlHg",
+        "redirect-url": "https://pve.nightsquawk.tech:8006",
+        "state": "random-csrf-state-abc123xyz"
+      }
+    }
+  ],
+  "tips": [
+    "The OpenID realm must be configured in Datacenter > Permissions > Realms before this endpoint is usable.",
+    "Use the returned `CSRFPreventionToken` as the `CSRFPreventionToken` header on all subsequent write requests; omitting it will result in 401 errors.",
+    "The `redirect-url` must exactly match the value used when initiating the authorization request — even a trailing slash difference will cause verification to fail.",
+    "Permissions are `world` (no auth required to call this endpoint), since it is the authentication handshake itself.",
+    "The `cap` field in the response contains the caller's capability map, useful for client-side UI permission gating without a separate API call."
+  ],
+  "relatedOperations": [
+    "post_access_ticket",
+    "get_access_openid_auth_url",
+    "delete_access_ticket"
+  ]
+}

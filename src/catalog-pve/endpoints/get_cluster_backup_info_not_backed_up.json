@@ -1,0 +1,53 @@
+{
+  "operationId": "get_cluster_backup_info_not_backed_up",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_guests_not_in_backup",
+  "method": "GET",
+  "path": "/cluster/backup-info/not-backed-up",
+  "description": "Shows all guests which are not covered by any backup job.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "Contains the guest objects.",
+    "items": {
+      "properties": {
+        "name": {
+          "description": "Name of the guest",
+          "optional": 1,
+          "type": "string"
+        },
+        "type": {
+          "description": "Type of the guest.",
+          "enum": [
+            "qemu",
+            "lxc"
+          ],
+          "type": "string"
+        },
+        "vmid": {
+          "description": "VMID of the guest.",
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/backup-info/not-backed-up'"
+}

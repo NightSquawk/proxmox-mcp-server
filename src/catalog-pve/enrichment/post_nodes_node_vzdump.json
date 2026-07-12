@@ -1,0 +1,36 @@
+{
+  "operationId": "post_nodes_node_vzdump",
+  "usageNotes": "Use this to trigger an on-demand vzdump backup of one or more guests on a specific node; it returns a UPID string (task ID) immediately — poll the task log via GET /nodes/{node}/tasks/{upid}/log to track completion. Caller must have VM.Backup on the target VMs and Datastore.AllocateSpace on the backup storage; privileged params (tmpdir, dumpdir, script, job-id) are root@pam only. Either vmid, all, or pool is required to select guests — omitting all three starts the job but backs up nothing.",
+  "examples": [
+    {
+      "summary": "Back up a single VM (ID 101) to PBS storage using zstd compression in snapshot mode",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "vmid": "101",
+        "storage": "pbs-main",
+        "mode": "snapshot",
+        "compress": "zstd",
+        "zstd": 2,
+        "prune-backups": "keep-last=7,keep-weekly=4",
+        "notes-template": "{{guestname}} backup on {{node}}"
+      }
+    }
+  ],
+  "tips": [
+    "The returned UPID can be passed to GET /nodes/{node}/tasks/{upid}/status or /log to follow progress.",
+    "snapshot mode is the default and keeps VMs running; use stop mode only if snapshot consistency is not achievable (e.g., no guest agent).",
+    "remove defaults to true — existing backups on the target storage will be pruned per prune-backups; set remove=false to retain all previous backups.",
+    "bwlimit, performance, and ionice require Sys.Modify on / — non-root API tokens without that privilege must omit these parameters.",
+    "fleecing (VM only) offloads dirty-block tracking to a separate storage, reducing I/O impact on production; specify a fast scratch storage via fleecing=enabled=1,storage=<id>.",
+    "mailto and mailnotification are deprecated; prefer notification-mode=notification-system and configure notification targets in the PVE notification panel."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log",
+    "get_nodes_node_vzdump_defaults",
+    "get_cluster_backup",
+    "post_cluster_backup"
+  ]
+}

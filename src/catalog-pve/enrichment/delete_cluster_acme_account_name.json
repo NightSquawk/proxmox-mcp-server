@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_cluster_acme_account_name",
+  "usageNotes": "Use this to deactivate and remove an ACME account registration from both Proxmox and the upstream CA (e.g. Let's Encrypt). The account must not be the active issuer for any certificates currently in use; deactivating it at the CA is irreversible and will prevent renewal of any certificates tied to that account. If omitted, the path param 'name' defaults to 'default', which is the standard single-account setup.",
+  "examples": [
+    {
+      "summary": "Deactivate the default ACME account",
+      "path_params": {
+        "name": "default"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Deactivates the ACME account at the CA permanently; existing certificates issued under this account can no longer be renewed once the account is gone.",
+  "tips": [
+    "The 'name' path param uses the pve-configid format (alphanumeric, no spaces); it matches the filename under /etc/pve/acme/.",
+    "Before deleting, verify no nodes or certificate profiles reference this account — check via get_cluster_acme_account_name or list_cluster_acme_account.",
+    "Returns a plain string (task result), not a UPID — this operation completes synchronously from the API perspective."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_account_name",
+    "list_cluster_acme_account",
+    "create_cluster_acme_account",
+    "update_cluster_acme_account_name"
+  ]
+}

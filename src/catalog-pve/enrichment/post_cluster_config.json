@@ -1,0 +1,31 @@
+{
+  "operationId": "post_cluster_config",
+  "usageNotes": "Use this endpoint once to bootstrap a new Proxmox VE cluster from a standalone node — it is a one-time, irreversible cluster initialization, not a reconfiguration of an existing cluster. The node must not already belong to a cluster; running this on a node that is already clustered will fail. Returns a task UPID (string) for an async operation; poll the task status before attempting to join additional nodes.",
+  "examples": [
+    {
+      "summary": "Create a two-link cluster named 'pve-cluster' with a dedicated corosync ring",
+      "path_params": {},
+      "params": {
+        "clustername": "pve-cluster",
+        "link0": "address=192.168.10.1,priority=0",
+        "link1": "address=10.0.1.1,priority=10",
+        "nodeid": 1,
+        "votes": 1
+      }
+    }
+  ],
+  "tips": [
+    "clustername follows the pve-node format: max 15 chars, alphanumeric and hyphens only.",
+    "If link[n] is omitted, Proxmox defaults to the node's primary IP as link0 — explicitly set it for multi-NIC or bonded corosync rings.",
+    "token-coefficient tunes the corosync token timeout for high-latency links; leave at default (125) for LAN clusters.",
+    "After this call succeeds and the UPID task completes, use post_cluster_config_nodes to join additional nodes to the cluster.",
+    "You cannot undo cluster creation via the API — to revert a node to standalone you must use pvecm destroycluster from the shell."
+  ],
+  "relatedOperations": [
+    "get_cluster_config",
+    "get_cluster_config_nodes",
+    "post_cluster_config_nodes",
+    "get_cluster_config_join",
+    "post_cluster_config_join"
+  ]
+}

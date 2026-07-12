@@ -1,0 +1,31 @@
+{
+  "operationId": "put_cluster_sdn_route_maps_entries_route_map_id_entry_order",
+  "usageNotes": "Updates an existing entry within an SDN route map, identified by its zero-based order index. Use this to change the matching policy (permit/deny), add or modify match conditions and set actions, or chain to another route map via the 'call' field. SDN changes made here are staged and require a subsequent apply (POST /cluster/sdn) to take effect in the data plane; requires SDN.Allocate on the specific route-map path.",
+  "examples": [
+    {
+      "summary": "Change entry 10 of route map 'rm-upstream' to deny, with an on-match-next exit action",
+      "path_params": {
+        "route-map-id": "rm-upstream",
+        "order": 10
+      },
+      "params": {
+        "action": "deny",
+        "exit-action": "on-match-next"
+      }
+    }
+  ],
+  "tips": [
+    "Supply the 'digest' param (from the GET response) to guard against concurrent edits overwriting each other.",
+    "The 'order' path param is the current index of the entry — it does not reorder the entry; use it only to target which entry to modify.",
+    "Use the 'delete' array to remove specific sub-fields (e.g. a match condition) without replacing the whole entry.",
+    "The 'call' field delegates to a second route map mid-evaluation; the called map runs and returns control to the next entry in the calling map.",
+    "After updating entries, run POST /cluster/sdn to apply the pending configuration to all SDN nodes."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_route_maps_entries_route_map_id_entry_order",
+    "post_cluster_sdn_route_maps_entries_route_map_id",
+    "delete_cluster_sdn_route_maps_entries_route_map_id_entry_order",
+    "get_cluster_sdn_route_maps_entries_route_map_id",
+    "post_cluster_sdn"
+  ]
+}

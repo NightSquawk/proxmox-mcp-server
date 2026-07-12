@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_status_reset",
+  "usageNotes": "Sends a hard reset signal to a running QEMU VM — equivalent to pressing the physical reset button — bypassing a clean shutdown and risking filesystem corruption or data loss on the guest. Use only when the VM is unresponsive and a graceful reboot via the guest OS or QEMU agent is not possible. Returns a task UPID string; poll the node task log to confirm completion.",
+  "examples": [
+    {
+      "summary": "Force-reset a frozen VM (VMID 105) on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Issues an immediate hard reset to the VM without flushing guest disk buffers, which can corrupt filesystems or lose in-flight writes on the guest.",
+  "tips": [
+    "Prefer sending a reboot command via the QEMU guest agent (post_nodes_node_qemu_vmid_agent) before resorting to a hard reset.",
+    "The skiplock parameter is root-only; do not pass it from API tokens unless running as root.",
+    "The returned UPID can be queried with get_nodes_node_tasks_upid_status to confirm the reset completed."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_status_reboot",
+    "post_nodes_node_qemu_vmid_status_shutdown",
+    "post_nodes_node_qemu_vmid_status_stop",
+    "post_nodes_node_qemu_vmid_agent",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

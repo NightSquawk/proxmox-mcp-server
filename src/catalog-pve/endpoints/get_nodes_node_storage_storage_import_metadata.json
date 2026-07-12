@@ -1,0 +1,119 @@
+{
+  "operationId": "get_nodes_node_storage_storage_import_metadata",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "get_import_metadata",
+  "method": "GET",
+  "path": "/nodes/{node}/storage/{storage}/import-metadata",
+  "description": "Get the base parameters for creating a guest which imports data from a foreign importable guest, like an ESXi VM",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [
+    {
+      "name": "volume",
+      "type": "string",
+      "required": true,
+      "description": "Volume identifier for the guest archive/entry.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "additionalProperties": 0,
+    "description": "Information about how to import a guest.",
+    "properties": {
+      "create-args": {
+        "additionalProperties": 1,
+        "description": "Parameters which can be used in a call to create a VM or container.",
+        "type": "object"
+      },
+      "disks": {
+        "additionalProperties": 1,
+        "description": "Recognised disk volumes as `$bus$id` => `$storeid:$path` map.",
+        "optional": 1,
+        "type": "object"
+      },
+      "net": {
+        "additionalProperties": 1,
+        "description": "Recognised network interfaces as `net$id` => { ...params } object.",
+        "optional": 1,
+        "type": "object"
+      },
+      "source": {
+        "description": "The type of the import-source of this guest volume.",
+        "enum": [
+          "esxi"
+        ],
+        "type": "string"
+      },
+      "type": {
+        "description": "The type of guest this is going to produce.",
+        "enum": [
+          "vm"
+        ],
+        "type": "string"
+      },
+      "warnings": {
+        "description": "List of known issues that can affect the import of a guest. Note that lack of warning does not imply that there cannot be any problems.",
+        "items": {
+          "additionalProperties": 1,
+          "properties": {
+            "key": {
+              "description": "Related subject (config) key of warning.",
+              "optional": 1,
+              "type": "string"
+            },
+            "type": {
+              "description": "What this warning is about.",
+              "enum": [
+                "cdrom-image-ignored",
+                "efi-state-lost",
+                "guest-is-running",
+                "nvme-unsupported",
+                "ova-needs-extracting",
+                "ovmf-with-lsi-unsupported",
+                "serial-port-socket-only"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "description": "Related subject (config) value of warning.",
+              "optional": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "description": "You need read access for the volume.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/import-metadata?volume=<volume>'"
+}

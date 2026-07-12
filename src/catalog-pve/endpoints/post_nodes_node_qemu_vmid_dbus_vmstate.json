@@ -1,0 +1,60 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_dbus_vmstate",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "dbus_vmstate",
+  "method": "POST",
+  "path": "/nodes/{node}/qemu/{vmid}/dbus-vmstate",
+  "description": "Control the dbus-vmstate helper for a given running VM.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "action",
+      "type": "string",
+      "required": true,
+      "description": "Action to perform on the DBus VMState helper.",
+      "enum": [
+        "start",
+        "stop"
+      ]
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Migrate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"action\":\"start\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/dbus-vmstate'"
+}

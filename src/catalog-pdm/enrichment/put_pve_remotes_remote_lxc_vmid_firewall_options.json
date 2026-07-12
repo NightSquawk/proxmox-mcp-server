@@ -1,0 +1,37 @@
+{
+  "operationId": "put_pve_remotes_remote_lxc_vmid_firewall_options",
+  "usageNotes": "Use this to enable, disable, or tune the per-container firewall for an LXC guest on a remote PVE node via PDM. The firewall is inactive by default (enable=false); you must explicitly set enable=true for rules to take effect. Supply a digest from the current options read to guard against concurrent modifications — omitting it skips the conflict check.",
+  "examples": [
+    {
+      "summary": "Enable the container firewall with DROP default policies, DHCP allowed, and info-level inbound logging",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 110
+      },
+      "params": {
+        "enable": true,
+        "dhcp": true,
+        "policy_in": "DROP",
+        "policy_out": "ACCEPT",
+        "log_level_in": "info",
+        "macfilter": true,
+        "ndp": true,
+        "ipfilter": false
+      }
+    }
+  ],
+  "tips": [
+    "Firewall rules are silently ignored until enable=true is set — verify this flag if traffic is not being filtered as expected.",
+    "ipfilter=true on containers automatically populates ipset entries with the container's configured IP addresses, preventing IP spoofing without manual ipset management.",
+    "macfilter defaults to true; disabling it can allow MAC spoofing from within the container, so only disable for specific bridging or migration scenarios.",
+    "Use the delete array to revert individual settings to their defaults rather than overwriting the entire config — e.g., delete=[\"log_level_in\"] to stop logging without touching other options.",
+    "ndp=true is required for IPv6 neighbor discovery to work in containers; disabling it will break IPv6 connectivity even when rules otherwise permit it."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc_vmid_firewall_options",
+    "get_pve_remotes_remote_lxc_vmid_firewall_rules",
+    "post_pve_remotes_remote_lxc_vmid_firewall_rules",
+    "get_pve_remotes_remote_lxc_vmid_firewall_ipsets",
+    "put_pve_remotes_remote_qemu_vmid_firewall_options"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "post_subscriptions_keys",
+  "usageNotes": "Use this endpoint to register one or more PVE or PBS subscription keys with the PDM subscription pool; PMG/POM keys are not yet supported. The call is all-or-nothing: if any key has an unrecognized prefix or already exists in the pool, the entire request fails and the pool is left untouched. Pass the digest returned by a prior read to guard against concurrent modifications, or chain follow-up mutations directly using the digest included in the response without a separate refetch.",
+  "examples": [
+    {
+      "summary": "Add two PBS subscription keys to the pool",
+      "path_params": {},
+      "params": {
+        "keys": [
+          "pbst-abc123def456ghi7",
+          "pbst-xyz987uvw654rst3"
+        ]
+      }
+    }
+  ],
+  "tips": [
+    "Duplicate keys within a single request are silently collapsed — check the 'deduplicated' field in the response to distinguish accidental double-paste from an actual add.",
+    "A key that already exists in the pool causes a hard CONFLICT error for the whole request; remove existing keys first with the corresponding DELETE endpoint if you need to re-add.",
+    "Keys must match the PRODUCT_KEY_REGEX pattern (PVE or PBS prefix); validate prefixes client-side before submitting to avoid an all-or-nothing failure on a large batch.",
+    "The response includes a fresh digest, allowing you to chain a follow-up write (e.g., delete or update) without an extra GET round-trip."
+  ],
+  "relatedOperations": [
+    "get_subscriptions_keys",
+    "delete_subscriptions_keys"
+  ]
+}

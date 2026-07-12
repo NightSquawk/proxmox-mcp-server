@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_scan_nfs",
+  "usageNotes": "Use this before adding an NFS storage backend to discover which paths a remote NFS server is exporting and what options each export carries. The scan is performed from the specified Proxmox node, so the node must be online and have network connectivity to the target NFS server. The caller must hold Datastore.Allocate on /storage; API tokens are supported.",
+  "examples": [
+    {
+      "summary": "List all NFS exports on a NAS at 192.168.10.50, scanned from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "server": "192.168.10.50"
+      }
+    }
+  ],
+  "tips": [
+    "The scan initiates an rpcbind/mountd query from the Proxmox node itself — firewall rules must allow TCP/UDP 111 and 2049 from the node to the NFS server.",
+    "Returns an empty array (not an error) when the server is reachable but exports nothing; verify NFS server config if you expect exports.",
+    "Use the returned 'path' values directly as the 'path' parameter when creating an NFS storage entry via POST /storage."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_scan_cifs",
+    "post_storage",
+    "get_storage"
+  ]
+}

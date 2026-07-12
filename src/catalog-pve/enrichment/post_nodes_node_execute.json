@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_execute",
+  "usageNotes": "Use this endpoint to run multiple PVE API commands against a single node in one round-trip, guaranteed in order. Access is restricted to the root@pam user — API tokens scoped to other users will be rejected regardless of privileges. The response is a synchronous array of per-command results (not a UPID), so all commands must complete before the response returns; avoid long-running commands in a batch.",
+  "examples": [
+    {
+      "summary": "Query node version and cluster status in a single batch call",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "commands": "[{\"method\":\"GET\",\"path\":\"/version\",\"args\":{}},{\"method\":\"GET\",\"path\":\"/cluster/status\",\"args\":{}}]"
+      }
+    }
+  ],
+  "tips": [
+    "The commands value must be a JSON-encoded string (i.e., a string whose content is a JSON array), not a raw JSON array — double-encode it when constructing requests programmatically.",
+    "Commands execute sequentially; a failure in one command does not abort subsequent commands — check each result object individually for errors.",
+    "Only root@pam can call this endpoint; API token auth is allowed only when the token belongs to root@pam.",
+    "Prefer individual API calls for single operations; this batch endpoint is most useful for reducing latency when several read queries are needed together."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_status",
+    "get_version",
+    "get_cluster_status"
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "operationId": "delete_nodes_node_qemu_vmid_firewall_ipset_name",
+  "usageNotes": "Permanently deletes a named IPSet from a VM's firewall configuration. By default the request fails if the IPSet still contains members; pass force=true to delete all member CIDRs/IPs atomically with the set. Requires VM.Config.Network permission on the target VM.",
+  "examples": [
+    {
+      "summary": "Delete an empty IPSet from a VM firewall",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110,
+        "name": "trusted-clients"
+      },
+      "params": {}
+    },
+    {
+      "summary": "Force-delete an IPSet that still has members",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110,
+        "name": "trusted-clients"
+      },
+      "params": {
+        "force": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the named IPSet and, when force=true, all its member IP/CIDR entries; any firewall rules referencing this IPSet by name will break silently.",
+  "tips": [
+    "Check for firewall rules that reference the IPSet by name before deleting — Proxmox does not cascade-update rules that cite a deleted IPSet.",
+    "Omitting force when the IPSet has members returns a 500 error; use force=true to delete non-empty sets in a single call.",
+    "The operation returns null on success (not a UPID); it is synchronous."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_ipset",
+    "post_nodes_node_qemu_vmid_firewall_ipset",
+    "get_nodes_node_qemu_vmid_firewall_ipset_name",
+    "delete_nodes_node_qemu_vmid_firewall_ipset_name_cidr",
+    "get_nodes_node_qemu_vmid_firewall_rules"
+  ]
+}

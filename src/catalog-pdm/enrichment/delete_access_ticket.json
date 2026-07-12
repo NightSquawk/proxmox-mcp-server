@@ -1,0 +1,21 @@
+{
+  "operationId": "delete_access_ticket",
+  "usageNotes": "Invalidates the current session ticket, effectively logging out the authenticated user. No parameters are required — the session is identified by the Authorization header or cookie present in the request. Call this when a management session is complete to avoid leaving active credentials on the server.",
+  "examples": [
+    {
+      "summary": "Logout the current PDM session",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently invalidates the active session ticket, requiring re-authentication for any further API access.",
+  "tips": [
+    "Returns null on success — a 200 with an empty/null body is expected and correct.",
+    "API token-based callers are not affected by session expiry, but calling this endpoint with a token still succeeds (no-op on the token itself).",
+    "If the ticket is already expired or invalid, the endpoint may still return 200 — do not rely on an error response to detect double-logout."
+  ],
+  "relatedOperations": [
+    "post_access_ticket",
+    "get_access_ticket"
+  ]
+}

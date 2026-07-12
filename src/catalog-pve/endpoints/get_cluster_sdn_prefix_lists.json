@@ -1,0 +1,57 @@
+{
+  "operationId": "get_cluster_sdn_prefix_lists",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "list_prefix_lists",
+  "method": "GET",
+  "path": "/cluster/sdn/prefix-lists",
+  "description": "List Prefix Lists",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "pending",
+      "type": "boolean",
+      "required": false,
+      "description": "Display pending config.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "running",
+      "type": "boolean",
+      "required": false,
+      "description": "Display running config.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "verbose",
+      "type": "boolean",
+      "required": false,
+      "description": "If 0, only returns id - otherwise returns all properties.",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {},
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{id}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Only returns prefix list entries where you have 'SDN.Audit' or 'SDN.Allocate' permissions.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/prefix-lists'"
+}

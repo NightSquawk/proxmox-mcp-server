@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_storage_storage_import_metadata",
+  "usageNotes": "Call this before importing a foreign guest (e.g., an ESXi VM exported as OVA/OVF) to retrieve the recommended create-args, disk map, and network interface map that should be passed to the VM/CT create endpoint. The volume must already be present on the target storage and readable by the caller; check the returned 'warnings' array before proceeding, as issues like 'guest-is-running' or 'ova-needs-extracting' require remediation before the import will succeed cleanly. Currently only ESXi-sourced volumes ('source': 'esxi') producing VM guests ('type': 'vm') are recognised.",
+  "examples": [
+    {
+      "summary": "Fetch import metadata for an ESXi OVA uploaded to local storage on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "storage": "local"
+      },
+      "params": {
+        "volume": "local:import/my-esxi-vm.ova"
+      }
+    }
+  ],
+  "tips": [
+    "Pass the returned 'create-args' object directly as parameters to the VM create endpoint (POST /nodes/{node}/qemu) to pre-populate CPU, memory, and firmware settings derived from the source guest.",
+    "The 'disks' map uses keys like 'scsi0' or 'ide0' and values in 'storeid:path' format — iterate this map to attach each disk when calling the create endpoint.",
+    "Review every entry in 'warnings' before importing; 'ova-needs-extracting' means you must unpack the OVA first, and 'efi-state-lost' means EFI NVRAM variables will not carry over.",
+    "The endpoint is read-only and safe to call multiple times — it does not alter the volume or trigger any background task."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu",
+    "get_nodes_node_storage_storage_content",
+    "post_nodes_node_storage_storage_upload"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid",
+  "usageNotes": "Returns the directory index (list of available sub-resource paths) for a specific LXC container on a given node. Use this as a discovery call to determine which sub-endpoints are available for a container (e.g., config, status, snapshot, firewall). No privileges beyond basic cluster access are required since permissions are set to 'all', but the target node must be reachable and the VMID must exist on that node.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for LXC container 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'subdir' values map directly to child API paths — append them to this endpoint's path to reach specific container operations (e.g., /nodes/pve1/lxc/110/config).",
+    "This is a read-only discovery endpoint; it reveals no sensitive container data, only the names of available sub-resources.",
+    "If the VMID does not exist on the specified node, the API returns a 500 error rather than 404 — verify the container is on the correct node before calling."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc",
+    "get_nodes_node_lxc_vmid_config",
+    "get_nodes_node_lxc_vmid_status_current"
+  ]
+}

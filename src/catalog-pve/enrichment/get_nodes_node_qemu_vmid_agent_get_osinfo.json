@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_get_osinfo",
+  "usageNotes": "Retrieves operating system information (distro, name, version, kernel, machine type) from a running VM via the QEMU Guest Agent. The Guest Agent must be installed and running inside the VM; if it is not, the call will return an error rather than an empty result. Requires either VM.GuestAgent.Audit or VM.GuestAgent.Unrestricted on the VM's path.",
+  "examples": [
+    {
+      "summary": "Get OS info from a Linux VM on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If the Guest Agent is not running, the API returns a 500-class error with a message like 'guest agent is not running'; check agent status with get_nodes_node_qemu_vmid_agent_info first.",
+    "The response is wrapped in a `result` object; actual OS fields (name, version, id, pretty-name, kernel-release, machine) are nested inside it.",
+    "Useful for automated inventory and asset classification — pair with get_nodes_node_qemu_vmid_agent_get_host_name to build a complete identity record.",
+    "VM must be in a running (started) state; suspended or stopped VMs will not have an active Guest Agent channel."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_info",
+    "get_nodes_node_qemu_vmid_agent_get_host_name",
+    "get_nodes_node_qemu_vmid_agent_get_vcpus",
+    "get_nodes_node_qemu_vmid_agent_get_memory_blocks",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_get_time",
+  "usageNotes": "Retrieves the current time from inside a running VM via the QEMU Guest Agent. The VM must be running and have the guest agent installed and active; the call will fail if the agent is not responding. Useful for detecting time drift between the VM and the host without logging into the guest.",
+  "examples": [
+    {
+      "summary": "Get the current guest time from VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned `result` object typically contains `localtime`, `timezone`, and `utctime` fields from the guest OS.",
+    "If the guest agent is not running, Proxmox returns a 500 error — check agent status with get_nodes_node_qemu_vmid_agent_info first.",
+    "Time drift between guest and host is common on VMs that were suspended or migrated; compare utctime against host time to detect skew.",
+    "Requires VM.GuestAgent.Audit or VM.GuestAgent.Unrestricted on /vms/{vmid} — either privilege satisfies the check."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_get_osinfo",
+    "get_nodes_node_qemu_vmid_agent_info",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

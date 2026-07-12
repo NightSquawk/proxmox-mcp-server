@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_nodes_node_network",
+  "usageNotes": "Use this to discard pending network configuration changes on a node — it reverts the in-memory/staged config back to the last applied state without rebooting or reloading interfaces. This is the safe escape hatch when you have used POST /nodes/{node}/network or PUT /nodes/{node}/network/{iface} to stage changes but have not yet applied them with PUT /nodes/{node}/network. The node must be online and reachable; the caller requires Sys.Modify on /nodes/{node}.",
+  "examples": [
+    {
+      "summary": "Discard all staged network changes on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently discards all staged (unapplied) network interface changes on the node; any interface additions, edits, or deletions that have not yet been applied via PUT /nodes/{node}/network will be lost with no recovery path.",
+  "tips": [
+    "Returns null — a 200 with an empty body is success; no UPID is issued because this operation is synchronous.",
+    "Only staged (not-yet-applied) changes are reverted; live interface state on the running node is untouched.",
+    "Check for pending changes first with GET /nodes/{node}/network and look for entries where 'pending' fields differ from 'active' fields.",
+    "This is the complement to PUT /nodes/{node}/network (apply); use this instead of apply if you want to abandon the changes."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network",
+    "post_nodes_node_network",
+    "put_nodes_node_network",
+    "get_nodes_node_network_iface",
+    "put_nodes_node_network_iface",
+    "delete_nodes_node_network_iface"
+  ]
+}

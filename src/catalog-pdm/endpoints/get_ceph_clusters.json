@@ -1,0 +1,134 @@
+{
+  "operationId": "get_ceph_clusters",
+  "surface": "pdm",
+  "resource": "ceph",
+  "category": "Ceph",
+  "name": "clusters",
+  "method": "GET",
+  "path": "/ceph/clusters",
+  "description": "List registered Ceph clusters, filtered to those the caller can audit.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "Registered Ceph clusters the caller can access.",
+    "items": {
+      "additionalProperties": true,
+      "description": "Summary entry for the cluster-list view.\n\nAggregates persistent config (display name) with live-derived state (member count, reachability,\nlast-known health). Returned by `GET /api2/extjs/ceph/clusters`.",
+      "properties": {
+        "bytes-avail": {
+          "description": "Available raw capacity in bytes, from the cached status; absent if uncached.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "bytes-total": {
+          "description": "Total raw capacity in bytes, from the cached status; absent if uncached.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "bytes-used": {
+          "description": "Used raw capacity in bytes, from the cached status; absent if uncached.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "cluster": {
+          "description": "Ceph cluster identifier (fsid).",
+          "maxLength": 64,
+          "minLength": 8,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "degraded": {
+          "description": "Whether objects are degraded (reduced redundancy).",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "display-name": {
+          "description": "Operator-visible display name.",
+          "type": "string"
+        },
+        "health": {
+          "description": "Last known Ceph health string (HEALTH_OK / HEALTH_WARN / HEALTH_ERR), from the cached\nstatus; absent if nothing is cached yet.",
+          "optional": 1,
+          "type": "string"
+        },
+        "member-count": {
+          "description": "Total members registered for the cluster.",
+          "type": "integer"
+        },
+        "mons-in-quorum": {
+          "description": "Monitors currently in quorum, from the cached status; absent if uncached.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "mons-total": {
+          "description": "Total monitors, from the cached status; absent if uncached.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "nearfull": {
+          "description": "Whether a near-full / full health check is active (storage pressure).",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "node": {
+          "description": "A representative member node on [`Self::remote`], used to deep-link straight to that node's\nCeph panel. Absent if no PVE member is known.",
+          "optional": 1,
+          "type": "string"
+        },
+        "osds-in": {
+          "description": "OSDs currently in, from the cached status; absent if uncached.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "osds-total": {
+          "description": "Total OSDs known to the cluster, from the cached status; absent if uncached.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "osds-up": {
+          "description": "OSDs currently up, from the cached status; absent if uncached.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "problem-count": {
+          "description": "Number of active Ceph health checks, from the cached status; lets the list show a problem\ncount without a per-cluster fetch.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "recovering": {
+          "description": "Whether recovery or backfill is in progress (a transient activity).",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "remote": {
+          "description": "A representative PVE remote backing the cluster, used to deep-link into the cluster's native\nPVE web UI. Absent if no PVE member is known.",
+          "optional": 1,
+          "type": "string"
+        },
+        "state": {
+          "default": "detected",
+          "description": "Detection state of a Ceph cluster as observed by the auto-detection sweep.\n\n`Detected`: at least one probe succeeded this cycle and reported the fsid. `Unreachable`: at\nleast one probe failed AND no probe succeeded; the cluster might still be healthy from another\nvantage point we cannot reach. `Gone`: every probe succeeded but no remote reports the fsid -\nthe Ceph install was removed or rebuilt with a different fsid. `Tombstoned`: operator-driven\n\"Forget cluster\"; the sweep ignores re-detection until an admin runs the tombstone-reset\ncommand.",
+          "enum": [
+            "detected",
+            "unreachable",
+            "gone",
+            "tombstoned"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Returns only clusters with at least one auditable PVE member.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/ceph/clusters'"
+}

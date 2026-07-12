@@ -1,0 +1,32 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_move_disk",
+  "usageNotes": "Use this to relocate a VM disk to a different storage pool (e.g., migrating from local-lvm to a Ceph or NFS datastore) or to reassign a disk to a different VM on the same node. Returns a task UPID — poll the tasks API to track completion, as the copy operation runs asynchronously and duration scales with disk size. Without 'delete: true', the source disk is retained as an unused slot on the original VM, which will consume storage until manually removed.",
+  "examples": [
+    {
+      "summary": "Move VM 101 boot disk from local-lvm to a Ceph pool, deleting the original after copy",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101
+      },
+      "params": {
+        "disk": "scsi0",
+        "storage": "ceph-pool",
+        "format": "raw",
+        "delete": true
+      }
+    }
+  ],
+  "tips": [
+    "The VM does not need to be stopped for this operation — live disk moves are supported, but the VM must remain on the same node; cross-node moves require a full migration instead.",
+    "Omitting 'format' preserves the source disk format; specify 'raw' when moving to Ceph/RBD since those pools do not support qcow2.",
+    "When moving a disk to another VM ('target-vmid'), supply 'target-disk' if you need it mapped to a specific controller slot; otherwise it inherits the source key, which may conflict if that slot is occupied on the target VM.",
+    "Use 'digest' and 'target-digest' to guard against concurrent config changes — read the VM config first to obtain the current digest value.",
+    "Use 'bwlimit' to cap I/O during production hours and avoid saturating storage network bandwidth."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_config",
+    "get_nodes_node_tasks",
+    "get_nodes_node_tasks_upid_status",
+    "post_nodes_node_qemu_vmid_resize"
+  ]
+}

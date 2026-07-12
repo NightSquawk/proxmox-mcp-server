@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_snapshot_snapname",
+  "usageNotes": "Returns the list of sub-commands available under a specific LXC snapshot (typically 'config' and 'rollback'), acting as an index rather than returning snapshot data itself. Use this to confirm a named snapshot exists on the container and to discover which child operations are available before calling rollback or inspecting the snapshot config. No special privilege is required beyond basic authenticated access ('user: all').",
+  "examples": [
+    {
+      "summary": "List available sub-commands for snapshot 'before-upgrade' on CT 200",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 200,
+        "snapname": "before-upgrade"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a directory-index endpoint — it does not return snapshot metadata or timestamps; use get_nodes_node_lxc_vmid_snapshot_snapname_config for the actual snapshot configuration.",
+    "If the snapname does not exist the API returns a 500/not-found error; call get_nodes_node_lxc_vmid_snapshot first to enumerate valid snapshot names.",
+    "snapname must match the pve-configid format: alphanumeric plus hyphens/underscores, max 40 characters — spaces or special characters will be rejected."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_snapshot",
+    "get_nodes_node_lxc_vmid_snapshot_snapname_config",
+    "post_nodes_node_lxc_vmid_snapshot_snapname_rollback",
+    "delete_nodes_node_lxc_vmid_snapshot_snapname"
+  ]
+}

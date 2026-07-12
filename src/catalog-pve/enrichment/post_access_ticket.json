@@ -1,0 +1,28 @@
+{
+  "operationId": "post_access_ticket",
+  "usageNotes": "Use this endpoint to authenticate a user and obtain a PVE ticket (cookie) and CSRFPreventionToken required for all subsequent authenticated API calls. The `password` field also accepts an existing valid ticket for ticket renewal. Note that API tokens (`allowtoken: false`) cannot be used to call this endpoint — it requires real user credentials.",
+  "examples": [
+    {
+      "summary": "Authenticate as the root@pam user to get a session ticket",
+      "path_params": {},
+      "params": {
+        "username": "root@pam",
+        "password": "S3cur3P@ssw0rd!"
+      }
+    }
+  ],
+  "tips": [
+    "The returned `ticket` value must be sent as a cookie named `PVEAuthCookie` on subsequent requests.",
+    "The `CSRFPreventionToken` must be included as the `CSRFPreventionToken` request header on all POST/PUT/DELETE requests; GET requests do not require it.",
+    "Tickets are valid for 2 hours; re-call this endpoint before expiry (or pass the old ticket as `password`) to renew without re-entering credentials.",
+    "If the user has TOTP/WebAuthn configured, the first call returns a `ticket` prefixed with `PVECHALLENGE:` — pass it back as `tfa-challenge` along with the OTP code to complete login.",
+    "The `realm` param lets you separate the realm from the username; otherwise include it directly as `user@realm` in `username`.",
+    "Use the optional `path` + `privs` params to verify a ticket AND check a privilege in a single round-trip instead of a separate ACL check."
+  ],
+  "relatedOperations": [
+    "get_access_ticket",
+    "get_access_users",
+    "post_access_tfa",
+    "get_access_permissions"
+  ]
+}

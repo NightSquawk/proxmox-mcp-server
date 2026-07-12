@@ -1,0 +1,28 @@
+{
+  "operationId": "post_pve_remotes_remote_lxc_vmid_shutdown",
+  "usageNotes": "Sends an ACPI shutdown signal to a remote LXC container, allowing it to shut down gracefully rather than being forcibly stopped. The caller must hold `Resource.Manage` on the remote guest resource. Returns a remote UPID — poll the task status endpoint to confirm completion before assuming the container is offline.",
+  "examples": [
+    {
+      "summary": "Gracefully shut down LXC container 201 on remote 'hetzner-de'",
+      "path_params": {
+        "remote": "hetzner-de",
+        "vmid": 201
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "destructiveReason": "Shuts down the container, interrupting all running processes and making the container's services unavailable until it is started again.",
+  "tips": [
+    "Omit the `node` body parameter to let PDM resolve the node automatically; supply it only when you know the specific node hosting the container.",
+    "A graceful shutdown depends on the container's init system responding to the ACPI signal — if the container is unresponsive, use the stop (force-kill) endpoint instead.",
+    "The returned UPID is scoped to the remote cluster; use the corresponding remote task-status endpoint to track completion."
+  ],
+  "relatedOperations": [
+    "post_pve_remotes_remote_lxc_vmid_stop",
+    "post_pve_remotes_remote_lxc_vmid_start",
+    "post_pve_remotes_remote_lxc_vmid_reboot",
+    "get_pve_remotes_remote_lxc_vmid_status_current"
+  ]
+}

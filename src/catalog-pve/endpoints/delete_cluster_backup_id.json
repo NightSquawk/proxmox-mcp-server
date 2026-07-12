@@ -1,0 +1,39 @@
+{
+  "operationId": "delete_cluster_backup_id",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete_job",
+  "method": "DELETE",
+  "path": "/cluster/backup/{id}",
+  "description": "Delete vzdump backup job definition.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "The job ID.",
+      "maxLength": 50,
+      "pattern": "\\S+"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/backup/<id>'"
+}

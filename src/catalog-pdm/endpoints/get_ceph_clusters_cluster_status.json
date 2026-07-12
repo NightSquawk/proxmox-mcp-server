@@ -1,0 +1,45 @@
+{
+  "operationId": "get_ceph_clusters_cluster_status",
+  "surface": "pdm",
+  "resource": "ceph",
+  "category": "Ceph",
+  "name": "status",
+  "method": "GET",
+  "path": "/ceph/clusters/{cluster}/status",
+  "description": "Cluster-wide Ceph status (the raw `ceph status` object), served from the cache within `max-age`\nseconds or fetched fresh and cached.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "cluster",
+      "type": "string",
+      "required": true,
+      "description": "Ceph cluster identifier (fsid).",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "max-age",
+      "type": "integer",
+      "required": false,
+      "description": "Serve a cached status if it is younger than this many seconds.",
+      "minimum": 0
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Raw `ceph status` output.",
+    "properties": {},
+    "type": "object"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/ceph/clusters/<cluster>/status'"
+}

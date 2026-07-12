@@ -1,0 +1,39 @@
+{
+  "operationId": "delete_nodes_node_subscription",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "delete",
+  "method": "DELETE",
+  "path": "/nodes/{node}/subscription",
+  "description": "Delete subscription key of this node.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/subscription'"
+}

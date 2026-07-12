@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_pools_poolid",
+  "usageNotes": "Deletes a resource pool by poolid using the legacy path-param form; prefer 'DELETE /pools/?poolid={poolid}' for environments with nested pool support. The pool must be empty — remove all member VMs, CTs, and storage entries before calling. Requires the Pool.Allocate privilege on /pool/{poolid}.",
+  "examples": [
+    {
+      "summary": "Delete an empty pool named 'dev-team'",
+      "path_params": {
+        "poolid": "dev-team"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the pool object and its ACL entries; any access-control rules scoped to this pool are lost and cannot be recovered.",
+  "tips": [
+    "This endpoint is marked deprecated — use DELETE /pools with poolid as a query parameter when nested pools are in use.",
+    "If the pool still has members the API returns an error; use GET /pools/{poolid} to list and remove members first.",
+    "Returns null on success — no task UPID is issued, so the deletion is synchronous."
+  ],
+  "relatedOperations": [
+    "get_pools_poolid",
+    "put_pools_poolid",
+    "post_pools",
+    "delete_pools"
+  ]
+}

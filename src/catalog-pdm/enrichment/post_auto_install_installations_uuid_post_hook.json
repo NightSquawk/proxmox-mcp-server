@@ -1,0 +1,41 @@
+{
+  "operationId": "post_auto_install_installations_uuid_post_hook",
+  "usageNotes": "This endpoint is called by the Proxmox auto-installer itself at the end of a successful installation — not by operators directly. It reports system fingerprint data (CPU, disks, NICs, DMI, kernel, SSH host keys) back to PDM so the installation record can be marked complete. Authentication uses the per-installation token issued with the answer file, not a standard API token; the token field in the body must match exactly.",
+  "examples": [
+    {
+      "summary": "Post-installation callback after a Proxmox VE node finishes installing",
+      "path_params": {
+        "uuid": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "params": {
+        "$schema": { "version": "1.0" },
+        "boot-info": { "mode": "efi", "secureboot": false },
+        "cpu-info": { "sockets": 1, "cores": 8, "threads": 16, "model": "Intel(R) Core(TM) i9-9900K" },
+        "debian-version": "12.5",
+        "disks": [{ "device": "/dev/sda", "size": 512000000000 }],
+        "dmi": { "system": { "manufacturer": "Supermicro", "product": "X11SCL-F" } },
+        "filesystem": "ext4",
+        "fqdn": "pve-node1.nightsquawk.local",
+        "iso": { "release": "8.2-1" },
+        "kernel-version": { "sysname": "Linux", "release": "6.8.12-1-pve" },
+        "machine-id": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4",
+        "network-interfaces": [{ "name": "eth0", "mac": "aa:bb:cc:dd:ee:ff" }],
+        "product": { "fullname": "Proxmox VE", "version": "8.2" },
+        "reboot-mode": "reboot",
+        "ssh-public-host-keys": { "ecdsa": "ecdsa-sha2-nistp256 AAAA..." },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.example"
+      }
+    }
+  ],
+  "tips": [
+    "This is an installer-internal callback; manually crafting this request is only needed when debugging a stalled installation or replaying a hook in testing.",
+    "The token is short-lived and tied to a specific installation UUID — reuse across UUIDs will be rejected.",
+    "Returns null on success; any non-2xx response from PDM will cause the installer to flag the installation as incomplete.",
+    "reboot-mode defaults to 'reboot'; set 'power-off' in the answer file if you need the node to stay off after install (e.g., for imaging workflows)."
+  ],
+  "relatedOperations": [
+    "post_auto_install_installations_uuid_answer",
+    "get_auto_install_installations_uuid",
+    "get_auto_install_installations"
+  ]
+}

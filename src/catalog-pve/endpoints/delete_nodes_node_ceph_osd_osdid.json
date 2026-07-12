@@ -1,0 +1,47 @@
+{
+  "operationId": "delete_nodes_node_ceph_osd_osdid",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "destroyosd",
+  "method": "DELETE",
+  "path": "/nodes/{node}/ceph/osd/{osdid}",
+  "description": "Destroy OSD",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "osdid",
+      "type": "integer",
+      "required": true,
+      "description": "OSD ID",
+      "typetext": "<integer>"
+    }
+  ],
+  "params": [
+    {
+      "name": "cleanup",
+      "type": "boolean",
+      "required": false,
+      "description": "If set, also destroy the underlying logical volumes via 'ceph-volume lvm zap --destroy', remove the volume group's physical volume with pvremove, and wipe any journal/block.db/block.wal partitions left over from filestore OSDs. Without this flag the LVs and partitions are left intact for inspection.",
+      "default": 0,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/osd/0'"
+}

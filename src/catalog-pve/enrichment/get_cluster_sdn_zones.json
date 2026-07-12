@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_sdn_zones",
+  "usageNotes": "Use this to enumerate all SDN zones defined in the cluster before creating VNets, subnets, or diagnosing overlay networking. SDN must be enabled on the cluster (requires the 'pvesdn' package and a supported kernel). The caller needs at least 'SDN.Audit' on '/sdn/zones/<zone>' for each zone they expect to see; zones without that permission are silently omitted from the response.",
+  "examples": [
+    {
+      "summary": "List only VXLAN zones, showing any pending (not-yet-applied) config changes",
+      "path_params": {},
+      "params": {
+        "type": "vxlan",
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "A zone with 'state': 'changed' or 'state': 'new' has edits that have not been applied yet; run the SDN apply operation to push them to the data plane.",
+    "Use 'running': true to see what is actually active on the nodes right now, which may differ from the stored config if an apply is pending.",
+    "Filter by 'type' (e.g. 'evpn', 'vxlan', 'vlan') to reduce noise when managing a specific overlay technology.",
+    "The 'digest' field on each zone can be passed to update/delete operations to guard against concurrent modifications (optimistic locking)."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_zones_zone",
+    "get_cluster_sdn_vnets",
+    "get_cluster_sdn_controllers",
+    "get_cluster_sdn_ipams"
+  ]
+}

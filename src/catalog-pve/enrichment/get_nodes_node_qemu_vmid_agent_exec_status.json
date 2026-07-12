@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_exec_status",
+  "usageNotes": "Poll this endpoint after calling the exec agent action to retrieve stdout, stderr, exit code, and whether the process has finished. The PID returned by the exec call must be passed here; polling should continue until the 'exited' field is true. Requires the QEMU guest agent to be running inside the VM and the caller to hold VM.GuestAgent.Unrestricted on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Check the status of a previously executed guest command",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101
+      },
+      "params": {
+        "pid": 4823
+      }
+    }
+  ],
+  "tips": [
+    "Output is buffered by the guest agent; very large stdout/stderr may be truncated — check 'out-truncated' and 'err-truncated' fields.",
+    "If 'exited' is false, the process is still running; repeat the poll on a short interval (e.g. 1–2 seconds) rather than assuming completion.",
+    "A non-zero 'signal' field instead of 'exitcode' indicates the process was killed by a signal or crashed abnormally.",
+    "The PID is ephemeral and scoped to the guest agent session — do not cache it across VM reboots or agent restarts."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_agent_exec",
+    "get_nodes_node_qemu_vmid_agent"
+  ]
+}

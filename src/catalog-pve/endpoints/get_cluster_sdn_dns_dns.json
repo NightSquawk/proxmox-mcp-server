@@ -1,0 +1,39 @@
+{
+  "operationId": "get_cluster_sdn_dns_dns",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "read",
+  "method": "GET",
+  "path": "/cluster/sdn/dns/{dns}",
+  "description": "Read sdn dns configuration.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "dns",
+      "type": "string",
+      "required": true,
+      "description": "The SDN dns object identifier.",
+      "minLength": 2,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/dns/{dns}",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/dns/<dns>'"
+}

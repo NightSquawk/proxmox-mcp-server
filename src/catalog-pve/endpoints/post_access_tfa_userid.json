@@ -1,0 +1,118 @@
+{
+  "operationId": "post_access_tfa_userid",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "add_tfa_entry",
+  "method": "POST",
+  "path": "/access/tfa/{userid}",
+  "description": "Add a TFA entry for a user.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": false,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "Full User ID, in the `name@realm` format.",
+      "format": "pve-userid",
+      "maxLength": 64,
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "challenge",
+      "type": "string",
+      "required": false,
+      "description": "When responding to a u2f challenge: the original challenge string",
+      "typetext": "<string>"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "required": false,
+      "description": "A description to distinguish multiple entries from one another",
+      "maxLength": 255,
+      "typetext": "<string>"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": false,
+      "description": "The current password of the user performing the change.",
+      "minLength": 5,
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "totp",
+      "type": "string",
+      "required": false,
+      "description": "A totp URI.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "description": "TFA Entry Type.",
+      "enum": [
+        "totp",
+        "u2f",
+        "webauthn",
+        "recovery",
+        "yubico"
+      ]
+    },
+    {
+      "name": "value",
+      "type": "string",
+      "required": false,
+      "description": "The current value for the provided totp URI, or a Webauthn/U2F challenge response",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "challenge": {
+        "description": "When adding u2f entries, this contains a challenge the user must respond to in order to finish the registration.",
+        "optional": 1,
+        "type": "string"
+      },
+      "id": {
+        "description": "The id of a newly added TFA entry.",
+        "type": "string"
+      },
+      "recovery": {
+        "description": "When adding recovery codes, this contains the list of codes to be displayed to the user",
+        "items": {
+          "description": "A recovery entry.",
+          "type": "string"
+        },
+        "optional": 1,
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "userid-param",
+        "self"
+      ],
+      [
+        "userid-group",
+        [
+          "User.Modify"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"type\":\"totp\"}' 'https://PVE_HOST:8006/api2/json/access/tfa/<userid>'"
+}

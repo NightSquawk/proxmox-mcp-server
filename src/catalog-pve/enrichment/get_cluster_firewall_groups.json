@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_firewall_groups",
+  "usageNotes": "Use this to enumerate all cluster-level firewall security groups before creating rules that reference them by name. Accessible to every authenticated user (privilege 'all'), so no special role is required. Each item in the response includes a digest that can be passed to write operations to guard against concurrent edits.",
+  "examples": [
+    {
+      "summary": "List all cluster firewall security groups",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Security group names are 2–18 characters, starting with a letter, and may contain letters, digits, hyphens, and underscores.",
+    "Use the returned 'digest' value when calling create/update/delete group operations to prevent race conditions from concurrent modifications.",
+    "Groups listed here are cluster-wide; node- or VM-level firewall rule sets are managed through separate endpoints."
+  ],
+  "relatedOperations": [
+    "create_cluster_firewall_group",
+    "get_cluster_firewall_group_rules",
+    "delete_cluster_firewall_group"
+  ]
+}

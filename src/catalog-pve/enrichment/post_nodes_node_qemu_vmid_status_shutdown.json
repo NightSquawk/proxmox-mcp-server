@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_status_shutdown",
+  "usageNotes": "Sends an ACPI power-button signal to the VM's guest OS, triggering a graceful shutdown — prefer this over stop/reset when the guest supports ACPI. Returns a task UPID string; poll the task API to confirm completion. If the guest OS is unresponsive or has no ACPI support, the shutdown will hang until timeout; use forceStop=true to guarantee termination or fall back to post_nodes_node_qemu_vmid_status_stop.",
+  "examples": [
+    {
+      "summary": "Gracefully shut down VM 105 on node pve1, forcing stop after 60 seconds if the guest does not respond",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {
+        "timeout": 60,
+        "forceStop": true
+      }
+    }
+  ],
+  "destructiveReason": "Shuts down the running VM, interrupting all guest workloads and making the VM unavailable until it is started again.",
+  "tips": [
+    "The returned string is a UPID (Proxmox Unique Process ID); use get_nodes_node_tasks_upid_status to poll until status is 'stopped'.",
+    "forceStop=true is equivalent to a hard power-off if the guest does not shut down within the timeout window — use it when you need a guaranteed stop.",
+    "keepActive=true leaves storage volumes attached after shutdown, which is useful before live migrations or volume inspection but leaves resources locked.",
+    "skiplock is root-only; avoid unless recovering from a stuck migration or backup lock.",
+    "ACPI shutdown depends on the guest having ACPI drivers (all modern Linux/Windows do) and the qemu-guest-agent is NOT required for this operation."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_status_start",
+    "post_nodes_node_qemu_vmid_status_stop",
+    "post_nodes_node_qemu_vmid_status_reboot",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

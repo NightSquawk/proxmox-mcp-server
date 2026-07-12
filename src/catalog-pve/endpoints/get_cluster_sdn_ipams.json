@@ -1,0 +1,54 @@
+{
+  "operationId": "get_cluster_sdn_ipams",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "index",
+  "method": "GET",
+  "path": "/cluster/sdn/ipams",
+  "description": "SDN ipams index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "description": "Only list sdn ipams of specific type",
+      "enum": [
+        "netbox",
+        "phpipam",
+        "pve"
+      ]
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "ipam": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{ipam}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Only list entries where you have 'SDN.Audit' or 'SDN.Allocate' permissions on '/sdn/ipams/<ipam>'",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/ipams'"
+}

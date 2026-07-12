@@ -1,0 +1,84 @@
+{
+  "operationId": "get_access_tfa",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "tfa",
+  "method": "GET",
+  "path": "/access/tfa",
+  "description": "List user TFA configuration.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "The list tuples of user and TFA entries.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Over the API we only provide the descriptions for TFA data.",
+      "properties": {
+        "entries": {
+          "description": "TFA entries.",
+          "items": {
+            "additionalProperties": false,
+            "description": "A TFA entry for a user.",
+            "properties": {
+              "created": {
+                "description": "Creation time of this entry as unix epoch.",
+                "type": "integer"
+              },
+              "description": {
+                "description": "User chosen description for this entry.",
+                "type": "string"
+              },
+              "enable": {
+                "description": "Whether this TFA entry is currently enabled.",
+                "type": "boolean"
+              },
+              "id": {
+                "description": "The id used to reference this entry.",
+                "type": "string"
+              },
+              "type": {
+                "description": "A TFA entry type.",
+                "enum": [
+                  "totp",
+                  "u2f",
+                  "webauthn",
+                  "recovery",
+                  "yubico"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "tfa-locked-until": {
+          "description": "If a user's second factor is blocked, this contains the block's expiration time.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "totp-locked": {
+          "description": "The user is locked out of TOTP authentication.",
+          "type": "boolean"
+        },
+        "userid": {
+          "description": "The user this entry belongs to.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Returns all or just the logged-in user, depending on privileges.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/tfa'"
+}

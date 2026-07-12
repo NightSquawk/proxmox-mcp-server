@@ -1,0 +1,22 @@
+{
+  "operationId": "get_config_views",
+  "usageNotes": "Use this endpoint to list all PDM views the authenticated user can access; no parameters are required and any valid API token is sufficient since access is user-scoped by the server. Views define named resource filters (include/exclude rules by type, pool, tag, remote, or resource ID) that scope what resources are visible in the PDM UI or downstream calls — fetch this list before referencing a view ID in other operations. The 'layout' field is an opaque JSON string intended for UI state and can be ignored in automation contexts.",
+  "examples": [
+    {
+      "summary": "List all views available to the current API token user",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "No query parameters exist — the response scope is determined entirely by the authenticated user's permissions.",
+    "Each view's 'id' is the handle used to reference that view in other config or resource-scoping operations.",
+    "Filter rules support an optional 'exact:' prefix to force exact matching rather than substring matching on pool/tag/remote names.",
+    "A view with 'include-all: true' and no exclude rules returns every resource the user can see — effectively an unfiltered view.",
+    "The 'layout' field is opaque UI state; skip it in automation and only parse 'include', 'exclude', and 'include-all' for resource scoping logic."
+  ],
+  "relatedOperations": [
+    "get_config_remotes",
+    "get_resources"
+  ]
+}

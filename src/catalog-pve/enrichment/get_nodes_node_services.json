@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_services",
+  "usageNotes": "Use this to get the current systemd status of all Proxmox-managed services on a specific node (e.g., pveproxy, pvedaemon, pvestatd, corosync). The node must be online and reachable by the API; calling against an offline node will fail. Requires Sys.Audit on /nodes/{node} — read-only, safe to call at any time for health checks or pre-maintenance validation.",
+  "examples": [
+    {
+      "summary": "List all service states on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Check 'active-state' (systemd ActiveState) for high-level health: 'active' is healthy, 'failed' needs attention.",
+    "Check 'state' (systemd SubState) for finer detail — 'running' is normal for long-lived services, 'exited' is normal for oneshot units that completed successfully.",
+    "Check 'unit-state' (UnitFileState) to distinguish services that are 'disabled' vs 'masked' — masked services cannot be started even manually.",
+    "Use this endpoint before performing maintenance (e.g., node shutdown, cluster operations) to confirm all critical services like corosync and pveproxy are running.",
+    "The 'service' field is the canonical systemd unit name to pass to service-specific endpoints (start, stop, restart, reload, state)."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_services_service_state",
+    "post_nodes_node_services_service_start",
+    "post_nodes_node_services_service_stop",
+    "post_nodes_node_services_service_restart",
+    "post_nodes_node_services_service_reload"
+  ]
+}

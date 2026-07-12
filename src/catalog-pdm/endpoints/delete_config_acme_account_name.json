@@ -1,0 +1,52 @@
+{
+  "operationId": "delete_config_acme_account_name",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "{name}",
+  "method": "DELETE",
+  "path": "/config/acme/account/{name}",
+  "description": "Deactivate an ACME account.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "ACME account name.",
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "force",
+      "type": "boolean",
+      "required": false,
+      "description": "Delete account data even if the server refuses to deactivate the account.",
+      "default": false
+    }
+  ],
+  "returns": {
+    "description": "Unique Process/Task Identifier",
+    "minLength": 36,
+    "pattern": "/^UPID:(?P<node>[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?):(?P<pid>[0-9A-Fa-f]{8}):(?P<pstart>[0-9A-Fa-f]{8,9}):(?P<task_id>[0-9A-Fa-f]{8,16}):(?P<starttime>[0-9A-Fa-f]{8}):(?P<wtype>[^:\\s]+):(?P<wid>[^:\\s]*):(?P<authid>[^:\\s]+):$/",
+    "type": "string"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "certificates"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/acme/account/<name>'"
+}

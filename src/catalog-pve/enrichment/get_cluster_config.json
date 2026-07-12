@@ -1,0 +1,20 @@
+{
+  "operationId": "get_cluster_config",
+  "usageNotes": "Use this endpoint to discover the available sub-resources under `/cluster/config` (e.g., nodes, totem, join). It is a directory index with no parameters and requires `Sys.Audit` on the root path, so it is readable by any monitoring token with that privilege. Useful as a starting point before calling deeper cluster configuration endpoints.",
+  "examples": [
+    {
+      "summary": "List available cluster config sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned array contains objects with a `name` field identifying each child resource; follow those names to construct sub-paths like /cluster/config/nodes or /cluster/config/totem.",
+    "This endpoint is safe to poll frequently — it is a read-only directory index with no side effects."
+  ],
+  "relatedOperations": [
+    "get_cluster_config_nodes",
+    "get_cluster_config_totem",
+    "get_cluster_config_join"
+  ]
+}

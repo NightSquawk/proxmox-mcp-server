@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_ceph_status",
+  "usageNotes": "Use this endpoint to get a high-level health summary of the Ceph cluster — overall health status, IOPS, throughput, and pool/OSD counts — without targeting a specific node. Requires Sys.Audit or Datastore.Audit on the root path. The cluster must have Ceph configured; calling this on a cluster with no Ceph deployment will return an error.",
+  "examples": [
+    {
+      "summary": "Fetch Ceph cluster health and performance overview",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned object includes a 'health' sub-object with a 'status' field — values are HEALTH_OK, HEALTH_WARN, or HEALTH_ERR.",
+    "Check 'pgmap' fields (bytes_used, bytes_avail, num_pgs) for storage utilization and PG state counts.",
+    "This is a cluster-level call, not node-level — no node parameter is needed; any cluster member can serve it.",
+    "For per-OSD or per-pool detail, follow up with get_nodes_ceph_osd or get_nodes_ceph_pools on a specific node."
+  ],
+  "relatedOperations": [
+    "get_cluster_ceph_flags",
+    "get_nodes_ceph_status",
+    "get_nodes_ceph_osd",
+    "get_nodes_ceph_pools",
+    "get_nodes_ceph_mon"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "operationId": "get_pbs_remotes",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "remotes",
+  "method": "GET",
+  "path": "/pbs/remotes",
+  "description": "Return the list of PBS remotes",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of PBS remotes",
+    "items": {
+      "additionalProperties": false,
+      "description": "The information required to connect to a remote instance.",
+      "properties": {
+        "remote": {
+          "description": "Remote ID.",
+          "maxLength": 32,
+          "minLength": 2,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes'"
+}

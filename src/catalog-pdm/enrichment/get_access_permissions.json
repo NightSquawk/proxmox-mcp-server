@@ -1,0 +1,26 @@
+{
+  "operationId": "get_access_permissions",
+  "usageNotes": "Use this to inspect what privileges a user or API token holds, either across all ACL paths or scoped to a specific path. Without `auth-id`, it returns the calling identity's own permissions; with `auth-id` specified, `Sys.Audit` on `/access` is required. Useful before performing privileged operations to confirm the caller has the necessary rights without triggering a failed request.",
+  "examples": [
+    {
+      "summary": "Get permissions for a specific API token scoped to the /nodes path",
+      "path_params": {},
+      "params": {
+        "auth-id": "admin@pam!monitoring-token",
+        "path": "/nodes"
+      }
+    }
+  ],
+  "tips": [
+    "Omit both params to quickly audit your own token's full permission map — useful when debugging 403 errors.",
+    "The `path` filter narrows results to a single ACL tree node; without it you receive the entire permission map, which can be large.",
+    "The `auth-id` format differs between users (`user@realm`) and API tokens (`user@realm!tokenid`) — the pattern enforces this distinction.",
+    "The response map keys are ACL paths (e.g. `/nodes/pve`) and values are maps of privilege name to propagate flag (1 = propagate, 0 = no propagate)."
+  ],
+  "relatedOperations": [
+    "get_access_users",
+    "get_access_roles",
+    "get_access_acl",
+    "get_access_tokens"
+  ]
+}

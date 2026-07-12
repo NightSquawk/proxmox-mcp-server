@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_sdn_ipams_ipam",
+  "usageNotes": "Use this endpoint to retrieve the configuration of a specific SDN IPAM object by its identifier. Requires the SDN.Allocate privilege on /sdn/ipams/{ipam}, so API tokens must have that permission granted. SDN must be enabled on the cluster; the returned object contains backend-specific fields (e.g., type, url, token) depending on whether the IPAM is netbox, phpipam, or pve.",
+  "examples": [
+    {
+      "summary": "Read configuration for an IPAM named 'netbox1'",
+      "path_params": {
+        "ipam": "netbox1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The ipam identifier must match the pattern [a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9] (alphanumeric, start and end with a letter or digit, minimum 2 chars).",
+    "Use list_cluster_sdn_ipams first to discover valid IPAM identifiers before calling this endpoint.",
+    "Changes to SDN IPAM objects require a subsequent apply step (POST /cluster/sdn) before they take effect cluster-wide; reading with this endpoint always reflects the stored (pending) config."
+  ],
+  "relatedOperations": [
+    "list_cluster_sdn_ipams",
+    "update_cluster_sdn_ipams_ipam",
+    "delete_cluster_sdn_ipams_ipam",
+    "apply_cluster_sdn"
+  ]
+}

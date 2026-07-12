@@ -1,0 +1,96 @@
+{
+  "operationId": "post_nodes_node_storage_storage_upload",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "upload",
+  "method": "POST",
+  "path": "/nodes/{node}/storage/{storage}/upload",
+  "description": "Upload templates, ISO images, OVAs and VM images.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [
+    {
+      "name": "checksum",
+      "type": "string",
+      "required": false,
+      "description": "The expected checksum of the file.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "checksum-algorithm",
+      "type": "string",
+      "required": false,
+      "description": "The algorithm to calculate the checksum of the file.",
+      "enum": [
+        "md5",
+        "sha1",
+        "sha224",
+        "sha256",
+        "sha384",
+        "sha512"
+      ]
+    },
+    {
+      "name": "content",
+      "type": "string",
+      "required": true,
+      "description": "Content type.",
+      "format": "pve-storage-content",
+      "enum": [
+        "iso",
+        "vztmpl",
+        "import"
+      ]
+    },
+    {
+      "name": "filename",
+      "type": "string",
+      "required": true,
+      "description": "The name of the file to create. Caution: This will be normalized!",
+      "maxLength": 255,
+      "typetext": "<string>"
+    },
+    {
+      "name": "tmpfilename",
+      "type": "string",
+      "required": false,
+      "description": "The source file name. This parameter is usually set by the REST handler. You can only overwrite it when connecting to the trusted port on localhost.",
+      "pattern": "/var/tmp/pveupload-[0-9a-f]+"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage/{storage}",
+      [
+        "Datastore.AllocateTemplate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"content\":\"iso\",\"filename\":\"<filename>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/upload'"
+}

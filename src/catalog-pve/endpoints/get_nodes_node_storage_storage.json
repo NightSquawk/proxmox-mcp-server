@@ -1,0 +1,64 @@
+{
+  "operationId": "get_nodes_node_storage_storage",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "diridx",
+  "method": "GET",
+  "path": "/nodes/{node}/storage/{storage}",
+  "description": "",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "subdir": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{subdir}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage/{storage}",
+      [
+        "Datastore.Audit",
+        "Datastore.AllocateSpace"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>'"
+}

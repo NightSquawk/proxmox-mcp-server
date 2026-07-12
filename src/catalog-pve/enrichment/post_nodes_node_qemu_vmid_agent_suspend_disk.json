@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_suspend_disk",
+  "usageNotes": "Instructs the QEMU guest agent inside the VM to suspend the guest to disk (hibernate), writing RAM state to disk and powering off the VM. Requires the QEMU Guest Agent to be installed, running, and connected inside the guest OS; the operation will fail if the agent is not responsive. The caller needs either VM.PowerMgmt or VM.GuestAgent.Unrestricted on the VM path.",
+  "examples": [
+    {
+      "summary": "Hibernate VM 105 on node pve1 to disk via guest agent",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The guest OS must support and be configured for hibernate (suspend-to-disk); Linux guests need a swap partition/file of sufficient size, Windows guests need hibernation enabled.",
+    "After a successful suspend-disk, the VM will appear powered off in Proxmox; resume by starting the VM normally — PVE will restore from the saved disk image.",
+    "If the guest agent is not running or the guest does not support hibernate, the call may return an error or time out without affecting the VM.",
+    "Avoid calling this on VMs with active write I/O (databases, file servers) without quiescing first, as in-flight writes may not complete before the image is saved."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_agent_suspend_ram",
+    "post_nodes_node_qemu_vmid_agent_suspend_hybrid",
+    "post_nodes_node_qemu_vmid_status_start",
+    "get_nodes_node_qemu_vmid_agent_ping"
+  ]
+}

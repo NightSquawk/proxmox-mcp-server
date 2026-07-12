@@ -1,0 +1,95 @@
+{
+  "operationId": "get_nodes_node_apt_update",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "list_updates",
+  "method": "GET",
+  "path": "/nodes/{node}/apt/update",
+  "description": "List available updates.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "Arch": {
+          "description": "Package Architecture.",
+          "enum": [
+            "armhf",
+            "arm64",
+            "amd64",
+            "ppc64el",
+            "risc64",
+            "s390x",
+            "all"
+          ],
+          "type": "string"
+        },
+        "Description": {
+          "description": "Package description.",
+          "type": "string"
+        },
+        "NotifyStatus": {
+          "description": "Version for which PVE has already sent an update notification for.",
+          "optional": 1,
+          "type": "string"
+        },
+        "OldVersion": {
+          "description": "Old version currently installed.",
+          "optional": 1,
+          "type": "string"
+        },
+        "Origin": {
+          "description": "Package origin, e.g., 'Proxmox' or 'Debian'.",
+          "type": "string"
+        },
+        "Package": {
+          "description": "Package name.",
+          "type": "string"
+        },
+        "Priority": {
+          "description": "Package priority.",
+          "type": "string"
+        },
+        "Section": {
+          "description": "Package section.",
+          "type": "string"
+        },
+        "Title": {
+          "description": "Package title.",
+          "type": "string"
+        },
+        "Version": {
+          "description": "New version to be updated to.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/apt/update'"
+}

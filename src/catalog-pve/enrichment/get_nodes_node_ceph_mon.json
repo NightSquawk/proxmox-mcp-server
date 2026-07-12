@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_ceph_mon",
+  "usageNotes": "Use this to list all Ceph monitors known to the cluster and verify quorum health — the `quorum` and `state` fields on each entry are the fastest way to spot a monitor that has lost consensus or stopped. The querying node must be online and have rados connectivity; if it does not, monitor entries may return `state: 'unknown'` rather than an error. Requires `Sys.Audit` or `Datastore.Audit` at the root path (either suffices).",
+  "examples": [
+    {
+      "summary": "List all Ceph monitors from node pve1 to check quorum status",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `quorum` boolean is the most actionable field — any monitor where quorum=false while state='running' indicates a split or lagging mon that needs investigation.",
+    "`direxists` being false on a node that should host a monitor means the mon data directory is missing, which typically happens after an incomplete removal or a failed add.",
+    "`service` absent (not false) means no ceph-mon systemd unit exists on that node at all, distinguishing 'unit exists but stopped' from 'never configured here'.",
+    "You can call this endpoint against any healthy cluster node — the response reflects cluster-wide mon map data, not just mons local to the queried node."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_status",
+    "get_cluster_ceph_status",
+    "post_nodes_node_ceph_mon",
+    "delete_nodes_node_ceph_mon_monid"
+  ]
+}

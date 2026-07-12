@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_nodes_node_tasks_upid",
+  "usageNotes": "Use this to stop a running or queued task on a PDM node by its UPID. Users can stop their own tasks without elevated privileges; stopping another user's task requires Sys.Modify on /system/tasks. The UPID must match a task that is still active — sending a DELETE against an already-finished task is a no-op (returns null without error).",
+  "examples": [
+    {
+      "summary": "Stop a running vzdump backup task on node pdm-node1",
+      "path_params": {
+        "node": "pdm-node1",
+        "upid": "UPID:pdm-node1:001A2B3C:004D5E6F:0000000100000000:68123456:vzdump:100:root@pam:"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Terminates the targeted running task, which may leave in-progress operations (e.g., backups, migrations, or replication syncs) in an incomplete or inconsistent state.",
+  "tips": [
+    "The UPID pattern is strict — obtain it from list_nodes_node_tasks rather than constructing it manually.",
+    "A DELETE on a task that has already completed returns null with no error; check task status first if you need to confirm it was actually running.",
+    "Stopping a backup or replication task mid-run may leave partial snapshots or dirty state on the target datastore that requires manual cleanup."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log",
+    "get_nodes_node_tasks"
+  ]
+}

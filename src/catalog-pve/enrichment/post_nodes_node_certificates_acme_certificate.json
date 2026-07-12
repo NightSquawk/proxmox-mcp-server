@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_certificates_acme_certificate",
+  "usageNotes": "Orders a new TLS certificate from the configured ACME CA (e.g., Let's Encrypt) for the specified node using the domain and challenge plugin already set up under Node > ACME. The operation is asynchronous — the returned string is a task UPID; poll it via GET /nodes/{node}/tasks/{upid}/status to confirm success. The node must have a valid ACME account and at least one domain configured before calling this endpoint.",
+  "examples": [
+    {
+      "summary": "Issue a new ACME certificate for node pve1, overwriting any existing custom cert",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "force": true
+      }
+    }
+  ],
+  "tips": [
+    "ACME account and domain(s) must be configured first via /nodes/{node}/config (acmedomain0, acmedomain1, etc.) before ordering a certificate.",
+    "Omit 'force' (or set it to false) if you want the call to fail rather than silently overwrite a manually-installed certificate.",
+    "Let's Encrypt rate-limits certificate issuance to 5 duplicate certificates per week — use the staging directory for testing.",
+    "After a successful order, Proxmox automatically replaces the node's pveproxy certificate and reloads the service; an active browser session will need to be refreshed."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_certificates_acme_certificate",
+    "delete_nodes_node_certificates_acme_certificate",
+    "get_nodes_node_certificates_info",
+    "get_nodes_node_tasks"
+  ]
+}

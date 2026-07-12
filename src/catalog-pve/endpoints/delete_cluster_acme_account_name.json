@@ -1,0 +1,32 @@
+{
+  "operationId": "delete_cluster_acme_account_name",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "deactivate_account",
+  "method": "DELETE",
+  "path": "/cluster/acme/account/{name}",
+  "description": "Deactivate existing ACME account at CA.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "description": "ACME account config file name.",
+      "format": "pve-configid",
+      "default": "default",
+      "typetext": "<name>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/acme/account/<name>'"
+}

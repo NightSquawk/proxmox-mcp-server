@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_sdn_zones_zone",
+  "usageNotes": "Returns the API directory index for a specific SDN zone on a given node of a PDM-managed PVE remote — useful for discovering what sub-resources or actions are available under that zone path. Because this is a directory index with a null return body, it is most valuable as an exploration step before calling zone-specific child endpoints. The remote must be reachable and the node must be online; `user: all` permissions means any authenticated PDM user can call it.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for SDN zone 'vlan10' on node 'pve1' of remote 'hetzner-pve'",
+      "path_params": {
+        "remote": "hetzner-pve",
+        "node": "pve1",
+        "zone": "vlan10"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This endpoint is a directory index — the meaningful data lives in child endpoints beneath this path, not in the response body itself.",
+    "Zone names are case-sensitive and must match the SDN zone ID as configured in PVE (e.g., 'vlan10', not 'VLAN10').",
+    "If the remote or node is offline, PDM will return a connectivity error rather than a 403 — verify remote health first."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_sdn_zones",
+    "get_pve_remotes_remote_nodes_node_sdn"
+  ]
+}

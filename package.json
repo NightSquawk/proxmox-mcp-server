@@ -1,0 +1,46 @@
+{
+  "name": "@nightsquawktech/proxmox-mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server for Proxmox VE and Proxmox Datacenter Manager — every API endpoint behind catalog-backed list/describe/call tools, reads live, writes ENV-gated.",
+  "license": "AGPL-3.0-only",
+  "main": "dist/index.js",
+  "type": "module",
+  "bin": "./dist/index.js",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "COMMERCIAL.md"
+  ],
+  "scripts": {
+    "build": "tsc && shx rm -rf dist/catalog-pve dist/catalog-pdm && shx cp -r src/catalog-pve dist/catalog-pve && shx cp -r src/catalog-pdm dist/catalog-pdm && shx chmod +x dist/index.js",
+    "prepare": "npm run build",
+    "watch": "tsc --watch",
+    "extract": "node scripts/extract.mjs pve && node scripts/extract.mjs pdm",
+    "assemble": "node scripts/assemble-catalog.mjs pve && node scripts/assemble-catalog.mjs pdm",
+    "regen": "npm run extract && npm run assemble"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.6.0",
+    "@nightsquawktech/mcp-core": "^0.1.0",
+    "undici": "^6.21.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "shx": "^0.3.4",
+    "typescript": "^5.8.2"
+  },
+  "author": "Kevin Reyes (NightSquawk Tech) <hello@nightsquawk.tech>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NightSquawk/proxmox-mcp-server.git"
+  },
+  "homepage": "https://github.com/NightSquawk/proxmox-mcp-server#readme",
+  "bugs": {
+    "url": "https://github.com/NightSquawk/proxmox-mcp-server/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

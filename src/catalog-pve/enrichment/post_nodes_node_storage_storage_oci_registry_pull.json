@@ -1,0 +1,30 @@
+{
+  "operationId": "post_nodes_node_storage_storage_oci_registry_pull",
+  "usageNotes": "Use this to pull a container image from a public or authenticated OCI registry into a Proxmox storage pool (e.g. for use as an LXC template or CT image). The storage must be of a type that supports OCI images and the target node must be online and able to reach the registry. The `reference` must include a tag (e.g. `docker.io/library/ubuntu:22.04`); digest-only references are not permitted by the format pattern. Returns a UPID string — poll the tasks API to track completion.",
+  "examples": [
+    {
+      "summary": "Pull the Ubuntu 22.04 OCI image from Docker Hub into local storage on pve1",
+      "path_params": {
+        "node": "pve1",
+        "storage": "local"
+      },
+      "params": {
+        "reference": "docker.io/library/ubuntu:22.04",
+        "filename": "ubuntu-22.04-oci.tar"
+      }
+    }
+  ],
+  "tips": [
+    "The `filename` value is normalized by Proxmox — do not rely on the exact string you provide being preserved verbatim.",
+    "Both `Datastore.AllocateTemplate` on the storage path and `Sys.AccessNetwork` on the node are required; missing either privilege causes a permission denied error.",
+    "The returned string is a UPID (Proxmox task ID). Use `get_nodes_node_tasks_upid_status` to poll task status and confirm the pull succeeded before referencing the image.",
+    "OCI registry pull support was introduced in PVE 8.x — verify your cluster version before relying on this endpoint.",
+    "For private registries, ensure the registry URL and credentials are configured in the Proxmox storage or node registry config before calling this endpoint."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log",
+    "get_nodes_node_storage_storage_content",
+    "delete_nodes_node_storage_storage_content_volume"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "post_cluster_sdn_rollback",
+  "usageNotes": "Use this to discard all pending (unapplied) SDN changes and revert the SDN configuration back to its last committed state. This is a synchronous operation that returns null on success, not a UPID task. If you hold the global SDN lock (e.g., from a failed apply attempt), pass the lock token via `lock-token` and set `release-lock` to true so the lock is cleared in a single call.",
+  "examples": [
+    {
+      "summary": "Rollback pending SDN changes and release a held lock in one call",
+      "path_params": {},
+      "params": {
+        "lock-token": "sdn-lock-abc123xyz",
+        "release-lock": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently discards all pending SDN configuration changes that have not yet been applied, making them unrecoverable.",
+  "tips": [
+    "The SDN.Allocate privilege on /sdn is required; ensure your API token or user has this permission.",
+    "If no lock is held, both lock-token and release-lock can be omitted — the endpoint will still rollback pending changes.",
+    "After rollback, verify the current committed state with GET /cluster/sdn before making new changes.",
+    "This is commonly used as a recovery step when a prior apply (POST /cluster/sdn) failed and left the configuration in a dirty state."
+  ],
+  "relatedOperations": [
+    "post_cluster_sdn",
+    "get_cluster_sdn",
+    "get_cluster_sdn_vnets",
+    "get_cluster_sdn_zones"
+  ]
+}

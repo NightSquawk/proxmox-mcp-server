@@ -1,0 +1,42 @@
+{
+  "operationId": "get_nodes_node_ceph_crush",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "crush",
+  "method": "GET",
+  "path": "/nodes/{node}/ceph/crush",
+  "description": "Get OSD crush map",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit",
+        "Datastore.Audit"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/crush'"
+}

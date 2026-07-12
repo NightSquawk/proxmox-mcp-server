@@ -1,0 +1,20 @@
+{
+  "operationId": "get_nodes",
+  "usageNotes": "Exists solely for PVE API compatibility — PDM does not manage individual nodes directly, so this endpoint always returns null rather than a node list. Use cluster-level or resource-specific endpoints (e.g. Ceph cluster, auto-install) to query PDM-managed infrastructure. No privileges are required and no parameters are accepted.",
+  "examples": [
+    {
+      "summary": "Check the compatibility stub response",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns null, not an empty array — callers should guard against a null response rather than iterating the result.",
+    "This endpoint is safe to call for connectivity testing since it requires no privileges and has no side effects."
+  ],
+  "relatedOperations": [
+    "get_ceph_clusters",
+    "get_auto_install_installations",
+    "get_config"
+  ]
+}

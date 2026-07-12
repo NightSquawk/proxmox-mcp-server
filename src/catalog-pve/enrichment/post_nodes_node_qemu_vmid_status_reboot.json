@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_status_reboot",
+  "usageNotes": "Use this to perform a clean reboot of a running QEMU VM — it shuts the guest down gracefully then starts it again, which also applies any pending configuration changes (e.g. CPU/memory adjustments that require a restart). The call is asynchronous and returns a UPID string; poll the task status endpoint to confirm completion. The VM must be in a running state and the caller needs VM.PowerMgmt on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Reboot VM 101 on node pve1 with a 60-second shutdown timeout",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "timeout": 60
+      }
+    }
+  ],
+  "destructiveReason": "The VM's running services are interrupted during the shutdown-and-start cycle, causing a brief outage for any workloads hosted on the guest.",
+  "tips": [
+    "Omitting 'timeout' lets Proxmox use its default shutdown wait; set an explicit value if the guest is known to be slow to shut down.",
+    "This endpoint applies pending hardware changes (CPU sockets, RAM, etc.) that a simple reset would not — prefer it over a stop+start sequence for config rollouts.",
+    "The returned UPID can be passed to GET /nodes/{node}/tasks/{upid}/status to watch progress.",
+    "If the guest OS ignores ACPI shutdown signals (e.g. no guest agent, misconfigured), the shutdown may hang until the timeout expires and Proxmox force-stops the VM."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_status_shutdown",
+    "post_nodes_node_qemu_vmid_status_start",
+    "post_nodes_node_qemu_vmid_status_stop",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

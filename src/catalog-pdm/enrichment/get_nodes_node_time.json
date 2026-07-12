@@ -1,0 +1,21 @@
+{
+  "operationId": "get_nodes_node_time",
+  "usageNotes": "Use this to verify a PDM node's current UTC time, local time, and configured timezone — useful for confirming NTP sync or diagnosing timestamp drift before correlating logs across nodes. No query parameters are required; the node must be reachable. Available to all authenticated users (no admin privilege needed).",
+  "examples": [
+    {
+      "summary": "Read time settings from a PDM node",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'time' field is UTC epoch seconds; 'localtime' is the same instant expressed in the node's configured timezone offset — subtract the two to derive the UTC offset in seconds.",
+    "Use 'localhost' as the node name when calling from the node itself or when only one node is present.",
+    "If 'time' and 'localtime' differ unexpectedly, check the timezone setting against /usr/share/zoneinfo/zone.tab on the node."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_status"
+  ]
+}

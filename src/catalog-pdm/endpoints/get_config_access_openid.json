@@ -1,0 +1,140 @@
+{
+  "operationId": "get_config_access_openid",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "openid",
+  "method": "GET",
+  "path": "/config/access/openid",
+  "description": "List configured OpenId realms",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of configured OpenId realms.",
+    "items": {
+      "additionalProperties": false,
+      "description": "OpenID configuration properties.",
+      "properties": {
+        "acr-values": {
+          "description": "OpenID ACR List",
+          "format": {
+            "description": "Array of OpenId ACRs.",
+            "items": {
+              "description": "OpenID Authentication Context Class Reference.",
+              "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "optional": 1,
+          "type": "string",
+          "typetext": "[<string>, ...]"
+        },
+        "audiences": {
+          "description": "OpenID audience list.",
+          "format": {
+            "description": "A list of OpenID audiences that is allowed in addition to the 'client-id'.",
+            "items": {
+              "description": "OpenID audience.",
+              "maxLength": 256,
+              "pattern": "/^[^\\x00-\\x1F\\x7F <>#\"]*$/",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "optional": 1,
+          "type": "string",
+          "typetext": "[<string>, ...]"
+        },
+        "autocreate": {
+          "default": false,
+          "description": "Automatically create users if they do not exist.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "client-id": {
+          "description": "OpenID Client ID",
+          "type": "string"
+        },
+        "client-key": {
+          "description": "OpenID Client Key",
+          "optional": 1,
+          "type": "string"
+        },
+        "comment": {
+          "description": "Comment.",
+          "maxLength": 128,
+          "optional": 1,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "default": {
+          "description": "True if you want this to be the default realm selected on login.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "issuer-url": {
+          "description": "OpenID Issuer Url",
+          "type": "string"
+        },
+        "prompt": {
+          "description": "OpenID Prompt",
+          "optional": 1,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "realm": {
+          "description": "Realm name.",
+          "maxLength": 32,
+          "minLength": 2,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "scopes": {
+          "default": "email profile",
+          "description": "OpenID Scope List",
+          "format": {
+            "description": "Array of OpenId Scopes.",
+            "items": {
+              "description": "OpenID Scope Name.",
+              "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "optional": 1,
+          "type": "string",
+          "typetext": "[<string>, ...]"
+        },
+        "username-claim": {
+          "description": "Use the value of this attribute/claim as unique user name. It is up to the identity provider to guarantee the uniqueness. The OpenID specification only guarantees that Subject ('sub') is unique. Also make sure that the user is not allowed to change that attribute by himself!",
+          "maxLength": 64,
+          "minLength": 1,
+          "optional": 1,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "access",
+        "domains"
+      ],
+      "privs": [
+        "Realm.Allocate"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/access/openid'"
+}

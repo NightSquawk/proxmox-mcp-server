@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_query_url_metadata",
+  "usageNotes": "Use this endpoint to inspect a remote URL's file size, filename, and MIME type before initiating a download — for example, to validate an ISO or cloud image URL before passing it to a storage import job. The request is made by the target node, so the node must be online and able to reach the URL. Disable certificate verification (`verify-certificates: false`) only for trusted internal sources with self-signed certs, as it bypasses TLS validation.",
+  "examples": [
+    {
+      "summary": "Check metadata for a Debian cloud image before importing to storage",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "url": "https://cloud.debian.org/images/cloud/bookworm/latest/debian-12-genericcloud-amd64.qcow2",
+        "verify-certificates": true
+      }
+    }
+  ],
+  "tips": [
+    "All three return fields (filename, mimetype, size) are optional — the remote server may omit any of them depending on its HTTP headers.",
+    "A returned size of 0 or a missing size field may indicate the server does not send a Content-Length header; do not assume the file is empty.",
+    "Requires either Sys.Audit or Sys.Modify at root, or Sys.AccessNetwork scoped to the specific node — the node-scoped privilege is the least-privilege path."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_storage_storage_download_url",
+    "get_nodes_node_storage_storage_content"
+  ]
+}

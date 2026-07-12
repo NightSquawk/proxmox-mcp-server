@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_firewall_aliases_name",
+  "usageNotes": "Use this to retrieve the IP address or CIDR definition of a specific cluster-level firewall alias by its name. The alias name must start with a letter and match the pattern [A-Za-z][A-Za-z0-9\\-\\_]+. Requires Sys.Audit privilege at the root path; API tokens are supported.",
+  "examples": [
+    {
+      "summary": "Fetch the definition of a firewall alias named 'WebServers'",
+      "path_params": {
+        "name": "WebServers"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Alias names are case-sensitive; 'webservers' and 'WebServers' are distinct entries.",
+    "Cluster-level aliases (this endpoint) are available to all nodes; node-level aliases live under /nodes/{node}/firewall/aliases/{name}.",
+    "Use list_cluster_firewall_aliases (GET /cluster/firewall/aliases) to discover valid alias names before calling this endpoint."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_aliases",
+    "post_cluster_firewall_aliases",
+    "put_cluster_firewall_aliases_name",
+    "delete_cluster_firewall_aliases_name"
+  ]
+}

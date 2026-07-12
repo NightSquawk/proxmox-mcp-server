@@ -1,0 +1,43 @@
+{
+  "operationId": "get_pve_remotes_remote_updates",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "updates",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/updates",
+  "description": "Return the cached update information about a remote.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/updates'"
+}

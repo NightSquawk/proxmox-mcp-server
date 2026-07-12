@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_remotes_remote_cluster_status",
+  "usageNotes": "Use this to check the health and quorum state of all nodes in a remote PVE cluster managed by PDM. The response mixes two record types — one cluster-level record (type: 'cluster') carrying quorate and node count, and one node-level record per member (type: 'node') carrying online status, subscription level, and IP. Requires Resource.Audit on the named remote; the optional target-endpoint parameter can redirect the connection through a specific PDM endpoint when the remote has multiple configured.",
+  "examples": [
+    {
+      "summary": "Check cluster quorum and node online status for a remote named 'hetzner-pve'",
+      "path_params": {
+        "remote": "hetzner-pve"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Filter the response by type === 'cluster' to get the single quorum record; filter by type === 'node' for per-node detail.",
+    "The 'local' field on node records marks the node that actually handled the query — useful for confirming which node PDM reached.",
+    "A quorate: false result means the cluster has lost majority; VMs may still be running but HA and config changes are blocked.",
+    "The 'level' field reflects the Proxmox subscription tier (e.g. 'c' = Community, 'b' = Basic, 's' = Standard, 'p' = Premium) and determines access to the enterprise repository."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes",
+    "get_pve_remotes_remote",
+    "get_pve_remotes_remote_nodes",
+    "get_pve_remotes_remote_nodes_node_status"
+  ]
+}

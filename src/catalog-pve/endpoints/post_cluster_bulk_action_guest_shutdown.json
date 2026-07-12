@@ -1,0 +1,70 @@
+{
+  "operationId": "post_cluster_bulk_action_guest_shutdown",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "shutdown",
+  "method": "POST",
+  "path": "/cluster/bulk-action/guest/shutdown",
+  "description": "Bulk shutdown all guests on the cluster.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "force-stop",
+      "type": "boolean",
+      "required": false,
+      "description": "Makes sure the Guest stops after the timeout.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "max-workers",
+      "type": "integer",
+      "required": false,
+      "description": "Defines the maximum number of tasks running concurrently.",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 64,
+      "typetext": "<integer> (1 - 64)"
+    },
+    {
+      "name": "maxworkers",
+      "type": "integer",
+      "required": false,
+      "description": "Defines the maximum number of tasks running concurrently. Deprecated, use 'max-workers' instead.",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 64,
+      "typetext": "<integer> (1 - 64)"
+    },
+    {
+      "name": "timeout",
+      "type": "integer",
+      "required": false,
+      "description": "Default shutdown timeout in seconds if none is configured for the guest.",
+      "default": 180,
+      "typetext": "<integer>"
+    },
+    {
+      "name": "vms",
+      "type": "array",
+      "required": false,
+      "description": "Only consider guests from this list of VMIDs.",
+      "typetext": "<array>"
+    }
+  ],
+  "returns": {
+    "description": "UPID of the worker",
+    "type": "string"
+  },
+  "permissions": {
+    "description": "The 'VM.PowerMgmt' permission is required on '/' or on '/vms/<ID>' for each ID passed via the 'vms' parameter.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/bulk-action/guest/shutdown'"
+}

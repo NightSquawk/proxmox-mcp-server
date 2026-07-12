@@ -1,0 +1,29 @@
+{
+  "operationId": "put_access_users_userid",
+  "usageNotes": "Use this to update an existing PDM user's profile fields (name, email, comment), enable/disable the account, or set an expiration date. A user can update their own account without elevated privileges; modifying other users requires Access.Modify on /access/users. Use the 'delete' array to clear optional fields (e.g. email or comment) rather than setting them to empty strings.",
+  "examples": [
+    {
+      "summary": "Disable a user account and set an expiration date",
+      "path_params": {
+        "userid": "jdoe@pve"
+      },
+      "params": {
+        "enable": false,
+        "expire": 1751155200,
+        "comment": "Account suspended pending review"
+      }
+    }
+  ],
+  "tips": [
+    "The 'digest' field can be supplied (SHA256 of current config) to guard against concurrent modifications — retrieve it from the corresponding GET /access/users/{userid} response.",
+    "Setting 'expire' to 0 removes any expiration date; omitting the field leaves the existing value unchanged.",
+    "Password changes via this endpoint apply only to users in the 'pve' realm — users authenticated via LDAP/AD must have passwords changed in the upstream directory.",
+    "To clear an optional field entirely, pass its name in the 'delete' array instead of setting it to an empty string."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid",
+    "post_access_users",
+    "delete_access_users_userid",
+    "get_access_users"
+  ]
+}

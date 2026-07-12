@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_ha_rules",
+  "usageNotes": "Use this to list all HA placement rules defined in the cluster, optionally filtering by rule type or the specific resource they govern. Requires Sys.Audit on the root path — available to any read-only audit token. Returns a flat list of rule identifiers; use a sibling endpoint to fetch individual rule details.",
+  "examples": [
+    {
+      "summary": "List all node-affinity rules in the cluster",
+      "path_params": {},
+      "params": {
+        "type": "node-affinity"
+      }
+    }
+  ],
+  "tips": [
+    "The 'resource' filter accepts HA resource IDs (e.g. 'vm:100') — useful when troubleshooting why a specific VM is pinned to certain nodes.",
+    "Rule identifiers returned here are child links; query /cluster/ha/rules/{rule} to retrieve the full rule configuration.",
+    "HA rules only apply to resources already registered under /cluster/ha/resources — verify resource membership there if a rule appears to have no effect."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_resources",
+    "get_cluster_ha_groups",
+    "get_cluster_ha_status_current"
+  ]
+}

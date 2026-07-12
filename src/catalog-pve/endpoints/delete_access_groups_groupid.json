@@ -1,0 +1,38 @@
+{
+  "operationId": "delete_access_groups_groupid",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "delete_group",
+  "method": "DELETE",
+  "path": "/access/groups/{groupid}",
+  "description": "Delete group.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "groupid",
+      "type": "string",
+      "required": true,
+      "format": "pve-groupid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/access/groups",
+      [
+        "Group.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/groups/<groupid>'"
+}

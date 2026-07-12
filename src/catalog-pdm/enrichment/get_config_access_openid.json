@@ -1,0 +1,21 @@
+{
+  "operationId": "get_config_access_openid",
+  "usageNotes": "Use this to retrieve all OpenID Connect realms configured in Proxmox Datacenter Manager, including their issuer URLs, client IDs, scopes, and autocreate settings. Requires the 'Realm.Allocate' privilege on the 'access/domains' path — typically held by administrators only. The client-key field (shared secret) is returned in the response, so treat the output as sensitive.",
+  "examples": [
+    {
+      "summary": "List all configured OpenID realms",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'client-key' (OIDC client secret) is included in plain text in the response — avoid logging or storing the full output.",
+    "If 'autocreate' is true on a realm, any authenticating user not yet in PDM will be automatically provisioned — audit this setting when reviewing your IdP.",
+    "The 'username-claim' field controls which IdP claim maps to the PDM username; if left unset, the OIDC 'sub' (subject) claim is used, which may produce opaque usernames.",
+    "The 'default' flag indicates which realm is pre-selected on the login page; only one realm should have this set to true."
+  ],
+  "relatedOperations": [
+    "get_config_access_domains",
+    "get_config_access_tfa"
+  ]
+}

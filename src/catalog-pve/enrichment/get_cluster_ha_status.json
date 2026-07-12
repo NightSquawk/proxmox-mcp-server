@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_ha_status",
+  "usageNotes": "Use this endpoint to discover the available sub-resources under the HA status tree (e.g., 'current' and 'manager_status'). It returns a directory listing of child endpoints, not actual HA state data — follow the child hrefs to retrieve live cluster status or manager details. No special privileges are required; any authenticated user can call this.",
+  "examples": [
+    {
+      "summary": "List HA status sub-resources on a cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a directory index — use the returned 'name' values to construct child paths like /cluster/ha/status/current for live HA state.",
+    "Pair with get_cluster_ha_status_current to retrieve the actual quorum and resource health summary.",
+    "No query parameters are accepted; the response shape is fixed."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_status_current",
+    "get_cluster_ha_status_manager_status",
+    "get_cluster_ha_resources",
+    "get_cluster_ha_groups"
+  ]
+}

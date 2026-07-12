@@ -1,0 +1,24 @@
+{
+  "operationId": "post_cluster_ha_status_disarm_ha",
+  "usageNotes": "Use this to disable the cluster-wide HA watchdog stack, typically during planned maintenance or controlled cluster shutdown where HA self-healing would interfere. The `resource-mode` parameter is required: choose `freeze` to pause HA command processing while leaving resources in place, or `ignore` to drop HA tracking entirely so resources can be managed manually. Requires `Sys.Console` on the root path (`/`), which is a privileged permission not granted by default to most API tokens.",
+  "examples": [
+    {
+      "summary": "Disarm HA in freeze mode before a rolling maintenance window",
+      "path_params": {},
+      "params": {
+        "resource-mode": "freeze"
+      }
+    }
+  ],
+  "tips": [
+    "Use `freeze` when you want to resume HA management after maintenance without reconfiguring resources; use `ignore` only if you intend to manage resources manually for an extended period.",
+    "After the maintenance window, re-arm HA via the corresponding arm-ha endpoint to restore watchdog supervision cluster-wide.",
+    "Returns null on success — no UPID; the operation is synchronous from the API perspective but watchdog release propagates across cluster nodes asynchronously.",
+    "Ensure all cluster nodes are reachable before disarming; a partitioned node may continue its local watchdog behavior independently."
+  ],
+  "relatedOperations": [
+    "post_cluster_ha_status_arm_ha",
+    "get_cluster_ha_status",
+    "get_cluster_ha_resources"
+  ]
+}

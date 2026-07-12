@@ -1,0 +1,105 @@
+{
+  "operationId": "post_pve_scan",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "scan",
+  "method": "POST",
+  "path": "/pve/scan",
+  "description": "Scans the given connection info for pve cluster information\n\nFor each node that is returned, the TLS connection is probed, to check if using\na fingerprint is necessary.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "authid",
+      "type": "string",
+      "required": true,
+      "description": "Authentication ID",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)|(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)!(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))$/"
+    },
+    {
+      "name": "fingerprint",
+      "type": "string",
+      "required": false,
+      "description": "Fingerprint of the target remote."
+    },
+    {
+      "name": "hostname",
+      "type": "string",
+      "required": true,
+      "description": "Hostname (with optional port) of the target remote",
+      "pattern": "/^(?:(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))|(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|\\[(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){6})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:::(?:(?:[0-9a-fA-F]{1,4}):){5})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){4})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,1}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){3})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,2}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){2})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,3}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){1})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,4}(?:[0-9a-fA-F]{1,4}))?::)(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,5}(?:[0-9a-fA-F]{1,4}))?::)(?:[0-9a-fA-F]{1,4}))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,6}(?:[0-9a-fA-F]{1,4}))?::))))\\]))(?::(?:[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?$/"
+    },
+    {
+      "name": "token",
+      "type": "string",
+      "required": true,
+      "description": "The token secret or the user password."
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "The information required to connect to a remote instance.",
+    "properties": {
+      "authid": {
+        "description": "Authentication ID",
+        "maxLength": 64,
+        "minLength": 3,
+        "pattern": "/^(?:(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)|(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)!(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))$/",
+        "type": "string"
+      },
+      "id": {
+        "description": "Remote ID.",
+        "maxLength": 32,
+        "minLength": 2,
+        "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      },
+      "nodes": {
+        "description": "A list of cluster node addresses.",
+        "items": {
+          "description": "A cluster node IP or hostname.",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "token": {
+        "description": "The access token's secret.",
+        "type": "string"
+      },
+      "type": {
+        "default": "pve",
+        "description": "The type of a remote entry.",
+        "enum": [
+          "pve",
+          "pbs"
+        ],
+        "type": "string"
+      },
+      "web-url": {
+        "description": "Configuration for the Web UI URL link generation.",
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "/"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"authid\":\"<authid>\",\"hostname\":\"<hostname>\",\"token\":\"<token>\"}' 'https://PDM_HOST:8443/api2/json/pve/scan'"
+}

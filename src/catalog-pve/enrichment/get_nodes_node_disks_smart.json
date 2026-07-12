@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_disks_smart",
+  "usageNotes": "Use this endpoint to inspect the SMART health and attribute data for a specific block device on a PVE node. The node must be online and reachable, and the caller must hold `Sys.Audit` on `/`. Set `healthonly: true` for a lightweight pass/fail check; omit it to retrieve the full attribute table and raw smartctl text, which is useful for diagnosing early-warning reallocated sectors or pending uncorrectable errors.",
+  "examples": [
+    {
+      "summary": "Get full SMART data for an NVMe drive on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "disk": "/dev/nvme0",
+        "healthonly": false
+      }
+    }
+  ],
+  "tips": [
+    "The disk path must match the pattern ^/dev/[a-zA-Z0-9\\/]+$ — use get_nodes_node_disks_list first to enumerate valid device paths for the node.",
+    "When healthonly is true the response only contains the `health` field (e.g. 'PASSED' or 'FAILED'), which is faster and suitable for automated health checks.",
+    "SMART data is read directly from the device at request time; for NVMe drives the `type` field in the response will reflect the NVMe protocol rather than ATA.",
+    "This endpoint is read-only and has no side effects on the disk or running VMs."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_list",
+    "get_nodes_node_disks_initgpt",
+    "get_nodes_node_hardware"
+  ]
+}

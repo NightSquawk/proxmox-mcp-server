@@ -1,0 +1,63 @@
+{
+  "operationId": "post_subscriptions_adopt_all",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "adopt-all",
+  "method": "POST",
+  "path": "/subscriptions/adopt-all",
+  "description": "Adopt every foreign live subscription in one transaction.\n\nWalks the node-status view (so only remotes the caller can audit are considered), collects\nevery (remote, node) that has a live current key but no pool entry bound to it, and imports\neach one into the pool with source = `Adopted`. Candidates are skipped (not adopted, not an\nerror) when:\n\n- The caller has no `PRIV_RESOURCE_MODIFY` on the candidate's remote: an audit-only operator\nshould not be able to materialise pool state for a remote they cannot manage.\n- The live key is already in the pool but bound elsewhere: leaving the rebind as a manual\nstep keeps the bulk action from silently competing with a deliberate prior assignment.\n- The live key fails schema validation or its prefix is unknown: a buggy or malicious\nremote should not be able to inject garbage into the pool through a bulk shortcut.\n\nSuccessfully-adopted entries are returned so the caller (CLI / UI) can summarise the outcome\nwithout needing a separate refresh round-trip.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    }
+  ],
+  "returns": {
+    "description": "List of (remote, node, key) tuples that were adopted into the pool.",
+    "items": {
+      "additionalProperties": false,
+      "description": "One entry imported by the bulk Adopt-All endpoint.",
+      "properties": {
+        "key": {
+          "description": "Subscription key.",
+          "maxLength": 18,
+          "minLength": 15,
+          "pattern": "/^(?:pve[0-9]+|pbs)[cbsp]-[0-9a-f]{10}$/",
+          "type": "string"
+        },
+        "node": {
+          "description": "Node within the remote.",
+          "type": "string"
+        },
+        "remote": {
+          "description": "Remote the live subscription was running on.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/subscriptions/adopt-all'"
+}

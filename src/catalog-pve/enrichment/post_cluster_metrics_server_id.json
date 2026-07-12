@@ -1,0 +1,35 @@
+{
+  "operationId": "post_cluster_metrics_server_id",
+  "usageNotes": "Use this to register a new external metrics backend (Graphite, InfluxDB, or OpenTelemetry) that all cluster nodes will push performance data to. The `type` field determines which set of optional params apply: InfluxDB HTTP v2 needs `bucket`, `organization`, and `token`; Graphite needs `path` and optionally `proto`; OpenTelemetry uses the `otel-*` params. Requires `Sys.Modify` on `/` — API tokens must explicitly hold this privilege.",
+  "examples": [
+    {
+      "summary": "Add an InfluxDB v2 HTTP metrics server",
+      "path_params": {
+        "id": "influx-prod"
+      },
+      "params": {
+        "type": "influxdb",
+        "server": "influxdb.internal.example.com",
+        "port": 8086,
+        "influxdbproto": "https",
+        "bucket": "proxmox",
+        "organization": "nightsquawk",
+        "token": "my-influxdb-api-token",
+        "verify-certificate": true
+      }
+    }
+  ],
+  "tips": [
+    "The `id` path param must match the pve-configid format (alphanumeric, hyphens allowed, no spaces) and must be unique across all existing metric server entries.",
+    "For InfluxDB v1 compatibility API, omit `organization` and use `user:password` as the `token` value.",
+    "Set `disable: true` to register the config without activating it — useful for staging before cutover.",
+    "UDP (the InfluxDB default) has no delivery guarantee; switch to `influxdbproto: http` or `https` for reliable delivery in production.",
+    "OpenTelemetry `otel-headers` and `otel-resource-attributes` must be base64-encoded JSON strings."
+  ],
+  "relatedOperations": [
+    "get_cluster_metrics_server",
+    "get_cluster_metrics_server_id",
+    "put_cluster_metrics_server_id",
+    "delete_cluster_metrics_server_id"
+  ]
+}

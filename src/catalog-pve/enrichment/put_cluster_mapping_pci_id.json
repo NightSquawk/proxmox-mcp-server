@@ -1,0 +1,32 @@
+{
+  "operationId": "put_cluster_mapping_pci_id",
+  "usageNotes": "Use this to modify an existing cluster-wide logical PCI mapping — updating which physical PCI devices on each node back the mapping, toggling mdev/live-migration-capable flags, or refreshing the description. Requires the Mapping.Modify privilege on /mapping/pci/{id}. Pass the digest returned from the corresponding GET to prevent overwriting concurrent changes.",
+  "examples": [
+    {
+      "summary": "Add a node entry and enable mdev on an existing GPU mapping",
+      "path_params": {
+        "id": "gpu-a2000"
+      },
+      "params": {
+        "description": "NVIDIA RTX A2000 - mediated device pool",
+        "mdev": true,
+        "map": [
+          "node=pve01,id=0000:03:00",
+          "node=pve02,id=0000:05:00"
+        ]
+      }
+    }
+  ],
+  "tips": [
+    "Fetch the current mapping first (get_cluster_mapping_pci_id) to obtain the digest before writing.",
+    "Use the 'delete' param to remove individual keys (e.g., 'description') without touching the rest of the mapping.",
+    "live-migration-capable is experimental; enabling it without compatible hardware/drivers will cause migration failures.",
+    "The mapping must already exist — use post_cluster_mapping_pci to create a new one."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_pci_id",
+    "post_cluster_mapping_pci",
+    "delete_cluster_mapping_pci_id",
+    "get_cluster_mapping_pci"
+  ]
+}

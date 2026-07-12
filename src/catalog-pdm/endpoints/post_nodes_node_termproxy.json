@@ -1,0 +1,72 @@
+{
+  "operationId": "post_nodes_node_termproxy",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "termproxy",
+  "method": "POST",
+  "path": "/nodes/{node}/termproxy",
+  "description": "Call termproxy and return shell ticket",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "cmd",
+      "type": "string",
+      "required": false,
+      "description": "The command to run.",
+      "enum": [
+        "login",
+        "upgrade"
+      ]
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object with the user, ticket, port and upid",
+    "properties": {
+      "port": {
+        "description": "",
+        "type": "string"
+      },
+      "ticket": {
+        "description": "",
+        "type": "string"
+      },
+      "upid": {
+        "description": "",
+        "type": "string"
+      },
+      "user": {
+        "description": "",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "Sys.Console"
+      ]
+    },
+    "description": "Restricted to users on realm 'pam'"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/nodes/<node>/termproxy'"
+}

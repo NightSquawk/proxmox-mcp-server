@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_metrics_export",
+  "usageNotes": "Use this endpoint to pull raw time-series metrics for nodes, VMs, and containers across the cluster; requires Sys.Audit on /. By default it returns only the most recent sample set — pass `history: true` together with a `start-time` Unix epoch to bound the window and avoid very large payloads. When diagnosing a single node, combine `local-only: true` or `node-list` to reduce response size.",
+  "examples": [
+    {
+      "summary": "Fetch metrics for two specific nodes since a point in time",
+      "path_params": {},
+      "params": {
+        "history": true,
+        "node-list": "pve01,pve02",
+        "start-time": 1719532800
+      }
+    }
+  ],
+  "tips": [
+    "Response items are sorted by timestamp ascending; if you need only the latest snapshot, omit `history` and `start-time`.",
+    "The `id` field encodes object type and identity (e.g. 'node/pve01', 'qemu/100', 'lxc/200') — parse the prefix to filter by resource type.",
+    "Metric `type` values follow RRDtool semantics: gauge is an instantaneous value, counter/derive are cumulative (need delta calculation for rate).",
+    "Using `history: true` without `start-time` returns the full available retention window, which can be very large on active clusters."
+  ],
+  "relatedOperations": [
+    "get_cluster_metrics_server",
+    "get_nodes_node_rrddata",
+    "get_nodes_node_vms_vmid_rrddata"
+  ]
+}

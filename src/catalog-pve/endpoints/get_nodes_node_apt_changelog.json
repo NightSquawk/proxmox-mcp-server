@@ -1,0 +1,54 @@
+{
+  "operationId": "get_nodes_node_apt_changelog",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "changelog",
+  "method": "GET",
+  "path": "/nodes/{node}/apt/changelog",
+  "description": "Get package changelogs.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "Package name.",
+      "pattern": "(?^:[a-z0-9][-+.a-z0-9:]+)"
+    },
+    {
+      "name": "version",
+      "type": "string",
+      "required": false,
+      "description": "Package version.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/apt/changelog?name=<name>'"
+}

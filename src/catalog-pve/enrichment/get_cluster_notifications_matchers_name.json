@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_notifications_matchers_name",
+  "usageNotes": "Retrieves the full configuration of a single notification matcher by its config ID, including all match criteria (severity, field, calendar), target endpoints, mode, and the current digest. Use the returned digest when calling the corresponding update operation to guard against concurrent modifications. Requires either Mapping.Modify or Mapping.Audit on /mapping/notifications.",
+  "examples": [
+    {
+      "summary": "Fetch the 'critical-alerts' matcher to inspect its severity filters and targets",
+      "path_params": {
+        "name": "critical-alerts"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The digest field in the response is a concurrency token — pass it to the update endpoint to prevent overwriting changes made by another session.",
+    "If 'disable' is absent or false, the matcher is active and will route matching notifications to the listed targets.",
+    "The 'mode' field (default: 'all') controls whether ALL match conditions must be satisfied or ANY one is sufficient — verify this when debugging unexpected notification routing.",
+    "match-field entries follow the format (regex|exact):<field>=<value>; inspect this carefully when troubleshooting field-based filtering."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_matchers",
+    "create_cluster_notifications_matchers",
+    "update_cluster_notifications_matchers_name",
+    "delete_cluster_notifications_matchers_name",
+    "get_cluster_notifications_targets"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pools_poolid",
+  "usageNotes": "Use this endpoint to retrieve the members and optional comment for a flat (non-nested) resource pool. This path is deprecated — Proxmox recommends using GET /pools/?poolid={poolid} instead, particularly if your environment uses nested pools. Requires Pool.Audit permission on /pool/{poolid}; optionally filter the member list by type (qemu, lxc, or storage) to reduce response size.",
+  "examples": [
+    {
+      "summary": "Fetch all members of the 'prod-vms' pool",
+      "path_params": {
+        "poolid": "prod-vms"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This endpoint is marked deprecated; prefer GET /pools/?poolid={poolid} for future-proof usage and nested pool support.",
+    "Use the 'type' query param to limit results to only VMs (qemu), containers (lxc), or storage — useful when you only need one resource class.",
+    "The members array includes 'node' and 'id' fields that can be used directly to construct follow-up VM or storage API calls.",
+    "openvz appears in the response type enum for legacy compatibility but is not used in current Proxmox VE versions."
+  ],
+  "relatedOperations": [
+    "get_pools",
+    "post_pools",
+    "put_pools_poolid",
+    "delete_pools_poolid"
+  ]
+}

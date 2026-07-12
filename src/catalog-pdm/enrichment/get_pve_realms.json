@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_realms",
+  "usageNotes": "Use this before adding a PVE remote to PDM to discover which authentication realms the target cluster exposes (e.g. 'pam', 'pve', or an LDAP/AD realm). The hostname must be reachable from PDM at call time; supply the TLS fingerprint when the target uses a self-signed certificate to avoid trust errors. Requires System.Modify on the PDM root — API tokens scoped below that will be rejected.",
+  "examples": [
+    {
+      "summary": "Scan a PVE node by hostname with a self-signed cert fingerprint",
+      "path_params": {},
+      "params": {
+        "hostname": "pve1.example.com:8006",
+        "fingerprint": "AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99"
+      }
+    }
+  ],
+  "tips": [
+    "The port is optional in hostname; omit it to use the PVE default (8006).",
+    "If fingerprint is omitted, PDM must already trust the target's TLS certificate via a CA in its trust store.",
+    "The returned 'tfa' field is present only when the realm has a legacy TOTP/Yubico provider configured; modern TOTP via webauthn/totp will not appear here.",
+    "Use the returned realm identifiers as the 'realm' value when registering the remote via the PDM UI or API."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes",
+    "create_pve_remote",
+    "get_pve_cluster_info"
+  ]
+}

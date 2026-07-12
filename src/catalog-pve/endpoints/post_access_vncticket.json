@@ -1,0 +1,65 @@
+{
+  "operationId": "post_access_vncticket",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "verify_vnc_ticket",
+  "method": "POST",
+  "path": "/access/vncticket",
+  "description": "verify VNC authentication ticket.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "authid",
+      "type": "string",
+      "required": true,
+      "description": "UserId or token",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "required": true,
+      "description": "Verify ticket, and check if user have access 'privs' on 'path'",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "port",
+      "type": "integer",
+      "required": false,
+      "description": "Verify that the ticket is valid for this port.",
+      "typetext": "<integer>"
+    },
+    {
+      "name": "privs",
+      "type": "string",
+      "required": true,
+      "description": "Verify ticket, and check if user have access 'privs' on 'path'",
+      "format": "pve-priv-list",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "vncticket",
+      "type": "string",
+      "required": true,
+      "description": "The VNC ticket.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "description": "You need to pass valid credientials.",
+    "user": "world"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"authid\":\"<authid>\",\"path\":\"<path>\",\"privs\":\"<privs>\",\"vncticket\":\"<vncticket>\"}' 'https://PVE_HOST:8006/api2/json/access/vncticket'"
+}

@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_lxc_vmid_firewall_ipset_name",
+  "usageNotes": "Deletes a named IPSet from an LXC container's firewall configuration. By default the request fails if the IPSet still contains members — pass `force: true` to delete all member entries and the set in one operation. Requires `VM.Config.Network` privilege on the container's VM path, and the container must exist on the specified node (it does not need to be running).",
+  "examples": [
+    {
+      "summary": "Force-delete an IPSet named 'trusted-mgmt' (including all its member IPs) from LXC 201 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 201,
+        "name": "trusted-mgmt"
+      },
+      "params": {
+        "force": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the named IPSet and, if `force` is used, all of its member IP/CIDR entries from the container's firewall; any firewall rules referencing this IPSet by name will become dangling references and may silently stop matching traffic.",
+  "tips": [
+    "List existing IPSets first with the corresponding GET operation to confirm the name and membership before deleting.",
+    "If the IPSet is referenced by active firewall rules, remove or update those rules before deleting the set to avoid silent rule breakage.",
+    "Omitting `force` on a non-empty IPSet returns an error — use it intentionally when you want a single atomic delete of set + members."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_ipset",
+    "get_nodes_node_lxc_vmid_firewall_ipset_name",
+    "post_nodes_node_lxc_vmid_firewall_ipset",
+    "delete_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+    "get_nodes_node_lxc_vmid_firewall_rules"
+  ]
+}

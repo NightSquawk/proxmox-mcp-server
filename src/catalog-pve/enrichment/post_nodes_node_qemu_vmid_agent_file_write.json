@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_file_write",
+  "usageNotes": "Use this to write a file into a running VM via the QEMU Guest Agent (qemu-guest-agent must be installed and running inside the VM). The caller needs the `VM.GuestAgent.FileWrite` or `VM.GuestAgent.Unrestricted` privilege on `/vms/{vmid}`. Content is capped at 60 KB per call; for larger files, write a loader script first and pull the payload from inside the guest.",
+  "examples": [
+    {
+      "summary": "Write a custom resolv.conf into a Linux VM",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105
+      },
+      "params": {
+        "file": "/etc/resolv.conf",
+        "content": "nameserver 1.1.1.1\nnameserver 8.8.8.8\n",
+        "encode": true
+      }
+    }
+  ],
+  "tips": [
+    "The VM must be powered on and the guest agent service must be running — the call will fail with a timeout or error if the agent is not responsive.",
+    "`encode` defaults to true, which lets you pass plain text safely; only set it to false if you are pre-encoding content as base64 yourself.",
+    "The operation returns null on success; no UPID is issued — errors surface as HTTP 5xx/4xx immediately.",
+    "File ownership and permissions inside the guest are determined by the guest agent process user (typically root); adjust permissions with a follow-up exec call if needed.",
+    "The 60 KB (61440 byte) content limit applies to the raw string before base64 expansion; plan multi-part writes for larger payloads."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_file_read",
+    "post_nodes_node_qemu_vmid_agent_exec",
+    "get_nodes_node_qemu_vmid_agent_exec_status",
+    "post_nodes_node_qemu_vmid_agent"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "operationId": "get_config_access_ad",
+  "usageNotes": "Use this to enumerate all Active Directory (LDAP) authentication realms configured in Proxmox Datacenter Manager. Requires the Realm.Allocate privilege on /access/domains — typically held by administrators only. Call this before creating or updating AD realm settings to confirm existing realm names and server configuration.",
+  "examples": [
+    {
+      "summary": "List all configured AD realms",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'realm' field in each returned object is the identifier used when logging in as user@realm.",
+    "Check the 'default' field to see which realm is pre-selected on the PDM login screen.",
+    "The 'mode' field indicates LDAP transport security: prefer 'ldaps' or 'ldap+starttls' over plain 'ldap' in production.",
+    "If 'verify' is false, TLS certificate validation is disabled for the AD server connection — a potential security risk worth flagging during audits.",
+    "bind-dn and base-dn being absent from a realm entry means user sync is not fully configured for that realm."
+  ],
+  "relatedOperations": [
+    "get_config_access_domains",
+    "get_config_access_openid",
+    "get_config_access_ldap"
+  ]
+}

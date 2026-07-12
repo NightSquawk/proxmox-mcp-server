@@ -1,0 +1,25 @@
+{
+  "operationId": "get_subscriptions_keys_key",
+  "usageNotes": "Use this to inspect a single subscription key's status, binding, and level before deciding whether to reassign or clear it. Requires System.Audit on the PDM node — operators who lack audit rights on the key's bound remote will receive a 404 (indistinguishable from a missing key, by design). Check the `pending-clear` field before taking any reassignment action; a truthy value means a clear is already queued and has not yet been applied.",
+  "examples": [
+    {
+      "summary": "Fetch details for an active PVE Standard subscription key",
+      "path_params": {
+        "key": "pve2s-a1b2c3d4e5"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The key pattern accepts pve[0-9]+ or pbs prefixes followed by a tier code (c/b/s/p) and 10 hex chars — validate locally before calling to avoid unnecessary 404s.",
+    "`check-time` reflects the last import or refresh epoch, not the subscription expiry; use `next-due-date` for renewal tracking.",
+    "A 404 response means either the key does not exist in the pool or your token lacks audit rights on the bound remote — the API intentionally does not distinguish between the two.",
+    "If `source` is 'adopted', the key was pulled in automatically from a managed remote rather than entered manually; treat its binding as managed by that remote."
+  ],
+  "relatedOperations": [
+    "get_subscriptions_keys",
+    "post_subscriptions_keys",
+    "delete_subscriptions_keys_key",
+    "put_subscriptions_keys_key_refresh"
+  ]
+}

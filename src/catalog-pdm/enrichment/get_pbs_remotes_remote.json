@@ -1,0 +1,23 @@
+{
+  "operationId": "get_pbs_remotes_remote",
+  "usageNotes": "Returns the directory index for a specific PBS remote configured in Proxmox Datacenter Manager — effectively a lightweight existence/reachability probe for the named remote. Use this to confirm a remote is registered before attempting datastore or snapshot operations against it. No additional privileges beyond authenticated user access are required, and it accepts API tokens.",
+  "examples": [
+    {
+      "summary": "Fetch the directory index for the PBS remote named 'hetzner-pbs'",
+      "path_params": {
+        "remote": "hetzner-pbs"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response type is null — this endpoint exposes sub-routes (directory index) rather than returning structured remote config data; use it to verify the remote path exists rather than to retrieve connection settings.",
+    "To inspect the actual remote configuration (host, port, auth), query the PBS remotes list endpoint instead.",
+    "API tokens are supported (allowtoken: true), so automation scripts can poll this without session credentials."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes",
+    "get_pbs_remotes_remote_datastores",
+    "get_pbs_remotes_remote_config"
+  ]
+}

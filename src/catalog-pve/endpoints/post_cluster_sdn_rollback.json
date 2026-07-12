@@ -1,0 +1,46 @@
+{
+  "operationId": "post_cluster_sdn_rollback",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "rollback",
+  "method": "POST",
+  "path": "/cluster/sdn/rollback",
+  "description": "Rollback pending changes to SDN configuration",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    },
+    {
+      "name": "release-lock",
+      "type": "boolean",
+      "required": false,
+      "description": "When lock-token has been provided and configuration successfully rollbacked, release the lock automatically afterwards",
+      "default": 1,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/sdn/rollback'"
+}

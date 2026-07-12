@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_ipset",
+  "usageNotes": "Lists all named IP sets defined in a VM's guest-level firewall. Use this before creating or referencing an IP set in firewall rules to confirm the set exists and retrieve its digest for safe concurrent-edit protection. Requires VM.Audit on the VM path; the node must be online and the QEMU guest must exist.",
+  "examples": [
+    {
+      "summary": "List all firewall IP sets for VM 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Each returned object includes a 'digest' field — pass it to write operations (create/update/delete on IP set entries) to prevent race conditions with concurrent modifications.",
+    "An empty array means no IP sets have been created for this VM's guest firewall yet; guest-level IP sets are separate from cluster-level IP sets.",
+    "IP set names follow the pattern [A-Za-z][A-Za-z0-9\\-\\_]+ — useful to know when scripting lookups by name."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_ipset_name",
+    "post_nodes_node_qemu_vmid_firewall_ipset",
+    "delete_nodes_node_qemu_vmid_firewall_ipset_name",
+    "get_nodes_node_qemu_vmid_firewall_rules"
+  ]
+}

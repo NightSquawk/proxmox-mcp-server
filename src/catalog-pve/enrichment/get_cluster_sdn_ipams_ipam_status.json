@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_sdn_ipams_ipam_status",
+  "usageNotes": "Use this to retrieve the current IP address allocations tracked by a specific SDN IPAM plugin (e.g., phpIPAM or netbox). The SDN stack must be configured and the named IPAM object must exist; results are filtered to zones/vnets where the caller holds 'SDN.Audit' or 'SDN.Allocate'. Useful for auditing IP utilization or verifying that leases were correctly recorded after VM/container provisioning.",
+  "examples": [
+    {
+      "summary": "List all IPAM entries for the IPAM object named 'myipam'",
+      "path_params": {
+        "ipam": "myipam"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'ipam' path param must match an existing SDN IPAM object name — check configured IPAM objects first via the SDN IPAM list endpoint.",
+    "Results are silently scoped to zones/vnets the caller can see; an empty array may mean the IPAM has entries but the token lacks SDN.Audit on those paths.",
+    "SDN must be applied (not just configured) for IPAM entries to reflect the live network state."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_ipams",
+    "get_cluster_sdn",
+    "get_cluster_sdn_vnets",
+    "get_cluster_sdn_zones"
+  ]
+}

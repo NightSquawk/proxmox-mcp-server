@@ -1,0 +1,30 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_status_suspend",
+  "usageNotes": "Suspends a running QEMU VM, either to RAM (default, VM remains in memory and resumes instantly) or to disk via todisk=true (state written to storage, VM fully powers off and resumes on next start). Returns an async task UPID — poll the task status endpoint to confirm completion before assuming the VM is suspended. Suspending to disk requires additional privileges (VM.Config.Disk on the VM and Datastore.AllocateSpace on the target storage); if statestorage is omitted, Proxmox selects the default storage, which must support VM state snapshots.",
+  "examples": [
+    {
+      "summary": "Suspend VM 105 to disk on node pve1, storing state on local-lvm",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {
+        "todisk": true,
+        "statestorage": "local-lvm"
+      }
+    }
+  ],
+  "destructiveReason": "Suspending to RAM pauses all VM CPU/IO activity (service interruption); suspending to disk fully powers down the VM, making its services unavailable until it is manually started again.",
+  "tips": [
+    "RAM suspend (todisk omitted or false) keeps VM memory allocated on the node — do not migrate or stop the node while VMs are in RAM-suspend state or their state will be lost.",
+    "Use todisk=true for long-term hibernation or maintenance windows where the node itself may be rebooted.",
+    "The returned UPID string can be passed to GET /nodes/{node}/tasks/{upid}/status to monitor suspend progress.",
+    "skiplock is root-only; avoid using it unless a stuck lock is confirmed — forcibly skipping a lock on an actively-used VM risks data corruption."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_status_resume",
+    "post_nodes_node_qemu_vmid_status_start",
+    "post_nodes_node_qemu_vmid_status_stop",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

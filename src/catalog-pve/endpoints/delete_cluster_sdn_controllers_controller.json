@@ -1,0 +1,48 @@
+{
+  "operationId": "delete_cluster_sdn_controllers_controller",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete",
+  "method": "DELETE",
+  "path": "/cluster/sdn/controllers/{controller}",
+  "description": "Delete sdn controller object configuration.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "controller",
+      "type": "string",
+      "required": true,
+      "description": "The SDN controller object identifier.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9]"
+    }
+  ],
+  "params": [
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/controllers",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/controllers/<controller>'"
+}

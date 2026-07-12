@@ -1,0 +1,39 @@
+{
+  "operationId": "delete_cluster_acme_plugins_id",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete_plugin",
+  "method": "DELETE",
+  "path": "/cluster/acme/plugins/{id}",
+  "description": "Delete ACME plugin configuration.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "Unique identifier for ACME plugin instance.",
+      "format": "pve-configid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/acme/plugins/<id>'"
+}

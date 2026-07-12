@@ -1,0 +1,30 @@
+{
+  "operationId": "put_nodes_node_disks_wipedisk",
+  "usageNotes": "Use this to zero-wipe a disk or partition on a Proxmox node before repurposing it for a new storage pool, directory, or ZFS dataset — wipe is a prerequisite for most disk initialization operations. The target device must not be in use (not mounted, not part of an active pool) and the node must be online. The operation returns a task UPID string; poll the task status endpoint to confirm completion before proceeding.",
+  "examples": [
+    {
+      "summary": "Wipe /dev/sdb on node pve1 before adding it to a new ZFS pool",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "disk": "/dev/sdb"
+      }
+    }
+  ],
+  "destructiveReason": "All partition table data, filesystem signatures, and contents on the target block device are permanently zeroed and irrecoverable.",
+  "tips": [
+    "Verify the disk is not in use with get_nodes_node_disks_list before wiping — Proxmox will reject the request if the device is busy, but double-checking avoids accidental device selection.",
+    "The returned UPID can be passed to the task status endpoint (get_nodes_node_tasks_upid_status) to confirm the wipe completed successfully before initializing a new storage backend.",
+    "Wiping a partition path (e.g. /dev/sdb3) is allowed by the pattern — useful for clearing a single partition rather than the whole disk.",
+    "After wiping, a node reboot or udevadm trigger may be needed for Proxmox to reflect the cleared device in the disk list."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_list",
+    "post_nodes_node_disks_zfs",
+    "post_nodes_node_disks_directory",
+    "post_nodes_node_disks_lvm",
+    "post_nodes_node_disks_lvmthin",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "operationId": "get_pve_remotes_remote_resources",
+  "usageNotes": "Use this endpoint to get a live snapshot of all resources across a PVE cluster registered as a PDM remote — VMs, LXC containers, nodes, storage pools, and SDN objects. The remote must be reachable from PDM and the caller must hold Resource.Audit on the remote; offline remotes will return an error rather than stale data. Omit the 'kind' filter to retrieve everything in one call, or pass a specific kind (vm, node, storage, sdn) to reduce payload size when only one resource type is needed.",
+  "examples": [
+    {
+      "summary": "List all running VMs on the 'pve-hetzner' remote",
+      "path_params": {
+        "remote": "pve-hetzner"
+      },
+      "params": {
+        "kind": "vm"
+      }
+    }
+  ],
+  "tips": [
+    "The 'kind' value 'vm' returns both QEMU and LXC guests; discriminate by the 'type' property on each returned item ('qemu' vs 'lxc').",
+    "CPU values are fractional utilization ratios (e.g. 0.42 = 42%), not core counts — use 'maxcpu' for the core count.",
+    "Memory and disk fields are raw bytes; divide by 1073741824 for GiB display.",
+    "SDN resources (zones and fabrics) are only present when SDN is configured on the cluster; expect an empty list otherwise.",
+    "The 'node' field on guest resources reflects placement, not cluster membership — useful for identifying which physical host a VM is running on."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes",
+    "get_pve_remotes_remote",
+    "get_pve_remotes_remote_nodes",
+    "get_pve_remotes_remote_node_vms"
+  ]
+}

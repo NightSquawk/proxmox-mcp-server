@@ -1,0 +1,38 @@
+{
+  "operationId": "get_cluster_backup_info",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "index",
+  "method": "GET",
+  "path": "/cluster/backup-info",
+  "description": "Index for backup info related endpoints",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "Directory index.",
+    "items": {
+      "properties": {
+        "subdir": {
+          "description": "API sub-directory endpoint",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{subdir}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/backup-info'"
+}

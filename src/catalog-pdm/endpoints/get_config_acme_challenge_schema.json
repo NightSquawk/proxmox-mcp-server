@@ -1,0 +1,50 @@
+{
+  "operationId": "get_config_acme_challenge_schema",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "challenge-schema",
+  "method": "GET",
+  "path": "/config/acme/challenge-schema",
+  "description": "Get named known ACME directory endpoints.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "ACME Challenge Plugin Shema.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Schema for an ACME challenge plugin.",
+      "properties": {
+        "id": {
+          "description": "Plugin ID.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Human readable name, falls back to id.",
+          "type": "string"
+        },
+        "schema": {
+          "additionalProperties": true,
+          "description": "The plugin's parameter schema.",
+          "properties": {},
+          "type": "object"
+        },
+        "type": {
+          "description": "Plugin Type.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/acme/challenge-schema'"
+}

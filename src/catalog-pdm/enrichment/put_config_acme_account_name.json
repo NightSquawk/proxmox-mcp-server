@@ -1,0 +1,27 @@
+{
+  "operationId": "put_config_acme_account_name",
+  "usageNotes": "Use this to update the contact email addresses registered with an existing ACME account on Proxmox Datacenter Manager; the account must already exist (create it first with the POST variant). Requires the 'System.Modify' privilege on the system/certificates path. The call is asynchronous — it returns a UPID that must be polled to confirm the update was applied at the ACME CA.",
+  "examples": [
+    {
+      "summary": "Update the contact email for the default ACME account",
+      "path_params": {
+        "name": "default"
+      },
+      "params": {
+        "contact": "admin@example.com,certs@example.com"
+      }
+    }
+  ],
+  "tips": [
+    "The 'contact' field accepts a comma-separated list of email addresses; most ACME CAs use this for expiry and revocation notices.",
+    "Poll the returned UPID via the task log endpoint to confirm the remote ACME CA accepted the contact update — a local 200 response does not mean the CA has acknowledged it.",
+    "Account names must match the pattern /^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/ — avoid spaces or special characters.",
+    "Omitting the 'contact' body field sends an empty update; include at least one valid email to ensure renewal notifications are delivered."
+  ],
+  "relatedOperations": [
+    "get_config_acme_account_name",
+    "post_config_acme_account",
+    "delete_config_acme_account_name",
+    "get_config_acme_account"
+  ]
+}

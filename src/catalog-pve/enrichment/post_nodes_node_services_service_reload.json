@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_services_service_reload",
+  "usageNotes": "Use this to apply configuration changes to a running service without a full stop/start cycle; Proxmox will automatically fall back to a restart if the service does not support live reload. Requires the `Sys.Modify` privilege on `/nodes/{node}`, so API tokens must carry that permission. The return value is a task UPID — poll the task log to confirm completion.",
+  "examples": [
+    {
+      "summary": "Reload the Proxmox proxy (pveproxy) on node pve01 to pick up a certificate change",
+      "path_params": {
+        "node": "pve01",
+        "service": "pveproxy"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "For services that do not natively support SIGHUP-based reload (e.g. corosync), Proxmox will silently fall back to a full restart — treat reload as a best-effort graceful operation.",
+    "pveproxy reload is the recommended way to activate a newly installed TLS certificate without dropping active API sessions unnecessarily.",
+    "Reloading pvedaemon or pve-cluster during active migrations or HA operations may cause brief task interruptions; prefer a maintenance window.",
+    "The returned UPID can be tracked with GET /nodes/{node}/tasks/{upid}/status."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_services_service_restart",
+    "post_nodes_node_services_service_start",
+    "post_nodes_node_services_service_stop",
+    "get_nodes_node_services_service_state",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

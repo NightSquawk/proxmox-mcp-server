@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_cluster_notifications_endpoints_gotify_name",
+  "usageNotes": "Permanently removes a named Gotify push-notification endpoint from the cluster notification configuration. Requires the `Mapping.Modify` privilege on `/mapping/notifications`. Any notification matchers or targets that reference this endpoint by name should be updated or removed first, as deleting the endpoint while it is referenced may leave dangling references in the notification routing config.",
+  "examples": [
+    {
+      "summary": "Delete a Gotify endpoint named 'gotify-alerts'",
+      "path_params": {
+        "name": "gotify-alerts"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the named Gotify endpoint and its configuration (URL, token, SSL settings) from the cluster; this cannot be undone and any notification matchers referencing this endpoint will no longer deliver alerts.",
+  "tips": [
+    "List existing Gotify endpoints first with GET /cluster/notifications/endpoints/gotify to confirm the exact name before deleting.",
+    "Check notification matchers (GET /cluster/notifications/matchers) for references to this endpoint name before removal to avoid silent alert delivery failures.",
+    "The endpoint name must match the pve-configid format (alphanumeric and hyphens, no spaces).",
+    "This is a cluster-wide operation — the deletion takes effect on all nodes without requiring per-node action."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_gotify",
+    "get_cluster_notifications_endpoints_gotify_name",
+    "create_cluster_notifications_endpoints_gotify",
+    "update_cluster_notifications_endpoints_gotify_name",
+    "get_cluster_notifications_matchers"
+  ]
+}

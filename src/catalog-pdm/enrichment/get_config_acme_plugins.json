@@ -1,0 +1,21 @@
+{
+  "operationId": "get_config_acme_plugins",
+  "usageNotes": "Returns all ACME challenge plugin configurations registered in Proxmox Datacenter Manager, including both standalone HTTP and DNS-01 challenge plugins. Requires the caller to hold the System.Modify privilege on the system/certificates path — a read-only privilege is not sufficient. Use this before creating or updating ACME orders to confirm the desired plugin ID exists and is not disabled.",
+  "examples": [
+    {
+      "summary": "List all configured ACME challenge plugins",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Items with 'disable: true' are present in the list but will not be used by ACME certificate orders — check this field before referencing a plugin ID in a certificate configuration.",
+    "The 'validation-delay' field (in seconds) is relevant for DNS-01 plugins where the DNS provider has a long TTL; increase it if ACME validation fails intermittently.",
+    "The 'plugin' field is the ID you reference when assigning a challenge plugin to a node's ACME certificate configuration."
+  ],
+  "relatedOperations": [
+    "get_config_acme_accounts",
+    "get_config_acme_directories",
+    "get_config_acme_tos"
+  ]
+}

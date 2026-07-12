@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_acme_tos",
+  "usageNotes": "Returns the Terms of Service URL for an ACME CA directory, useful for presenting the ToS to an operator before issuing certificates. This endpoint is deprecated — use get_cluster_acme_meta instead, which returns richer ACME CA metadata including the ToS URL. The default directory points to Let's Encrypt production; supply a different directory URL to query a staging or alternate CA.",
+  "examples": [
+    {
+      "summary": "Fetch ToS URL for Let's Encrypt production CA (default)",
+      "path_params": {},
+      "params": {
+        "directory": "https://acme-v02.api.letsencrypt.org/directory"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting the directory parameter uses the Let's Encrypt production directory automatically.",
+    "For testing, supply https://acme-staging-v02.api.letsencrypt.org/directory to hit the Let's Encrypt staging CA.",
+    "Prefer /cluster/acme/meta for new integrations; this endpoint may be removed in a future Proxmox release."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_meta",
+    "get_cluster_acme_directories",
+    "get_cluster_acme_accounts"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "operationId": "put_config_access_ldap_realm",
+  "usageNotes": "Use this to update an existing LDAP realm's connection settings, bind credentials, sync behavior, or TLS mode in Proxmox Datacenter Manager; the realm must already exist (use the corresponding POST to create it). Requires the `Realm.Allocate` privilege on `/access/domains`. Pass the `digest` field (obtained from the GET) to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Switch an existing LDAP realm to LDAPS with certificate verification, update the bind password, and enable new users on sync",
+      "path_params": {
+        "realm": "corp-ad"
+      },
+      "params": {
+        "server1": "dc1.corp.example.com",
+        "server2": "dc2.corp.example.com",
+        "port": 636,
+        "mode": "ldaps",
+        "verify": true,
+        "capath": "/etc/ssl/certs/corp-ca.pem",
+        "base-dn": "dc=corp,dc=example,dc=com",
+        "bind-dn": "cn=svc-pdm,ou=ServiceAccounts,dc=corp,dc=example,dc=com",
+        "password": "S3cur3B1ndP@ss!",
+        "user-attr": "sAMAccountName",
+        "user-classes": "user,person",
+        "sync-attributes": "email=mail,firstname=givenName,lastname=sn",
+        "sync-defaults-options": "enable-new=1,remove-vanished=entry;properties",
+        "comment": "Corporate Active Directory - LDAPS"
+      }
+    }
+  ],
+  "tips": [
+    "The `delete` param accepts a list of property names to unset (revert to default) in the same request — useful for removing a stale `capath` or `filter` without a separate call.",
+    "Default LDAP port is 389; LDAPS is 636 — set `port` explicitly when changing `mode` to avoid connection failures.",
+    "Setting `default: true` makes this realm pre-selected on the PDM login page; only one realm can be the default at a time.",
+    "The `sync-attributes` mapping uses LDAP attribute names as values (e.g. `email=mail`), not the reverse — easy to mix up.",
+    "When switching from plain `ldap` to `ldaps` or `ldap+starttls`, also set `verify: true` and supply a `capath` unless the server cert is signed by a trusted system CA."
+  ],
+  "relatedOperations": [
+    "get_config_access_ldap_realm",
+    "post_config_access_ldap",
+    "delete_config_access_ldap_realm",
+    "post_config_access_ldap_realm_sync"
+  ]
+}

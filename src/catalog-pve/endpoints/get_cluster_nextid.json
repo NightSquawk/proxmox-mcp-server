@@ -1,0 +1,36 @@
+{
+  "operationId": "get_cluster_nextid",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "nextid",
+  "method": "GET",
+  "path": "/cluster/nextid",
+  "description": "Get next free VMID. Pass a VMID to assert that its free (at time of check).",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": false,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "returns": {
+    "description": "The next free VMID.",
+    "type": "integer"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/nextid'"
+}

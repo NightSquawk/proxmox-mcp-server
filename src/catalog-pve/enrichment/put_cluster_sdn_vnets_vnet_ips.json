@@ -1,0 +1,31 @@
+{
+  "operationId": "put_cluster_sdn_vnets_vnet_ips",
+  "usageNotes": "Use this to create or update a static IP-to-MAC or IP-to-VMID mapping within a VNet's IPAM table — required when a VM needs a predictable address in an SDN zone that uses IPAM (e.g. PVE IPAM or Netbox). The caller must hold SDN.Allocate on the specific zone/vnet path; supply either mac or vmid (or both) to anchor the mapping to a specific guest. Changes take effect immediately without a cluster-wide SDN apply, but the VNet and zone must already exist.",
+  "examples": [
+    {
+      "summary": "Pin 10.10.20.50 to a VM's MAC address inside vnet 'vl20' in zone 'sdnz01'",
+      "path_params": {
+        "vnet": "vl20"
+      },
+      "params": {
+        "zone": "sdnz01",
+        "ip": "10.10.20.50",
+        "mac": "BC:24:11:AA:BB:CC",
+        "vmid": 112
+      }
+    }
+  ],
+  "tips": [
+    "Either mac or vmid is sufficient to anchor the mapping, but providing both avoids ambiguity when the same MAC could appear on multiple VMs (e.g. after a clone).",
+    "This endpoint returns null on success — check HTTP 200 as your confirmation; no UPID is issued.",
+    "The vnet identifier is 2–8 alphanumeric characters starting with a letter — the same constraint applies to zone.",
+    "If the IP is already mapped to a different MAC/VMID, this call overwrites the existing entry silently; verify the current mapping first with the corresponding GET if idempotency matters."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_ips",
+    "post_cluster_sdn_vnets_vnet_ips",
+    "delete_cluster_sdn_vnets_vnet_ips",
+    "get_cluster_sdn_vnets_vnet",
+    "put_cluster_sdn_apply"
+  ]
+}

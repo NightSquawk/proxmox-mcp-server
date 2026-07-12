@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_notifications_endpoints_smtp",
+  "usageNotes": "Use this to enumerate all configured SMTP notification endpoints in the cluster, including their delivery settings, recipient lists, and enabled/disabled state. Requires either Mapping.Modify or Mapping.Audit privilege on /mapping/notifications. Note that passwords are not returned by this endpoint — only configuration metadata is exposed.",
+  "examples": [
+    {
+      "summary": "List all SMTP endpoints to review configured mail delivery targets",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'origin' field distinguishes user-created endpoints from Proxmox built-ins ('builtin') and built-ins that have been modified ('modified-builtin').",
+    "A disabled endpoint (disable: true) will appear in the list but silently drops notifications — check this field when troubleshooting missing alerts.",
+    "Default encryption mode is 'tls' (port 465); if your SMTP relay requires STARTTLS use 'starttls' (port 587).",
+    "Recipients can be specified as raw email addresses (mailto) or as PVE user IDs (mailto-user), which resolve to the user's configured email address."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_smtp_name",
+    "create_cluster_notifications_endpoints_smtp",
+    "update_cluster_notifications_endpoints_smtp_name",
+    "delete_cluster_notifications_endpoints_smtp_name",
+    "get_cluster_notifications_matchers"
+  ]
+}

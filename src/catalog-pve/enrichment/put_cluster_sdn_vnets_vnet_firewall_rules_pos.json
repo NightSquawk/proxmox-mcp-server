@@ -1,0 +1,35 @@
+{
+  "operationId": "put_cluster_sdn_vnets_vnet_firewall_rules_pos",
+  "usageNotes": "Use this to modify an existing SDN vnet firewall rule in-place — change its action, source/destination, ports, enable state, or reorder it via `moveto`. Requires `SDN.Allocate` on the target vnet's zone path (`/sdn/zones/<zone>/<vnet>`); SDN firewall must be enabled on the vnet. Use the `digest` parameter when making programmatic updates to guard against concurrent modifications overwriting each other.",
+  "examples": [
+    {
+      "summary": "Tighten an existing ACCEPT rule to only allow TCP/443 from a trusted subnet",
+      "path_params": {
+        "vnet": "vnet01",
+        "pos": 2
+      },
+      "params": {
+        "type": "in",
+        "action": "ACCEPT",
+        "proto": "tcp",
+        "source": "10.10.0.0/24",
+        "dport": "443",
+        "comment": "Allow HTTPS from management subnet only",
+        "enable": 1
+      }
+    }
+  ],
+  "tips": [
+    "Pass `moveto` alone to reorder a rule without changing any other fields — all other body params are ignored when `moveto` is present.",
+    "Use the `delete` param (comma-separated field names, pve-configid-list format) to unset optional fields like `dest` or `sport` rather than overwriting them with empty strings.",
+    "Rule positions are zero-indexed; fetch the current list first with the GET sibling to confirm the target `pos` before modifying.",
+    "Changes take effect immediately after the API call — no reload step is required for SDN vnet firewall rules.",
+    "Do not mix IPv4 and IPv6 addresses in the same `source` or `dest` field."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_firewall_rules",
+    "get_cluster_sdn_vnets_vnet_firewall_rules_pos",
+    "post_cluster_sdn_vnets_vnet_firewall_rules",
+    "delete_cluster_sdn_vnets_vnet_firewall_rules_pos"
+  ]
+}

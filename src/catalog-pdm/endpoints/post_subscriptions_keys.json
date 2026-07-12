@@ -1,0 +1,62 @@
+{
+  "operationId": "post_subscriptions_keys",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "keys",
+  "method": "POST",
+  "path": "/subscriptions/keys",
+  "description": "Add one or more subscription keys to the pool.\n\nThe key prefix determines the product type via [`ProductType::from_key`]. The schema regex\nrejects anything that isn't a PVE or PBS key today; widen [`PRODUCT_KEY_REGEX`] in lockstep\nwith `from_key` and `push_key_to_remote` when PMG/POM remote support lands.\n\nDuplicate keys within the input are silently collapsed to a single entry; the dropped count is\nreported back so a CLI / API caller can tell pasting the same key twice apart from a genuine\nadd. Keys already present in the pool are still a hard CONFLICT - that is operator-visible\nstate, not an input typo. Apart from dedup the request stays all-or-nothing: a single bad\nprefix or an existing-pool collision fails the call and leaves the pool untouched.\n\nThe post-save digest is set on the response so clients can chain a follow-up mutation without\na refetch round-trip.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    },
+    {
+      "name": "keys",
+      "type": "array",
+      "required": true,
+      "description": "Subscription keys to add to the pool."
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Result of the add-keys API endpoint.",
+    "properties": {
+      "added": {
+        "description": "Number of keys actually added to the pool.",
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer"
+      },
+      "deduplicated": {
+        "description": "Number of duplicate keys silently dropped from the input before adding.",
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"keys\":\"<keys>\"}' 'https://PDM_HOST:8443/api2/json/subscriptions/keys'"
+}

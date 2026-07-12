@@ -1,0 +1,16 @@
+{
+  "operationId": "get_resources",
+  "usageNotes": "Returns the top-level resource directory index for the Proxmox Datacenter Manager API. Use this as a discovery call to enumerate available API resource categories — useful for probing what the connected PDM instance exposes before making targeted requests. No parameters are required and all authenticated users have access.",
+  "examples": [
+    {
+      "summary": "List all top-level PDM API resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a pure discovery endpoint — the response is the API directory index, not operational data about managed nodes or VMs.",
+    "Because permissions are 'user: all', any valid API token can call this regardless of role."
+  ],
+  "relatedOperations": []
+}

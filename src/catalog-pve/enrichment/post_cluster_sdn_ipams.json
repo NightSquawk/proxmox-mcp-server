@@ -1,0 +1,30 @@
+{
+  "operationId": "post_cluster_sdn_ipams",
+  "usageNotes": "Creates a new SDN IPAM plugin registration in the cluster-wide SDN configuration; requires the SDN.Allocate privilege on /sdn/ipams. After creation, the SDN config must be applied via POST /cluster/sdn to push the change to all nodes. For external IPAM backends (netbox, phpipam), supply the url and token params; for the built-in pve type, no external URL is needed.",
+  "examples": [
+    {
+      "summary": "Register a NetBox instance as the cluster IPAM",
+      "path_params": {},
+      "params": {
+        "ipam": "netbox01",
+        "type": "netbox",
+        "url": "https://netbox.example.com",
+        "token": "Token abc123def456abc123def456abc123def456abcd"
+      }
+    }
+  ],
+  "tips": [
+    "The ipam identifier must start and end with a letter or digit (pattern: [a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]) and be at least 2 characters.",
+    "For the built-in 'pve' type, url and token are not required; Proxmox manages IP allocations internally.",
+    "For phpipam, supply the certificate SHA-256 fingerprint via 'fingerprint' if the server uses a self-signed cert.",
+    "Returns null on success — use GET /cluster/sdn/ipams to confirm the object was created.",
+    "SDN changes are staged; always follow up with POST /cluster/sdn (apply) to activate the new IPAM across the cluster."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_ipams",
+    "get_cluster_sdn_ipams_ipam",
+    "put_cluster_sdn_ipams_ipam",
+    "delete_cluster_sdn_ipams_ipam",
+    "put_cluster_sdn"
+  ]
+}

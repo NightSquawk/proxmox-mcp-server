@@ -1,0 +1,20 @@
+{
+  "operationId": "get_access_openid",
+  "usageNotes": "Returns the directory index of available OpenID Connect sub-resources under /access/openid. Use this as a discovery call to enumerate what OpenID endpoints PDM exposes before calling specific OpenID operations (e.g. login, callback). No parameters are required and no special privilege is needed — all authenticated users can call it.",
+  "examples": [
+    {
+      "summary": "Discover available OpenID sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns null per the spec — the actual directory listing is embedded in the API envelope (data field), not a typed schema.",
+    "Useful as a connectivity/auth smoke-test since it requires no privilege beyond a valid token."
+  ],
+  "relatedOperations": [
+    "get_access",
+    "post_access_openid_login",
+    "post_access_openid_auth_url"
+  ]
+}

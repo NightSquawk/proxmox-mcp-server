@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_mapping_pci_id",
+  "usageNotes": "Retrieves the full configuration of a named PCI hardware mapping, including all node-to-device entries defined under that mapping ID. Caller must hold at least one of Mapping.Use, Mapping.Modify, or Mapping.Audit on the specific mapping path. The 'id' must match an existing pve-configid (alphanumeric/hyphen, no spaces); use list_cluster_mapping_pci to discover valid IDs first.",
+  "examples": [
+    {
+      "summary": "Fetch the configuration for a GPU passthrough mapping named 'gpu-rtx3090'",
+      "path_params": {
+        "id": "gpu-rtx3090"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned object includes per-node device entries (node name, PCI device IDs, IOMMU group, subsystem IDs) — useful for verifying multi-node consistency before live-migrating a VM that uses PCI passthrough.",
+    "Mapping IDs follow pve-configid format: lowercase letters, digits, and hyphens only; underscores are not valid.",
+    "If the caller only needs to enumerate available mappings without reading details, use list_cluster_mapping_pci instead to avoid needing per-mapping permissions."
+  ],
+  "relatedOperations": [
+    "list_cluster_mapping_pci",
+    "create_cluster_mapping_pci",
+    "update_cluster_mapping_pci_id",
+    "delete_cluster_mapping_pci_id"
+  ]
+}

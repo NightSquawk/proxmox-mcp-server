@@ -1,0 +1,23 @@
+{
+  "operationId": "post_access_openid_auth_url",
+  "usageNotes": "Use this as the first step in an OpenID Connect login flow: POST the realm name and your application's redirect-url to receive the provider's authorization URL, then redirect the browser to that URL. No authentication is required — this endpoint is world-accessible by design. The redirect-url must exactly match a URI registered with the OpenID provider, or the provider will reject the subsequent callback.",
+  "examples": [
+    {
+      "summary": "Initiate OpenID login for the 'corp-sso' realm, redirecting back to a local dashboard",
+      "path_params": {},
+      "params": {
+        "realm": "corp-sso",
+        "redirect-url": "https://dashboard.example.com/auth/callback"
+      }
+    }
+  ],
+  "tips": [
+    "The returned string is a full URL — redirect the user's browser to it; do not call it server-side.",
+    "The realm must already be configured in PDM as an OpenID Connect realm before this call will succeed.",
+    "Mismatched redirect-url values (not registered with the identity provider) will cause a provider-side error after the redirect, not a PDM API error.",
+    "Because no token or cookie is required, this endpoint is safe to call from a browser or unauthenticated proxy."
+  ],
+  "relatedOperations": [
+    "post_access_openid_login"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "delete_cluster_sdn_lock",
+  "usageNotes": "Releases the cluster-wide SDN configuration lock, which is acquired before applying SDN changes and must be released when done or when a previous apply operation left the lock stuck. Normally supply the `lock-token` returned when the lock was acquired; use `force: true` only to break a stale lock when the original token is unavailable, as forcing bypasses the token check and can discard in-progress changes made by another session. Requires `SDN.Allocate` on `/sdn`.",
+  "examples": [
+    {
+      "summary": "Release an SDN lock using the token acquired earlier",
+      "path_params": {},
+      "params": {
+        "lock-token": "a3f8c12d-7b4e-4a91-b5f2-0e6d3c9a1b77"
+      }
+    }
+  ],
+  "destructiveReason": "Force-releasing the lock without the original token can silently discard uncommitted SDN configuration changes that another session was in the process of applying.",
+  "tips": [
+    "The lock token is returned by the corresponding lock-acquire call (POST /cluster/sdn/lock); store it immediately before making SDN changes.",
+    "Use `force: true` only as a last resort for stuck locks — confirm no other apply is actively running first.",
+    "This call returns null on success; any non-null error response means the lock was not released.",
+    "After releasing the lock, verify the SDN state with GET /cluster/sdn to confirm the expected configuration is active."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn",
+    "put_cluster_sdn"
+  ]
+}

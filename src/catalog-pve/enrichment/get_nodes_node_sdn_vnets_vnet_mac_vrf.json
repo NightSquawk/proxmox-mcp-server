@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_sdn_vnets_vnet_mac_vrf",
+  "usageNotes": "Use this endpoint to inspect the MAC VRF routing table for a specific VNet on an EVPN zone — it returns every MAC-IP binding that the queried node either self-originates or has learned via BGP from remote VTEPs. The VNet must belong to an EVPN-type SDN zone; calling it against a VXLAN or simple zone will yield no meaningful results. The caller requires SDN.Audit permission on the specific zone/vnet path, and the target node must be online and have the SDN configuration applied.",
+  "examples": [
+    {
+      "summary": "Retrieve MAC VRF entries for VNet 'prod01' from node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "vnet": "prod01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Results are node-scoped: the same VNet queried from different nodes may show different BGP-learned entries depending on each node's EVPN peering state.",
+    "An empty array is normal when no VMs are active on the VNet or BGP sessions have not yet converged.",
+    "The 'nexthop' field is the VTEP IP of the remote node that advertised the route — useful for tracing which physical host owns a given MAC.",
+    "SDN configuration must have been applied (via pvesh POST /cluster/sdn/vnets/{vnet}/apply or the Proxmox UI) before this endpoint reflects current state."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_vnets",
+    "get_nodes_node_sdn_vnets_vnet",
+    "get_cluster_sdn_vnets",
+    "get_cluster_sdn_vnets_vnet"
+  ]
+}

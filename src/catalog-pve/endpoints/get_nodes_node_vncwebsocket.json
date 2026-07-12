@@ -1,0 +1,63 @@
+{
+  "operationId": "get_nodes_node_vncwebsocket",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "vncwebsocket",
+  "method": "GET",
+  "path": "/nodes/{node}/vncwebsocket",
+  "description": "Opens a websocket for VNC traffic.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "port",
+      "type": "integer",
+      "required": true,
+      "description": "Port number returned by previous 'vncshell' call.",
+      "minimum": 5900,
+      "maximum": 5999,
+      "typetext": "<integer> (5900 - 5999)"
+    },
+    {
+      "name": "vncticket",
+      "type": "string",
+      "required": true,
+      "description": "Ticket from previous call to 'vncshell'.",
+      "maxLength": 512,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "port": {
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Console"
+      ]
+    ],
+    "description": "You also need to pass a valid ticket (vncticket)."
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/vncwebsocket?port=0&vncticket=<vncticket>'"
+}

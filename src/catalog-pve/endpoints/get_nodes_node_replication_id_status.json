@@ -1,0 +1,42 @@
+{
+  "operationId": "get_nodes_node_replication_id_status",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "job_status",
+  "method": "GET",
+  "path": "/nodes/{node}/replication/{id}/status",
+  "description": "Get replication job status.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "Replication Job ID. The ID is composed of a Guest ID and a job number, separated by a hyphen, i.e. '<GUEST>-<JOBNUM>'.",
+      "format": "pve-replication-job-id",
+      "pattern": "[1-9][0-9]{2,8}-\\d{1,9}"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "description": "Requires the VM.Audit permission on /vms/<vmid>.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/replication/<id>/status'"
+}

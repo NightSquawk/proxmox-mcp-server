@@ -1,0 +1,29 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_snapshot",
+  "usageNotes": "Use this to enumerate all snapshots for a QEMU VM on a remote PVE node managed by PDM, including the live 'current' pseudo-entry that represents the running state. The optional 'node' query parameter narrows the request to a specific node in a clustered remote; omit it to let PDM resolve the VM's host automatically. Requires Resource.Audit on the remote/guest path — read-only and safe to call at any time regardless of VM power state.",
+  "examples": [
+    {
+      "summary": "List all snapshots for VM 101 on the remote named 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 101
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "The response always includes a 'current' entry (name: 'current') that represents the live VM state — filter it out if you only need historical snapshots.",
+    "The 'snaptime' field is a Unix timestamp; convert to a human-readable date when displaying snapshot age.",
+    "The 'vmstate' field indicates whether RAM was included in the snapshot — RAM snapshots are larger and take longer to restore.",
+    "If the remote has multiple nodes, specifying 'node' avoids an extra lookup and can reduce latency.",
+    "The 'parent' field lets you reconstruct the snapshot tree/chain — useful before deciding which snapshot to roll back to."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_snapshot_snapname_config",
+    "post_pve_remotes_remote_qemu_vmid_snapshot",
+    "delete_pve_remotes_remote_qemu_vmid_snapshot_snapname",
+    "post_pve_remotes_remote_qemu_vmid_snapshot_snapname_rollback"
+  ]
+}

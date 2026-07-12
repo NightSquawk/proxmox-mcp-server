@@ -1,0 +1,27 @@
+{
+  "operationId": "post_access_roles",
+  "usageNotes": "Use this to define a custom role that groups one or more Proxmox privileges, which can then be assigned to users or groups via ACL entries. The caller must hold `Sys.Modify` on `/access`. The `privs` field accepts a comma-separated privilege list (e.g. `VM.PowerMgmt,VM.Console`); omitting it creates an empty role that can be populated later with `put_access_roles_{roleid}`.",
+  "examples": [
+    {
+      "summary": "Create a read-only VM monitoring role",
+      "path_params": {},
+      "params": {
+        "roleid": "VMMonitor",
+        "privs": "VM.Audit,VM.Console"
+      }
+    }
+  ],
+  "tips": [
+    "Role IDs must match the `pve-roleid` format: alphanumeric plus hyphens/underscores, no spaces.",
+    "Built-in roles (Administrator, PVEAdmin, etc.) cannot be overwritten; choose a unique roleid.",
+    "An empty role (no privs) is valid and useful as a placeholder before privileges are finalized.",
+    "After creation, assign the role to a user/group with `post_access_acl`."
+  ],
+  "relatedOperations": [
+    "get_access_roles",
+    "get_access_roles_{roleid}",
+    "put_access_roles_{roleid}",
+    "delete_access_roles_{roleid}",
+    "put_access_acl"
+  ]
+}

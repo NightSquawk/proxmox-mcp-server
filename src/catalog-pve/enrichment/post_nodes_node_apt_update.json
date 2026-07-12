@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_apt_update",
+  "usageNotes": "Runs `apt-get update` on the target node to refresh its package index from configured APT sources; call this before checking for available upgrades or listing packages. The operation is asynchronous — the returned string is a UPID (Proxmox task ID) that you must poll with the task-status endpoint to confirm completion. The calling token or user requires `Sys.Modify` on `/nodes/{node}`.",
+  "examples": [
+    {
+      "summary": "Refresh package index on node 'pve1', suppressing progress output",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "quiet": true,
+        "notify": false
+      }
+    }
+  ],
+  "tips": [
+    "The returned UPID looks like 'UPID:pve1:...' — pass it to GET /nodes/{node}/tasks/{upid}/status to check when the update finishes.",
+    "Set notify=true only when you want Proxmox to generate an internal notification about newly available packages; it does not trigger an upgrade.",
+    "Run this before calling the apt/updates list endpoint (GET /nodes/{node}/apt/updates) to ensure results reflect the current upstream state.",
+    "In large clusters, you must call this per-node — there is no cluster-wide apt update endpoint."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_updates",
+    "get_nodes_node_apt_changelog",
+    "get_nodes_node_tasks"
+  ]
+}

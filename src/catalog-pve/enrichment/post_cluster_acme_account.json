@@ -1,0 +1,30 @@
+{
+  "operationId": "post_cluster_acme_account",
+  "usageNotes": "Registers a new ACME account with a CA (defaults to Let's Encrypt production) and stores the account credentials in a named config file on the cluster. The `contact` field must be a valid email address that will receive expiry and revocation notices from the CA. If the CA requires External Account Binding (e.g. ZeroSSL, sectigo), supply both `eab-kid` and `eab-hmac-key` together; omitting one will cause registration to fail. You must pass the CA's Terms of Service URL via `tos_url` to indicate acceptance — most CAs will reject registration without it.",
+  "examples": [
+    {
+      "summary": "Register a default Let's Encrypt account with ToS acceptance",
+      "path_params": {},
+      "params": {
+        "name": "default",
+        "contact": "hello@nightsquawk.tech",
+        "directory": "https://acme-v02.api.letsencrypt.org/directory",
+        "tos_url": "https://letsencrypt.org/documents/LE-SA-v1.4-April-3-2024.pdf"
+      }
+    }
+  ],
+  "tips": [
+    "Let's Encrypt staging directory (https://acme-staging-v02.api.letsencrypt.org/directory) is useful for testing; certificates it issues are untrusted but rate limits are much higher.",
+    "The `name` field becomes the config file identifier reused when assigning this account to ACME domain entries — use a descriptive name (e.g. 'letsencrypt', 'zerossl') if you manage multiple CAs.",
+    "Only one account per name is allowed; attempting to register a duplicate name will return an error — use get_cluster_acme_account_name first to check existence.",
+    "EAB credentials are one-time-use secrets provided by the CA dashboard; store them securely before submitting — Proxmox does not echo them back after registration."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_account",
+    "get_cluster_acme_account_name",
+    "put_cluster_acme_account_name",
+    "delete_cluster_acme_account_name",
+    "get_cluster_acme_directories",
+    "get_cluster_acme_tos"
+  ]
+}

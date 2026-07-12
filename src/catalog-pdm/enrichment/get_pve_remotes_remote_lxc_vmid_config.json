@@ -1,0 +1,27 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid_config",
+  "usageNotes": "Fetches the full configuration of an LXC container from a remote PVE cluster registered in PDM. Use 'state=active' to see what is currently applied to the running container, or 'state=pending' (default) to see the configuration that will take effect on next start/reboot. Pass 'snapshot' to read config as it existed at a specific snapshot point. If 'node' is omitted, PDM resolves the hosting node automatically.",
+  "examples": [
+    {
+      "summary": "Get current active config for container 101 on remote 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 101
+      },
+      "params": {
+        "state": "active"
+      }
+    }
+  ],
+  "tips": [
+    "Omit 'node' unless you need to target a specific node; PDM auto-discovers the node for the given vmid.",
+    "The default 'state=pending' reflects the on-disk config file; use 'state=active' to see what the live container is actually running with.",
+    "Combine with 'snapshot' to audit what the container's config looked like at a historical restore point.",
+    "The response includes resource limits (cores, memory, swap), network interfaces (net0..netN), mount points (mp0..mpN), and device passthrough — parse selectively based on the field you need."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc",
+    "get_pve_remotes_remote_lxc_vmid_snapshot",
+    "get_pve_remotes_remote_lxc_vmid_status_current"
+  ]
+}

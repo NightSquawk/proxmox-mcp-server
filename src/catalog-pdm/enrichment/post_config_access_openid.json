@@ -1,0 +1,33 @@
+{
+  "operationId": "post_config_access_openid",
+  "usageNotes": "Use this to register a new OpenID Connect realm in Proxmox Datacenter Manager so users can authenticate via an external identity provider (e.g., Keycloak, Azure AD, Authentik). Requires the `Realm.Allocate` privilege on `/access/domains`. The `realm` name must be unique across all authentication realms; if `autocreate` is false (default), users must be pre-provisioned in PDM before they can log in via the new realm.",
+  "examples": [
+    {
+      "summary": "Register an Authentik-backed OIDC realm for SSO",
+      "path_params": {},
+      "params": {
+        "realm": "authentik",
+        "client-id": "proxmox-pdm",
+        "client-key": "supersecretclientkey",
+        "issuer-url": "https://sso.example.com/application/o/proxmox-pdm/",
+        "username-claim": "preferred_username",
+        "scopes": "openid email profile",
+        "autocreate": true,
+        "default": false,
+        "comment": "Authentik SSO for NightSquawk staff"
+      }
+    }
+  ],
+  "tips": [
+    "The `username-claim` field determines how PDM maps OIDC token claims to local user accounts — ensure the IdP cannot let users self-modify this claim, as it is the uniqueness key.",
+    "Scopes default to 'email profile'; add 'openid' explicitly if your IdP requires it in the scope list.",
+    "Set `default: true` only after verifying the realm works correctly; an unreachable default IdP locks out web-UI users who rely on automatic realm pre-selection.",
+    "After creation, verify the realm appears with `get_config_access` or `get_config_access_openid_{realm}` before directing users to log in."
+  ],
+  "relatedOperations": [
+    "get_config_access_openid",
+    "put_config_access_openid",
+    "delete_config_access_openid",
+    "get_config_access"
+  ]
+}

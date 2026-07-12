@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_tasks",
+  "usageNotes": "Returns a list of recent tasks cluster-wide, each represented by a UPID (Unique Process ID) string that encodes the node, task type, PID, and start time. Use this to discover in-progress or recently completed async operations across all nodes without needing per-node queries. No special privilege is required beyond a valid authenticated session.",
+  "examples": [
+    {
+      "summary": "List all recent cluster-wide tasks",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Each returned UPID can be decoded or passed to node-level task endpoints (e.g., GET /nodes/{node}/tasks/{upid}/status) to retrieve full status and log output.",
+    "The list is scoped to recent tasks; very old tasks may not appear — use node-level task history endpoints if you need historical data beyond the rolling window.",
+    "Because permissions are 'user: all', any authenticated API token can call this endpoint, but task log detail endpoints may enforce stricter per-task or per-node ACLs."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks",
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log"
+  ]
+}

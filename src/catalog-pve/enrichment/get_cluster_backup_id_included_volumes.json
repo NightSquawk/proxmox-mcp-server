@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_backup_id_included_volumes",
+  "usageNotes": "Use this to audit which disks within a cluster backup job are actually being backed up and why — useful for verifying that no critical volumes are excluded due to misconfiguration. Requires `Sys.Audit` on `/` (cluster-wide scope), so API tokens scoped to individual nodes will not work. The response is structured as a two-level tree (guests → volumes) intended for tree-view UIs; parse `children[*].children` to programmatically check each volume's `included` and `reason` fields.",
+  "examples": [
+    {
+      "summary": "Check which volumes are included for backup job 'daily-all'",
+      "path_params": {
+        "id": "daily-all"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Guests with type 'unknown' are VMs/CTs that have been removed from the cluster but not purged from the backup job — they will appear in results but have no live configuration.",
+    "A volume with included=false will show a human-readable reason string explaining the exclusion (e.g. 'drive is marked to be excluded', 'backup disabled for this guest'); use this to distinguish intentional vs. unintentional exclusions.",
+    "This endpoint reflects the current job configuration, not historical backup results — a volume marked included=true means it is configured to be backed up on the next run, not that it was successfully backed up previously."
+  ],
+  "relatedOperations": [
+    "get_cluster_backup",
+    "get_cluster_backup_id",
+    "get_nodes_node_vzdump_defaults"
+  ]
+}

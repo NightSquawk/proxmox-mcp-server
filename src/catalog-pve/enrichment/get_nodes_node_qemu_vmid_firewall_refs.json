@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_refs",
+  "usageNotes": "Use this endpoint to discover which IPSet and Alias names are valid when building firewall rules for a specific VM — these are the values you can reference in the source/destination fields of a rule. Results include both VM-level and datacenter-level references that are in scope for this VM. Requires VM.Audit on the target VM's path; no node-online requirement beyond normal API reachability.",
+  "examples": [
+    {
+      "summary": "List all firewall references (aliases and IPSets) available for VM 105 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Omit the 'type' filter to see all available references in one call; use 'type=alias' or 'type=ipset' when you only need one kind.",
+    "The 'scope' field in each result indicates whether the reference is defined at the VM level or inherited from the datacenter/cluster firewall.",
+    "Use this before creating or validating firewall rules to confirm the exact 'ref' string to use — rule creation will reject unknown references."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "post_nodes_node_qemu_vmid_firewall_rules",
+    "get_nodes_node_firewall_refs",
+    "get_cluster_firewall_refs"
+  ]
+}

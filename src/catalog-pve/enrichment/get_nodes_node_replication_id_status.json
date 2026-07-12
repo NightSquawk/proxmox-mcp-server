@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_replication_id_status",
+  "usageNotes": "Use this endpoint to check the current status of a specific replication job on a given node, including last sync time, next scheduled run, error state, and transfer duration. The caller must query the source node (the node that owns the job), not the target. Requires VM.Audit on the guest's /vms/<vmid> path; API token access is supported.",
+  "examples": [
+    {
+      "summary": "Check status of replication job 0 for VM 105 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "id": "105-0"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The job ID format is '<VMID>-<JOBNUM>' (e.g. '105-0'); the VMID must be 3-9 digits and JOBNUM 1-9 digits.",
+    "A non-null 'error' field in the response indicates the last replication run failed — cross-reference with the node's task log using list_nodes_node_tasks.",
+    "This endpoint is node-scoped: the same job ID queried on the wrong node will return 404 since each node tracks only its own outgoing replication jobs.",
+    "Poll this endpoint after triggering a manual replication run (via post_nodes_node_replication_id_schedule_now) to confirm completion."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_replication",
+    "post_nodes_node_replication_id_schedule_now",
+    "get_replication",
+    "get_nodes_node_tasks"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_ceph_pool",
+  "usageNotes": "Use this to inventory all Ceph pools on the cluster and audit their replication, PG, and autoscaler settings. The target node must be online and have Ceph services running; any node that is a full Ceph MON member will return the same cluster-wide pool list. Requires either Sys.Audit or Datastore.Audit at the root path — both are checked with 'any', so either privilege is sufficient.",
+  "examples": [
+    {
+      "summary": "List all Ceph pools from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "bytes_used and percent_used are optional — they may be absent for a pool that has never received data or whose stats are still initializing after creation.",
+    "autoscale_status shape changes across Ceph releases (Pacific, Quincy, Reef); parse it defensively.",
+    "pg_num_final is the pg_autoscaler's recommendation; if it differs significantly from pg_num the cluster may be under- or over-provisioned for PGs.",
+    "The 'type' field distinguishes replicated from erasure-coded pools — erasure pools cannot host RBD images used by VM disks without a special CRUSH profile."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_pool_name",
+    "post_nodes_node_ceph_pool",
+    "put_nodes_node_ceph_pool_name",
+    "delete_nodes_node_ceph_pool_name",
+    "get_nodes_node_ceph_status"
+  ]
+}

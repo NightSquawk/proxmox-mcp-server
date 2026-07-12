@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_fsfreeze_freeze",
+  "usageNotes": "Instructs the QEMU Guest Agent inside the VM to freeze all filesystems (fsfreeze), quiescing writes so a consistent snapshot or backup can be taken. The VM must be running with the Guest Agent installed, enabled, and responsive — the call will fail otherwise. Always follow with a thaw (fsfreeze-thaw) as soon as the snapshot is complete, since frozen filesystems block all guest writes and will cause application timeouts.",
+  "examples": [
+    {
+      "summary": "Freeze filesystems on VM 101 before taking a snapshot on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Pair with post_nodes_node_qemu_vmid_agent_fsfreeze_thaw immediately after the snapshot is captured — leaving filesystems frozen will hang guest I/O.",
+    "Check guest agent status first via get_nodes_node_qemu_vmid_agent_info to confirm the agent is running before issuing the freeze.",
+    "Requires the VM.GuestAgent.FileSystemMgmt (or Unrestricted) privilege on /vms/{vmid} — standard VM.PowerMgmt alone is not sufficient.",
+    "The returned result object reflects the Guest Agent's response; a non-error result does not guarantee all filesystems were frozen if the guest OS has uncooperative mounts."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_agent_fsfreeze_thaw",
+    "get_nodes_node_qemu_vmid_agent_fsfreeze_status",
+    "post_nodes_node_qemu_vmid_snapshot",
+    "get_nodes_node_qemu_vmid_agent_info"
+  ]
+}

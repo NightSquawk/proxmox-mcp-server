@@ -1,0 +1,22 @@
+{
+  "operationId": "get_access",
+  "usageNotes": "Returns the list of available subdirectories under the /access endpoint, functioning as a discovery index for the access and authentication subsystem. No privileges are required — any authenticated user or API token can call it. Useful as a sanity check that the API is reachable and to enumerate supported auth sub-resources before drilling into specific endpoints like /access/users or /access/roles.",
+  "examples": [
+    {
+      "summary": "List all access subdirectories",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'subdir' values map directly to child endpoints (e.g., 'users', 'groups', 'roles', 'acl', 'domains', 'ticket') — use them to discover what's available without hardcoding paths.",
+    "Because this endpoint requires no special privilege, it is safe to use as a lightweight connectivity/health probe against the PVE API."
+  ],
+  "relatedOperations": [
+    "get_access_users",
+    "get_access_groups",
+    "get_access_roles",
+    "get_access_acl",
+    "get_access_domains"
+  ]
+}

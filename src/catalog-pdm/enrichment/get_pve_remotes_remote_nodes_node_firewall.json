@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_firewall",
+  "usageNotes": "Returns the firewall directory index for a specific node on a PDM-managed PVE remote — use this to discover which firewall sub-resources (rules, options, refs, etc.) are available before drilling into them. The remote must be reachable by PDM and the node must exist within that remote cluster. Accessible to all authenticated users; no elevated privilege required.",
+  "examples": [
+    {
+      "summary": "List firewall sub-resources for node pve1 on remote prod-cluster",
+      "path_params": {
+        "remote": "prod-cluster",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a directory index endpoint — it lists available firewall sub-endpoints, not actual firewall rules or settings.",
+    "Use the returned sub-resource names to construct subsequent calls (e.g., rules, options, refs) against the same remote/node path.",
+    "If the remote is offline or the node name is invalid, PDM will return an error rather than an empty list."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_firewall_rules",
+    "get_pve_remotes_remote_nodes_node_firewall_options",
+    "get_pve_remotes_remote_nodes_node_firewall_refs",
+    "get_pve_remotes_remote_nodes_node"
+  ]
+}

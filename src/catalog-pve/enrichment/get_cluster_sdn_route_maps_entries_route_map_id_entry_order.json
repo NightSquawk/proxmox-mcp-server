@@ -1,0 +1,27 @@
+{
+  "operationId": "get_cluster_sdn_route_maps_entries_route_map_id_entry_order",
+  "usageNotes": "Retrieves the full configuration of a single route map entry identified by its zero-based order index, including its action (permit/deny), match conditions, set actions, and exit-action flow control. Use this before updating or deleting an entry to capture the current digest for optimistic concurrency protection. Requires SDN.Audit or SDN.Allocate on the route-map path; SDN must be enabled on the cluster.",
+  "examples": [
+    {
+      "summary": "Fetch entry at order 10 from route map 'bgp-out'",
+      "path_params": {
+        "route-map-id": "bgp-out",
+        "order": 10
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'order' value is the sequence index (0–65535), not a line number — gaps between entries are intentional and used for inserting new entries between existing ones.",
+    "Capture the returned 'digest' field and pass it to update/delete calls to prevent overwriting concurrent changes.",
+    "The 'call' field, if present, indicates this entry delegates control to another route map — follow that map's entries to understand the full policy chain.",
+    "exit-action values: 'on-match-goto <order>' jumps to a specific entry, 'on-match-next' continues to the next sequential entry, 'continue' evaluates the next entry regardless of match."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_route_maps_entries_route_map_id",
+    "create_cluster_sdn_route_maps_entries_route_map_id",
+    "update_cluster_sdn_route_maps_entries_route_map_id_entry_order",
+    "delete_cluster_sdn_route_maps_entries_route_map_id_entry_order",
+    "get_cluster_sdn_route_maps"
+  ]
+}

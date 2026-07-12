@@ -1,0 +1,37 @@
+{
+  "operationId": "get_cluster_ha_groups_group",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "read",
+  "method": "GET",
+  "path": "/cluster/ha/groups/{group}",
+  "description": "Read ha group configuration. (deprecated in favor of HA rules)",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "group",
+      "type": "string",
+      "required": true,
+      "description": "The HA group identifier.",
+      "format": "pve-configid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {},
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/ha/groups/<group>'"
+}

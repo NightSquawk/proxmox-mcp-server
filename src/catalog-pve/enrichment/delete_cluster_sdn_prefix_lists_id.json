@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_sdn_prefix_lists_id",
+  "usageNotes": "Permanently deletes an SDN prefix list from the cluster configuration; requires the SDN.Allocate privilege on the specific prefix list path. Before deleting, ensure the prefix list is not referenced by any SDN zone, VNet, or firewall policy — removing a referenced list will leave dangling references that block SDN apply operations. After deletion, run the SDN apply operation (POST /cluster/sdn) to push the change to all nodes.",
+  "examples": [
+    {
+      "summary": "Delete an unused BGP prefix list named 'allowed-prefixes'",
+      "path_params": {
+        "id": "allowed-prefixes"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the named prefix list and all its configured prefix entries from the cluster SDN configuration with no undo path.",
+  "tips": [
+    "Use get_cluster_sdn_prefix_lists_id first to confirm the target prefix list exists and note any references before deleting.",
+    "The optional 'lock-token' parameter is required only if the SDN configuration is currently locked by another operation — obtain it via the SDN lock endpoint.",
+    "Deletion only updates the pending SDN config; run POST /cluster/sdn to apply and propagate the change to all cluster nodes."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_prefix_lists_id",
+    "get_cluster_sdn_prefix_lists",
+    "create_cluster_sdn_prefix_lists",
+    "update_cluster_sdn_prefix_lists_id",
+    "apply_cluster_sdn"
+  ]
+}

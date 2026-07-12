@@ -1,0 +1,69 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_sdn_zones_zone_ip_vrf",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "ip-vrf",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/nodes/{node}/sdn/zones/{zone}/ip-vrf",
+  "description": "Get the IP-VRF for an EVPN zone for a node on a given remote",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "zone",
+      "type": "string",
+      "required": true,
+      "description": "The name for an SDN object (zone / vnet / fabric)."
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object.",
+    "properties": {
+      "ip": {
+        "description": "The CIDR of the route table entry.",
+        "type": "string"
+      },
+      "metric": {
+        "description": "This route's metric.",
+        "type": "integer"
+      },
+      "nexthops": {
+        "description": "A list of nexthops for the route table entry.",
+        "items": {
+          "description": "the interface name or ip address of the next hop",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "protocol": {
+        "description": "The protocol where this route was learned from (e.g. BGP).",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/nodes/<node>/sdn/zones/<zone>/ip-vrf'"
+}

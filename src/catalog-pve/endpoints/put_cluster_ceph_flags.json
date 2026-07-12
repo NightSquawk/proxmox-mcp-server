@@ -1,0 +1,108 @@
+{
+  "operationId": "put_cluster_ceph_flags",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "set_flags",
+  "method": "PUT",
+  "path": "/cluster/ceph/flags",
+  "description": "Set/Unset multiple Ceph flags at once. Each flag is a top-level optional boolean: passing true sets the flag, false unsets it, omitting it leaves the current state untouched. Runs as a worker task; returns a UPID to follow.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "nobackfill",
+      "type": "boolean",
+      "required": false,
+      "description": "Backfilling of PGs is suspended.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "nodeep-scrub",
+      "type": "boolean",
+      "required": false,
+      "description": "Deep Scrubbing is disabled.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "nodown",
+      "type": "boolean",
+      "required": false,
+      "description": "OSD failure reports are being ignored, such that the monitors will not mark OSDs down.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "noin",
+      "type": "boolean",
+      "required": false,
+      "description": "OSDs that were previously marked out will not be marked back in when they start.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "noout",
+      "type": "boolean",
+      "required": false,
+      "description": "OSDs will not automatically be marked out after the configured interval.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "norebalance",
+      "type": "boolean",
+      "required": false,
+      "description": "Rebalancing of PGs is suspended.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "norecover",
+      "type": "boolean",
+      "required": false,
+      "description": "Recovery of PGs is suspended.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "noscrub",
+      "type": "boolean",
+      "required": false,
+      "description": "Scrubbing is disabled.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "notieragent",
+      "type": "boolean",
+      "required": false,
+      "description": "Cache tiering activity is suspended.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "noup",
+      "type": "boolean",
+      "required": false,
+      "description": "OSDs are not allowed to start.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "pause",
+      "type": "boolean",
+      "required": false,
+      "description": "Pauses read and writes.",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/ceph/flags'"
+}

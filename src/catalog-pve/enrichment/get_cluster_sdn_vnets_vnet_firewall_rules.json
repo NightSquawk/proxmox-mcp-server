@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_sdn_vnets_vnet_firewall_rules",
+  "usageNotes": "Returns the ordered list of firewall rules attached to a specific SDN VNet, including action, source/destination filters, protocol, port, and per-rule log level. Requires SDN.Audit or SDN.Allocate on '/sdn/zones/<zone>/<vnet>' — a cluster-level privilege, not per-node. SDN firewall must be enabled on the cluster and the vnet must already exist; querying a non-existent vnet returns a 500 error rather than an empty list.",
+  "examples": [
+    {
+      "summary": "List all firewall rules for the 'webvnet' SDN VNet",
+      "path_params": {
+        "vnet": "webvnet"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Rules are returned in 'pos' order — position 0 is evaluated first; rule ordering matters for ACCEPT/DROP precedence.",
+    "Disabled rules (enable=0) are still returned in the list but are not enforced by the dataplane.",
+    "The 'vnet' identifier is 2–8 alphanumeric characters starting with a letter — confirm the exact identifier via get_cluster_sdn_vnets before calling this endpoint.",
+    "An empty array response means no rules are configured, not that the vnet is missing; a missing vnet returns an error."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets",
+    "get_cluster_sdn_vnets_vnet_firewall_rules_pos",
+    "create_cluster_sdn_vnets_vnet_firewall_rules",
+    "get_cluster_sdn_vnets_vnet_firewall"
+  ]
+}

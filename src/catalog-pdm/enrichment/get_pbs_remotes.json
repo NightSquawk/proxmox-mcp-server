@@ -1,0 +1,20 @@
+{
+  "operationId": "get_pbs_remotes",
+  "usageNotes": "Use this to enumerate all PBS remote instances registered in Proxmox Datacenter Manager before performing remote-specific operations such as syncing or inspecting datastores. No parameters are required — the endpoint returns every configured remote. If the list is empty, no PBS remotes have been added to PDM yet and remote-scoped operations will fail.",
+  "examples": [
+    {
+      "summary": "List all configured PBS remotes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Each item in the response contains only the 'remote' ID field; use the ID to target subsequent remote-specific endpoints.",
+    "Remote IDs follow the pattern /^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/ and are 2–32 characters — useful for validating user-supplied remote names before calling downstream operations.",
+    "Tokens are accepted (allowtoken: true), so API token auth is sufficient and no interactive session is needed."
+  ],
+  "relatedOperations": [
+    "get_pbs_remote_datastores",
+    "get_pbs_datastore_snapshots"
+  ]
+}

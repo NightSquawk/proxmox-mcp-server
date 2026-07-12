@@ -1,0 +1,38 @@
+{
+  "operationId": "delete_cluster_qemu_custom_cpu_models_cputype",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete",
+  "method": "DELETE",
+  "path": "/cluster/qemu/custom-cpu-models/{cputype}",
+  "description": "Delete a custom CPU model definition.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "cputype",
+      "type": "string",
+      "required": true,
+      "description": "The custom model to delete. The 'custom-' prefix is optional.",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/mapping/cpu/{cputype}",
+      [
+        "Mapping.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/qemu/custom-cpu-models/<cputype>'"
+}

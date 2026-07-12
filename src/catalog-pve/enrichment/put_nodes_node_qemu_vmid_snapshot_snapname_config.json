@@ -1,0 +1,29 @@
+{
+  "operationId": "put_nodes_node_qemu_vmid_snapshot_snapname_config",
+  "usageNotes": "Use this to update the description/comment on an existing QEMU VM snapshot — the only mutable metadata on a snapshot after it is created. The operation is synchronous and returns null on success (no task UPID). The caller must hold VM.Snapshot on /vms/{vmid}; the target node must be online and the snapshot must already exist.",
+  "examples": [
+    {
+      "summary": "Add a note to a pre-upgrade snapshot on VM 105",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105,
+        "snapname": "pre_upgrade_20260629"
+      },
+      "params": {
+        "description": "Taken before upgrading Ubuntu 22.04 → 24.04 on 2026-06-29. Safe to delete after 30-day soak."
+      }
+    }
+  ],
+  "tips": [
+    "This is the only field editable after snapshot creation — snapshot name and disk state are immutable.",
+    "Returns null (HTTP 200 with empty body), not a UPID; no task polling needed.",
+    "Snapshot names follow pve-configid format (alphanumeric + underscore, max 40 chars) and cannot be renamed via this endpoint.",
+    "To list existing snapshots and their current descriptions, use get_nodes_node_qemu_vmid_snapshot before calling this."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_snapshot",
+    "get_nodes_node_qemu_vmid_snapshot_snapname_config",
+    "post_nodes_node_qemu_vmid_snapshot",
+    "delete_nodes_node_qemu_vmid_snapshot_snapname"
+  ]
+}

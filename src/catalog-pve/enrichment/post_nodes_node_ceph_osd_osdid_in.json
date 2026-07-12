@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_ceph_osd_osdid_in",
+  "usageNotes": "Marks a Ceph OSD as 'in', causing it to rejoin the CRUSH map and resume data responsibility — use this to reactivate an OSD that was previously removed from the cluster with the corresponding 'out' operation (e.g., during maintenance). The call is synchronous and returns null on success; wait for Ceph to finish rebalancing data before assuming the OSD is fully healthy. Requires 'Sys.Modify' at the root level and the target node must be reachable.",
+  "examples": [
+    {
+      "summary": "Reactivate OSD 3 on node pve1 after maintenance",
+      "path_params": {
+        "node": "pve1",
+        "osdid": 3
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Pair with 'ceph osd out' (post_nodes_node_ceph_osd_osdid_out) for safe maintenance cycles: out before work, in after.",
+    "After calling this endpoint, monitor 'ceph -s' or the PVE dashboard to confirm the OSD transitions from 'out' to 'in' and that PGs rebalance cleanly.",
+    "If the OSD daemon is stopped, mark it 'in' first and then start the daemon — doing it the other way can cause a brief degraded-cluster state.",
+    "This operation does not start the OSD process; use the OSD start endpoint if the daemon is down."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_ceph_osd_osdid_out",
+    "post_nodes_node_ceph_osd_osdid_scrub",
+    "get_nodes_node_ceph_osd",
+    "delete_nodes_node_ceph_osd_osdid"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_storage_storage_status",
+  "usageNotes": "Use this to check whether a specific storage backend is reachable and how much capacity remains on a given node. The `active` field indicates live connectivity — a storage may be `enabled` in config but `active: false` if the node cannot currently reach it (e.g. NFS mount down, Ceph degraded). Requires `Datastore.Audit` or `Datastore.AllocateSpace` on `/storage/{storage}`.",
+  "examples": [
+    {
+      "summary": "Check status and free space of local-lvm storage on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "storage": "local-lvm"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If `active` is false but `enabled` is true, the storage is configured but currently unreachable from that node — check mounts, network, or Ceph health.",
+    "Capacity fields (`avail`, `used`, `total`) are in bytes and may be absent if the storage is inactive.",
+    "For cluster-wide capacity across all nodes, call the storage list endpoint instead; this endpoint is scoped to a single node's view."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage",
+    "get_storage",
+    "get_nodes_node_storage_storage_content"
+  ]
+}

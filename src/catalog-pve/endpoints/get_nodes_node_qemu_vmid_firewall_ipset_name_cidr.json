@@ -1,0 +1,66 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_ipset_name_cidr",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "read_ip",
+  "method": "GET",
+  "path": "/nodes/{node}/qemu/{vmid}/firewall/ipset/{name}/{cidr}",
+  "description": "Read IP or Network settings from IPSet.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "IP set name.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    },
+    {
+      "name": "cidr",
+      "type": "string",
+      "required": true,
+      "description": "Network/IP specification in CIDR format.",
+      "format": "IPorCIDRorAlias",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/firewall/ipset/<name>/<cidr>'"
+}

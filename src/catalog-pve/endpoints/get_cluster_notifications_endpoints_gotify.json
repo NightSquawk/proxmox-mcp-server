@@ -1,0 +1,70 @@
+{
+  "operationId": "get_cluster_notifications_endpoints_gotify",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_gotify_endpoints",
+  "method": "GET",
+  "path": "/cluster/notifications/endpoints/gotify",
+  "description": "Returns a list of all gotify endpoints",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "comment": {
+          "description": "Comment",
+          "optional": 1,
+          "type": "string"
+        },
+        "disable": {
+          "default": 0,
+          "description": "Disable this target",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "The name of the endpoint.",
+          "format": "pve-configid",
+          "type": "string"
+        },
+        "origin": {
+          "description": "Show if this entry was created by a user or was built-in",
+          "enum": [
+            "user-created",
+            "builtin",
+            "modified-builtin"
+          ],
+          "type": "string"
+        },
+        "server": {
+          "description": "Server URL",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{name}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/mapping/notifications",
+      [
+        "Mapping.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/notifications/endpoints/gotify'"
+}

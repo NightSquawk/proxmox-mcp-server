@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid",
+  "usageNotes": "Returns the directory index — a list of available sub-resource names (subdirs) for a specific QEMU VM on a given node. Use this as a discovery step to determine which child endpoints (e.g., config, status, snapshot, firewall) are accessible for the VM before calling them. No privileges beyond basic authenticated access are required, but the node must be reachable and the VM must exist.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is an array of objects each containing a 'subdir' string — use these values to construct child API paths like /nodes/{node}/qemu/{vmid}/{subdir}.",
+    "This endpoint is useful for programmatic discovery when the set of available subdirs may vary by PVE version or VM state.",
+    "Accessible to all authenticated users; no VM-specific privilege check is enforced on this index call itself, though child endpoints will enforce their own permissions."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu",
+    "get_nodes_node_qemu_vmid_status_current",
+    "get_nodes_node_qemu_vmid_config",
+    "get_nodes_node_qemu_vmid_snapshot"
+  ]
+}

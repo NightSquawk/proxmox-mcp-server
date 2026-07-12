@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_firewall_options",
+  "usageNotes": "Use this to read the current cluster-wide firewall configuration before making changes or auditing security posture. Requires Sys.Audit on / — available to API tokens with that privilege. A response showing 'enable': 0 means the firewall is globally disabled regardless of any node- or VM-level rules.",
+  "examples": [
+    {
+      "summary": "Read current cluster firewall options",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If 'enable' is 0 (or absent, since default is 0), all firewall rules across the cluster are inactive — node and VM rules do nothing until this is set to 1.",
+    "ebtables defaults to enabled (1); disabling it removes layer-2 bridging rules cluster-wide, which can expose VM traffic on the same bridge.",
+    "log_ratelimit is returned as a formatted string (e.g., '1,burst=5,rate=1/second'); parse it carefully if evaluating log volume.",
+    "policy_in/policy_out/policy_forward may be absent from the response if they have never been explicitly set — treat absence as no default-drop safety net."
+  ],
+  "relatedOperations": [
+    "set_cluster_firewall_options",
+    "get_cluster_firewall_groups",
+    "get_cluster_firewall_rules"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_certificates",
+  "usageNotes": "Returns the certificate sub-resource index for a node, listing available child endpoints (acme, info, custom). Use this as a discovery call to confirm which certificate management paths are available on a target node before drilling into certificate details or ACME operations. No privileges beyond a valid user session are required, but the node must be reachable.",
+  "examples": [
+    {
+      "summary": "List certificate sub-resources on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is an index endpoint — it returns navigational links, not actual certificate data. Use get_nodes_node_certificates_info to retrieve the active TLS certificate details.",
+    "Available for all authenticated users; no Sys.Audit or similar privilege is required.",
+    "The response 'name' field in each item maps to the child path segment (e.g. 'acme', 'info', 'custom')."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_certificates_info",
+    "get_nodes_node_certificates_acme",
+    "post_nodes_node_certificates_custom",
+    "delete_nodes_node_certificates_custom",
+    "post_nodes_node_certificates_acme_certificate",
+    "put_nodes_node_certificates_acme_certificate",
+    "delete_nodes_node_certificates_acme_certificate"
+  ]
+}

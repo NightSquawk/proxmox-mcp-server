@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_firewall",
+  "usageNotes": "Returns the firewall directory index for a specific QEMU VM on a PDM-managed PVE remote — use it to discover which firewall sub-resources are available (e.g., rules, aliases, ipsets, options, refs) before drilling into them. No query parameters are required and no privilege beyond basic authentication is needed. The return payload is a directory listing, not the actual firewall ruleset, so follow up with the appropriate child endpoint to read or modify firewall configuration.",
+  "examples": [
+    {
+      "summary": "List firewall sub-resources for VM 101 on the 'hetzner-pve1' remote",
+      "path_params": {
+        "remote": "hetzner-pve1",
+        "vmid": "101"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The vmid path parameter must match a VM that actually exists on the target PVE remote; an invalid vmid typically returns a 404 from the proxied PVE node.",
+    "This endpoint is a directory index only — it does not return firewall rules, options, or aliases directly. Use child endpoints such as .../firewall/rules or .../firewall/options for actionable data.",
+    "The remote name must match exactly the remote identifier registered in PDM; check /pve/remotes for valid names."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_firewall_rules",
+    "get_pve_remotes_remote_qemu_vmid_firewall_options",
+    "get_pve_remotes_remote_qemu_vmid_firewall_aliases",
+    "get_pve_remotes_remote_qemu_vmid_firewall_ipsets",
+    "get_pve_remotes_remote_qemu_vmid_firewall_refs"
+  ]
+}

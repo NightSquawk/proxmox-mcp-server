@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_dbus_vmstate",
+  "usageNotes": "Controls the dbus-vmstate helper process for a running QEMU VM, which is required to enable live migration of VMs that use systemd-based guest services relying on D-Bus state. Requires the VM to already be running on the target node; the caller must hold VM.Migrate on the VM path. Returns null synchronously — there is no UPID to poll.",
+  "examples": [
+    {
+      "summary": "Start the dbus-vmstate helper for VM 200 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 200
+      },
+      "params": {
+        "action": "start"
+      }
+    }
+  ],
+  "tips": [
+    "The dbus-vmstate helper bridges QEMU's QMP socket with the host D-Bus, allowing live migration to carry over guest service state — start it before initiating a live migration if the guest depends on D-Bus.",
+    "stop the helper after migration completes on the destination, or if the VM is being shut down, to avoid stale socket handles.",
+    "Requires the proxmox-ve package version that ships dbus-vmstate; older clusters may not have the binary installed."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_migrate",
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_status_start"
+  ]
+}

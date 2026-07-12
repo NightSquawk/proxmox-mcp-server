@@ -1,0 +1,69 @@
+{
+  "operationId": "get_nodes_node_ceph_log",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "log",
+  "method": "GET",
+  "path": "/nodes/{node}/ceph/log",
+  "description": "Read ceph log",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "limit",
+      "type": "integer",
+      "required": false,
+      "description": "Maximum number of log lines to return. Defaults to the dump_logfile limit (typically 50) when omitted.",
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "start",
+      "type": "integer",
+      "required": false,
+      "description": "Offset of the first log line to return (0-based).",
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "n": {
+          "description": "Log-file line number (1-based).",
+          "type": "integer"
+        },
+        "t": {
+          "description": "Log line text.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Syslog"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/log'"
+}

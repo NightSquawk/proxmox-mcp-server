@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_subscription",
+  "usageNotes": "Use this to check the Proxmox VE subscription status and key details for a specific cluster node — useful for validating license compliance, confirming a subscription is active before relying on enterprise repository access, or auditing expiration dates. The `status` field is the primary signal: `active` means the node has a valid subscription; `expired`, `invalid`, or `notfound` means enterprise features and repos may be unavailable. The `key` and `serverid` fields are only returned if the caller has sufficient privilege to view them.",
+  "examples": [
+    {
+      "summary": "Check subscription status on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `level` field encodes the subscription tier (e.g. 'c' = Community/free, 'b' = Basic, 's' = Standard, 'p' = Premium) — use it to determine what enterprise features are licensed.",
+    "A `status` of `notfound` typically means no subscription key has been applied to this node via the Proxmox web UI or `pvesubscription set` CLI.",
+    "`checktime` is a Unix timestamp of the last online validation; if it is very stale, the node may not have been able to reach the Proxmox subscription servers.",
+    "This endpoint is node-scoped — in a cluster you must query each node individually to get a full picture of subscription coverage."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_subscription",
+    "put_nodes_node_subscription",
+    "delete_nodes_node_subscription"
+  ]
+}

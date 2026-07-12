@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_ceph_osd_osdid",
+  "usageNotes": "Permanently removes an OSD from the Ceph cluster. The OSD must first be taken out of the CRUSH map and marked 'down' (typically via the Ceph 'osd out' and 'osd down' commands) before deletion is safe — destroying an in-service OSD will cause data loss or reduced redundancy. Returns an async task UPID; poll the task endpoint to confirm completion. Set 'cleanup=true' to also wipe the underlying block device LVs, PVs, and leftover partitions; omit it only if you need to inspect the disk before reassignment.",
+  "examples": [
+    {
+      "summary": "Remove OSD 3 from node pve1 and wipe its underlying LVM volumes",
+      "path_params": {
+        "node": "pve1",
+        "osdid": 3
+      },
+      "params": {
+        "cleanup": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently destroys the OSD daemon and, when cleanup=true, irreversibly wipes the block device's logical volumes and partitions, removing all data stored on that OSD from the Ceph pool.",
+  "tips": [
+    "Run 'ceph osd safe-to-destroy <osdid>' before calling this endpoint to confirm no unique data copies will be lost.",
+    "The OSD must be in 'down' and 'out' state before destruction; use the Ceph CLI or PVE GUI to drain it first.",
+    "Without cleanup=true, the disk LVs remain and must be zeroed manually before the disk can be reused by Ceph.",
+    "If the Ceph cluster health is already degraded (e.g., fewer than min_size replicas), removing another OSD can make PGs unavailable — verify cluster health first."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_ceph_osd",
+    "get_nodes_node_ceph_osd",
+    "get_nodes_node_ceph_osd_osdid_in",
+    "get_nodes_node_ceph_osd_osdid_out",
+    "get_nodes_node_ceph_status"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "operationId": "get_cluster_sdn_dry_run",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "dry-run",
+  "method": "GET",
+  "path": "/cluster/sdn/dry-run",
+  "description": "Dry-run the SDN apply action and return the difference between the current configuration and the pending configuration",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "frr-diff": {
+        "description": "The difference between the current and pending FRR configuration.",
+        "optional": 1,
+        "type": "string"
+      },
+      "interfaces-diff": {
+        "description": "The difference between the current and pending /etc/network/interfaces.d/sdn configuration.",
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/dry-run?node=<node>'"
+}

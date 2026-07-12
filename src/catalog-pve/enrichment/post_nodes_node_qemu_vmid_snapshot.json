@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_snapshot",
+  "usageNotes": "Creates a point-in-time snapshot of a QEMU VM; the operation is asynchronous and returns a UPID task string that must be polled via the tasks API to confirm completion. The VM can be running or stopped — if running, set vmstate to true to also capture RAM state (required for a fully live, restorable snapshot; omitting it saves disk space but loses in-memory state). The caller must hold VM.Snapshot permission on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Snapshot a running VM with RAM state before a risky change",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105
+      },
+      "params": {
+        "snapname": "pre-update-2026-06-29",
+        "description": "Pre-patch snapshot before kernel upgrade",
+        "vmstate": true
+      }
+    }
+  ],
+  "tips": [
+    "snapname must match the pve-configid format: alphanumeric plus hyphens/underscores, max 40 chars — do not use dots or spaces.",
+    "vmstate snapshots are significantly larger (VM RAM size added to snapshot) and take longer to create and restore.",
+    "Poll the returned UPID with get_nodes_node_tasks_upid_status to detect failures; the POST returns immediately even if the snapshot job is still running.",
+    "Snapshots are stored inline with the VM disk on the same storage — ensure the datastore has enough free space before snapshotting, especially with vmstate enabled.",
+    "The reserved snapshot name 'current' is used internally by Proxmox to represent the live state; do not use it as a snapname."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_snapshot",
+    "post_nodes_node_qemu_vmid_snapshot_snapname_rollback",
+    "delete_nodes_node_qemu_vmid_snapshot_snapname",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

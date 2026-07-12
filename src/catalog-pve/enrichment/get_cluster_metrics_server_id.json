@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_metrics_server_id",
+  "usageNotes": "Use this to retrieve the full configuration of a specific external metrics server (e.g. InfluxDB or Graphite) registered in the cluster by its config ID. Requires Sys.Audit on the root path, so API tokens used for read-only monitoring dashboards are sufficient. The `id` must match a pve-configid value visible in the list returned by the sibling list operation; supplying an unknown id results in a 500-level error.",
+  "examples": [
+    {
+      "summary": "Read the configuration for an InfluxDB metrics server named 'influx-prod'",
+      "path_params": {
+        "id": "influx-prod"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The id must conform to pve-configid format: lowercase alphanumeric and hyphens only, no spaces.",
+    "Response includes connection details (host, port, protocol) and status flags; use it to verify before making write changes via the update endpoint.",
+    "API tokens with only Sys.Audit can call this — no need for Sys.Modify for a read."
+  ],
+  "relatedOperations": [
+    "get_cluster_metrics_server",
+    "create_cluster_metrics_server_id",
+    "update_cluster_metrics_server_id",
+    "delete_cluster_metrics_server_id"
+  ]
+}

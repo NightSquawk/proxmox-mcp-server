@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_apt_update",
+  "usageNotes": "Triggers an `apt-get update` on the specified PDM node to refresh the local package index; run this before querying available upgrades or installing packages. The operation is asynchronous — the response is a UPID string that should be polled via the task API to confirm completion. Requires `System.Modify` privilege; the node must be online and reachable.",
+  "examples": [
+    {
+      "summary": "Refresh APT package index on node 'pdm01' with email notification enabled",
+      "path_params": {
+        "node": "pdm01"
+      },
+      "params": {
+        "notify": true,
+        "quiet": false
+      }
+    }
+  ],
+  "tips": [
+    "Poll the returned UPID using the task-status endpoint to know when the update completes before acting on package data.",
+    "Set quiet=true in automated/cron contexts to suppress progress output and produce cleaner logs.",
+    "notify=true sends mail only to the address configured for root@pam on the PDM instance — verify that address is set before relying on it."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_update",
+    "get_nodes_node_apt_versions",
+    "get_nodes_node_tasks"
+  ]
+}

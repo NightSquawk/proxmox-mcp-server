@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_rrd",
+  "usageNotes": "Use this endpoint to retrieve a pre-rendered RRD graph (returned as a PNG filename path) for a specific node's performance datasources over a chosen timeframe. The caller requires Sys.Audit on /nodes/{node}. For raw numeric time-series data instead of a PNG, use the rrddata endpoint.",
+  "examples": [
+    {
+      "summary": "Fetch a 24-hour average CPU and memory usage graph for node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "ds": "cpu,memused",
+        "timeframe": "day",
+        "cf": "AVERAGE"
+      }
+    }
+  ],
+  "tips": [
+    "The response contains a filename path to the PNG on the PVE host, not the image bytes themselves — the file is served separately via the Proxmox web UI.",
+    "Common datasource names include cpu, memused, memtotal, netin, netout, roottotal, rootused, swaptotal, swapused — check the rrddata endpoint to discover what is actually recorded for a given node.",
+    "Omitting cf defaults to AVERAGE on most PVE versions; specify MAX explicitly when you need peak-usage graphs.",
+    "The decade timeframe produces very coarse resolution and is only useful for long-term trend overviews."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_rrddata"
+  ]
+}

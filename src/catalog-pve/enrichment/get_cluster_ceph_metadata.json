@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_ceph_metadata",
+  "usageNotes": "Use this endpoint to get a cluster-wide snapshot of all running Ceph service metadata (MON, MGR, MDS, OSD) including version strings, bind addresses, memory usage, and PVE service state. Requires Sys.Audit or Datastore.Audit on the root path; Ceph must be configured on the cluster or the response will be empty. Use scope=versions for a lightweight version-only check across nodes, and scope=all (default) when you need full daemon-level detail for health diagnostics or upgrade pre-checks.",
+  "examples": [
+    {
+      "summary": "Fetch full Ceph daemon metadata across the cluster to verify all services are on the same release before an upgrade",
+      "path_params": {},
+      "params": {
+        "scope": "all"
+      }
+    }
+  ],
+  "tips": [
+    "scope=versions is significantly lighter than scope=all — prefer it when you only need to confirm version consistency across nodes.",
+    "OSD entries are returned as an array (not a keyed object like MON/MGR/MDS); iterate by the 'id' field to correlate with osdmap data.",
+    "The 'node' key in the response reflects the Ceph binary version installed per PVE node, which may differ from the running daemon version if a package was upgraded but the service not yet restarted.",
+    "mem_swap_kb > 0 on any daemon is a red flag worth surfacing — Ceph daemons swapping under memory pressure cause significant latency."
+  ],
+  "relatedOperations": [
+    "get_cluster_ceph_status",
+    "get_cluster_ceph_flags",
+    "get_node_ceph_osd",
+    "get_node_ceph_mon",
+    "get_node_ceph_mgr"
+  ]
+}

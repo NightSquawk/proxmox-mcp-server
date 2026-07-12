@@ -1,0 +1,26 @@
+{
+  "operationId": "post_pve_scan",
+  "usageNotes": "Use this before creating a PVE remote to discover cluster topology and verify connectivity — it returns node addresses and probes each node's TLS so you can confirm whether a fingerprint is required. Requires System.Modify at the root path. If the target PVE uses a self-signed certificate, capture the fingerprint from this response and supply it when calling post_pve_remotes (or the equivalent create endpoint) to avoid TLS verification failures.",
+  "examples": [
+    {
+      "summary": "Scan a two-node PVE cluster using an API token to pre-populate remote config",
+      "path_params": {},
+      "params": {
+        "authid": "root@pam!pdm-scanner",
+        "hostname": "pve1.lab.nightsquawk.tech",
+        "token": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      }
+    }
+  ],
+  "tips": [
+    "The authid format is either 'user@realm' (password auth) or 'user@realm!tokenid' (API token auth); use API token format in automation to avoid embedding passwords.",
+    "The response includes all cluster node addresses — use this list to verify every node is reachable before committing the remote config.",
+    "If TLS probing returns a fingerprint in the response, store it; subsequent PVE remote operations may require it if the cluster uses a self-signed cert.",
+    "This endpoint does not persist any data — it is a read-probe only, safe to call multiple times."
+  ],
+  "relatedOperations": [
+    "post_pve_probe_tls",
+    "get_pve_remotes",
+    "get_pve_remotes_remote"
+  ]
+}

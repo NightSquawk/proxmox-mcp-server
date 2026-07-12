@@ -1,0 +1,39 @@
+{
+  "operationId": "delete_storage_storage",
+  "surface": "pve",
+  "resource": "storage",
+  "category": "Storage",
+  "name": "delete",
+  "method": "DELETE",
+  "path": "/storage/{storage}",
+  "description": "Delete storage configuration.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage",
+      [
+        "Datastore.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/storage/<storage>'"
+}

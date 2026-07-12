@@ -1,0 +1,24 @@
+{
+  "operationId": "get_storage",
+  "usageNotes": "Returns the cluster-wide storage configuration index — all storage definitions visible to the authenticated user based on Datastore.Audit or Datastore.AllocateSpace permissions. Use this to enumerate available storage backends before querying node-level storage status or allocating disk resources. This is a cluster-level endpoint and does not reflect per-node availability or current usage; use get_node_storage for that.",
+  "examples": [
+    {
+      "summary": "List all NFS storage backends across the cluster",
+      "path_params": {},
+      "params": {
+        "type": "nfs"
+      }
+    }
+  ],
+  "tips": [
+    "Omit the 'type' filter to get all storage definitions in one call — useful for building a full inventory of what backends are configured.",
+    "The response reflects storage configuration, not real-time availability; a storage may be listed here but offline on a specific node.",
+    "PBS (Proxmox Backup Server) storage entries returned here represent configured backup repositories, not general-purpose datastores.",
+    "Results are permission-filtered — users without Datastore.Audit or Datastore.AllocateSpace on a storage will not see it in the list."
+  ],
+  "relatedOperations": [
+    "get_node_storage",
+    "get_node_storage_content",
+    "get_storage_config"
+  ]
+}

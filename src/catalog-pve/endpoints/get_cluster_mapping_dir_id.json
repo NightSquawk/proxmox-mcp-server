@@ -1,0 +1,55 @@
+{
+  "operationId": "get_cluster_mapping_dir_id",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get",
+  "method": "GET",
+  "path": "/cluster/mapping/dir/{id}",
+  "description": "Get directory mapping.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "format": "pve-configid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "perm",
+        "/mapping/dir/{id}",
+        [
+          "Mapping.Use"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/dir/{id}",
+        [
+          "Mapping.Modify"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/dir/{id}",
+        [
+          "Mapping.Audit"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/mapping/dir/<id>'"
+}

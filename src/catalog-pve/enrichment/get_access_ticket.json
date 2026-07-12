@@ -1,0 +1,20 @@
+{
+  "operationId": "get_access_ticket",
+  "usageNotes": "This is a dummy/stub endpoint that returns null and carries no payload; its sole purpose is to serve as a discoverable login-page hint for API clients and UI formatters that need to identify the authentication endpoint. No credentials or authentication are required (world-accessible). Prefer the POST /access/ticket endpoint when you actually need to create an authentication ticket.",
+  "examples": [
+    {
+      "summary": "Probe the ticket endpoint for login-page discovery",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns null — do not use this to validate credentials or check auth state; it will always succeed with an empty response regardless of whether the caller is authenticated.",
+    "The companion POST /access/ticket (create_access_ticket) is the real authentication endpoint that issues PVEAuthCookie + CSRFPreventionToken.",
+    "Useful in health-check or API-discovery scripts to confirm the PVE API is reachable without needing any credentials."
+  ],
+  "relatedOperations": [
+    "create_access_ticket",
+    "delete_access_ticket"
+  ]
+}

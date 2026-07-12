@@ -1,0 +1,204 @@
+{
+  "operationId": "get_config_access_ad_realm",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "{realm}",
+  "method": "GET",
+  "path": "/config/access/ad/{realm}",
+  "description": "Read the AD realm configuration",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "realm",
+      "type": "string",
+      "required": true,
+      "description": "Realm name.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "AD realm configuration properties.",
+    "properties": {
+      "base-dn": {
+        "description": "LDAP Domain",
+        "optional": 1,
+        "type": "string"
+      },
+      "bind-dn": {
+        "description": "LDAP Domain",
+        "optional": 1,
+        "type": "string"
+      },
+      "capath": {
+        "description": "CA certificate to use for the server. The path can point to\neither a file, or a directory. If it points to a file,\nthe PEM-formatted X.509 certificate stored at the path\nwill be added as a trusted certificate.\nIf the path points to a directory,\nthe directory replaces the system's default certificate\nstore at `/etc/ssl/certs` - Every file in the directory\nwill be loaded as a trusted certificate.",
+        "optional": 1,
+        "type": "string"
+      },
+      "comment": {
+        "description": "Comment.",
+        "maxLength": 128,
+        "optional": 1,
+        "pattern": "/^[[:^cntrl:]]*$/",
+        "type": "string"
+      },
+      "default": {
+        "default": false,
+        "description": "True if you want this to be the default realm selected on login.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "filter": {
+        "description": "Custom LDAP search filter for user sync",
+        "optional": 1,
+        "type": "string"
+      },
+      "mode": {
+        "default": "ldap",
+        "description": "LDAP connection type",
+        "enum": [
+          "ldap",
+          "ldap+starttls",
+          "ldaps"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "port": {
+        "description": "AD server Port",
+        "maximum": 65535,
+        "minimum": 0,
+        "optional": 1,
+        "type": "integer"
+      },
+      "realm": {
+        "description": "Realm name.",
+        "maxLength": 32,
+        "minLength": 2,
+        "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      },
+      "server1": {
+        "description": "AD server address",
+        "type": "string"
+      },
+      "server2": {
+        "description": "Fallback AD server address",
+        "optional": 1,
+        "type": "string"
+      },
+      "sync-attributes": {
+        "description": "Comma-separated list of key=value pairs for specifying which LDAP attributes map to which peat user field. For example, to map the LDAP attribute ``mail`` to peat's ``email``, write ``email=mail``.",
+        "format": {
+          "additionalProperties": false,
+          "description": "Determine which LDAP attributes should be synced to which user attributes",
+          "properties": {
+            "email": {
+              "description": "Name of the LDAP attribute containing the user's email address",
+              "optional": 1,
+              "type": "string"
+            },
+            "firstname": {
+              "description": "Name of the LDAP attribute containing the user's first name",
+              "optional": 1,
+              "type": "string"
+            },
+            "lastname": {
+              "description": "Name of the LDAP attribute containing the user's last name",
+              "optional": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[[email=<string>] [,firstname=<string>] [,lastname=<string>]]"
+      },
+      "sync-defaults-options": {
+        "description": "sync defaults options",
+        "format": {
+          "additionalProperties": false,
+          "description": "Default options for LDAP synchronization runs",
+          "properties": {
+            "enable-new": {
+              "description": "Enable new users after sync",
+              "optional": 1,
+              "type": "boolean"
+            },
+            "remove-vanished": {
+              "description": "A semicolon-separated list of things to remove when they or the user vanishes during user synchronization. The following values are possible: ``entry`` removes the user when not returned from the sync; ``properties`` removes any  properties on existing user that do not appear in the source. ``acl`` removes ACLs when the user is not returned from the sync.",
+              "format": {
+                "description": "Array of remove-vanished options",
+                "items": {
+                  "description": "remove-vanished options",
+                  "enum": [
+                    "acl",
+                    "entry",
+                    "properties"
+                  ],
+                  "type": "string"
+                },
+                "maxLength": 1,
+                "minLength": 1,
+                "type": "array"
+              },
+              "optional": 1,
+              "type": "string",
+              "typetext": "[acl|entry|properties, ...]"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[[enable-new=<1|0>] [,remove-vanished=<string>]]"
+      },
+      "user-classes": {
+        "default": "inetorgperson,posixaccount,person,user",
+        "description": "Comma-separated list of allowed objectClass values for user synchronization. For instance, if ``user-classes`` is set to ``person,user``, then user synchronization will consider all LDAP entities where ``objectClass: person`` `or` ``objectClass: user``.",
+        "format": {
+          "description": "Array of user classes",
+          "items": {
+            "description": "user class",
+            "type": "string"
+          },
+          "maxLength": 1,
+          "minLength": 1,
+          "type": "array"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[<string>, ...]"
+      },
+      "verify": {
+        "default": false,
+        "description": "Verify server certificate",
+        "optional": 1,
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "access",
+        "domains"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/access/ad/<realm>'"
+}

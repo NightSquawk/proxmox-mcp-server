@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_capabilities_qemu_cpu_flags",
+  "usageNotes": "Use this endpoint to discover which VM-specific CPU flags are available on a given node before configuring a guest's CPU options. The response includes a 'supported-on' list per flag so you can verify cluster-wide compatibility before live-migrating a VM with custom flags. Always pass 'arch=aarch64' explicitly when targeting ARM nodes — the endpoint returns an empty list for aarch64 since no VM-specific flags are currently defined for that architecture.",
+  "examples": [
+    {
+      "summary": "List available KVM CPU flags on an x86_64 node",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "accel": "kvm",
+        "arch": "x86_64"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting 'arch' defaults to the host's native architecture — always specify it explicitly in mixed-arch clusters to avoid ambiguous results.",
+    "The 'supported-on' array in each flag entry tells you which cluster nodes support that flag under the chosen acceleration type, making it useful for pre-migration compatibility checks.",
+    "Use 'accel=tcg' to check flag availability when KVM hardware virtualization is not present (e.g., nested virtualization or non-KVM hosts).",
+    "This endpoint requires no special privilege beyond a valid Proxmox session ('user: all'), so it is safe to expose to read-only API tokens."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_capabilities_qemu_cpu",
+    "get_nodes_node_capabilities_qemu_machines",
+    "get_nodes_node_capabilities_qemu"
+  ]
+}

@@ -1,0 +1,101 @@
+{
+  "operationId": "get_pve_remotes_remote_tasks",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "tasks",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/tasks",
+  "description": "Get the list of tasks either for a specific node, or query all at once.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": false,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "returns": {
+    "description": "A list of tasks.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Object.",
+      "properties": {
+        "endtime": {
+          "description": "The task's end time.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "id": {
+          "description": "The task id.",
+          "type": "string"
+        },
+        "node": {
+          "description": "The task's node.",
+          "type": "string"
+        },
+        "pid": {
+          "description": "The task process id.",
+          "type": "integer"
+        },
+        "pstart": {
+          "description": "The task's proc start time.",
+          "type": "integer"
+        },
+        "starttime": {
+          "description": "The task's start time.",
+          "type": "integer"
+        },
+        "status": {
+          "description": "The task's status.",
+          "optional": 1,
+          "type": "string"
+        },
+        "type": {
+          "description": "The task type.",
+          "type": "string"
+        },
+        "upid": {
+          "description": "The task's UPID.",
+          "type": "string"
+        },
+        "user": {
+          "description": "The task owner's user id.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/tasks'"
+}

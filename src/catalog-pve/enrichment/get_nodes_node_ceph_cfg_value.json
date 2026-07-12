@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_ceph_cfg_value",
+  "usageNotes": "Use this to read live Ceph configuration values from a specific node's ceph.conf or the Ceph monitor config DB without shelling into the node. Requires `Sys.Audit` on `/`, and the target node must be online and have Ceph configured. Note that the response normalizes underscores to hyphens in both section and key names, so `osd_pool_default_size` will appear as `osd-pool-default-size` in the returned map.",
+  "examples": [
+    {
+      "summary": "Read the default pool size and OSD journal size from the global section",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "config-keys": "global:osd-pool-default-size,global:osd-journal-size"
+      }
+    }
+  ],
+  "tips": [
+    "Multiple keys can be separated by semicolons, commas, or spaces — all three delimiters are equivalent.",
+    "Section names are case-insensitive and lowercased; key names are case-sensitive in the pattern but normalized with hyphens in the response.",
+    "Values sourced from the mon config DB take precedence over ceph.conf entries when both exist.",
+    "If a requested key is not set, it will be absent from the returned object rather than present with a null value."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_cfg_db",
+    "get_nodes_node_ceph_cfg_raw",
+    "get_nodes_node_ceph_status"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "operationId": "delete_nodes_node_network_iface",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "{iface}",
+  "method": "DELETE",
+  "path": "/nodes/{node}/network/{iface}",
+  "description": "Remove network interface configuration.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "iface",
+      "type": "string",
+      "required": true,
+      "description": "Network interface name.",
+      "minLength": 1,
+      "maxLength": 15,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "network",
+        "interfaces",
+        "{iface}"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/network/<iface>'"
+}

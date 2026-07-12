@@ -1,0 +1,22 @@
+{
+  "operationId": "get_pve_remotes_remote_cluster_nextid",
+  "usageNotes": "Use this before migrating a VM to a remote PVE cluster to obtain a safe, collision-free VMID on the target. Requires the remote to be reachable and the caller to hold Resource.Audit on that remote resource. The API description notes the return type as null, so consume the raw response body for the integer VMID rather than a typed field.",
+  "examples": [
+    {
+      "summary": "Get next free VMID on remote cluster 'hetzner-pve' before migration",
+      "path_params": {
+        "remote": "hetzner-pve"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "VMID availability is not reserved — race conditions are possible on busy clusters; re-check immediately before initiating the migration.",
+    "If the target cluster has a non-default endpoint, pass 'target-endpoint' to route the query through the correct PDM endpoint connection.",
+    "The remote name must match the pattern ^[A-Za-z0-9_][A-Za-z0-9._-]* and be 2–32 characters; mismatches return a 400 before reaching the cluster."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_cluster_resources",
+    "get_pve_remotes"
+  ]
+}

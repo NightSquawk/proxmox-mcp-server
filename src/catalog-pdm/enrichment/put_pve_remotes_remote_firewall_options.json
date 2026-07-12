@@ -1,0 +1,34 @@
+{
+  "operationId": "put_pve_remotes_remote_firewall_options",
+  "usageNotes": "Use this to update cluster-wide firewall settings on a remote PVE cluster, such as enabling/disabling the firewall, changing default inbound/outbound/forward policies, or adjusting log rate-limiting. Requires `System.Modify` on the remote resource — API tokens are supported. Always fetch the current digest via the corresponding GET endpoint and pass it in the `digest` field to guard against concurrent modifications.",
+  "examples": [
+    {
+      "summary": "Enable the cluster firewall with DROP inbound/outbound defaults and conservative log rate-limiting",
+      "path_params": {
+        "remote": "pve-hetzner"
+      },
+      "params": {
+        "enable": 1,
+        "ebtables": true,
+        "policy_in": "DROP",
+        "policy_out": "DROP",
+        "policy_forward": "DROP",
+        "log_ratelimit": "enable=1,burst=10,rate=5/second",
+        "digest": "a3f8c21d9b4e7f0612345678abcdef90abcdef01"
+      }
+    }
+  ],
+  "tips": [
+    "Setting `enable` to 0 (the default) disables the cluster firewall entirely — this overrides all per-host and per-VM firewall rules on the remote cluster.",
+    "The `delete` array accepts option key names (e.g. `[\"policy_in\", \"log_ratelimit\"]`) to reset them to their defaults rather than requiring you to know the default value.",
+    "Changing `policy_in` or `policy_out` to DROP without first confirming rule coverage can cut off management access to the remote cluster.",
+    "The endpoint returns null on success — absence of an error is the confirmation.",
+    "Log rate-limiting (`log_ratelimit`) is encoded as a comma-separated key=value string matching the typetext format: `enable=<1|0> [,burst=<integer>] [,rate=<string>]`."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_firewall_options",
+    "get_pve_remotes_remote_firewall_rules",
+    "put_pve_remotes_remote_firewall_rules_pos",
+    "get_pve_remotes_remote_firewall_groups"
+  ]
+}

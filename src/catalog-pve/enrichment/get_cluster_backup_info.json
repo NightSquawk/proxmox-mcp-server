@@ -1,0 +1,18 @@
+{
+  "operationId": "get_cluster_backup_info",
+  "usageNotes": "Use this as a discovery call to enumerate the available sub-endpoints under /cluster/backup-info (e.g., not-backed-up). It requires no parameters and no special privileges, making it a safe first step before querying specific backup-info child resources. The response is a directory index — follow the 'subdir' values to reach actionable endpoints.",
+  "examples": [
+    {
+      "summary": "List available backup-info sub-endpoints",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'subdir' values are relative paths; append them to /cluster/backup-info/ to form the full child endpoint path.",
+    "This endpoint is unauthenticated in terms of privilege checks (permissions: null), but a valid API token or ticket is still required to reach the PVE API."
+  ],
+  "relatedOperations": [
+    "get_cluster_backup_info_not_backed_up"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_rrd",
+  "usageNotes": "Fetches a pre-rendered RRD graph (returned as a PNG filename reference) for a specific QEMU VM on a given node; requires the VM to exist on that node and the caller to hold VM.Audit on /vms/{vmid}. The 'ds' parameter accepts a comma-separated list of RRD datasource names (e.g. 'cpu,mem,netin,netout,diskread,diskwrite'); omitting 'cf' defaults to AVERAGE. Use rrddata (get_nodes_node_qemu_vmid_rrddata) instead if you need raw numeric time-series values rather than a PNG graph.",
+  "examples": [
+    {
+      "summary": "Get a day-view CPU and memory RRD graph for VM 101 on pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "ds": "cpu,mem",
+        "timeframe": "day",
+        "cf": "AVERAGE"
+      }
+    }
+  ],
+  "tips": [
+    "Valid datasource names for QEMU VMs include: cpu, mem, netin, netout, diskread, diskwrite, maxcpu, maxmem.",
+    "The response contains a 'filename' string pointing to the generated PNG on the Proxmox host — the file is ephemeral and served via the web UI's file endpoint.",
+    "Use 'MAX' as the consolidation function (cf) to surface burst peaks over longer timeframes like week or month.",
+    "For programmatic time-series data (JSON array of values), use the sibling rrddata endpoint instead."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_rrddata",
+    "get_nodes_node_qemu_vmid_status_current",
+    "get_nodes_node_rrd",
+    "get_nodes_node_lxc_vmid_rrd"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "operationId": "post_nodes_node_ceph_mds_name",
+  "usageNotes": "Creates and starts a Ceph Metadata Server (MDS) daemon on the specified node, which is required for CephFS to function. Requires `Sys.Modify` on the root path and the target node must be online with Ceph already initialized. Returns a task UPID — poll the task status to confirm the daemon reaches `active` or `standby` state before relying on CephFS.",
+  "examples": [
+    {
+      "summary": "Create an MDS on pve1 with hot-standby enabled for faster failover",
+      "path_params": {
+        "node": "pve1",
+        "name": "pve1"
+      },
+      "params": {
+        "hotstandby": true
+      }
+    }
+  ],
+  "tips": [
+    "Ceph recommends at least one active MDS plus one standby; deploy MDS daemons on at least two nodes for HA.",
+    "Setting hotstandby=true causes the standby MDS to tail the active MDS journal, enabling sub-second failover at the cost of extra RAM and CPU on the standby node.",
+    "The `name` path param defaults to the node name if omitted — using the node name keeps daemon naming predictable and consistent with Proxmox conventions.",
+    "After creation, verify daemon state with GET /nodes/{node}/ceph/mds or check the Ceph dashboard; the daemon must reach `active` or `standby` before CephFS mounts will work."
+  ],
+  "relatedOperations": [
+    "delete_nodes_node_ceph_mds_name",
+    "get_nodes_node_ceph_mds",
+    "post_nodes_node_ceph_fs_name",
+    "get_nodes_node_ceph_status"
+  ]
+}

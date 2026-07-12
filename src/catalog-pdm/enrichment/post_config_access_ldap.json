@@ -1,0 +1,43 @@
+{
+  "operationId": "post_config_access_ldap",
+  "usageNotes": "Use this to register a new LDAP authentication realm in Proxmox Datacenter Manager, enabling centralized directory-based login for PDM users. The calling token or user must hold the Realm.Allocate privilege on the access/domains path. After creation, run a user sync (post_access_domains_realm_sync) to populate users from the directory before they can log in.",
+  "examples": [
+    {
+      "summary": "Create an Active Directory-backed LDAP realm with STARTTLS and attribute mapping",
+      "path_params": {},
+      "params": {
+        "realm": "corp-ad",
+        "server1": "dc01.corp.example.com",
+        "server2": "dc02.corp.example.com",
+        "base-dn": "DC=corp,DC=example,DC=com",
+        "bind-dn": "CN=pdm-bind,OU=Service Accounts,DC=corp,DC=example,DC=com",
+        "password": "BindP@ssw0rd!",
+        "user-attr": "sAMAccountName",
+        "mode": "ldap+starttls",
+        "port": 389,
+        "verify": true,
+        "user-classes": "user,person",
+        "sync-attributes": "email=mail,firstname=givenName,lastname=sn",
+        "sync-defaults-options": "enable-new=1,remove-vanished=entry;properties",
+        "filter": "(!(userAccountControl:1.2.840.113556.1.4.803:=2))",
+        "comment": "Corporate Active Directory realm",
+        "default": false
+      }
+    }
+  ],
+  "tips": [
+    "The realm name must be 2–32 characters and match /^(?:[A-Za-z0-9_][A-Za-z0-9.\\-_]*)$/ — choose a short, stable identifier since renaming requires delete+recreate.",
+    "For Active Directory, set user-attr to 'sAMAccountName'; for standard OpenLDAP, use 'uid'.",
+    "Use mode 'ldaps' (port 636) or 'ldap+starttls' (port 389) in production — plain 'ldap' transmits bind credentials in cleartext.",
+    "Set verify=true with a capath pointing to your internal CA cert when using STARTTLS or LDAPS against an internal PKI.",
+    "The filter param accepts standard LDAP filter syntax; use it to exclude disabled accounts or restrict to a specific OU.",
+    "After creation, the realm won't have any PDM users yet — trigger a sync immediately via post_access_domains_realm_sync."
+  ],
+  "relatedOperations": [
+    "get_config_access",
+    "post_access_domains_realm_sync",
+    "get_access_domains",
+    "put_config_access_ldap_realm",
+    "delete_config_access_ldap_realm"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "operationId": "post_cluster_sdn_zones",
+  "usageNotes": "Creates a new SDN zone object in the cluster-wide SDN configuration. The required `zone` identifier must be 2–8 alphanumeric characters starting with a letter, and `type` must match the intended networking model (e.g., `evpn` for BGP/EVPN overlay, `vlan` for simple VLAN-backed networks). After creating the zone you must call `put_cluster_sdn` (apply pending SDN changes) before the zone becomes active on any node; zone-type-specific params (controller, peers, vrf-vxlan, exitnodes, etc.) are only relevant for the matching type.",
+  "examples": [
+    {
+      "summary": "Create a simple VXLAN zone across two cluster nodes",
+      "path_params": {},
+      "params": {
+        "zone": "vxz1",
+        "type": "vxlan",
+        "peers": "10.0.0.1,10.0.0.2",
+        "nodes": "pve1,pve2",
+        "mtu": 1450
+      }
+    }
+  ],
+  "tips": [
+    "Zone IDs are cluster-global and immutable after creation — choose a short, descriptive name up front.",
+    "For EVPN zones, a BGP controller must already exist (post_cluster_sdn_controllers) before referencing it via `controller`.",
+    "VXLAN zones require `peers` (node IPs) and should set `mtu` to 50 bytes below the underlay MTU to account for VXLAN encapsulation overhead.",
+    "After any SDN object create/update, run `put_cluster_sdn` to push pending changes; nodes will not see the zone until the config is applied.",
+    "The `dhcp: dnsmasq` option requires the dnsmasq package to be installed on each participating node."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_zones",
+    "get_cluster_sdn_zones_{zone}",
+    "put_cluster_sdn_zones_{zone}",
+    "delete_cluster_sdn_zones_{zone}",
+    "post_cluster_sdn_vnets",
+    "put_cluster_sdn"
+  ]
+}

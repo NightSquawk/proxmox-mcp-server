@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent",
+  "usageNotes": "Returns the list of QEMU Guest Agent (QGA) sub-commands available for a running VM. Use this as a discovery step before calling specific agent sub-commands (e.g., get-fsinfo, get-network-interfaces) to confirm which commands the installed QGA version supports. The VM must be running and the qemu-guest-agent service must be active inside the guest; if the agent is not running the response will be empty or the request will fail.",
+  "examples": [
+    {
+      "summary": "List available guest agent commands for VM 101 on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "An empty result array means the guest agent is installed but not running, or the VM is powered off.",
+    "Child links in the response (rel: child) map directly to callable sub-endpoints under /nodes/{node}/qemu/{vmid}/agent/{name}.",
+    "Guest agent must be enabled in the VM config (agent: enabled=1) and the qemu-guest-agent package installed inside the OS."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_agent",
+    "get_nodes_node_qemu_vmid_status_current",
+    "get_nodes_node_qemu_vmid_agent_get_fsinfo",
+    "get_nodes_node_qemu_vmid_agent_get_host_name",
+    "get_nodes_node_qemu_vmid_agent_network_get_interfaces"
+  ]
+}

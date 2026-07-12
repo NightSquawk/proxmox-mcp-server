@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_snapshot_snapname_config",
+  "usageNotes": "Retrieves the LXC container configuration that was captured at snapshot time, allowing you to inspect what CPU, memory, network, and storage settings were in effect when the snapshot was taken. Requires at least one of VM.Snapshot, VM.Snapshot.Rollback, or VM.Audit on the container's ACL path. The node hosting the container must be online and the snapshot must already exist — use the snapshot list endpoint to confirm valid snapname values before calling this.",
+  "examples": [
+    {
+      "summary": "Inspect the config captured in the 'pre-upgrade' snapshot for container 120 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 120,
+        "snapname": "pre-upgrade"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned config reflects the container state at snapshot creation, not the current running config — diff it against the live config endpoint to identify what changed since the snapshot.",
+    "snapname follows the pve-configid format: alphanumeric and hyphens only, max 40 characters; names with spaces or special characters are rejected.",
+    "This is a read-only call with no side effects and can safely be used for auditing or pre-rollback review."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_snapshot",
+    "post_nodes_node_lxc_vmid_snapshot_snapname_rollback",
+    "delete_nodes_node_lxc_vmid_snapshot_snapname",
+    "get_nodes_node_lxc_vmid_config"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "operationId": "get_sdn_zones",
+  "usageNotes": "Use this to enumerate SDN zones across one or more PDM-managed remotes, optionally filtered by zone type or scoped to specific remotes. By default the response reflects the running configuration; pass `pending: true` to surface unapplied changes, or `running: false` to see the pending-only view. Only zones from remotes where the caller holds `Resource.Audit` on `/resource/{remote_name}` are returned, so a partial result set is normal in multi-tenant environments.",
+  "examples": [
+    {
+      "summary": "List all EVPN zones with pending-change details across a specific remote",
+      "path_params": {},
+      "params": {
+        "ty": "evpn",
+        "remotes": ["hetzner-de"],
+        "pending": true,
+        "running": true
+      }
+    }
+  ],
+  "tips": [
+    "The `state` field on each returned zone (`new`, `deleted`, `changed`) indicates SDN objects that have been modified but not yet applied — useful for detecting drift before running an SDN apply operation.",
+    "Use `ty` to narrow large environments; scanning all zones across many remotes without a type filter can return a verbose payload with many zone-type-specific fields that will be null for non-matching types.",
+    "Each result includes a `remote` field identifying which PDM remote the zone belongs to, making cross-remote aggregation straightforward without additional lookups.",
+    "EVPN zones carry BGP-specific fields (`controller`, `vrf-vxlan`, `exitnodes`, `rt-import`) that are absent on simpler zone types — check the `type` field before accessing these properties."
+  ],
+  "relatedOperations": [
+    "get_sdn_controllers",
+    "get_sdn_vnets",
+    "get_sdn_subnets",
+    "get_remotes"
+  ]
+}

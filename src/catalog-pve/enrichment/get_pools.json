@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pools",
+  "usageNotes": "Use this endpoint to list all resource pools visible to the authenticated user, or to retrieve the members (VMs, containers, and storage) of a specific pool by passing a poolid. When poolid is omitted the response contains only poolid and comment fields — member details are only returned when querying a specific pool. Results are scoped to pools where the caller holds Pool.Audit on /pool/<poolid>.",
+  "examples": [
+    {
+      "summary": "Get full member list for the 'dev-team' pool, filtered to VMs only",
+      "path_params": {},
+      "params": {
+        "poolid": "dev-team",
+        "type": "qemu"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting poolid returns a flat index (poolid + comment only); include poolid to get the members array with node, type, and vmid details.",
+    "The type filter (qemu, lxc, storage) only takes effect when poolid is also supplied — it filters the members array, not the pool list.",
+    "API tokens are supported (allowtoken: true), making this safe for read-only automation and monitoring scripts."
+  ],
+  "relatedOperations": [
+    "create_pool",
+    "get_pool",
+    "update_pool",
+    "delete_pool"
+  ]
+}

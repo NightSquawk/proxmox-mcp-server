@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_certificates_info",
+  "usageNotes": "Use this to inspect the TLS certificates currently installed on a Proxmox node — including the web GUI/API certificate and any ACME-managed certificates. The response includes validity timestamps (Unix epoch) and SHA-256 fingerprints useful for expiry monitoring and pinning verification. Accessible by all authenticated users (no special privilege required), but the target node must be online and reachable by the API host.",
+  "examples": [
+    {
+      "summary": "List certificates on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The notafter field is a Unix timestamp — compare against current time to detect certs expiring within your alert window (e.g. 30 days).",
+    "Multiple entries are returned when both a self-signed and an ACME/custom certificate are installed; check the filename field to distinguish them (e.g. pveproxy-ssl.pem vs pve-ssl.pem).",
+    "The fingerprint field uses colon-separated SHA-256 hex pairs — useful for comparing against what browsers or clients report for the node's HTTPS cert.",
+    "san entries confirm which hostnames/IPs the certificate covers; verify your node FQDN appears there after an ACME renewal."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_certificates_acme_certificate",
+    "delete_nodes_node_certificates_acme_certificate",
+    "post_nodes_node_certificates_custom"
+  ]
+}

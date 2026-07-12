@@ -1,0 +1,248 @@
+{
+  "operationId": "get_nodes_node_network_iface",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "{iface}",
+  "method": "GET",
+  "path": "/nodes/{node}/network/{iface}",
+  "description": "Read a network interface configuration.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "iface",
+      "type": "string",
+      "required": true,
+      "description": "Network interface name.",
+      "minLength": 1,
+      "maxLength": 15,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Network Interface configuration",
+    "properties": {
+      "active": {
+        "description": "Interface is active (UP)",
+        "type": "boolean"
+      },
+      "altnames": {
+        "description": "List of altnames for this interface",
+        "items": {
+          "description": "altname",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "autostart": {
+        "description": "Autostart interface",
+        "type": "boolean"
+      },
+      "bond-primary": {
+        "description": "Network interface name.",
+        "maxLength": 15,
+        "minLength": 1,
+        "optional": 1,
+        "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      },
+      "bond_mode": {
+        "description": "Linux Bond Mode",
+        "enum": [
+          "balance-rr",
+          "active-backup",
+          "balance-xor",
+          "broadcast",
+          "802.3ad",
+          "balance-tlb",
+          "balance-alb"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "bond_xmit_hash_policy": {
+        "description": "Bond Transmit Hash Policy for LACP (802.3ad)",
+        "enum": [
+          "layer2",
+          "layer2+3",
+          "layer3+4"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "bridge_ports": {
+        "description": "Network interface list.",
+        "items": {
+          "description": "Network interface name.",
+          "maxLength": 15,
+          "minLength": 1,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "bridge_vlan_aware": {
+        "description": "Enable bridge vlan support.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "cidr": {
+        "description": "IPv4 address with netmask (CIDR notation).",
+        "maxLength": 18,
+        "optional": 1,
+        "pattern": "/^(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))/\\d{1,2})$$/",
+        "type": "string"
+      },
+      "cidr6": {
+        "description": "IPv6 address with netmask (CIDR notation).",
+        "maxLength": 43,
+        "optional": 1,
+        "pattern": "/^(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){6})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:::(?:(?:[0-9a-fA-F]{1,4}):){5})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){4})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,1}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){3})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,2}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){2})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,3}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){1})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,4}(?:[0-9a-fA-F]{1,4}))?::)(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,5}(?:[0-9a-fA-F]{1,4}))?::)(?:[0-9a-fA-F]{1,4}))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,6}(?:[0-9a-fA-F]{1,4}))?::)))/\\d{1,3})$$/",
+        "type": "string"
+      },
+      "comments": {
+        "description": "Comments (inet, may span multiple lines)",
+        "optional": 1,
+        "type": "string"
+      },
+      "comments6": {
+        "description": "Comments (inet6, may span multiple lines)",
+        "optional": 1,
+        "type": "string"
+      },
+      "gateway": {
+        "description": "IPv4 address.",
+        "maxLength": 15,
+        "optional": 1,
+        "pattern": "/^(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))$/",
+        "type": "string"
+      },
+      "gateway6": {
+        "description": "IPv6 address.",
+        "maxLength": 39,
+        "optional": 1,
+        "pattern": "/^(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){6})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:::(?:(?:[0-9a-fA-F]{1,4}):){5})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){4})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,1}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){3})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,2}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){2})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,3}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){1})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,4}(?:[0-9a-fA-F]{1,4}))?::)(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,5}(?:[0-9a-fA-F]{1,4}))?::)(?:[0-9a-fA-F]{1,4}))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,6}(?:[0-9a-fA-F]{1,4}))?::)))$/",
+        "type": "string"
+      },
+      "method": {
+        "description": "Interface configuration method",
+        "enum": [
+          "manual",
+          "static",
+          "dhcp",
+          "loopback"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "method6": {
+        "description": "Interface configuration method",
+        "enum": [
+          "manual",
+          "static",
+          "dhcp",
+          "loopback"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "mtu": {
+        "description": "Maximum Transmission Unit",
+        "minimum": 0,
+        "optional": 1,
+        "type": "integer"
+      },
+      "name": {
+        "description": "Network interface name.",
+        "maxLength": 15,
+        "minLength": 1,
+        "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      },
+      "options": {
+        "description": "Option list (inet)",
+        "items": {
+          "description": "Optional attribute line.",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "options6": {
+        "description": "Option list (inet6)",
+        "items": {
+          "description": "Optional attribute line.",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "slaves": {
+        "description": "Network interface list.",
+        "items": {
+          "description": "Network interface name.",
+          "maxLength": 15,
+          "minLength": 1,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "type": {
+        "description": "Network interface type",
+        "enum": [
+          "loopback",
+          "eth",
+          "bridge",
+          "bond",
+          "vlan",
+          "alias",
+          "unknown"
+        ],
+        "type": "string"
+      },
+      "vlan-id": {
+        "description": "VLAN ID.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "vlan-raw-device": {
+        "description": "Network interface name.",
+        "maxLength": 15,
+        "minLength": 1,
+        "optional": 1,
+        "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "network",
+        "interfaces",
+        "{iface}"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/network/<iface>'"
+}

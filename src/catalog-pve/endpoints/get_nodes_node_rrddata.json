@@ -1,0 +1,68 @@
+{
+  "operationId": "get_nodes_node_rrddata",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "rrddata",
+  "method": "GET",
+  "path": "/nodes/{node}/rrddata",
+  "description": "Read node RRD statistics",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "cf",
+      "type": "string",
+      "required": false,
+      "description": "The RRD consolidation function",
+      "enum": [
+        "AVERAGE",
+        "MAX"
+      ]
+    },
+    {
+      "name": "timeframe",
+      "type": "string",
+      "required": true,
+      "description": "Specify the time frame you are interested in.",
+      "enum": [
+        "hour",
+        "day",
+        "week",
+        "month",
+        "year",
+        "decade"
+      ]
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {},
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/rrddata?timeframe=hour'"
+}

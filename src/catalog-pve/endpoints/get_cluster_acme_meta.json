@@ -1,0 +1,65 @@
+{
+  "operationId": "get_cluster_acme_meta",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_meta",
+  "method": "GET",
+  "path": "/cluster/acme/meta",
+  "description": "Retrieve ACME Directory Meta Information",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "directory",
+      "type": "string",
+      "required": false,
+      "description": "URL of ACME CA directory endpoint.",
+      "default": "https://acme-v02.api.letsencrypt.org/directory",
+      "pattern": "^https?://.*"
+    }
+  ],
+  "returns": {
+    "additionalProperties": 1,
+    "properties": {
+      "caaIdentities": {
+        "description": "Hostnames referring to the ACME servers.",
+        "items": {
+          "type": "string"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "externalAccountRequired": {
+        "description": "EAB Required",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "termsOfService": {
+        "description": "ACME TermsOfService URL.",
+        "optional": 1,
+        "type": "string"
+      },
+      "website": {
+        "description": "URL to more information about the ACME server.",
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/acme/meta'"
+}

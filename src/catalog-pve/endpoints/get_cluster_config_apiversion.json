@@ -1,0 +1,32 @@
+{
+  "operationId": "get_cluster_config_apiversion",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "join_api_version",
+  "method": "GET",
+  "path": "/cluster/config/apiversion",
+  "description": "Return the version of the cluster join API available on this node.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "Cluster Join API version, currently 1",
+    "minimum": 0,
+    "type": "integer"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/config/apiversion'"
+}

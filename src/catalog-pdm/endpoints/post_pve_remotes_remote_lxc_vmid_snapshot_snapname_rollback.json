@@ -1,0 +1,76 @@
+{
+  "operationId": "post_pve_remotes_remote_lxc_vmid_snapshot_snapname_rollback",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "rollback",
+  "method": "POST",
+  "path": "/pve/remotes/{remote}/lxc/{vmid}/snapshot/{snapname}/rollback",
+  "description": "Roll back a remote lxc container to a snapshot. This is destructive: it reverts the container's\ndisk and configuration to that snapshot. Optionally starts the container afterwards.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "A guest ID",
+      "minimum": 1
+    },
+    {
+      "name": "snapname",
+      "type": "string",
+      "required": true,
+      "description": "The name of the snapshot",
+      "maxLength": 40,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": false,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "start",
+      "type": "boolean",
+      "required": false,
+      "description": "Start the container after a successful rollback."
+    }
+  ],
+  "returns": {
+    "description": "A remote UPID",
+    "minLength": 42,
+    "type": "string"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "guest",
+        "{vmid}"
+      ],
+      "privs": [
+        "Resource.Manage"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/lxc/0/snapshot/<snapname>/rollback'"
+}

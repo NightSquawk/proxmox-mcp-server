@@ -1,0 +1,71 @@
+{
+  "operationId": "delete_nodes_node_ceph_pool_name",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "destroypool",
+  "method": "DELETE",
+  "path": "/nodes/{node}/ceph/pool/{name}",
+  "description": "Destroy pool",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "The name of the pool. It must be unique.",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "force",
+      "type": "boolean",
+      "required": false,
+      "description": "If true, destroys pool even if in use",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "remove_ecprofile",
+      "type": "boolean",
+      "required": false,
+      "description": "Remove the erasure code profile. Defaults to true, if applicable.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "remove_storages",
+      "type": "boolean",
+      "required": false,
+      "description": "Remove all pveceph-managed storages configured for this pool",
+      "default": 0,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/pool/<name>'"
+}

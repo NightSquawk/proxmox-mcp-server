@@ -1,0 +1,57 @@
+{
+  "operationId": "get_cluster_firewall_aliases",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_aliases",
+  "method": "GET",
+  "path": "/cluster/firewall/aliases",
+  "description": "List aliases",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "cidr": {
+          "type": "string"
+        },
+        "comment": {
+          "optional": 1,
+          "type": "string"
+        },
+        "digest": {
+          "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+          "maxLength": 64,
+          "optional": 0,
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{name}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/firewall/aliases'"
+}

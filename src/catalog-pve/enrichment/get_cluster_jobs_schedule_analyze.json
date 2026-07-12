@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_jobs_schedule_analyze",
+  "usageNotes": "Use this endpoint to preview the next N fire times for a Proxmox systemd-style calendar schedule before assigning it to a backup job, replication job, or other cluster job — it validates the schedule string and shows exactly when it will trigger. The `schedule` parameter must conform to the `pve-calendar-event` format (e.g., `daily`, `mon..fri 02:00`, `*/2:00`); invalid strings return an error rather than a result set. No special privilege is required — all authenticated users can call it.",
+  "examples": [
+    {
+      "summary": "Preview the next 5 fire times for a weekday 2 AM backup schedule starting from now",
+      "path_params": {},
+      "params": {
+        "schedule": "mon..fri 02:00",
+        "iterations": 5
+      }
+    }
+  ],
+  "tips": [
+    "Omit `starttime` to anchor the simulation to the current server time; supply a UNIX timestamp to model future or past schedule windows.",
+    "The maximum `iterations` value is 100 — for long-horizon planning, chain multiple calls with successive `starttime` values offset from the last returned timestamp.",
+    "Use this before saving a job to confirm that an unfamiliar schedule expression fires as often as expected — the API validates the format server-side and will error on malformed strings."
+  ],
+  "relatedOperations": [
+    "get_cluster_jobs_realm_sync",
+    "get_nodes_node_vzdump_defaults",
+    "get_cluster_backup"
+  ]
+}

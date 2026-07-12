@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_config_access_openid_realm",
+  "usageNotes": "Use this to permanently remove an OpenID Connect realm from Proxmox Datacenter Manager's authentication configuration. Requires the `Realm.Allocate` privilege on `access/domains`. Before deleting, ensure no users or active sessions depend on this realm — removal is immediate and returns null with no undo path.",
+  "examples": [
+    {
+      "summary": "Delete an OpenID realm named 'corp-sso'",
+      "path_params": {
+        "realm": "corp-sso"
+      },
+      "params": {
+        "digest": "a3f1c9b2e4d7f08a1c3e5b2d9f6a0c8e4b7d1f3a5c9e2b8d6f0a4c7e1b5d9f2"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the OpenID realm configuration; any users or tokens tied to this realm will lose the ability to authenticate until reassigned to another realm.",
+  "tips": [
+    "Pass the `digest` param (obtained from a prior GET on this realm) to guard against concurrent config modifications before deletion.",
+    "Check for dependent user accounts on this realm before deleting — PDM does not block deletion based on existing user associations.",
+    "This operation returns null on success; treat a non-error HTTP response as confirmation."
+  ],
+  "relatedOperations": [
+    "get_config_access_openid_realm",
+    "create_config_access_openid_realm",
+    "update_config_access_openid_realm",
+    "list_config_access_openid"
+  ]
+}

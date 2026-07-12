@@ -1,0 +1,24 @@
+{
+  "operationId": "post_nodes_node_ceph_restart",
+  "usageNotes": "Use this to restart Ceph services on a specific node after configuration changes, daemon failures, or as part of a troubleshooting workflow. Omitting the `service` parameter restarts the entire `ceph.target` unit (all Ceph services on the node); pass a specific service name (e.g., `mon.pve1`) to restart only that daemon. The call returns a task UPID string — poll it with the task status endpoint to confirm completion before performing dependent operations.",
+  "examples": [
+    {
+      "summary": "Restart all Ceph services on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Restarting `ceph.target` briefly interrupts I/O on all OSDs on that node; ensure Ceph health is HEALTH_OK and PGs are active+clean before restarting to avoid degraded state.",
+    "To restart only the monitor daemon on pve1, set service to `mon.pve1` — this is less disruptive than restarting the full target.",
+    "The returned UPID can be tracked via GET /nodes/{node}/tasks/{upid}/status."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_ceph_start",
+    "post_nodes_node_ceph_stop",
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

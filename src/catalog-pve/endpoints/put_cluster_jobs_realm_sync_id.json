@@ -1,0 +1,114 @@
+{
+  "operationId": "put_cluster_jobs_realm_sync_id",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "update_job",
+  "method": "PUT",
+  "path": "/cluster/jobs/realm-sync/{id}",
+  "description": "Update realm-sync job definition.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "The ID of the job.",
+      "format": "pve-configid",
+      "maxLength": 64,
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Description for the Job.",
+      "maxLength": 512,
+      "typetext": "<string>"
+    },
+    {
+      "name": "delete",
+      "type": "string",
+      "required": false,
+      "description": "A list of settings you want to delete.",
+      "format": "pve-configid-list",
+      "maxLength": 4096,
+      "typetext": "<string>"
+    },
+    {
+      "name": "enable-new",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable newly synced users immediately.",
+      "default": "1",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "enabled",
+      "type": "boolean",
+      "required": false,
+      "description": "Determines if the job is enabled.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "remove-vanished",
+      "type": "string",
+      "required": false,
+      "description": "A semicolon-separated list of things to remove when they or the user vanishes during a sync. The following values are possible: 'entry' removes the user/group when not returned from the sync. 'properties' removes the set properties on existing user/group that do not appear in the source (even custom ones). 'acl' removes acls when the user/group is not returned from the sync. Instead of a list it also can be 'none' (the default).",
+      "default": "none",
+      "typetext": "([acl];[properties];[entry])|none",
+      "pattern": "(?:(?:(?:acl|properties|entry);)*(?:acl|properties|entry))|none"
+    },
+    {
+      "name": "schedule",
+      "type": "string",
+      "required": true,
+      "description": "Backup schedule. The format is a subset of `systemd` calendar events.",
+      "format": "pve-calendar-event",
+      "maxLength": 128,
+      "typetext": "<string>"
+    },
+    {
+      "name": "scope",
+      "type": "string",
+      "required": false,
+      "description": "Select what to sync.",
+      "enum": [
+        "users",
+        "groups",
+        "both"
+      ]
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "and",
+      [
+        "perm",
+        "/access/realm/{realm}",
+        [
+          "Realm.AllocateUser"
+        ]
+      ],
+      [
+        "perm",
+        "/access/groups",
+        [
+          "User.Modify"
+        ]
+      ]
+    ],
+    "description": "'Realm.AllocateUser' on '/access/realm/<realm>' and 'User.Modify' permissions to '/access/groups/'."
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"schedule\":\"<schedule>\"}' 'https://PVE_HOST:8006/api2/json/cluster/jobs/realm-sync/<id>'"
+}

@@ -1,0 +1,242 @@
+{
+  "operationId": "get_ceph_clusters_cluster_summary",
+  "surface": "pdm",
+  "resource": "ceph",
+  "category": "Ceph",
+  "name": "summary",
+  "method": "GET",
+  "path": "/ceph/clusters/{cluster}/summary",
+  "description": "Typed, summarized Ceph cluster status (health, capacity, OSD/MON/MGR/PG counts) for the\ndashboard. Most fields come from the cached `ceph status` (so the UI binds typed fields instead\nof parsing a raw blob); the fullest-pool and version fields are enriched from a live,\nbest-effort member read (see [`enrich_summary`]).",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "cluster",
+      "type": "string",
+      "required": true,
+      "description": "Ceph cluster identifier (fsid).",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "max-age",
+      "type": "integer",
+      "required": false,
+      "description": "Serve a cached status if it is younger than this many seconds.",
+      "minimum": 0
+    }
+  ],
+  "returns": {
+    "additionalProperties": true,
+    "description": "Typed, summarized Ceph cluster status for the dashboard.\n\nComputed server-side from the raw `ceph status` object so the UI binds to typed fields instead\nof digging through an untyped JSON blob. Returned by `GET /ceph/clusters/{cluster}/summary`.",
+    "properties": {
+      "bytes-avail": {
+        "description": "Available capacity in bytes.",
+        "type": "integer"
+      },
+      "bytes-total": {
+        "description": "Total raw capacity in bytes.",
+        "type": "integer"
+      },
+      "bytes-used": {
+        "description": "Used capacity in bytes.",
+        "type": "integer"
+      },
+      "checks": {
+        "description": "Active health checks.",
+        "items": {
+          "additionalProperties": false,
+          "description": "A single active Ceph health check.",
+          "properties": {
+            "code": {
+              "description": "Check identifier, e.g. `OSD_DOWN`.",
+              "type": "string"
+            },
+            "severity": {
+              "description": "Severity (`HEALTH_WARN` / `HEALTH_ERR`).",
+              "type": "string"
+            },
+            "summary": {
+              "description": "One-line human-readable summary.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "client-read-bytes-sec": {
+        "description": "Client read throughput (bytes/s), when reported.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "client-read-ops-sec": {
+        "description": "Client read ops/s, when reported.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "client-write-bytes-sec": {
+        "description": "Client write throughput (bytes/s), when reported.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "client-write-ops-sec": {
+        "description": "Client write ops/s, when reported.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "degraded-ratio": {
+        "description": "Fraction of objects degraded, when degraded.",
+        "optional": 1,
+        "type": "number"
+      },
+      "fsid": {
+        "description": "Cluster fsid.",
+        "type": "string"
+      },
+      "fullest-pool": {
+        "description": "Name of the most-utilized pool, to surface a near-full pool that the cluster-wide capacity\nfigure would otherwise hide.",
+        "optional": 1,
+        "type": "string"
+      },
+      "fullest-pool-used": {
+        "description": "Used percentage (0-100) of [`Self::fullest_pool`].",
+        "optional": 1,
+        "type": "number"
+      },
+      "health": {
+        "description": "Overall health (`HEALTH_OK` / `HEALTH_WARN` / `HEALTH_ERR`).",
+        "type": "string"
+      },
+      "members": {
+        "description": "The cluster's registered members (the PVE remotes / nodes backing it). From the PDM\nregistry, not the live status; surfaces cross-remote membership on the overview. Filled by\nthe summary endpoint.",
+        "items": {
+          "additionalProperties": true,
+          "description": "A registered cluster member as shown on the dashboard: a compact projection of the registry's\n[`CephMember`] without any connection secrets.",
+          "properties": {
+            "kind": {
+              "description": "Kind of a Ceph cluster member.\n\nDetermines the transport PDM uses to reach this member: `Pve` members are reached via the\nexisting PVE remote (through PVE's Ceph REST API, or the locally-routed `proxmox-ceph-node-api`\ndaemon); `Standalone` members are reached via that daemon directly.",
+              "enum": [
+                "pve",
+                "standalone"
+              ],
+              "type": "string"
+            },
+            "node": {
+              "description": "The node name (PVE node, or standalone host).",
+              "optional": 1,
+              "type": "string"
+            },
+            "remote": {
+              "description": "For `kind = pve`: the PDM remote id backing this member.",
+              "optional": 1,
+              "type": "string"
+            },
+            "site": {
+              "description": "Optional site label (stretch topology).",
+              "optional": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "mgr-active": {
+        "description": "Active manager, if any.",
+        "optional": 1,
+        "type": "string"
+      },
+      "mgr-standbys": {
+        "description": "Standby managers.",
+        "items": {
+          "description": "Standby manager name.",
+          "type": "string"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "misplaced-ratio": {
+        "description": "Fraction of objects misplaced, when rebalancing.",
+        "optional": 1,
+        "type": "number"
+      },
+      "mons-in-quorum": {
+        "description": "Monitors currently in quorum.",
+        "type": "integer"
+      },
+      "mons-total": {
+        "description": "Total monitors.",
+        "type": "integer"
+      },
+      "num-pgs": {
+        "description": "Total number of placement groups.",
+        "type": "integer"
+      },
+      "num-pools": {
+        "description": "Number of pools.",
+        "type": "integer"
+      },
+      "osds-in": {
+        "description": "OSDs currently in.",
+        "type": "integer"
+      },
+      "osds-total": {
+        "description": "Total OSDs known to the cluster.",
+        "type": "integer"
+      },
+      "osds-up": {
+        "description": "OSDs currently up.",
+        "type": "integer"
+      },
+      "pgs-by-state": {
+        "description": "PG counts grouped by state.",
+        "items": {
+          "additionalProperties": false,
+          "description": "PG count for one placement-group state combination.",
+          "properties": {
+            "count": {
+              "description": "Number of placement groups in this state.",
+              "type": "integer"
+            },
+            "state-name": {
+              "description": "State name, e.g. `active+clean`.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "recovery-bytes-sec": {
+        "description": "Recovery throughput (bytes/s), when a recovery is active.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "version": {
+        "description": "Representative Ceph version of the cluster (from the monitors).",
+        "optional": 1,
+        "type": "string"
+      },
+      "version-mixed": {
+        "description": "Whether the monitors report more than one distinct Ceph version (a mid-upgrade /\nversion-skew signal).",
+        "optional": 1,
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/ceph/clusters/<cluster>/summary'"
+}

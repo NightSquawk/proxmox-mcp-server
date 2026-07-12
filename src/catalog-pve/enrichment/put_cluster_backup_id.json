@@ -1,0 +1,36 @@
+{
+  "operationId": "put_cluster_backup_id",
+  "usageNotes": "Use this to modify an existing cluster-level vzdump backup job — changing its schedule, target storage, compression, retention policy, or guest scope. Requires 'Sys.Modify' on '/'; the 'tmpdir', 'dumpdir', and 'script' parameters are additionally restricted to root@pam. Returns null synchronously — the updated job takes effect on the next scheduler run, not immediately. To remove individual settings (e.g. strip a node pin), pass their names in the 'delete' field rather than omitting them.",
+  "examples": [
+    {
+      "summary": "Change a nightly backup job to use zstd compression, target PBS storage, and keep the last 7 daily backups",
+      "path_params": {
+        "id": "backup-f3a1c2d4-3e9b"
+      },
+      "params": {
+        "storage": "pbs-main",
+        "compress": "zstd",
+        "zstd": 2,
+        "schedule": "00:00",
+        "prune-backups": "keep-daily=7,keep-weekly=4",
+        "mode": "snapshot",
+        "enabled": true,
+        "comment": "Nightly full cluster backup — zstd, 7-day retention"
+      }
+    }
+  ],
+  "tips": [
+    "Use the 'delete' param to unset fields (e.g. 'delete': 'node') rather than sending an empty string — omitting a field leaves the existing value unchanged.",
+    "Prefer 'schedule' (systemd calendar format) over the deprecated 'starttime'/'dow' combo; Proxmox converts old-style entries automatically but new jobs should use the modern format.",
+    "Setting 'repeat-missed': true is useful for clusters where the node may be offline during the scheduled window — the job will fire as soon as the scheduler comes back up.",
+    "Backup fleecing ('fleecing' param) can significantly reduce guest downtime during VM backups by staging changed blocks to a scratch storage; requires a fast local storage ID.",
+    "To temporarily pause a job without deleting it, set 'enabled': false instead of removing the job."
+  ],
+  "relatedOperations": [
+    "get_cluster_backup_id",
+    "get_cluster_backup",
+    "post_cluster_backup",
+    "delete_cluster_backup_id",
+    "post_cluster_backup_id_included_volumes"
+  ]
+}

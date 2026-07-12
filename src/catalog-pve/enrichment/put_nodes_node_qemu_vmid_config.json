@@ -1,0 +1,33 @@
+{
+  "operationId": "put_nodes_node_qemu_vmid_config",
+  "usageNotes": "Use this endpoint to synchronously update VM configuration settings such as CPU, memory, network, boot order, cloud-init parameters, or description — any change that does not require hotplug or storage allocation. For operations involving hotplug (attaching devices to a running VM) or allocating new disk volumes, use POST /nodes/{node}/qemu/{vmid}/config instead, which queues the change asynchronously and returns a UPID. The caller must hold at least one matching VM.Config.* privilege on /vms/{vmid} for the specific parameter category being changed.",
+  "examples": [
+    {
+      "summary": "Resize CPU and memory, update description, and enable QEMU guest agent on VM 200",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 200
+      },
+      "params": {
+        "cores": 4,
+        "memory": "4096",
+        "agent": "enabled=1,freeze-fs=1",
+        "description": "Production web server — updated 2026-06-29"
+      }
+    }
+  ],
+  "tips": [
+    "Pass the 'digest' param (from GET /config) to prevent overwriting concurrent changes — the API will reject the request if the config has changed since you read it.",
+    "To remove a config key (e.g., a network device or unused tag), use the 'delete' param with a comma-separated list of key names rather than omitting them.",
+    "Deleting a disk key without 'force: true' moves the volume to unused[n] rather than destroying it; set force=true only when you intend permanent removal.",
+    "Cloud-init params (ciuser, cipassword, ipconfig[n], etc.) take effect on the next VM start — they do not reconfigure a running instance.",
+    "Changes to CPU or memory on a running VM are not applied until the VM is next stopped and started unless those resources are hotplugged via the POST variant."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_config",
+    "post_nodes_node_qemu_vmid_config",
+    "get_nodes_node_qemu_vmid_pending",
+    "post_nodes_node_qemu_vmid_snapshot",
+    "post_nodes_node_qemu_vmid_resize"
+  ]
+}

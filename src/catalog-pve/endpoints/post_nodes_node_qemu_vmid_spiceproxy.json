@@ -1,0 +1,76 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_spiceproxy",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "spiceproxy",
+  "method": "POST",
+  "path": "/nodes/{node}/qemu/{vmid}/spiceproxy",
+  "description": "Returns a SPICE configuration to connect to the VM.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "proxy",
+      "type": "string",
+      "required": false,
+      "description": "SPICE proxy server. This can be used by the client to specify the proxy server. All nodes in a cluster runs 'spiceproxy', so it is up to the client to choose one. By default, we return the node where the VM is currently running. As reasonable setting is to use same node you use to connect to the API (This is window.location.hostname for the JS GUI).",
+      "format": "address",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "additionalProperties": 1,
+    "description": "Returned values can be directly passed to the 'remote-viewer' application.",
+    "properties": {
+      "host": {
+        "type": "string"
+      },
+      "password": {
+        "type": "string"
+      },
+      "proxy": {
+        "type": "string"
+      },
+      "tls-port": {
+        "type": "integer"
+      },
+      "type": {
+        "type": "string"
+      }
+    }
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Console"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/spiceproxy'"
+}

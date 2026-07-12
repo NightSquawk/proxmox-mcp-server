@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_aliases",
+  "usageNotes": "Returns all IP/CIDR aliases defined in a VM's firewall configuration, which can be referenced by name in firewall rules instead of raw addresses. Requires VM.Audit on the target VM — no node-level privilege is needed. Aliases are VM-scoped; to see cluster-wide aliases shared across all VMs, query the cluster firewall aliases endpoint instead.",
+  "examples": [
+    {
+      "summary": "List firewall aliases for VM 105 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Each returned object includes a 'digest' field — pass it to create/update/delete alias calls to guard against concurrent modifications.",
+    "Alias names are case-sensitive and must be unique within the VM's firewall scope; they do not collide with cluster-level alias names.",
+    "An empty array response means no aliases have been defined yet — the VM's firewall may still be enabled with inline CIDRs in rules."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_refs",
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "get_cluster_firewall_aliases"
+  ]
+}

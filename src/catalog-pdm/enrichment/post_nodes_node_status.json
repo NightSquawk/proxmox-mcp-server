@@ -1,0 +1,24 @@
+{
+  "operationId": "post_nodes_node_status",
+  "usageNotes": "Use this endpoint to initiate a controlled reboot or shutdown of a PDM-managed node. The caller must hold the Sys.PowerManagement privilege on the /system/status ACL path; API tokens are supported. The API returns null immediately — there is no UPID, so the operation is fire-and-forget; monitor node availability separately to confirm the power action completed.",
+  "examples": [
+    {
+      "summary": "Reboot a PDM node named 'pdm-node1'",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {
+        "command": "reboot"
+      }
+    }
+  ],
+  "tips": [
+    "Use 'localhost' as the node name to target the PDM host itself when the API is served from that node.",
+    "Because the return is null, do not poll for a task UPID — instead, watch for the node to go offline and reconnect.",
+    "Prefer 'reboot' over 'shutdown' in automated workflows unless you have a confirmed bring-up path (IPMI, WoL) to recover a shut-down node."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_status",
+    "get_nodes"
+  ]
+}

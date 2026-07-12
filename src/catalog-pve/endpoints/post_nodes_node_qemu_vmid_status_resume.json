@@ -1,0 +1,63 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_status_resume",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "vm_resume",
+  "method": "POST",
+  "path": "/nodes/{node}/qemu/{vmid}/status/resume",
+  "description": "Resume virtual machine.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "nocheck",
+      "type": "boolean",
+      "required": false,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "skiplock",
+      "type": "boolean",
+      "required": false,
+      "description": "Ignore locks - only root is allowed to use this option.",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.PowerMgmt"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/status/resume'"
+}

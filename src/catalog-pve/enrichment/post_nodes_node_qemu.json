@@ -1,0 +1,46 @@
+{
+  "operationId": "post_nodes_node_qemu",
+  "usageNotes": "Use this to provision a new QEMU/KVM virtual machine on a specific cluster node, or to restore one from a backup archive. The caller must hold VM.Allocate on /vms/{vmid} (or the target pool), Datastore.AllocateSpace on any storage used for disks, and SDN.Use on any bridge or VLAN referenced. The operation returns a task UPID string; poll the task API to determine when provisioning completes before attempting to start or configure the VM.",
+  "examples": [
+    {
+      "summary": "Create a Ubuntu 22.04 cloud-init VM with 2 vCPUs, 2 GiB RAM, a 20 GiB virtio-scsi boot disk, and a bridged NIC",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "vmid": 201,
+        "name": "ubuntu-2204-ci",
+        "ostype": "l26",
+        "cores": 2,
+        "memory": "2048",
+        "bios": "ovmf",
+        "efidisk0": "local-lvm:4,efitype=4m,pre-enrolled-keys=0",
+        "scsi0": "local-lvm:20,discard=on,ssd=1",
+        "scsihw": "virtio-scsi-single",
+        "net0": "virtio,bridge=vmbr0,firewall=1",
+        "agent": "enabled=1",
+        "ciuser": "ubuntu",
+        "ipconfig0": "ip=dhcp",
+        "onboot": 1,
+        "tags": "ubuntu;cloud-init"
+      }
+    }
+  ],
+  "tips": [
+    "vmid must be unique cluster-wide and >= 100; use get_cluster_nextid to obtain a safe next ID before calling this.",
+    "When using 'archive' to restore a backup, VM.Backup permission is sufficient if the VMID already exists; VM.Allocate is required when creating a new VMID.",
+    "Use 'live-restore: true' with 'archive' to start the VM immediately while the restore streams in the background.",
+    "For UEFI/Secure Boot guests set bios=ovmf and include an efidisk0 with efitype=4m; omitting efidisk0 with ovmf will cause the VM to fail to start.",
+    "Cloud-init requires at least one ide/scsi/virtio drive marked as a cloud-init drive (via the Proxmox UI or a separate cloudinit drive param) and the 'agent' param enabled for best results.",
+    "Disk size shorthand uses GiB (e.g. 'local-lvm:20' allocates 20 GiB); the size sub-key inside the disk string is informational only and does not resize the volume."
+  ],
+  "relatedOperations": [
+    "get_cluster_nextid",
+    "get_nodes_node_qemu",
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_status_start",
+    "post_nodes_node_qemu_vmid_clone",
+    "delete_nodes_node_qemu_vmid",
+    "get_nodes_node_tasks"
+  ]
+}

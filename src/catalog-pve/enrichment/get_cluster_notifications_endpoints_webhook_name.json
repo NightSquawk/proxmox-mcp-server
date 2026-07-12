@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_notifications_endpoints_webhook_name",
+  "usageNotes": "Use this to inspect the current configuration of a named webhook notification endpoint, including its URL, HTTP method, headers, and whether it is enabled. Requires either Mapping.Modify or Mapping.Audit privilege on /mapping/notifications. The response includes a digest field — capture it when you intend to follow up with an update, to guard against concurrent modifications.",
+  "examples": [
+    {
+      "summary": "Retrieve the configuration for a webhook endpoint named 'alerts-slack'",
+      "path_params": {
+        "name": "alerts-slack"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'secret' field in the response contains base64-encoded secret values (e.g., HMAC signing keys); treat the output as sensitive.",
+    "The 'header' array entries use the format name=<name>,value=<base64 of value> — decode before displaying to users.",
+    "Use the returned 'digest' value as input to the update endpoint to prevent lost-update races in concurrent environments.",
+    "A 'disable: true' in the response means notifications are silently dropped for this endpoint even if it is otherwise correctly configured."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_webhook",
+    "create_cluster_notifications_endpoints_webhook",
+    "update_cluster_notifications_endpoints_webhook_name",
+    "delete_cluster_notifications_endpoints_webhook_name",
+    "get_cluster_notifications_matchers"
+  ]
+}

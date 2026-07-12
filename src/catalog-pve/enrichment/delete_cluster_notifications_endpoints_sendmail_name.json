@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_cluster_notifications_endpoints_sendmail_name",
+  "usageNotes": "Permanently removes a named sendmail notification endpoint from the cluster. Requires the `Mapping.Modify` privilege on `/mapping/notifications`. Any notification rules or matchers that reference this endpoint by name should be updated or removed first, as the deletion does not cascade.",
+  "examples": [
+    {
+      "summary": "Delete the sendmail endpoint named 'alerts-smtp'",
+      "path_params": {
+        "name": "alerts-smtp"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the sendmail endpoint configuration; any notification rules referencing it will lose their delivery target and must be reconfigured manually.",
+  "tips": [
+    "The endpoint name must match the pve-configid format (alphanumeric, hyphens allowed, no spaces).",
+    "List existing endpoints with GET /cluster/notifications/endpoints/sendmail before deleting to confirm the correct name.",
+    "Check notification matchers and routing rules referencing this endpoint before deletion to avoid silent notification failures."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_sendmail_name",
+    "get_cluster_notifications_endpoints_sendmail",
+    "create_cluster_notifications_endpoints_sendmail",
+    "update_cluster_notifications_endpoints_sendmail_name"
+  ]
+}

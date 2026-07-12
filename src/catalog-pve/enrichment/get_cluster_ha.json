@@ -1,0 +1,20 @@
+{
+  "operationId": "get_cluster_ha",
+  "usageNotes": "Returns the top-level HA directory index listing the available HA sub-resources (e.g. groups, resources, status). Use this as a discovery call to enumerate the HA namespace before drilling into specific sub-endpoints. Requires Sys.Audit on / — typically granted to cluster admins.",
+  "examples": [
+    {
+      "summary": "List available HA sub-resources on the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'id' values correspond directly to child API paths under /cluster/ha (e.g. 'groups', 'resources', 'status').",
+    "HA is only meaningful when the cluster has at least two nodes and quorum is healthy; the directory index itself will succeed regardless of quorum state."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_groups",
+    "get_cluster_ha_resources",
+    "get_cluster_ha_status"
+  ]
+}

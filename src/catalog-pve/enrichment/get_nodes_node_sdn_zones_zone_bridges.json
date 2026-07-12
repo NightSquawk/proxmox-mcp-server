@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_sdn_zones_zone_bridges",
+  "usageNotes": "Use this to inspect the realized SDN state on a specific node — it reflects what Linux bridges and VNETs are actually instantiated on that node's kernel, which may differ from the cluster-level SDN config if `apply` has not been run. Requires SDN.Audit privilege on /sdn/zones/{zone}. Pass the literal string \"localnetwork\" as the zone to enumerate bridges that are part of the node's local network zone.",
+  "examples": [
+    {
+      "summary": "List all bridges for the 'prod' SDN zone on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "zone": "prod"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response reflects the live kernel bridge state on the target node — run sdn apply if the output does not match your SDN zone configuration.",
+    "Each bridge entry maps to a VNET within the zone; the 'ports' array shows which guest interfaces and VMIDs are currently attached.",
+    "The 'primary_vlan' and 'vlans' fields on ports are only populated for VLAN-aware (vlan_filtering) bridges.",
+    "Query each node individually — SDN zones can span multiple nodes but this endpoint only reports the state on the node specified in the path."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_zones",
+    "get_cluster_sdn_zones_zone",
+    "get_cluster_sdn_vnets",
+    "get_nodes_node_network"
+  ]
+}

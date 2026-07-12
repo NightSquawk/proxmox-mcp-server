@@ -1,0 +1,27 @@
+{
+  "operationId": "get_cluster_sdn_prefix_lists",
+  "usageNotes": "Use this endpoint to enumerate all SDN prefix lists defined in the cluster — these are named IP prefix sets used by BGP-based SDN configurations (e.g., EVPN zones). Without the 'verbose' flag only IDs are returned, making it useful for quick existence checks before referencing a prefix list in a zone or route-map. Requires 'SDN.Audit' or 'SDN.Allocate' permission on the relevant SDN objects; users without either permission receive an empty list rather than an error.",
+  "examples": [
+    {
+      "summary": "List all prefix lists with full details, showing any pending (uncommitted) changes",
+      "path_params": {},
+      "params": {
+        "verbose": true,
+        "pending": true,
+        "running": false
+      }
+    }
+  ],
+  "tips": [
+    "Omitting 'verbose' (or setting it to false) returns only IDs — sufficient for checking membership before a create/update call.",
+    "Use 'pending: true' after editing SDN config to see staged changes before running 'apply' (which pushes them to the running config).",
+    "Use 'running: true' to see what is actually active in the data plane, which may differ from stored config if an apply has not yet been performed.",
+    "Prefix lists only appear if SDN is enabled on the cluster and at least one EVPN or BGP-capable zone is configured."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_prefix_lists_prefixlist",
+    "create_cluster_sdn_prefix_lists",
+    "get_cluster_sdn_zones",
+    "apply_cluster_sdn"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "operationId": "get_access_roles",
+  "usageNotes": "Use this to enumerate all roles defined in the cluster, including built-in roles (marked with special: true) and any custom roles created by administrators. Accessible by all authenticated users, so no elevated privilege is required. The returned privs field is a comma-separated list of privileges assigned to each role, useful for auditing permission scope before assigning a role to a user or group.",
+  "examples": [
+    {
+      "summary": "List all roles in the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Built-in roles (Administrator, PVEVMAdmin, PVEAuditor, etc.) have special: true and cannot be deleted or modified.",
+    "Custom roles have special: false or omit the field; these can be managed via create/update/delete role endpoints.",
+    "Cross-reference roleid values here with ACL entries from get_access_acl to understand effective permissions for a user or path."
+  ],
+  "relatedOperations": [
+    "get_access_acl",
+    "get_access_users",
+    "get_access_groups"
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "operationId": "get_access_users_userid",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "{userid}",
+  "method": "GET",
+  "path": "/access/users/{userid}",
+  "description": "Read user configuration data.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "User ID",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "User properties.",
+    "properties": {
+      "comment": {
+        "description": "Comment.",
+        "maxLength": 128,
+        "optional": 1,
+        "pattern": "/^[[:^cntrl:]]*$/",
+        "type": "string"
+      },
+      "email": {
+        "description": "E-Mail Address.",
+        "maxLength": 64,
+        "minLength": 2,
+        "optional": 1,
+        "pattern": "/^[[:^cntrl:]]*$/",
+        "type": "string"
+      },
+      "enable": {
+        "default": true,
+        "description": "Enable the account (default). You can set this to '0' to disable the account.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "expire": {
+        "default": 0,
+        "description": "Account expiration date (seconds since epoch). '0' means no expiration date.",
+        "minimum": 0,
+        "optional": 1,
+        "type": "integer"
+      },
+      "firstname": {
+        "description": "First name.",
+        "maxLength": 64,
+        "minLength": 1,
+        "optional": 1,
+        "pattern": "/^[[:^cntrl:]]*$/",
+        "type": "string"
+      },
+      "lastname": {
+        "description": "Last name.",
+        "maxLength": 64,
+        "minLength": 1,
+        "optional": 1,
+        "pattern": "/^[[:^cntrl:]]*$/",
+        "type": "string"
+      },
+      "userid": {
+        "description": "User ID",
+        "maxLength": 64,
+        "minLength": 3,
+        "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "or": [
+      {
+        "check": {
+          "partial": false,
+          "path": [
+            "access",
+            "users"
+          ],
+          "privs": [
+            "System.Audit"
+          ]
+        }
+      },
+      {
+        "userParam": "userid"
+      }
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/users/<userid>'"
+}

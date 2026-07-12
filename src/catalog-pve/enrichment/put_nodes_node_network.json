@@ -1,0 +1,27 @@
+{
+  "operationId": "put_nodes_node_network",
+  "usageNotes": "Use this to apply pending network configuration changes on a node without rebooting — it reloads the interfaces file and restarts the networking stack. The node must be online and reachable, and the caller requires Sys.Modify on /nodes/{node}. Set regenerate-frr to true only if you use SDN/FRR-based routing and need the FRR daemon config rebuilt from the current SDN config.",
+  "examples": [
+    {
+      "summary": "Reload network config on pve1 and regenerate FRR routing config",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "regenerate-frr": true
+      }
+    }
+  ],
+  "tips": [
+    "This reloads the live networking stack — brief packet loss on active interfaces is expected during the reload.",
+    "Use POST /nodes/{node}/network to stage interface changes first; PUT applies all pending changes at once.",
+    "If the node has SDN zones configured, pass regenerate-frr: true to ensure FRR picks up any route/peer changes.",
+    "The return value is a plain string (e.g. an empty string or status message), not a task UPID — the reload is synchronous from the API's perspective."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network",
+    "post_nodes_node_network",
+    "delete_nodes_node_network_iface",
+    "put_nodes_node_network_iface"
+  ]
+}

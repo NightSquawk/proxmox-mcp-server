@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_qemu",
+  "usageNotes": "Use this to list all QEMU VMs on a specific node, including their run state, resource usage, and tags. Only VMs where the caller has VM.Audit permission on /vms/<vmid> are returned — partial lists are normal in multi-tenant clusters. Pass full=true to include live CPU/memory/disk/network stats for running VMs; omitting it returns a lighter response suitable for inventory enumeration.",
+  "examples": [
+    {
+      "summary": "List all VMs on node 'pve1' with full runtime stats",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "full": true
+      }
+    }
+  ],
+  "tips": [
+    "Results are scoped per-node; call this for each node in the cluster to build a cluster-wide VM inventory.",
+    "The 'status' field reflects the QEMU process state (stopped/running); 'qmpstatus' gives finer-grained QMP state (e.g. 'paused') for running VMs.",
+    "template=true entries are VM templates — filter these out if you only want live or startable VMs.",
+    "The 'lock' field indicates a config lock (e.g. 'migrate', 'backup', 'snapshot') — avoid config changes or migrations on locked VMs.",
+    "disk/net counters (diskread, diskwrite, netin, netout) are cumulative since guest start, not per-second rates; compute deltas between polls for throughput."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_status_current",
+    "get_nodes_node_qemu_vmid_config",
+    "get_cluster_resources"
+  ]
+}

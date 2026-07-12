@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_replication_id",
+  "usageNotes": "Returns the directory index of sub-resources available under a specific replication job on a node — useful for discovering what child endpoints (e.g. log, schedule, status) are exposed for a given job. The replication job must exist on the specified node; use `get_nodes_node_replication` first to list valid job IDs. Accessible by all authenticated users since permissions are set to 'user: all'.",
+  "examples": [
+    {
+      "summary": "List sub-resources for replication job 101-0 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "id": "101-0"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The job ID format is '<GUEST_ID>-<JOBNUM>' (e.g. '101-0'), where the guest ID is a 3–9 digit VM or CT ID and the job number starts at 0.",
+    "This endpoint is a directory index — it returns an array of child resource names (e.g. 'log', 'schedule', 'status'), not job configuration or status data directly.",
+    "To inspect actual replication status or logs, follow up with the child endpoints returned by this call."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_replication",
+    "get_nodes_node_replication_id_log",
+    "get_nodes_node_replication_id_schedule_now",
+    "get_nodes_node_replication_id_status"
+  ]
+}

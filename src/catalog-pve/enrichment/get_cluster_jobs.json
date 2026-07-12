@@ -1,0 +1,19 @@
+{
+  "operationId": "get_cluster_jobs",
+  "usageNotes": "Use this endpoint to discover what job-related sub-endpoints are available under /cluster/jobs (e.g., scheduled tasks, realm-sync jobs). It is a navigation index only — it returns directory entries with 'subdir' names, not actual job data. No authentication privileges beyond a valid API token are required.",
+  "examples": [
+    {
+      "summary": "List available job sub-endpoints on the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'subdir' values (e.g., 'realm-sync', 'schedule') are the path segments to append to /cluster/jobs/ for actual job operations.",
+    "This is a pure discovery call with no side effects; safe to call at any time without impacting cluster state."
+  ],
+  "relatedOperations": [
+    "get_cluster_jobs_realm_sync",
+    "get_cluster_jobs_schedule"
+  ]
+}

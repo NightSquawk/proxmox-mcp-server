@@ -1,0 +1,25 @@
+{
+  "operationId": "post_subscriptions_queue_clear",
+  "usageNotes": "Use this to stage the removal of a subscription key from a specific remote node so the key can be reassigned elsewhere; it sets a `pending_clear` flag on the pool entry but does not immediately DELETE the subscription — a subsequent 'Apply Pending' operation performs the actual removal. The (remote, node) pair must already have a pool entry bound to it; if no binding exists the call will fail, as importing a foreign subscription is handled by the Adopt Key action instead. Callers need `System.Modify` globally plus per-remote `PRIV_RESOURCE_MODIFY` on the target remote.",
+  "examples": [
+    {
+      "summary": "Queue a subscription clear for node 'pve-node1' on remote 'datacenter-eu'",
+      "path_params": {},
+      "params": {
+        "remote": "datacenter-eu",
+        "node": "pve-node1",
+        "digest": "a3f1c2d4e5b6a7f8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+      }
+    }
+  ],
+  "tips": [
+    "After queueing a clear, use 'Apply Pending' to execute the DELETE on the remote and release the binding; use 'Discard Pending' if you want to cancel without touching the remote.",
+    "Pass the current config digest to guard against concurrent modifications — omit it only in automated scripts where races are acceptable.",
+    "If the call returns an error about no bound pool entry, you must Adopt the key into the pool first before a clear can be queued."
+  ],
+  "relatedOperations": [
+    "post_subscriptions_apply_pending",
+    "post_subscriptions_discard_pending",
+    "post_subscriptions_adopt_key"
+  ]
+}

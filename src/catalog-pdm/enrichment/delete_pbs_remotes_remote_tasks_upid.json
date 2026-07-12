@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_pbs_remotes_remote_tasks_upid",
+  "usageNotes": "Stops a running task on a PBS remote by sending a stop/cancel signal for the given UPID. The caller must hold Resource.Manage on the target remote; the UPID must belong to a task that is still active on the remote — attempting to stop an already-finished task is a no-op or may return an error depending on PBS version. Returns null on success; confirm the task has halted by polling the corresponding task-status endpoint.",
+  "examples": [
+    {
+      "summary": "Stop a running garbage-collection task on the 'prod-backup' PBS remote",
+      "path_params": {
+        "remote": "prod-backup",
+        "upid": "UPID:prod-backup:00003A1C:012F4E8B:67A1C300:garbage_collect::root@pam:"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Terminates a running PBS task on the remote; any work performed by that task up to the point of cancellation may be incomplete or left in a partial state (e.g., a garbage-collection or prune run that did not finish).",
+  "tips": [
+    "Retrieve the UPID from the task-list or task-log endpoints before calling this — UPIDs are opaque strings at least 42 characters long.",
+    "Only tasks in a running or queued state can be meaningfully stopped; finished tasks return null without error in most PBS versions.",
+    "After stopping, verify final task status via the corresponding GET task-status endpoint before assuming the operation fully rolled back."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_tasks_upid_status",
+    "get_pbs_remotes_remote_tasks_upid_log",
+    "get_pbs_remotes_remote_tasks"
+  ]
+}

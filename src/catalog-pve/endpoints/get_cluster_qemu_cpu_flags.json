@@ -1,0 +1,90 @@
+{
+  "operationId": "get_cluster_qemu_cpu_flags",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "index",
+  "method": "GET",
+  "path": "/cluster/qemu/cpu-flags",
+  "description": "List of available CPU flags. Currently only implemented for x86_64, returns an empty list for aarch64.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "accel",
+      "type": "string",
+      "required": false,
+      "description": "Acceleration type to check node compatibility for.",
+      "enum": [
+        "kvm",
+        "tcg"
+      ],
+      "default": "kvm"
+    },
+    {
+      "name": "arch",
+      "type": "string",
+      "required": false,
+      "description": "Virtual processor architecture. Defaults to the host architecture.",
+      "enum": [
+        "x86_64",
+        "aarch64"
+      ]
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "description": {
+          "description": "Description of the CPU flag.",
+          "optional": 1,
+          "type": "string"
+        },
+        "name": {
+          "description": "Name of the CPU flag.",
+          "type": "string"
+        },
+        "supported-on": {
+          "description": "List of nodes supporting the flag with the selected acceleration type (\"accel\").",
+          "items": {
+            "description": "The cluster node name.",
+            "format": "pve-node",
+            "type": "string"
+          },
+          "optional": 1,
+          "type": "array"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "perm",
+        "/nodes",
+        [
+          "Sys.Audit"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/cpu",
+        [
+          "Mapping.Audit",
+          "Mapping.Use",
+          "Mapping.Modify"
+        ],
+        "any",
+        1
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/qemu/cpu-flags'"
+}

@@ -1,0 +1,191 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid_status",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "status",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/lxc/{vmid}/status",
+  "description": "Get the status of an LXC guest from a remote. If a node is provided, the guest must be on that\nnode, otherwise the node is determined automatically.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "A guest ID",
+      "minimum": 1
+    }
+  ],
+  "params": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": false,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object.",
+    "properties": {
+      "cpu": {
+        "description": "Current CPU usage.",
+        "optional": 1,
+        "type": "number"
+      },
+      "cpus": {
+        "description": "Maximum usable CPUs.",
+        "optional": 1,
+        "type": "number"
+      },
+      "disk": {
+        "description": "Root disk image space-usage in bytes.",
+        "minimum": 0,
+        "optional": 1,
+        "type": "integer"
+      },
+      "diskread": {
+        "description": "The amount of bytes the guest read from it's block devices since the\nguest was started. (Note: This info is not available for all storage\ntypes.)",
+        "optional": 1,
+        "type": "integer"
+      },
+      "diskwrite": {
+        "description": "The amount of bytes the guest wrote from it's block devices since the\nguest was started. (Note: This info is not available for all storage\ntypes.)",
+        "optional": 1,
+        "type": "integer"
+      },
+      "ha": {
+        "additionalProperties": false,
+        "description": "HA manager service status.",
+        "properties": {},
+        "type": "object"
+      },
+      "lock": {
+        "description": "The current config lock, if any.",
+        "optional": 1,
+        "type": "string"
+      },
+      "maxdisk": {
+        "description": "Root disk image size in bytes.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "maxmem": {
+        "description": "Maximum memory in bytes.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "maxswap": {
+        "description": "Maximum SWAP memory in bytes.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "mem": {
+        "description": "Currently used memory in bytes.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "name": {
+        "description": "Container name.",
+        "optional": 1,
+        "type": "string"
+      },
+      "netin": {
+        "description": "The amount of traffic in bytes that was sent to the guest over the\nnetwork since it was started.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "netout": {
+        "description": "The amount of traffic in bytes that was sent from the guest over the\nnetwork since it was started.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "pressurecpusome": {
+        "description": "CPU Some pressure stall average over the last 10 seconds.",
+        "optional": 1,
+        "type": "number"
+      },
+      "pressureiofull": {
+        "description": "IO Full pressure stall average over the last 10 seconds.",
+        "optional": 1,
+        "type": "number"
+      },
+      "pressureiosome": {
+        "description": "IO Some pressure stall average over the last 10 seconds.",
+        "optional": 1,
+        "type": "number"
+      },
+      "pressurememoryfull": {
+        "description": "Memory Full pressure stall average over the last 10 seconds.",
+        "optional": 1,
+        "type": "number"
+      },
+      "pressurememorysome": {
+        "description": "Memory Some pressure stall average over the last 10 seconds.",
+        "optional": 1,
+        "type": "number"
+      },
+      "status": {
+        "description": "A guest's run state.",
+        "enum": [
+          "running",
+          "stopped"
+        ],
+        "type": "string"
+      },
+      "tags": {
+        "description": "The current configured tags, if any.",
+        "optional": 1,
+        "type": "string"
+      },
+      "template": {
+        "default": false,
+        "description": "Determines if the guest is a template.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "uptime": {
+        "description": "Uptime in seconds.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "vmid": {
+        "description": "The (unique) ID of the VM.",
+        "maximum": 999999999,
+        "minimum": 100,
+        "type": "integer"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "guest",
+        "{vmid}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/lxc/0/status'"
+}

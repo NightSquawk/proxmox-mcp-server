@@ -1,0 +1,24 @@
+{
+  "operationId": "get_config_access_tfa",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "tfa",
+  "method": "GET",
+  "path": "/config/access/tfa",
+  "description": "Directory index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/access/tfa'"
+}

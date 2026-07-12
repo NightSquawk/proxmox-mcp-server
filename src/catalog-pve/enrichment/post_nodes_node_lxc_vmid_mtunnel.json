@@ -1,0 +1,28 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_mtunnel",
+  "usageNotes": "This endpoint is used exclusively by Proxmox's internal CT live-migration machinery to establish the migration tunnel on the destination node; it should not be called directly by external tooling or scripts. Requires both VM.Allocate on the target VMID and Sys.Incoming at the root level on the destination node. Returns a socket path, a ticket, and a UPID — the UPID can be polled via the tasks API to track tunnel/migration progress.",
+  "examples": [
+    {
+      "summary": "Open a migration tunnel for CT 112 on destination node pve2, pre-checking storage 'local-lvm' and bridge 'vmbr0'",
+      "path_params": {
+        "node": "pve2",
+        "vmid": 112
+      },
+      "params": {
+        "storages": "local-lvm",
+        "bridges": "vmbr0"
+      }
+    }
+  ],
+  "tips": [
+    "The bridges and storages params are pre-flight checks only — Proxmox re-validates the actually-used resources during migration itself.",
+    "The returned socket is a Unix socket path on the destination node used for the migration data stream; it is consumed by the source node automatically.",
+    "Poll the returned UPID against GET /nodes/{node}/tasks/{upid}/status to monitor tunnel and migration state.",
+    "Sys.Incoming is a rarely granted privilege; ensure the destination node's API user has it at '/' before invoking migration flows."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_migrate",
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_lxc_vmid_status_current"
+  ]
+}

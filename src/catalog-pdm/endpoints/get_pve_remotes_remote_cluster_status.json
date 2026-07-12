@@ -1,0 +1,117 @@
+{
+  "operationId": "get_pve_remotes_remote_cluster_status",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "cluster-status",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/cluster-status",
+  "description": "Query the cluster nodes status.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "target-endpoint",
+      "type": "string",
+      "required": false,
+      "description": "The target endpoint to use for the connection."
+    }
+  ],
+  "returns": {
+    "description": "Get all nodes Cluster Status",
+    "items": {
+      "additionalProperties": false,
+      "description": "Object.",
+      "properties": {
+        "id": {
+          "description": "FIXME: Missing description in PVE.",
+          "type": "string"
+        },
+        "ip": {
+          "description": "[node] IP of the resolved nodename.",
+          "optional": 1,
+          "type": "string"
+        },
+        "level": {
+          "description": "[node] Proxmox VE Subscription level, indicates if eligible for\nenterprise support as well as access to the stable Proxmox VE Enterprise\nRepository.",
+          "optional": 1,
+          "type": "string"
+        },
+        "local": {
+          "default": false,
+          "description": "[node] Indicates if this is the responding node.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "FIXME: Missing description in PVE.",
+          "type": "string"
+        },
+        "nodeid": {
+          "description": "[node] ID of the node from the corosync configuration.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "nodes": {
+          "description": "[cluster] Nodes count, including offline nodes.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "online": {
+          "default": false,
+          "description": "[node] Indicates if the node is online or offline.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "quorate": {
+          "default": false,
+          "description": "[cluster] Indicates if there is a majority of nodes online to make\ndecisions",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "type": {
+          "description": "Indicates the type, either cluster or node. The type defines the object\nproperties e.g. quorate available for type cluster.",
+          "enum": [
+            "cluster",
+            "node"
+          ],
+          "type": "string"
+        },
+        "version": {
+          "description": "[cluster] Current version of the corosync configuration file.",
+          "optional": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/cluster-status'"
+}

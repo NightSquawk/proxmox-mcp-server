@@ -1,0 +1,27 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid_firewall",
+  "usageNotes": "Returns the firewall directory index for a specific LXC container on a PDM-managed PVE remote, listing the available firewall sub-resources (rules, ipsets, aliases, options, refs, log). Use this as a discovery call before drilling into a specific firewall sub-resource. The remote must be registered in PDM and the target PVE node must be reachable; vmid must refer to an existing LXC container, not a QEMU VM.",
+  "examples": [
+    {
+      "summary": "List firewall sub-resources for LXC 101 on the prod-hetzner remote",
+      "path_params": {
+        "remote": "prod-hetzner",
+        "vmid": "101"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned index is a directory listing only — it does not return actual firewall rules or settings; follow up with sub-resource endpoints (rules, options, etc.) for actionable data.",
+    "vmid must be an LXC container ID; using a QEMU VM ID here will return an error — use the equivalent /qemu/{vmid}/firewall path for VMs.",
+    "This endpoint requires no special privilege beyond authenticated access (user: all), so API tokens with minimal scope can enumerate firewall sub-resources."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc_vmid_firewall_rules",
+    "get_pve_remotes_remote_lxc_vmid_firewall_options",
+    "get_pve_remotes_remote_lxc_vmid_firewall_ipsets",
+    "get_pve_remotes_remote_lxc_vmid_firewall_aliases",
+    "get_pve_remotes_remote_lxc_vmid_firewall_log",
+    "get_pve_remotes_remote_lxc_vmid_firewall_refs"
+  ]
+}

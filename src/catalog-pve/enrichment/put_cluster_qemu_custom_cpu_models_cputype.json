@@ -1,0 +1,31 @@
+{
+  "operationId": "put_cluster_qemu_custom_cpu_models_cputype",
+  "usageNotes": "Use this to modify an existing cluster-wide custom CPU model definition — for example to add or remove CPU flags, change the reported model, or adjust CPUID visibility settings. The caller must hold the Mapping.Modify privilege on /mapping/cpu/{cputype}; the model must already exist (use the POST endpoint to create it). Pass a digest obtained from the GET response to guard against concurrent edits.",
+  "examples": [
+    {
+      "summary": "Add spec-ctrl and ssbd mitigations to an existing custom CPU model and set reported-model to Haswell",
+      "path_params": {
+        "cputype": "custom-sec-baseline"
+      },
+      "params": {
+        "flags": "+spec-ctrl;+ssbd",
+        "reported-model": "Haswell",
+        "digest": "a3f1c2d4e5b6a7f8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+      }
+    }
+  ],
+  "tips": [
+    "The 'custom-' prefix in the cputype path segment is optional — Proxmox normalises both 'mycpu' and 'custom-mycpu' to the same model.",
+    "Use the 'delete' param (comma-separated config key names) to unset optional fields like 'flags' or 'hv-vendor-id' rather than passing empty strings.",
+    "Setting 'hidden: true' hides the KVM hypervisor signature from the guest; useful for software that refuses to run under a detected hypervisor.",
+    "Setting 'level: 30' is a documented workaround for Hyper-V boot failures on Windows guests running on recent Intel hosts.",
+    "Avoid setting 'phys-bits: host' if live migration across heterogeneous hardware is required — mismatched values will break migration.",
+    "This endpoint returns null on success; confirm the change by calling the corresponding GET to read back the updated definition."
+  ],
+  "relatedOperations": [
+    "get_cluster_qemu_custom_cpu_models_cputype",
+    "post_cluster_qemu_custom_cpu_models",
+    "delete_cluster_qemu_custom_cpu_models_cputype",
+    "get_cluster_qemu_custom_cpu_models"
+  ]
+}

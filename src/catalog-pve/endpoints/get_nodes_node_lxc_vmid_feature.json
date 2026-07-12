@@ -1,0 +1,75 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_feature",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "vm_feature",
+  "method": "GET",
+  "path": "/nodes/{node}/lxc/{vmid}/feature",
+  "description": "Check if feature for virtual machine is available.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "feature",
+      "type": "string",
+      "required": true,
+      "description": "Feature to check.",
+      "enum": [
+        "snapshot",
+        "clone",
+        "copy"
+      ]
+    },
+    {
+      "name": "snapname",
+      "type": "string",
+      "required": false,
+      "description": "The name of the snapshot.",
+      "format": "pve-configid",
+      "maxLength": 40,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "hasFeature": {
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100/feature?feature=snapshot'"
+}

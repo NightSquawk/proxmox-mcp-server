@@ -1,0 +1,31 @@
+{
+  "operationId": "put_nodes_node_lxc_vmid_firewall_aliases_name",
+  "usageNotes": "Use this to update the CIDR value, comment, or name of an existing firewall alias on a specific LXC container. Requires VM.Config.Network on the container's vmid path; the alias must already exist (create with the POST variant first). Pass the current configuration digest to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Update an alias CIDR and rename it on an LXC container",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110,
+        "name": "mgmt-net"
+      },
+      "params": {
+        "cidr": "10.10.20.0/24",
+        "rename": "mgmt-net-v2",
+        "comment": "Updated management network after subnet expansion"
+      }
+    }
+  ],
+  "tips": [
+    "The alias name must start with a letter and match [A-Za-z][A-Za-z0-9\\-\\_]+; purely numeric names are rejected.",
+    "Renaming an alias via the 'rename' param updates any firewall rules that reference it by name automatically within the same container scope.",
+    "This endpoint returns null on success — treat any non-error HTTP 200 response as confirmation.",
+    "Fetch the current digest from the GET alias endpoint and include it to prevent a lost-update race condition in automated workflows."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_aliases_name",
+    "post_nodes_node_lxc_vmid_firewall_aliases",
+    "delete_nodes_node_lxc_vmid_firewall_aliases_name",
+    "get_nodes_node_lxc_vmid_firewall_aliases"
+  ]
+}

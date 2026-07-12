@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_snapshot_snapname_rollback",
+  "usageNotes": "Rolls back an LXC container's disk and configuration to the state captured in the named snapshot; the container must be stopped before rollback unless the snapshot itself includes RAM state. Returns a UPID task string — poll the node's task log to confirm completion before treating the rollback as done. Requires either VM.Snapshot or VM.Snapshot.Rollback privilege on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Roll back container 112 to snapshot 'pre-upgrade' and start it automatically after",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 112,
+        "snapname": "pre-upgrade"
+      },
+      "params": {
+        "start": true
+      }
+    }
+  ],
+  "destructiveReason": "All disk and configuration changes made after the snapshot was taken are permanently discarded and cannot be recovered once the rollback completes.",
+  "tips": [
+    "Stop the container before rolling back if the snapshot does not include RAM state; a running container rollback may fail or corrupt state.",
+    "Use 'start': true to avoid a separate start call after rollback — useful in automated recovery scripts.",
+    "Take a safety snapshot of the current state before rolling back if there is any chance you need to preserve recent changes.",
+    "The returned UPID should be polled via GET /nodes/{node}/tasks/{upid}/status to confirm the task succeeded before proceeding."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_snapshot",
+    "get_nodes_node_lxc_vmid_snapshot",
+    "get_nodes_node_lxc_vmid_snapshot_snapname_config",
+    "delete_nodes_node_lxc_vmid_snapshot_snapname",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "operationId": "get_access_roles",
+  "usageNotes": "Use this to enumerate all roles defined in Proxmox Datacenter Manager, including both built-in system roles and any custom roles. Available to every authenticated user and API token — no special privilege required. Useful before assigning permissions to a user or token, so you can confirm the exact roleid and its associated privilege set.",
+  "examples": [
+    {
+      "summary": "List all available roles to find the right role before assigning permissions",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response includes a 'privs' array on each role — inspect it to verify a role grants the exact privileges needed before assigning it.",
+    "Built-in system roles (e.g. Administrator, NoAccess, PVEAdmin) are included alongside any custom roles; filter by roleid prefix if you only want one category.",
+    "This endpoint is safe to call with a least-privilege API token since it requires no elevated permissions."
+  ],
+  "relatedOperations": [
+    "get_access_users",
+    "get_access_acl",
+    "get_access_tokens"
+  ]
+}

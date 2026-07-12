@@ -1,0 +1,106 @@
+{
+  "operationId": "post_access_ticket",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "create_ticket",
+  "method": "POST",
+  "path": "/access/ticket",
+  "description": "Create or verify authentication ticket.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": false,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "new-format",
+      "type": "boolean",
+      "required": false,
+      "description": "This parameter is now ignored and assumed to be 1.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "otp",
+      "type": "string",
+      "required": false,
+      "description": "One-time password for Two-factor authentication.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": true,
+      "description": "The secret password. This can also be a valid ticket.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "required": false,
+      "description": "Verify ticket, and check if user have access 'privs' on 'path'",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "privs",
+      "type": "string",
+      "required": false,
+      "description": "Verify ticket, and check if user have access 'privs' on 'path'",
+      "format": "pve-priv-list",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "realm",
+      "type": "string",
+      "required": false,
+      "description": "You can optionally pass the realm using this parameter. Normally the realm is simply added to the username <username>@<realm>.",
+      "format": "pve-realm",
+      "maxLength": 32,
+      "typetext": "<string>"
+    },
+    {
+      "name": "tfa-challenge",
+      "type": "string",
+      "required": false,
+      "description": "The signed TFA challenge string the user wants to respond to.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "username",
+      "type": "string",
+      "required": true,
+      "description": "User name",
+      "maxLength": 64,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "CSRFPreventionToken": {
+        "optional": 1,
+        "type": "string"
+      },
+      "clustername": {
+        "optional": 1,
+        "type": "string"
+      },
+      "ticket": {
+        "optional": 1,
+        "type": "string"
+      },
+      "username": {
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "description": "You need to pass valid credientials.",
+    "user": "world"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"password\":\"<password>\",\"username\":\"<username>\"}' 'https://PVE_HOST:8006/api2/json/access/ticket'"
+}

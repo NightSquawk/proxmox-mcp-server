@@ -1,0 +1,28 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_shutdown",
+  "usageNotes": "Sends a graceful shutdown command to the VM via the QEMU Guest Agent (QGA), which triggers a clean OS-level shutdown rather than a hard power-off — the guest OS will flush disk buffers and stop services before halting. The QEMU Guest Agent must be installed and running inside the VM, and the agent service must be enabled on the VM configuration; if the agent is unreachable the call will return an error immediately. Caller needs either VM.PowerMgmt or VM.GuestAgent.Unrestricted on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Gracefully shut down VM 105 on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Initiates a full OS shutdown of the running VM, terminating all guest workloads and making the VM unavailable until it is started again.",
+  "tips": [
+    "Unlike POST /nodes/{node}/qemu/{vmid}/status/shutdown, this endpoint routes the shutdown through the guest agent rather than ACPI, giving the OS a chance to handle it via its own shutdown scripts.",
+    "If the guest agent is not responding, fall back to the ACPI-based shutdown at /nodes/{node}/qemu/{vmid}/status/shutdown or a hard stop at /nodes/{node}/qemu/{vmid}/status/stop.",
+    "The response wraps a `result` object from the agent — a null or empty result is normal and indicates the command was accepted; it does not confirm the VM has finished shutting down.",
+    "Monitor VM power state after issuing this call using GET /nodes/{node}/qemu/{vmid}/status/current; wait for status to reach 'stopped' before treating the shutdown as complete."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_status_shutdown",
+    "post_nodes_node_qemu_vmid_status_stop",
+    "post_nodes_node_qemu_vmid_status_reboot",
+    "post_nodes_node_qemu_vmid_agent_ping",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

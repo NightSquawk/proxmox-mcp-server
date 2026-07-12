@@ -1,0 +1,77 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_rrddata",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "rrddata",
+  "method": "GET",
+  "path": "/nodes/{node}/lxc/{vmid}/rrddata",
+  "description": "Read VM RRD statistics",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "cf",
+      "type": "string",
+      "required": false,
+      "description": "The RRD consolidation function",
+      "enum": [
+        "AVERAGE",
+        "MAX"
+      ]
+    },
+    {
+      "name": "timeframe",
+      "type": "string",
+      "required": true,
+      "description": "Specify the time frame you are interested in.",
+      "enum": [
+        "hour",
+        "day",
+        "week",
+        "month",
+        "year"
+      ]
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {},
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100/rrddata?timeframe=hour'"
+}

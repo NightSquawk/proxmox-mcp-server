@@ -1,0 +1,99 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_file_read",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "file-read",
+  "method": "GET",
+  "path": "/nodes/{node}/qemu/{vmid}/agent/file-read",
+  "description": "Reads the given file via guest agent. Is limited to 16777216 bytes.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "count",
+      "type": "integer",
+      "required": false,
+      "description": "Number of bytes to read.",
+      "default": "16777216",
+      "minimum": 1,
+      "maximum": "16777216",
+      "typetext": "<integer> (1 - 16777216)"
+    },
+    {
+      "name": "decode",
+      "type": "boolean",
+      "required": false,
+      "description": "Data received from the QEMU Guest-Agent is base64 encoded. If this is set to true, the data is decoded. Otherwise the content is forwarded with base64 encoding. Defaults to true.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "file",
+      "type": "string",
+      "required": true,
+      "description": "The path to the file",
+      "typetext": "<string>"
+    },
+    {
+      "name": "offset",
+      "type": "integer",
+      "required": false,
+      "description": "Offset to start reading at",
+      "default": 0,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    }
+  ],
+  "returns": {
+    "description": "Returns an object with a `content` property.",
+    "properties": {
+      "content": {
+        "description": "The content of the file, maximum 16777216",
+        "type": "string"
+      },
+      "truncated": {
+        "description": "If set to 1, the read did not reach the end of the file.",
+        "optional": 1,
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.GuestAgent.FileRead",
+        "VM.GuestAgent.Unrestricted"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/agent/file-read?file=<file>'"
+}

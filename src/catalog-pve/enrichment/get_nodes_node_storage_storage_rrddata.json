@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_storage_storage_rrddata",
+  "usageNotes": "Use this to retrieve historical RRD time-series statistics (disk usage, I/O throughput, etc.) for a specific storage pool on a given node. The node must be online and the caller needs either Datastore.Audit or Datastore.AllocateSpace on the storage path. The returned array of objects has no guaranteed fixed schema — field availability depends on the storage type and what Proxmox has been collecting.",
+  "examples": [
+    {
+      "summary": "Fetch last 24 hours of storage RRD data for local-lvm on pve1, using AVERAGE consolidation",
+      "path_params": {
+        "node": "pve1",
+        "storage": "local-lvm"
+      },
+      "params": {
+        "timeframe": "day",
+        "cf": "AVERAGE"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting 'cf' lets Proxmox choose its default; supply 'MAX' when you want to catch peak usage spikes rather than averages.",
+    "RRD data is pre-aggregated — shorter timeframes give finer resolution (hour = minute-level points), longer ones are coarser.",
+    "If the storage is currently unmounted or unavailable, the API may return an empty array or an error rather than historical data.",
+    "Use 'week' or 'month' timeframes for trend analysis; use 'hour' or 'day' for recent incident investigation."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_status",
+    "get_nodes_node_storage_storage_content",
+    "get_nodes_node_rrddata"
+  ]
+}

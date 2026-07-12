@@ -1,0 +1,54 @@
+{
+  "operationId": "get_nodes_node_vncwebsocket",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "vncwebsocket",
+  "method": "GET",
+  "path": "/nodes/{node}/vncwebsocket",
+  "description": "Upgraded to websocket",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "port",
+      "type": "integer",
+      "required": true,
+      "description": "Terminal port"
+    },
+    {
+      "name": "vncticket",
+      "type": "string",
+      "required": true,
+      "description": "Terminal ticket"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "Sys.Console"
+      ]
+    },
+    "description": "The user needs Sys.Console on /system."
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/vncwebsocket?port=0&vncticket=<vncticket>'"
+}

@@ -1,0 +1,61 @@
+{
+  "operationId": "get_cluster_metrics_server",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "server_index",
+  "method": "GET",
+  "path": "/cluster/metrics/server",
+  "description": "List configured metric servers.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "disable": {
+          "description": "Flag to disable the plugin.",
+          "type": "boolean"
+        },
+        "id": {
+          "description": "The ID of the entry.",
+          "type": "string"
+        },
+        "port": {
+          "description": "Server network port",
+          "type": "integer"
+        },
+        "server": {
+          "description": "Server dns name or IP address",
+          "type": "string"
+        },
+        "type": {
+          "description": "Plugin type.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{id}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/metrics/server'"
+}

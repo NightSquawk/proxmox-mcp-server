@@ -1,0 +1,38 @@
+{
+  "operationId": "post_cluster_notifications_endpoints_smtp",
+  "usageNotes": "Use this to register a new SMTP notification endpoint in the cluster-wide notification system, which can then be referenced by notification matchers to route alerts via email. The caller must hold Mapping.Modify on /mapping/notifications plus either Sys.Modify or Sys.AccessNetwork on /. At least one of `mailto` or `mailto-user` should be provided alongside the three required fields (name, server, from-address), otherwise the endpoint is valid but will silently deliver to no one.",
+  "examples": [
+    {
+      "summary": "Create a TLS SMTP endpoint using a transactional mail service (e.g., SendGrid) with two alert recipients",
+      "path_params": {},
+      "params": {
+        "name": "alerts-sendgrid",
+        "server": "smtp.sendgrid.net",
+        "port": 465,
+        "mode": "tls",
+        "from-address": "proxmox-alerts@nightsquawk.tech",
+        "author": "Proxmox Alerts",
+        "username": "apikey",
+        "password": "SG.xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "mailto": ["hello@nightsquawk.tech", "oncall@nightsquawk.tech"],
+        "comment": "Primary alert relay via SendGrid"
+      }
+    }
+  ],
+  "tips": [
+    "The `name` field uses pve-configid format: lowercase alphanumeric and hyphens only, no spaces.",
+    "Port defaults are applied automatically (465 for tls, 587 for starttls, 25 for insecure) — omit `port` unless overriding.",
+    "An endpoint created with `disable: true` is stored but ignored by matchers until re-enabled via the PUT endpoint.",
+    "Passwords are write-only in the API; a subsequent GET will not return the stored credential.",
+    "`mailto-user` accepts Proxmox user IDs (e.g., root@pam) and resolves their configured email at send time, so it stays accurate if the user's address changes.",
+    "After creation, wire the endpoint into a notification matcher using the notification matcher POST/PUT endpoints so it actually receives alerts."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_smtp",
+    "get_cluster_notifications_endpoints_smtp_name",
+    "put_cluster_notifications_endpoints_smtp_name",
+    "delete_cluster_notifications_endpoints_smtp_name",
+    "post_cluster_notifications_matchers",
+    "get_cluster_notifications_endpoints"
+  ]
+}

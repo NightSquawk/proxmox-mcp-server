@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_pending",
+  "usageNotes": "Use this to retrieve configuration changes that have been applied but require a VM reboot to take effect on a remote PVE node. The `node` query parameter is optional — PDM resolves the VM's host automatically if omitted, but supplying it avoids an extra lookup and is preferred when the node is already known. Requires `Resource.Audit` privilege on the remote resource path; the remote must be reachable from PDM at call time.",
+  "examples": [
+    {
+      "summary": "Get pending config for VM 110 on remote 'pve-prod', letting PDM auto-resolve the node",
+      "path_params": {
+        "remote": "pve-prod",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If a pending config exists, the VM needs a reboot before those settings go live — use this before live-migrating or snapshotting to confirm no unapplied changes are waiting.",
+    "An empty or null result means no pending changes; the running config matches the stored config.",
+    "Supplying 'node' prevents PDM from doing a cluster-wide VM lookup, which matters on large clusters with many VMs."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_config",
+    "get_pve_remotes_remote_qemu_vmid_status_current",
+    "get_pve_remotes_remote_qemu"
+  ]
+}

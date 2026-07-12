@@ -1,0 +1,32 @@
+{
+  "operationId": "put_cluster_firewall_groups_group_pos",
+  "usageNotes": "Use this to modify an existing firewall rule within a cluster-level security group, identified by its zero-based position index. Requires `Sys.Modify` on the root path (`/`). Pass `digest` (obtained from the corresponding GET) to guard against concurrent edits overwriting each other. When `moveto` is supplied, all other body fields are ignored — the rule is repositioned only.",
+  "examples": [
+    {
+      "summary": "Change an ACCEPT rule in the 'web-servers' security group at position 2 to DROP and add a descriptive comment",
+      "path_params": {
+        "group": "web-servers",
+        "pos": 2
+      },
+      "params": {
+        "action": "DROP",
+        "comment": "Temporarily blocking inbound until patch window closes",
+        "enable": 1,
+        "type": "in"
+      }
+    }
+  ],
+  "tips": [
+    "Fetch the current rule with GET /cluster/firewall/groups/{group}/{pos} first — capture the `digest` field and pass it back to prevent lost-update races.",
+    "Use the `delete` param (comma-separated field names) to clear optional fields like `comment` or `source` without touching the rest of the rule.",
+    "To reorder a rule without changing its content, supply only `moveto`; all other params are silently ignored by the API.",
+    "Security group names must start with a letter and be 2–18 characters matching [A-Za-z][A-Za-z0-9\\-\\_]+.",
+    "Changes apply to every VM/container and host that references this security group — verify scope before committing in production."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_groups_group_pos",
+    "get_cluster_firewall_groups_group",
+    "post_cluster_firewall_groups_group",
+    "delete_cluster_firewall_groups_group_pos"
+  ]
+}

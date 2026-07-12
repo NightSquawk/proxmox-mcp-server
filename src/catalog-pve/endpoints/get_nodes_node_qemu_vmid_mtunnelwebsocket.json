@@ -1,0 +1,69 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_mtunnelwebsocket",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "mtunnelwebsocket",
+  "method": "GET",
+  "path": "/nodes/{node}/qemu/{vmid}/mtunnelwebsocket",
+  "description": "Migration tunnel endpoint for websocket upgrade - only for internal use by VM migration.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "socket",
+      "type": "string",
+      "required": true,
+      "description": "unix socket to forward to",
+      "typetext": "<string>"
+    },
+    {
+      "name": "ticket",
+      "type": "string",
+      "required": true,
+      "description": "ticket return by initial 'mtunnel' API call, or retrieved via 'ticket' tunnel command",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "port": {
+        "optional": 1,
+        "type": "string"
+      },
+      "socket": {
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "description": "You need to pass a ticket valid for the selected socket. Tickets can be created via the mtunnel API call, which will check permissions accordingly.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/mtunnelwebsocket?socket=<socket>&ticket=<ticket>'"
+}

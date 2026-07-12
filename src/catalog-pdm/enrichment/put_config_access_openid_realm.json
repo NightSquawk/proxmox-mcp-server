@@ -1,0 +1,33 @@
+{
+  "operationId": "put_config_access_openid_realm",
+  "usageNotes": "Use this to modify an existing OpenID Connect realm in PDM — for example to rotate a client secret, change the issuer URL, or toggle autocreate after initial setup. Requires the `Realm.Allocate` privilege on the `/access/domains` ACL path; API tokens are allowed. Supply the `digest` field (obtained from the read endpoint) to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Update an Azure AD OIDC realm: rotate client key and enable autocreate",
+      "path_params": {
+        "realm": "azure-ad"
+      },
+      "params": {
+        "client-id": "a1b2c3d4-0000-0000-0000-ef5678901234",
+        "client-key": "NEW_CLIENT_SECRET_HERE",
+        "issuer-url": "https://login.microsoftonline.com/TENANT_ID/v2.0",
+        "autocreate": true,
+        "scopes": "email profile",
+        "comment": "Azure AD OIDC - updated client secret 2026-06-29",
+        "digest": "a3f1e2b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2"
+      }
+    }
+  ],
+  "tips": [
+    "Use the `delete` array to unset optional fields (e.g. `\"delete\": [\"acr-values\"]`) rather than sending an empty string.",
+    "Setting `default: true` on this realm will deselect any other realm currently marked as default on the PDM login page.",
+    "The `client-key` is write-only; it is not returned by the read endpoint, so keep your own record of the current secret before overwriting it.",
+    "Realm names are immutable after creation — to rename a realm you must delete and recreate it, which will break any existing user mappings."
+  ],
+  "relatedOperations": [
+    "get_config_access_openid_realm",
+    "post_config_access_openid",
+    "delete_config_access_openid_realm",
+    "get_config_access_openid"
+  ]
+}

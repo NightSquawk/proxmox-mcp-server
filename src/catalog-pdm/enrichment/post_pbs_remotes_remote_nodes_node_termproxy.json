@@ -1,0 +1,24 @@
+{
+  "operationId": "post_pbs_remotes_remote_nodes_node_termproxy",
+  "usageNotes": "Use this to open an interactive terminal session on a PBS node accessed through a PDM-configured remote. The endpoint returns a short-lived VNC/WebSocket ticket and user identity — the caller must immediately upgrade the connection to a WebSocket using that ticket before it expires. Requires the Sys.Console privilege on the remote+node ACL path and is restricted to users (API tokens alone may not suffice depending on PDM configuration).",
+  "examples": [
+    {
+      "summary": "Open a terminal proxy session on node 'pbs01' of remote 'hetzner-pbs'",
+      "path_params": {
+        "remote": "hetzner-pbs",
+        "node": "pbs01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'port' is always 0; it is not used for connection routing — the WebSocket upgrade itself carries the session.",
+    "The ticket is short-lived; initiate the WebSocket upgrade immediately after receiving it.",
+    "Node value 'localhost' is accepted and refers to the PDM-local PBS node when the remote is a loopback-style configuration.",
+    "API token access is allowed (allowtoken: true), but the Sys.Console privilege must be explicitly granted to the token's ACL path at /resource/{remote}/node/{node}."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_nodes_node",
+    "get_pbs_remotes_remote_nodes"
+  ]
+}

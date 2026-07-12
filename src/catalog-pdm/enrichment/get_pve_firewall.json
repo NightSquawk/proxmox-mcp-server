@@ -1,0 +1,17 @@
+{
+  "operationId": "get_pve_firewall",
+  "usageNotes": "Returns the firewall directory index for PVE remotes managed by PDM — use this to discover available firewall sub-resources (e.g., rules, aliases, IPSets) before making targeted sub-resource calls. No parameters are required and no specific privilege beyond a valid PDM API token is needed. The return value is documented as null in the spec, meaning the useful payload is the directory listing embedded in the response envelope.",
+  "examples": [
+    {
+      "summary": "List all available firewall sub-resources on the PDM PVE surface",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a discovery/index endpoint — use the returned sub-resource paths to construct follow-up calls for firewall rules, aliases, or IPSets.",
+    "Accessible with any valid PDM API token; no elevated privileges required.",
+    "Because the spec marks returns.type as null, the actual directory data arrives in the standard Proxmox API response envelope under the 'data' key."
+  ],
+  "relatedOperations": []
+}

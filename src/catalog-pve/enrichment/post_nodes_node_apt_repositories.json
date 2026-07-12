@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_apt_repositories",
+  "usageNotes": "Use this to enable or disable an existing APT repository entry on a specific node — it cannot add or remove repository lines, only toggle them. The `path` and `index` together uniquely identify the repository entry within its source file (indexes are 0-based as returned by GET /nodes/{node}/apt/repositories). Pass the `digest` from the GET response to guard against concurrent modifications; the call will fail if the file has changed since you last read it.",
+  "examples": [
+    {
+      "summary": "Disable the Proxmox enterprise repository on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "path": "/etc/apt/sources.list.d/pve-enterprise.list",
+        "index": 0,
+        "enabled": false,
+        "digest": "a3f1c2e4b5d6789012345678901234567890abcd"
+      }
+    }
+  ],
+  "tips": [
+    "Fetch the current repository list with GET /nodes/{node}/apt/repositories first — that response gives you the correct path, index, and digest values required here.",
+    "The digest is optional but strongly recommended in automated workflows; omitting it risks silently overwriting a concurrent change.",
+    "This endpoint returns null on success; an HTTP 4xx/5xx response indicates failure (e.g., stale digest, wrong path, or insufficient privilege).",
+    "Changes take effect immediately for subsequent apt commands — no node restart required."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_repositories",
+    "put_nodes_node_apt_repositories",
+    "post_nodes_node_apt_update"
+  ]
+}

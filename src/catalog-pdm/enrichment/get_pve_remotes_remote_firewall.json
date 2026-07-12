@@ -1,0 +1,22 @@
+{
+  "operationId": "get_pve_remotes_remote_firewall",
+  "usageNotes": "Returns the firewall directory index for a named PVE remote registered in PDM, exposing the sub-resources available under the firewall path (e.g., rules, options, refs). The remote must be added and reachable in PDM before this call succeeds. Because the return type is null in the schema, use this primarily as a discovery endpoint to confirm firewall sub-resource availability before querying specific firewall resources.",
+  "examples": [
+    {
+      "summary": "List firewall sub-resources for the 'pve-prod' remote",
+      "path_params": {
+        "remote": "pve-prod"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a directory index — it lists available firewall sub-endpoints, not actual rules or settings.",
+    "The 'remote' value must exactly match the remote name as configured in PDM (case-sensitive).",
+    "Accessible to all authenticated users; no elevated privilege is required beyond a valid API token."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote",
+    "get_pve_remotes"
+  ]
+}

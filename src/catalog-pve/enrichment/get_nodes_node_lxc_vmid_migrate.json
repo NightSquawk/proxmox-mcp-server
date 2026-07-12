@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_migrate",
+  "usageNotes": "Call this before initiating an LXC container migration to determine which nodes are valid targets and whether any HA affinity rules or running state will affect the move. The response includes allowed and blocked target nodes with blocking reasons, which helps surface HA conflicts before committing to the actual migrate POST. Requires VM.Migrate on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Check migration preconditions for container 110, targeting node pve2",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {
+        "target": "pve2"
+      }
+    }
+  ],
+  "tips": [
+    "Omit the 'target' param to get a full picture of all allowed and not-allowed nodes at once, rather than checking one target at a time.",
+    "Inspect 'not-allowed-nodes' and its 'blocking-ha-resources' list to understand whether node-affinity or resource-affinity rules are preventing migration to a specific host.",
+    "If 'dependent-ha-resources' is non-empty, those HA resources will follow the container to the same target node — confirm the target has capacity for them before migrating.",
+    "A 'running: true' response means the container is live; hot migration is supported for LXC but may require shared storage depending on your setup."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_migrate",
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_cluster_ha_resources"
+  ]
+}

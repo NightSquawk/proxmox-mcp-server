@@ -1,0 +1,51 @@
+{
+  "operationId": "get_access_roles",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "roles",
+  "method": "GET",
+  "path": "/access/roles",
+  "description": "A list of available roles",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of roles.",
+    "items": {
+      "additionalProperties": false,
+      "description": "A struct that the describes a role and shows the associated privileges.",
+      "properties": {
+        "comment": {
+          "description": "Comment.",
+          "maxLength": 128,
+          "optional": 1,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "privs": {
+          "description": "List of Privileges",
+          "items": {
+            "description": "A Privilege",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "roleid": {
+          "description": "The id of the role",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/roles'"
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_config_acme_account_name",
+  "usageNotes": "Use this to inspect the current state of a registered ACME account on Proxmox Datacenter Manager, including its contact email, status (valid/deactivated/revoked), and the ACME directory it was registered with. Requires System.Modify on /system/certificates — the same privilege needed to manage certificates. Check the returned account.status field before attempting any certificate order; a non-'valid' status means the account cannot be used for issuance.",
+  "examples": [
+    {
+      "summary": "Fetch details for the default ACME account",
+      "path_params": {
+        "name": "default"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Account names must start with an alphanumeric or underscore character and may contain dots, dashes, and underscores (pattern: /^(?:[A-Za-z0-9_][A-Za-z0-9.\\-_]*)$/).",
+    "The 'directory' field in the response identifies whether the account is registered with Let's Encrypt production, Let's Encrypt staging, or a custom ACME CA.",
+    "If account.status is 'deactivated' or 'revoked', certificate renewals will fail silently until the account is replaced or re-registered.",
+    "The 'location' URL is the account's canonical URL at the ACME provider and can be used to verify account identity independently."
+  ],
+  "relatedOperations": [
+    "get_config_acme_account",
+    "post_config_acme_account",
+    "put_config_acme_account_name",
+    "delete_config_acme_account_name"
+  ]
+}

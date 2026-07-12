@@ -1,0 +1,35 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_config",
+  "usageNotes": "Use this to modify any VM configuration setting — CPU, memory, disk, network, cloud-init, boot order, tags, and more — without recreating the VM. This is the asynchronous variant: it returns a task UPID string (or null if the task completes within `background_delay` seconds), so callers should poll the task status endpoint when a UPID is returned. Many settings (e.g. memory, CPU count) take effect on the next VM start unless hotplug is enabled for that feature; disk and network changes on a running VM require hotplug to be enabled.",
+  "examples": [
+    {
+      "summary": "Scale up memory and CPU cores on a running VM with hotplug enabled",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105
+      },
+      "params": {
+        "memory": "4096",
+        "cores": 4,
+        "hotplug": "network,disk,cpu,memory,usb",
+        "description": "Web server — scaled up 2026-06-29",
+        "background_delay": 5
+      }
+    }
+  ],
+  "tips": [
+    "Use the `delete` param (comma-separated config key names) to unset options rather than sending an empty value — e.g. `delete: 'description,tags'`.",
+    "Use the `digest` param (SHA1 from a prior GET) to guard against concurrent modification of the same VM config.",
+    "Removing a disk via `delete` moves it to an `unused[n]` entry by default; pass `force: true` only if you want immediate physical deletion.",
+    "Cloud-init settings (ciuser, cipassword, ipconfig[n], etc.) require regenerating the cloud-init drive inside the VM for changes to be applied on next boot.",
+    "The `revert` param lets you roll back a pending (unsaved) change to a specific key without affecting the rest of the config.",
+    "Caller needs at least ONE of the VM.Config.* privileges on /vms/{vmid} — the required privilege depends on which config key is being changed (e.g. VM.Config.Memory for `memory`, VM.Config.Disk for disk params)."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_config",
+    "put_nodes_node_qemu_vmid_config",
+    "get_nodes_node_tasks_upid_status",
+    "post_nodes_node_qemu_vmid_resize",
+    "post_nodes_node_qemu_vmid_move_disk"
+  ]
+}

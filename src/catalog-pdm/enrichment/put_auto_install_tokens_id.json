@@ -1,0 +1,29 @@
+{
+  "operationId": "put_auto_install_tokens_id",
+  "usageNotes": "Use this to update an existing automated-installer access token — toggle it enabled/disabled, set or clear an expiration date, update its comment, or rotate its secret. Requires the `System.Modify` privilege on `/system/auto-installation`. If you set `regenerate-secret: true`, the response body will include the new plaintext secret — this is the only time it is retrievable, so capture it immediately.",
+  "examples": [
+    {
+      "summary": "Rotate the secret on the 'imaging-lab' token and extend its expiration by one year",
+      "path_params": {
+        "id": "imaging-lab"
+      },
+      "params": {
+        "regenerate-secret": true,
+        "expire-at": 1782000000,
+        "comment": "Rotated 2026-06-29 — annual secret renewal"
+      }
+    }
+  ],
+  "tips": [
+    "Pass `digest` (from a prior GET) to guard against concurrent edits overwriting each other.",
+    "Use the `delete` array to clear optional fields (e.g. `[\"comment\", \"expire-at\"]`) rather than sending an empty string.",
+    "Setting `enabled: false` is a safe, reversible way to disable a token without deleting it while investigating suspected misuse.",
+    "A regenerated secret immediately invalidates the old one — any installer nodes still using the old secret will fail authentication until reconfigured."
+  ],
+  "relatedOperations": [
+    "get_auto_install_tokens",
+    "get_auto_install_tokens_id",
+    "post_auto_install_tokens",
+    "delete_auto_install_tokens_id"
+  ]
+}

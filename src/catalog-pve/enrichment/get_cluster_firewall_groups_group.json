@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_firewall_groups_group",
+  "usageNotes": "Use this to inspect the ordered ruleset of a specific cluster-level security group before modifying or auditing firewall policy. The group name must already exist (use list_cluster_firewall_groups to verify); the name is case-sensitive and follows the pattern [A-Za-z][A-Za-z0-9\\-\\_]+. Rules are returned in positional order (pos field); disabled rules (enable: 0) are included in the list and must be filtered client-side if only active rules are needed.",
+  "examples": [
+    {
+      "summary": "List all rules in the 'web-tier' security group",
+      "path_params": {
+        "group": "web-tier"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The pos field is the rule's index (0-based or 1-based depending on PVE version) and is used as the child link for fetching or modifying individual rules.",
+    "Rules with enable=0 are still returned; check this field before assuming all returned rules are active.",
+    "Security groups referenced inside another group's rules appear as action values (not ACCEPT/DROP/REJECT), so you may see nested group names in the action field.",
+    "Requires Sys.Audit privilege on the root path (/); API tokens must have this privilege explicitly granted."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_groups",
+    "post_cluster_firewall_groups_group",
+    "put_cluster_firewall_groups_group_pos",
+    "delete_cluster_firewall_groups_group_pos",
+    "get_cluster_firewall_groups_group_pos"
+  ]
+}

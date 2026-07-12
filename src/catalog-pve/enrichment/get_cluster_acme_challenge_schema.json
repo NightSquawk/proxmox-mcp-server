@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_acme_challenge_schema",
+  "usageNotes": "Call this before configuring an ACME account or DNS/HTTP challenge plugin to discover which challenge types (e.g. 'dns', 'standalone') are available on the cluster and what parameters each type requires. No authentication privilege beyond a valid user session is needed — API tokens are accepted. The response schema object per entry describes the fields required to configure that challenge type, so parse it before calling any ACME plugin create/update endpoint.",
+  "examples": [
+    {
+      "summary": "List all supported ACME challenge types and their configuration schemas",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'schema' field in each returned object is a JSON Schema describing the parameters needed to configure that challenge type — use it to validate plugin configuration before submission.",
+    "The 'id' field is what you pass as the 'type' or 'api' parameter in ACME plugin creation calls; 'name' is display-only.",
+    "This endpoint requires no special privilege and is safe to call at any time — use it for feature detection when building tooling that targets multiple PVE versions."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_plugins",
+    "create_cluster_acme_plugins",
+    "get_cluster_acme_directories",
+    "get_cluster_acme_accounts"
+  ]
+}

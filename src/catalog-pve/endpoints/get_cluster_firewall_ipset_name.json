@@ -1,0 +1,68 @@
+{
+  "operationId": "get_cluster_firewall_ipset_name",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_ipset",
+  "method": "GET",
+  "path": "/cluster/firewall/ipset/{name}",
+  "description": "List IPSet content",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "IP set name.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "cidr": {
+          "type": "string"
+        },
+        "comment": {
+          "optional": 1,
+          "type": "string"
+        },
+        "digest": {
+          "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+          "maxLength": 64,
+          "optional": 0,
+          "type": "string"
+        },
+        "nomatch": {
+          "optional": 1,
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{cidr}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/firewall/ipset/<name>'"
+}

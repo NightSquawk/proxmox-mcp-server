@@ -1,0 +1,21 @@
+{
+  "operationId": "get_pve_remotes",
+  "usageNotes": "Use this to retrieve all PVE remote connections registered in Proxmox Datacenter Manager. The response contains only remote IDs — follow up with a per-remote detail call to get connection parameters (host, port, credentials). No parameters are required; the endpoint returns all remotes the authenticated token has visibility into.",
+  "examples": [
+    {
+      "summary": "List all registered PVE remotes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Remote IDs follow the pattern [A-Za-z0-9_][A-Za-z0-9._-]* (2–32 chars); use the returned IDs as the 'remote' path param in subsequent per-remote endpoints.",
+    "An empty array response means no PVE remotes are registered yet — add one via the PDM UI or the create-remote endpoint before querying cluster or node resources.",
+    "API tokens (allowtoken: true) can be used directly; no interactive session cookie is required."
+  ],
+  "relatedOperations": [
+    "get_pve_remote",
+    "create_pve_remote",
+    "delete_pve_remote"
+  ]
+}

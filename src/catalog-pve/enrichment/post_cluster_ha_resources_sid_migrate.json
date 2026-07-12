@@ -1,0 +1,29 @@
+{
+  "operationId": "post_cluster_ha_resources_sid_migrate",
+  "usageNotes": "Triggers a live (online) migration of an HA-managed VM or container to a specified node; the HA manager handles the actual move and the response returns immediately with migration metadata rather than a UPID. The caller needs `Sys.Console` on `/` (cluster root), and the target node must be online and a member of the HA cluster. Check the `blocking-resources` array in the response — if it is non-empty the migration was blocked due to node-affinity or resource-affinity constraints and the resource did not move.",
+  "examples": [
+    {
+      "summary": "Migrate VM 105 to node pve2",
+      "path_params": {
+        "sid": "vm:105"
+      },
+      "params": {
+        "node": "pve2"
+      }
+    }
+  ],
+  "destructiveReason": "The running VM or container is live-migrated away from its current node, causing a brief service interruption if live migration is not fully supported by the workload or storage backend.",
+  "tips": [
+    "Use the shorthand integer form for sid (e.g. '105') instead of 'vm:105' — both are accepted.",
+    "Check `comigrated-resources` in the response to discover any affinity-linked resources that will move with this resource.",
+    "If `blocking-resources` is returned, resolve affinity rules before retrying — affinity constraints override the migration request.",
+    "This endpoint requests migration; use `get_cluster_ha_resources_sid` to poll the resource's current node and state until the move completes.",
+    "For offline relocation (when the node is fenced/unavailable), use the relocate endpoint instead of migrate."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_resources_sid",
+    "post_cluster_ha_resources_sid_relocate",
+    "get_cluster_ha_resources",
+    "get_cluster_ha_status_current"
+  ]
+}

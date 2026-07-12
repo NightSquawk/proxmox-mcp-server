@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_sdn_zones_zone_ip_vrf",
+  "usageNotes": "Use this to retrieve the IP-VRF route table entry for a specific EVPN SDN zone as seen from a given remote peer — useful for verifying BGP EVPN route propagation between datacenters. The zone must be of type EVPN and the remote must already be configured in PDM's SDN fabric; the node specified must be online and participating in that zone. Returns a single route object (CIDR, metric, nexthops, protocol), not a list.",
+  "examples": [
+    {
+      "summary": "Get the IP-VRF route for EVPN zone 'evpn-dc1' on node 'pve01' from remote peer 'hetzner-de'",
+      "path_params": {
+        "node": "pve01",
+        "zone": "evpn-dc1"
+      },
+      "params": {
+        "remote": "hetzner-de"
+      }
+    }
+  ],
+  "tips": [
+    "The 'remote' value must match the remote ID as configured in PDM SDN — check existing remotes via the SDN fabric API before calling this endpoint.",
+    "A missing or empty response typically means the VRF route has not been advertised yet from the remote; verify BGP session state and EVPN route-target configuration on both sides.",
+    "The returned 'protocol' field (e.g. 'bgp') indicates where the route was learned — useful for distinguishing imported EVPN routes from locally injected static routes."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_zones_zone",
+    "get_cluster_sdn_zones_zone",
+    "get_cluster_sdn_zones"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "delete_nodes_node_subscription",
+  "usageNotes": "Removes the Proxmox VE subscription key registered on the specified node. Once deleted, the node loses enterprise repository access and support entitlements until a new key is applied via PUT /nodes/{node}/subscription. Requires Sys.Modify on /nodes/{node}; the operation returns null synchronously (no UPID — it is not async).",
+  "examples": [
+    {
+      "summary": "Remove the subscription key from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the subscription key from the node, immediately revoking access to the enterprise apt repository and any associated support contract entitlements until a valid key is re-applied.",
+  "tips": [
+    "This call returns null on success — no response body to parse.",
+    "After deletion, the node will fall back to the no-subscription or test repository; update /etc/apt/sources.list.d/pve-enterprise.list accordingly to avoid failed apt updates.",
+    "To replace a key rather than simply remove it, use PUT /nodes/{node}/subscription with the new key directly — you do not need to DELETE first.",
+    "In a cluster, the subscription key is per-node; you must call this endpoint once per node if cleaning up across the cluster."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_subscription",
+    "put_nodes_node_subscription"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_acme",
+  "usageNotes": "Returns the top-level ACME index listing available child resources (accounts, directories, plugins, TOS). Use this as a discovery call to confirm ACME support is accessible before navigating to sub-resources. No parameters are required and all authenticated users can call it.",
+  "examples": [
+    {
+      "summary": "List ACME index resources on the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned array contains child resource names (e.g. 'accounts', 'directories', 'plugins', 'tos') — use these as the next path segment to drill into specific ACME configuration.",
+    "This endpoint is a directory index, not a list of ACME accounts; use get_cluster_acme_accounts to enumerate configured accounts.",
+    "API tokens are allowed, so this can be called from automation without a full user session."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_account",
+    "get_cluster_acme_accounts",
+    "get_cluster_acme_directories",
+    "get_cluster_acme_plugins",
+    "get_cluster_acme_tos"
+  ]
+}

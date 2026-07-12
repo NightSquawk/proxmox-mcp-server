@@ -1,0 +1,32 @@
+{
+  "operationId": "put_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+  "usageNotes": "Use this to modify metadata on an existing CIDR entry within a named IPSet on an LXC container's firewall — specifically to update its comment or toggle the 'nomatch' (exclusion) flag. The CIDR itself is immutable by this endpoint; to change the address, delete the old entry and add a new one. Requires VM.Config.Network on the target container.",
+  "examples": [
+    {
+      "summary": "Mark a CIDR entry as an exclusion (nomatch) and add an explanatory comment",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110,
+        "name": "trusted-mgmt",
+        "cidr": "10.10.5.0/24"
+      },
+      "params": {
+        "nomatch": true,
+        "comment": "Exclude legacy subnet from trusted management range"
+      }
+    }
+  ],
+  "tips": [
+    "Pass 'digest' to guard against concurrent edits — read the IPSet entry first (GET the same path) to retrieve the current digest, then include it here.",
+    "Setting 'nomatch: true' turns the CIDR into an explicit exclusion within the IPSet, useful for carving out sub-ranges from a broader allowed block.",
+    "The IPSet must already exist and the CIDR entry must already be present; this endpoint updates in-place and does not create.",
+    "Changes take effect immediately in the firewall rules engine — no container restart required."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+    "delete_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+    "post_nodes_node_lxc_vmid_firewall_ipset_name",
+    "get_nodes_node_lxc_vmid_firewall_ipset_name",
+    "get_nodes_node_lxc_vmid_firewall_ipset"
+  ]
+}

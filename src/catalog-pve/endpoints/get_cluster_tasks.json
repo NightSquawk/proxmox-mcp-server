@@ -1,0 +1,32 @@
+{
+  "operationId": "get_cluster_tasks",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "tasks",
+  "method": "GET",
+  "path": "/cluster/tasks",
+  "description": "List recent tasks (cluster wide).",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "upid": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/tasks'"
+}

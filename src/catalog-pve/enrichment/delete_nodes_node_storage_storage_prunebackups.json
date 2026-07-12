@@ -1,0 +1,31 @@
+{
+  "operationId": "delete_nodes_node_storage_storage_prunebackups",
+  "usageNotes": "Use this to enforce backup retention policy on a storage target — it deletes backup files that fall outside the configured keep-* thresholds. Only backups following the standard Proxmox naming scheme (vzdump archives) are evaluated; any non-standard files are ignored. If no prune-backups override is supplied, the retention rules from the storage configuration are used, so verify the storage config before running this in production.",
+  "examples": [
+    {
+      "summary": "Prune backups for a single VM (ID 101) on local backup storage, keeping only the last 3 backups",
+      "path_params": {
+        "node": "pve01",
+        "storage": "local"
+      },
+      "params": {
+        "vmid": 101,
+        "type": "qemu",
+        "prune-backups": "keep-last=3"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently deletes backup files from storage that do not satisfy the retention policy; deleted backups cannot be recovered.",
+  "tips": [
+    "Run GET /nodes/{node}/storage/{storage}/prunebackups first (dry-run) to preview which backups would be removed before committing the DELETE.",
+    "Omitting 'vmid' and 'type' prunes backups for ALL guests on the storage — scope carefully in mixed environments.",
+    "The 'prune-backups' override only applies to this single call; it does not permanently change the storage retention configuration.",
+    "Requires 'Datastore.Allocate' on the storage path; if scoped to a specific VMID, 'Datastore.AllocateSpace' + 'VM.Backup' on that VM are sufficient.",
+    "The operation returns a string (task UPID) — poll /nodes/{node}/tasks/{upid}/status to confirm completion before assuming backups are gone."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_prunebackups",
+    "get_nodes_node_storage_storage_content",
+    "delete_nodes_node_storage_storage_content_volume"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_access_users_userid_tfa",
+  "usageNotes": "Use this to check what TFA methods are configured for a specific user, both at the personal level and enforced by their realm. A user can call it for themselves; otherwise, the caller needs User.Modify or Sys.Audit on the user's group. Pass `multiple: true` to get a full array of all configured TFA types instead of just the primary one.",
+  "examples": [
+    {
+      "summary": "Retrieve TFA configuration for a specific user, requesting all entries as an array",
+      "path_params": {
+        "userid": "admin@pam"
+      },
+      "params": {
+        "multiple": true
+      }
+    }
+  ],
+  "tips": [
+    "Without `multiple`, the response returns `user` (single legacy type) and `types` (array); with `multiple: true`, the shape changes — `user` and `types` are omitted.",
+    "The `realm` field reflects TFA enforced at the realm level (oath/yubico), which users cannot bypass regardless of their personal settings.",
+    "Note the typo in the spec enum value: `recovedry` (not `recovery`) — match this exactly if filtering on type strings."
+  ],
+  "relatedOperations": [
+    "get_access_users",
+    "get_access_users_userid",
+    "post_access_tfa",
+    "get_access_tfa_userid"
+  ]
+}

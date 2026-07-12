@@ -1,0 +1,32 @@
+{
+  "operationId": "post_access_users",
+  "usageNotes": "Use this to provision a new PDM user account. The userid must include a realm suffix in the form user@realm (e.g. alice@pve or svc-monitoring@pam), and the caller must hold Access.Modify on /access/users. Password is only meaningful for pve-realm users — realm-authenticated users (LDAP, AD, OpenID) authenticate externally and should omit it. The endpoint returns null on success; errors surface as HTTP 4xx.",
+  "examples": [
+    {
+      "summary": "Create a read-only monitoring service account in the pve realm",
+      "path_params": {},
+      "params": {
+        "userid": "svc-monitoring@pve",
+        "firstname": "Monitoring",
+        "lastname": "Service",
+        "email": "alerts@example.com",
+        "password": "S3cur3P@ssw0rd",
+        "enable": true,
+        "expire": 0,
+        "comment": "Read-only service account for Prometheus/Grafana scraping"
+      }
+    }
+  ],
+  "tips": [
+    "After creating the user, use put_access_acl to assign role bindings — a new user has no privileges until an ACL is applied.",
+    "For SSO/OpenID users, omit the password field entirely; their credentials are managed by the external provider.",
+    "Set expire to a Unix timestamp to auto-disable temporary accounts (e.g. contractors); expire=0 means no expiry.",
+    "Realm must already exist in PDM — verify with get_access_domains before creating users in custom realms."
+  ],
+  "relatedOperations": [
+    "put_access_acl",
+    "get_access_roles",
+    "get_access_domains",
+    "post_access_tfa_userid"
+  ]
+}

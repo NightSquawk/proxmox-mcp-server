@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_disks_directory",
+  "usageNotes": "Lists all PVE-managed directory storage mounts on the specified node, including their device, mount path, filesystem type, and mount options. Requires the node to be online and the caller to hold Sys.Audit on the root path. Use this to audit which block devices are mounted as directory-backed storage before adding, removing, or troubleshooting storage configurations.",
+  "examples": [
+    {
+      "summary": "List all directory storages on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Each entry's 'unitfile' field points to the systemd mount unit managing the mount — useful for diagnosing mount failures via 'systemctl status'.",
+    "Results reflect only PVE-managed directory mounts, not all mounts on the host; system mounts (/, /boot, etc.) are excluded.",
+    "Cross-reference 'device' values with 'get_nodes_node_disks_list' to map directory mounts back to their physical or logical disk."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_list",
+    "post_nodes_node_disks_directory",
+    "delete_nodes_node_disks_directory_name",
+    "get_nodes_node_storage"
+  ]
+}

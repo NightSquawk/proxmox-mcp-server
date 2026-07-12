@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_get_memory_blocks",
+  "usageNotes": "Queries the QEMU Guest Agent for the VM's current memory block configuration, including which blocks are online and their hotplug state. Requires the guest agent to be installed, running, and responsive inside the VM — the call will fail if the agent is not active. Caller must hold VM.GuestAgent.Audit or VM.GuestAgent.Unrestricted on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Retrieve memory block info from a running VM",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If the guest agent is not running, the API returns an error rather than an empty result — check agent status first with get_nodes_node_qemu_vmid_agent_info.",
+    "Memory block visibility depends on the guest OS and whether hotplug memory devices were attached; guests with no hotplug DIMMs may return an empty block list.",
+    "This is a read-only passthrough to the QEMU Guest Agent protocol command 'guest-get-memory-blocks'; no changes are made to the VM."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_info",
+    "get_nodes_node_qemu_vmid_agent_get_memory_block_info",
+    "post_nodes_node_qemu_vmid_agent_set_user_password"
+  ]
+}

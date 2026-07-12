@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_services_service_restart",
+  "usageNotes": "Performs a hard stop-then-start of the specified Proxmox system service on the target node; prefer the reload endpoint when the service supports it to minimize downtime. The caller must hold Sys.Modify on /nodes/{node}. Restarting critical cluster services such as pve-cluster, corosync, or pvedaemon will briefly interrupt cluster communication and API availability — use with care in production.",
+  "examples": [
+    {
+      "summary": "Restart the PVE proxy (web UI / API listener) on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "service": "pveproxy"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Use the reload endpoint instead of restart for pveproxy and pvedaemon when you only need to apply a config change — reload avoids a full service stop.",
+    "Restarting corosync or pve-cluster can trigger quorum re-evaluation; ensure a majority of cluster nodes are online before doing so.",
+    "Restarting sshd will drop active SSH sessions to the node, including the one issuing the call if run interactively.",
+    "The returns type is a UPID string — poll the node tasks endpoint to confirm the restart completed successfully."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_services_service_reload",
+    "post_nodes_node_services_service_start",
+    "post_nodes_node_services_service_stop",
+    "get_nodes_node_services_service_state",
+    "get_nodes_node_services"
+  ]
+}

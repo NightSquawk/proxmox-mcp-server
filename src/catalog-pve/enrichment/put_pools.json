@@ -1,0 +1,29 @@
+{
+  "operationId": "put_pools",
+  "usageNotes": "Use this to update a pool's comment, or to add/remove VMs and storage resources from an existing pool. The caller must hold Pool.Allocate on /pool/{poolid} and also have the appropriate resource-level permissions (e.g. VM.Allocate) on each guest or storage being added or removed. To move a guest that already belongs to another pool, set allow-move=true; without it the request will be rejected if the guest is already pooled.",
+  "examples": [
+    {
+      "summary": "Add two VMs and a storage volume to pool 'devteam', moving VM 105 from its current pool if needed",
+      "path_params": {},
+      "params": {
+        "poolid": "devteam",
+        "vms": "104,105",
+        "storage": "local-zfs",
+        "allow-move": true,
+        "comment": "Dev team shared resources"
+      }
+    }
+  ],
+  "tips": [
+    "The 'vms' and 'storage' fields accept comma-separated lists (pve-vmid-list / pve-storage-id-list format).",
+    "Set 'delete': true to remove the listed VMs/storage from the pool rather than adding them — the pool itself is not deleted.",
+    "Returns null on success; any error (missing privilege, unknown poolid, guest already in another pool without allow-move) surfaces as an HTTP 4xx/5xx.",
+    "Pool membership controls ACL inheritance: guests in a pool inherit permissions granted at the /pool/{poolid} path."
+  ],
+  "relatedOperations": [
+    "post_pools",
+    "get_pools_poolid",
+    "delete_pools_poolid",
+    "get_pools"
+  ]
+}

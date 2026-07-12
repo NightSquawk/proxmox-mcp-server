@@ -1,0 +1,30 @@
+{
+  "operationId": "get_nodes_node_syslog",
+  "usageNotes": "Use this endpoint to retrieve systemd journal (syslog) entries from a PDM node for troubleshooting or auditing. Requires the System.Audit privilege on the calling token. Responses are paginated via `start` and `limit`; use them together to page through large logs, and filter by `since`/`until` to narrow a time window or by `service` to isolate a specific systemd unit.",
+  "examples": [
+    {
+      "summary": "Fetch the last 100 syslog lines from a PDM node for a specific service within a time window",
+      "path_params": {
+        "node": "pdm01"
+      },
+      "params": {
+        "service": "pve-cluster",
+        "since": "2026-06-29 00:00:00",
+        "until": "2026-06-29 23:59:59",
+        "start": 0,
+        "limit": 100
+      }
+    }
+  ],
+  "tips": [
+    "Each returned object contains `n` (line number) and `t` (line text); use `n` as the next `start` value to continue paging.",
+    "The `service` parameter accepts a systemd unit name (e.g., 'pve-cluster', 'sshd', 'networking'); omit it to retrieve the full journal.",
+    "Omitting both `since` and `until` returns the most recent entries; combine with `limit` to cap output size.",
+    "The `node` path parameter also accepts 'localhost' to target the node receiving the request."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_journal",
+    "get_nodes_node_tasks",
+    "get_nodes_node_status"
+  ]
+}

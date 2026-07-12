@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_status",
+  "usageNotes": "Returns the list of available status sub-endpoints for a QEMU VM (e.g. current, start, stop, reset, shutdown, suspend, resume, reboot) — useful for discovery but rarely needed directly since the sub-endpoint paths are fixed. Call this before navigating the status tree programmatically, or to confirm which lifecycle actions are exposed for a given VM. No privileges beyond 'all' are required, so any authenticated token can call it.",
+  "examples": [
+    {
+      "summary": "List status sub-endpoints for VM 105 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'subdir' values are the literal path segments appended to this URL to reach each status action (e.g. 'current', 'start', 'stop').",
+    "This is a directory index only — it carries no live VM state. Use get_nodes_node_qemu_vmid_status_current for power state, CPU, memory, and uptime.",
+    "Because permissions are 'user: all', this call succeeds even with a read-only API token, making it safe for health-check and discovery scripts."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_status_start",
+    "post_nodes_node_qemu_vmid_status_stop",
+    "post_nodes_node_qemu_vmid_status_shutdown",
+    "post_nodes_node_qemu_vmid_status_reboot",
+    "post_nodes_node_qemu_vmid_status_reset",
+    "post_nodes_node_qemu_vmid_status_suspend",
+    "post_nodes_node_qemu_vmid_status_resume"
+  ]
+}

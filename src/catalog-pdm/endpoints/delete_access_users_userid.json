@@ -1,0 +1,58 @@
+{
+  "operationId": "delete_access_users_userid",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "{userid}",
+  "method": "DELETE",
+  "path": "/access/users/{userid}",
+  "description": "Remove a user from the configuration file.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "User ID",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "or": [
+      {
+        "check": {
+          "partial": false,
+          "path": [
+            "access",
+            "users"
+          ],
+          "privs": [
+            "Access.Modify"
+          ]
+        }
+      },
+      {
+        "userParam": "userid"
+      }
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/users/<userid>'"
+}

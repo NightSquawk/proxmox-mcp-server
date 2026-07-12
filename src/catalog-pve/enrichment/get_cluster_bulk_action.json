@@ -1,0 +1,17 @@
+{
+  "operationId": "get_cluster_bulk_action",
+  "usageNotes": "Use this endpoint to discover the resource types available under the /cluster/bulk-action namespace; it returns a list of child resource names that can be used to construct further bulk-action requests. No parameters are required and no special privileges are needed beyond a valid API token. This is a discovery/index call — follow the 'name' values in the response to navigate to the actual bulk-action sub-resources.",
+  "examples": [
+    {
+      "summary": "List available bulk-action resource types",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response 'name' field in each returned object corresponds to the {name} href link relation — use those values to build sub-resource paths under /cluster/bulk-action/{name}.",
+    "This endpoint accepts API tokens (allowtoken: true) so a scoped read-only token is sufficient; no root or admin session required.",
+    "Because no filters or parameters are accepted, the response is always the full static list of registered bulk-action resource types for the cluster."
+  ],
+  "relatedOperations": []
+}

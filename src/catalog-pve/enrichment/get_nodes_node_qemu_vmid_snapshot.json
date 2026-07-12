@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_snapshot",
+  "usageNotes": "Use this to enumerate all snapshots for a QEMU VM before performing rollback, deletion, or backup decisions. The response always includes a synthetic 'current' entry representing the live VM state, so filter it out when counting user-created snapshots. Requires VM.Audit on /vms/{vmid}; the node must be reachable and the VM does not need to be running.",
+  "examples": [
+    {
+      "summary": "List all snapshots for VM 105 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'current' name entry is always present and represents the live VM, not a real snapshot — skip it when iterating snapshots for rollback or cleanup.",
+    "Check the 'vmstate' field to know whether a snapshot captured RAM; snapshots with vmstate=true take longer to create and consume extra disk space.",
+    "The 'parent' field lets you reconstruct the snapshot chain; a null/absent parent means that snapshot is a root with no ancestor.",
+    "snaptime is a Unix timestamp — render it for human-readable display when surfacing snapshot age to users."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_snapshot",
+    "get_nodes_node_qemu_vmid_snapshot_snapname_config",
+    "post_nodes_node_qemu_vmid_snapshot_snapname_rollback",
+    "delete_nodes_node_qemu_vmid_snapshot_snapname"
+  ]
+}

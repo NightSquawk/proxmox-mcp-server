@@ -1,0 +1,95 @@
+{
+  "operationId": "post_cluster_sdn_vnets_vnet_subnets",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "create",
+  "method": "POST",
+  "path": "/cluster/sdn/vnets/{vnet}/subnets",
+  "description": "Create a new sdn subnet object.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "vnet",
+      "type": "string",
+      "required": true,
+      "description": "associated vnet",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "dhcp-dns-server",
+      "type": "string",
+      "required": false,
+      "description": "IP address for the DNS server",
+      "format": "ip",
+      "typetext": "<string>"
+    },
+    {
+      "name": "dhcp-range",
+      "type": "array",
+      "required": false,
+      "description": "A list of DHCP ranges for this subnet",
+      "typetext": "<array>"
+    },
+    {
+      "name": "dnszoneprefix",
+      "type": "string",
+      "required": false,
+      "description": "dns domain zone prefix  ex: 'adm' -> <hostname>.adm.mydomain.com",
+      "format": "dns-name",
+      "typetext": "<string>"
+    },
+    {
+      "name": "gateway",
+      "type": "string",
+      "required": false,
+      "description": "Subnet Gateway: Will be assign on vnet for layer3 zones",
+      "format": "ip",
+      "typetext": "<string>"
+    },
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    },
+    {
+      "name": "snat",
+      "type": "boolean",
+      "required": false,
+      "description": "enable masquerade for this subnet if pve-firewall",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "subnet",
+      "type": "string",
+      "required": true,
+      "description": "The SDN subnet object identifier.",
+      "format": "pve-sdn-subnet-id",
+      "typetext": "<string>"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "enum": [
+        "subnet"
+      ]
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "description": "Require 'SDN.Allocate' permission on '/sdn/zones/<zone>/<vnet>'",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"subnet\":\"<subnet>\",\"type\":\"subnet\"}' 'https://PVE_HOST:8006/api2/json/cluster/sdn/vnets/<vnet>/subnets'"
+}

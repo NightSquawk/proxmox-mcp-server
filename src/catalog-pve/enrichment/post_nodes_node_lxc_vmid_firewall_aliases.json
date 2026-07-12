@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_firewall_aliases",
+  "usageNotes": "Use this to create a named IP or CIDR alias in a specific LXC container's firewall scope, allowing firewall rules for that container to reference human-readable names instead of raw addresses. The caller must hold VM.Config.Network on /vms/{vmid}. Returns null on success — no UPID is issued; the alias is applied synchronously.",
+  "examples": [
+    {
+      "summary": "Create an alias named 'mgmt-net' pointing to the management subnet for LXC 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {
+        "name": "mgmt-net",
+        "cidr": "10.10.0.0/24",
+        "comment": "Internal management network"
+      }
+    }
+  ],
+  "tips": [
+    "Alias names must start with a letter and contain only letters, digits, hyphens, or underscores (min 2, max 64 chars).",
+    "Aliases defined here are container-scoped — they are not visible to other VMs or to the datacenter/cluster firewall alias pool.",
+    "After creation, reference the alias by name in container firewall rules using the 'source' or 'dest' fields.",
+    "To update an alias, use the PUT sibling endpoint; this POST will error if the name already exists."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_aliases",
+    "get_nodes_node_lxc_vmid_firewall_aliases_name",
+    "put_nodes_node_lxc_vmid_firewall_aliases_name",
+    "delete_nodes_node_lxc_vmid_firewall_aliases_name",
+    "post_nodes_node_lxc_vmid_firewall_rules"
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "operationId": "get_cluster_bulk_action_guest",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "index",
+  "method": "GET",
+  "path": "/cluster/bulk-action/guest",
+  "description": "Bulk action index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {},
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{name}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/bulk-action/guest'"
+}

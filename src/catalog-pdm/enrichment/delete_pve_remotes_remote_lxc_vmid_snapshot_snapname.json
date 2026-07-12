@@ -1,0 +1,29 @@
+{
+  "operationId": "delete_pve_remotes_remote_lxc_vmid_snapshot_snapname",
+  "usageNotes": "Permanently deletes a named snapshot from a remote LXC container; the operation is asynchronous and returns a remote UPID that should be polled for completion. The caller must hold Resource.Manage on the remote/vmid ACL path, and the target PVE node must be reachable from PDM. If the snapshot has dependent child snapshots, deletion will fail — remove children first.",
+  "examples": [
+    {
+      "summary": "Delete a pre-upgrade snapshot from a remote LXC container",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 201,
+        "snapname": "pre-upgrade-2026-06"
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the named snapshot and its stored disk delta; the container state captured at that point in time cannot be recovered.",
+  "tips": [
+    "The returned UPID is a remote UPID — use the appropriate PDM task-status endpoint (not local PVE task endpoints) to poll for completion.",
+    "Omitting 'node' lets PDM resolve the node automatically; specify it only when the container is on a specific node in a multi-node cluster.",
+    "Snapshot names follow the same alphanumeric-plus-dots-dashes pattern as on local PVE — max 40 characters.",
+    "Run list_pve_remotes_remote_lxc_vmid_snapshot first to confirm the exact snapname before deleting."
+  ],
+  "relatedOperations": [
+    "list_pve_remotes_remote_lxc_vmid_snapshot",
+    "post_pve_remotes_remote_lxc_vmid_snapshot",
+    "get_pve_remotes_remote_lxc_vmid_snapshot_snapname"
+  ]
+}

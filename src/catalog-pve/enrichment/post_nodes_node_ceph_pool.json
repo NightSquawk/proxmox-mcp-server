@@ -1,0 +1,34 @@
+{
+  "operationId": "post_nodes_node_ceph_pool",
+  "usageNotes": "Use this to provision a new Ceph storage pool on the cluster via the specified node (any healthy monitor node works). The operation is asynchronous — the return value is a task UPID; poll the task until complete before referencing the pool in storage config. Requires `Sys.Modify` at the root (`/`) and Ceph must already be initialized on the cluster; set `add_storages: true` to automatically wire the pool as a Proxmox storage entry (mandatory for EC pools to be useful).",
+  "examples": [
+    {
+      "summary": "Create a standard 3-replica RBD pool for VM disks with PG autoscaling enabled",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "name": "vm-data",
+        "application": "rbd",
+        "size": 3,
+        "min_size": 2,
+        "pg_autoscale_mode": "on",
+        "add_storages": true
+      }
+    }
+  ],
+  "tips": [
+    "The `name` param must be cluster-unique and cannot contain colons, slashes, or whitespace.",
+    "For erasure-coded pools, `size`/`min_size`/`crush_rule` apply to the companion metadata (replicated) pool, not the EC pool itself.",
+    "Leave `pg_num` unset and set `pg_autoscale_mode` to `on` for new clusters — Ceph will size PGs correctly as data grows.",
+    "Providing `target_size` or `target_size_ratio` gives the PG autoscaler a better hint and avoids the default `warn` state on small pools.",
+    "The returned UPID can be tracked via `get_nodes_node_tasks_upid_status` to confirm the pool creation completed before adding VMs."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_pool",
+    "get_nodes_node_ceph_pools",
+    "put_nodes_node_ceph_pool_name",
+    "delete_nodes_node_ceph_pool_name",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

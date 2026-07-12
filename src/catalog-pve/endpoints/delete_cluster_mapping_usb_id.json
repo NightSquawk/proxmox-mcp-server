@@ -1,0 +1,38 @@
+{
+  "operationId": "delete_cluster_mapping_usb_id",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete",
+  "method": "DELETE",
+  "path": "/cluster/mapping/usb/{id}",
+  "description": "Remove Hardware Mapping.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "format": "pve-configid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/mapping/usb",
+      [
+        "Mapping.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/mapping/usb/<id>'"
+}

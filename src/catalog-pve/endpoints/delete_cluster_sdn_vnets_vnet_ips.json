@@ -1,0 +1,66 @@
+{
+  "operationId": "delete_cluster_sdn_vnets_vnet_ips",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "ipdelete",
+  "method": "DELETE",
+  "path": "/cluster/sdn/vnets/{vnet}/ips",
+  "description": "Delete IP Mappings in a VNet",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "vnet",
+      "type": "string",
+      "required": true,
+      "description": "The SDN vnet object identifier.",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    }
+  ],
+  "params": [
+    {
+      "name": "ip",
+      "type": "string",
+      "required": true,
+      "description": "The IP address to delete",
+      "format": "ip",
+      "typetext": "<string>"
+    },
+    {
+      "name": "mac",
+      "type": "string",
+      "required": false,
+      "description": "Unicast MAC address.",
+      "format": "mac-addr",
+      "typetext": "<XX:XX:XX:XX:XX:XX>"
+    },
+    {
+      "name": "zone",
+      "type": "string",
+      "required": true,
+      "description": "The SDN zone object identifier.",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/zones/{zone}/{vnet}",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/vnets/<vnet>/ips?ip=<ip>&zone=<zone>'"
+}

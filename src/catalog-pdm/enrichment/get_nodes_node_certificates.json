@@ -1,0 +1,22 @@
+{
+  "operationId": "get_nodes_node_certificates",
+  "usageNotes": "Use this endpoint to retrieve the certificate directory index for a specific PDM node, which lists the certificate-related sub-resources available (e.g. custom, info). No query parameters are required and any authenticated user may call it, making it useful as a lightweight connectivity or node-readiness check before performing certificate operations. The node must be reachable by PDM; offline or unreachable nodes will return an error.",
+  "examples": [
+    {
+      "summary": "List certificate sub-resources for a PDM node",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a directory index endpoint — it enumerates sub-resources under /nodes/{node}/certificates rather than returning certificate details directly; follow up with a more specific endpoint (e.g. get_nodes_node_certificates_info) to retrieve actual certificate data.",
+    "Accessible to all authenticated users (permissions: user=all), so no special privilege is needed, but API token access is supported if you prefer token-based auth."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_certificates_info",
+    "post_nodes_node_certificates_custom",
+    "delete_nodes_node_certificates_custom"
+  ]
+}

@@ -1,0 +1,74 @@
+{
+  "operationId": "post_nodes_node_storage_storage_oci_registry_pull",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "oci_registry_pull",
+  "method": "POST",
+  "path": "/nodes/{node}/storage/{storage}/oci-registry-pull",
+  "description": "Pull an OCI image from a registry.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [
+    {
+      "name": "filename",
+      "type": "string",
+      "required": false,
+      "description": "Custom destination file name of the OCI image. Caution: This will be normalized!",
+      "minLength": 1,
+      "maxLength": 255,
+      "typetext": "<string>"
+    },
+    {
+      "name": "reference",
+      "type": "string",
+      "required": true,
+      "description": "The reference to the OCI image to download.",
+      "pattern": "^(?:(?:[a-zA-Z\\d]|[a-zA-Z\\d][a-zA-Z\\d-]*[a-zA-Z\\d])(?:\\.(?:[a-zA-Z\\d]|[a-zA-Z\\d][a-zA-Z\\d-]*[a-zA-Z\\d]))*(?::\\d+)?/)?[a-z\\d]+(?:(?:[._]|__|[-]*)[a-z\\d]+)*(?:/[a-z\\d]+(?:(?:[._]|__|[-]*)[a-z\\d]+)*)*:\\w[\\w.-]{0,127}$"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "and",
+      [
+        "perm",
+        "/storage/{storage}",
+        [
+          "Datastore.AllocateTemplate"
+        ]
+      ],
+      [
+        "perm",
+        "/nodes/{node}",
+        [
+          "Sys.AccessNetwork"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"reference\":\"<reference>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/oci-registry-pull'"
+}

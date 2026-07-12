@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_subscriptions_keys_key",
+  "usageNotes": "Removes a subscription key from the PDM pool permanently. Before calling this, verify the key is not currently the live active key on any bound remote node — PDM will refuse the deletion if it is; use the Clear Key action on the Node Subscription Status panel first to deactivate it. If the key is assigned to a remote node, the caller must also hold PRIV_RESOURCE_MODIFY on that remote in addition to System.Modify.",
+  "examples": [
+    {
+      "summary": "Remove a Proxmox Backup Server community key from the pool",
+      "path_params": {
+        "key": "pbsc-a1b2c3d4e5"
+      },
+      "params": {
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the subscription key entry from the PDM pool; the key cannot be recovered through the API and must be re-added manually if needed.",
+  "tips": [
+    "Pass the current config digest to guard against concurrent modifications — PDM will reject the request if another write has occurred since you last read the pool.",
+    "A null return on success means no body is returned; treat any non-2xx response as a failure.",
+    "If the delete is refused with a conflict error, check whether the key is still bound as the active key on a remote node and clear it there first."
+  ],
+  "relatedOperations": [
+    "get_subscriptions_keys",
+    "post_subscriptions_keys",
+    "get_subscriptions_keys_key",
+    "put_nodes_node_subscription"
+  ]
+}

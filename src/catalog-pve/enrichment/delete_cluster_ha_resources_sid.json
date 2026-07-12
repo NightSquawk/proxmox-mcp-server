@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_cluster_ha_resources_sid",
+  "usageNotes": "Removes a resource from HA management entirely — the VM or container continues to exist but will no longer be monitored or restarted by the HA manager. Requires `Sys.Console` at the root level, which is a cluster-wide privilege. Before deleting, ensure the resource is in a stable, non-migrating state; removing an HA resource while a recovery or migration is in progress may leave the cluster state inconsistent.",
+  "examples": [
+    {
+      "summary": "Remove VM 105 from HA management and purge it from any referencing rules",
+      "path_params": {
+        "sid": "vm:105"
+      },
+      "params": {
+        "purge": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the HA resource configuration for the specified VM or container, causing it to lose all high-availability protection (automatic restart, failover) with no recovery path short of re-adding it.",
+  "tips": [
+    "You can use the bare VM/CT ID (e.g. '105') as a shortcut instead of the full 'vm:105' form.",
+    "The default behavior (purge=true) also removes the resource from any HA group rules that reference it, which can silently delete those rules if they had no other members — audit HA groups before running if rule preservation matters.",
+    "This call returns null synchronously; there is no UPID to poll, but you should verify removal with get_cluster_ha_resources or list_cluster_ha_resources immediately after."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_resources_sid",
+    "create_cluster_ha_resources",
+    "update_cluster_ha_resources_sid",
+    "get_cluster_ha_resources",
+    "get_cluster_ha_groups"
+  ]
+}

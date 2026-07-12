@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_get_fsinfo",
+  "usageNotes": "Returns filesystem mount information from inside the VM via the QEMU Guest Agent — requires the agent to be installed, running, and responsive inside the guest. Use this to inspect mount points, disk usage, and filesystem types without logging into the VM. If the agent is not running or the guest OS does not support the get-fsinfo command, the call will return an error rather than partial data.",
+  "examples": [
+    {
+      "summary": "Get filesystem info from VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The result object contains an array of filesystem entries under result.result; each entry typically includes name, mountpoint, total-bytes, used-bytes, and type.",
+    "If the VM is Windows, the QEMU Guest Agent must be the VirtIO Windows guest tools build — plain QEMU agent builds may not implement get-fsinfo.",
+    "Stale or unresponsive agent channels return a timeout error; restart the guest agent service inside the VM to recover.",
+    "Requires either VM.GuestAgent.Audit or VM.GuestAgent.Unrestricted on /vms/{vmid} — the Audit privilege is sufficient for this read-only call."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_get_osinfo",
+    "get_nodes_node_qemu_vmid_agent_get_host_name",
+    "get_nodes_node_qemu_vmid_agent_get_memory_block_info",
+    "post_nodes_node_qemu_vmid_agent"
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "operationId": "post_nodes_node_network",
+  "usageNotes": "Use this to create a new network interface definition (bridge, bond, VLAN, static IP, etc.) on a PDM node; the interface is staged in /etc/network/interfaces but does not go live until you apply pending changes via PUT /nodes/{node}/network. Requires System.Modify on the specific interface path, so the token must have that privilege scoped to the target node. Only one interface name (`iface`) may be created per call — for complex topologies (bond + bridge) issue multiple calls in dependency order.",
+  "examples": [
+    {
+      "summary": "Create a VLAN-aware Linux bridge (vmbr1) with a static IP on node pdm01",
+      "path_params": {
+        "node": "pdm01"
+      },
+      "params": {
+        "iface": "vmbr1",
+        "type": "bridge",
+        "bridge_ports": "eno2",
+        "bridge_vlan_aware": true,
+        "method": "static",
+        "cidr": "10.10.20.1/24",
+        "autostart": true,
+        "comments": "VM traffic bridge on second NIC"
+      }
+    }
+  ],
+  "tips": [
+    "Changes are staged only — run PUT /nodes/{node}/network (apply) or reload the network service to activate; guests may lose connectivity during the apply step.",
+    "For VLAN interfaces set type=vlan, vlan-id to the tag, and vlan-raw-device to the parent physical interface.",
+    "For 802.3ad bonds set bond_mode=802.3ad and bond_xmit_hash_policy (layer2+3 is the most common choice for balanced hashing).",
+    "Interface names must be 15 characters or fewer — an AD-style hostname constraint also enforced by Proxmox.",
+    "Setting a gateway here makes this the default route for the node; only one interface should carry a gateway to avoid routing conflicts."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network",
+    "get_nodes_node_network_iface",
+    "put_nodes_node_network_iface",
+    "delete_nodes_node_network_iface",
+    "put_nodes_node_network"
+  ]
+}

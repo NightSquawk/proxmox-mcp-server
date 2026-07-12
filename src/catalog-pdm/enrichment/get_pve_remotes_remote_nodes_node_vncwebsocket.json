@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_vncwebsocket",
+  "usageNotes": "This endpoint upgrades an HTTP connection to a WebSocket for VNC console access to a specific node managed by a PDM remote. It must be preceded by a ticket-acquisition step — call the node's VNC ticket endpoint first to obtain `port` and `vncticket`, then immediately open this WebSocket connection before the ticket expires (typically a short TTL). Requires `Sys.Console` on `/resource/{remote}/node/{node}`; API tokens are permitted but the authenticated principal must hold that privilege.",
+  "examples": [
+    {
+      "summary": "Open VNC WebSocket to node 'pve01' on remote 'hetzner-dc1' using a previously obtained ticket",
+      "path_params": {
+        "remote": "hetzner-dc1",
+        "node": "pve01"
+      },
+      "params": {
+        "port": 5900,
+        "vncticket": "PVEVNC:65a3f2c1::abcdef1234567890abcdef1234567890"
+      }
+    }
+  ],
+  "tips": [
+    "The `port` and `vncticket` values come from a prior VNC ticket creation call (e.g. POST to the node's vncproxy endpoint); do not reuse them across sessions.",
+    "The HTTP response will be a 101 Switching Protocols — standard HTTP clients cannot handle this; use a WebSocket client (browser WebSocket API, wscat, or noVNC).",
+    "Returns null in the JSON schema because the actual data flows over the upgraded WebSocket channel, not an HTTP response body.",
+    "Ticket TTL is short; initiate the WebSocket upgrade within a few seconds of obtaining the ticket to avoid authentication failure."
+  ],
+  "relatedOperations": [
+    "post_pve_remotes_remote_nodes_node_vncproxy"
+  ]
+}

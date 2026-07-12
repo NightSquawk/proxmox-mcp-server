@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_acme_account_name",
+  "usageNotes": "Use this to inspect an existing ACME account registration, including the CA directory URL, account object, and agreed terms-of-service URL. The `name` path parameter defaults to `default`, so omitting it retrieves the primary account. Requires cluster-level ACME configuration to exist; if no account has been registered under the given name, the call will return an error.",
+  "examples": [
+    {
+      "summary": "Retrieve the default ACME account details",
+      "path_params": {
+        "name": "default"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `account` field in the response is rendered as YAML and contains the contact email(s) and account status as returned by the CA.",
+    "Check the `directory` field to confirm which ACME CA (e.g., Let's Encrypt production vs. staging) the account is registered against.",
+    "The `location` field holds the account URL at the CA — useful for manual ACME API lookups or debugging renewal failures."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_account",
+    "create_cluster_acme_account",
+    "delete_cluster_acme_account_name",
+    "update_cluster_acme_account_name"
+  ]
+}

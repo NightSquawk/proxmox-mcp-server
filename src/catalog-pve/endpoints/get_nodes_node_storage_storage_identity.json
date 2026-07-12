@@ -1,0 +1,76 @@
+{
+  "operationId": "get_nodes_node_storage_storage_identity",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "identity",
+  "method": "GET",
+  "path": "/nodes/{node}/storage/{storage}/identity",
+  "description": "Return identity information for this storage instance.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "properties": {
+      "id": {
+        "description": "Unique identifier for this storage instance. The exact format and semantics depend on the storage plugin type.",
+        "type": "string"
+      },
+      "type": {
+        "description": "The type of the storage.",
+        "enum": [
+          "btrfs",
+          "cephfs",
+          "cifs",
+          "dir",
+          "esxi",
+          "iscsi",
+          "iscsidirect",
+          "lvm",
+          "lvmthin",
+          "nfs",
+          "pbs",
+          "rbd",
+          "zfs",
+          "zfspool"
+        ],
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage/{storage}",
+      [
+        "Datastore.Audit",
+        "Datastore.AllocateSpace"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/identity'"
+}

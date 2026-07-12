@@ -1,0 +1,37 @@
+{
+  "operationId": "put_nodes_node_qemu_vmid_firewall_options",
+  "usageNotes": "Use this to enable, disable, or tune the per-VM firewall — including default policies, DHCP/NDP passthrough, IP filtering, and traffic log levels. The VM's firewall must first be enabled at the node/cluster level for these settings to take effect. Requires VM.Config.Network on the VM path; returns null synchronously (no UPID — the change is applied immediately).",
+  "examples": [
+    {
+      "summary": "Enable the firewall with DROP default policies, enable DHCP passthrough, and log inbound warnings",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {
+        "enable": true,
+        "policy_in": "DROP",
+        "policy_out": "ACCEPT",
+        "dhcp": true,
+        "ndp": true,
+        "ipfilter": true,
+        "log_level_in": "warning",
+        "log_level_out": "nolog"
+      }
+    }
+  ],
+  "tips": [
+    "The `enable` flag controls whether the VM-level firewall is active at all — rules exist but are unenforced when false.",
+    "Enabling `ipfilter` without any ipfilter-net<id> ipsets implicitly applies sane anti-spoofing defaults per interface; for containers it also whitelists configured IP addresses.",
+    "Use the `delete` param (comma-separated config key names) to revert specific options to their defaults rather than hard-coding the default value, which avoids drift if upstream defaults change.",
+    "Pass `digest` (retrieved from the GET counterpart) to guard against concurrent edits overwriting each other.",
+    "Changing `policy_in` to DROP is a common lockout risk — ensure at least one ACCEPT rule for SSH/management exists before applying."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_options",
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "post_nodes_node_qemu_vmid_firewall_rules",
+    "get_nodes_node_firewall_options",
+    "put_cluster_firewall_options"
+  ]
+}

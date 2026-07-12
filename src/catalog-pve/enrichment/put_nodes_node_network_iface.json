@@ -1,0 +1,37 @@
+{
+  "operationId": "put_nodes_node_network_iface",
+  "usageNotes": "Use this to modify the persistent configuration of an existing network interface on a node (IP, gateway, MTU, VLAN settings, bridge ports, bonding mode, etc.). Changes are written to `/etc/network/interfaces` but are NOT applied to the live network until you call the network reload endpoint (`put_nodes_node_network_reload`) or reboot the node — running traffic is uninterrupted until that apply step. Requires `Sys.Modify` on `/nodes/{node}`; the `type` parameter is mandatory even when you are only changing other fields.",
+  "examples": [
+    {
+      "summary": "Set a static IPv4 address and gateway on a Linux bridge, enable VLAN awareness, and ensure it autostart on boot",
+      "path_params": {
+        "node": "pve01",
+        "iface": "vmbr0"
+      },
+      "params": {
+        "type": "bridge",
+        "address": "10.0.0.10",
+        "netmask": "255.255.255.0",
+        "gateway": "10.0.0.1",
+        "bridge_ports": "eth0",
+        "bridge_vlan_aware": true,
+        "autostart": true,
+        "comments": "Main LAN bridge"
+      }
+    }
+  ],
+  "tips": [
+    "Changes are staged only — always follow up with `put_nodes_node_network_reload` (applies via `ifreload -a`) or a node reboot to activate them.",
+    "Use the `delete` param (comma-separated config key names) to remove individual settings such as `gateway` or `bridge_vids` without recreating the interface from scratch.",
+    "Supplying `cidr` (e.g. '10.0.0.10/24') is equivalent to setting `address` + `netmask` separately; do not mix both forms for the same interface.",
+    "Bond mode `active-backup` requires `bond-primary` to be set to one of the slave interfaces for deterministic failover.",
+    "OVS parameters (`ovs_bridge`, `ovs_bonds`, `ovs_ports`, `ovs_tag`, `ovs_options`) are ignored unless the node has Open vSwitch installed and the interface `type` is one of OVSBridge/OVSBond/OVSPort/OVSIntPort."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network_iface",
+    "post_nodes_node_network",
+    "delete_nodes_node_network_iface",
+    "put_nodes_node_network_reload",
+    "get_nodes_node_network"
+  ]
+}

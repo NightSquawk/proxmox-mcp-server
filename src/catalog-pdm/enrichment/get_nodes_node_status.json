@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_status",
+  "usageNotes": "Use this endpoint to get a point-in-time snapshot of a PDM node's resource utilization — CPU, memory, swap, root disk, load averages, uptime, kernel version, and boot mode. The node must be reachable by the PDM cluster; calling against an offline node will fail or return stale data. Requires the System.Audit privilege on the node; API tokens are supported.",
+  "examples": [
+    {
+      "summary": "Fetch current resource status for a node named 'pbs01'",
+      "path_params": {
+        "node": "pbs01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'cpu' field is a ratio (0.0–1.0) representing usage since the last query, not a percentage — multiply by 100 for display.",
+    "Memory and disk values (memory.used, root.used, etc.) are in bytes; divide by 1073741824 for GiB.",
+    "The 'loadavg' array is ordered [1m, 5m, 15m] — the 15m value is most useful for trend alerting.",
+    "Use 'localhost' as the node name when calling from a script running on the PDM node itself.",
+    "The 'kversion' field is a legacy string; prefer 'current-kernel' for structured kernel info."
+  ],
+  "relatedOperations": [
+    "get_nodes",
+    "get_nodes_node_rrddata",
+    "get_nodes_node_tasks"
+  ]
+}

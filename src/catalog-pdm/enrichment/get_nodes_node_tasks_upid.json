@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_tasks_upid",
+  "usageNotes": "Returns the directory index for a specific task identified by its UPID on a PDM node — use this to discover what sub-resources are available under a task (e.g. log, status). The UPID must belong to the specified node; querying a UPID on the wrong node will return no results or an error. No special privilege is required beyond basic authentication (permissions: all users).",
+  "examples": [
+    {
+      "summary": "Get the directory index for a task UPID on pdm-node1",
+      "path_params": {
+        "node": "pdm-node1",
+        "upid": "UPID:pdm-node1:00001A2B:0012AB34:67890ABC:vzdump::root@pam:"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The UPID format encodes node, PID, start time, task type, and user — copy it verbatim from a task-list response; do not construct it by hand.",
+    "This is a directory index, not a status or log endpoint — follow up with get_nodes_node_tasks_upid_status or get_nodes_node_tasks_upid_log to get actionable task data.",
+    "UPIDs are node-scoped; always use the same node name that appears inside the UPID string."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks",
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log"
+  ]
+}

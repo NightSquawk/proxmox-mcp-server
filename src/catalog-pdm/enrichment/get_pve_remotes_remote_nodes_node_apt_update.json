@@ -1,0 +1,23 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_apt_update",
+  "usageNotes": "Use this to check whether a remote PVE node has pending APT package updates before scheduling maintenance — useful for patch audits across managed remotes. The response reflects the last cached apt cache state on the node; run an apt update on the node first if you need current data. Requires Resource.Modify on the remote/node/system path, so API tokens scoped below that level will be rejected.",
+  "examples": [
+    {
+      "summary": "List pending APT updates for node pve1 on remote hetzner-de",
+      "path_params": {
+        "remote": "hetzner-de",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The Version field is the candidate version; OldVersion is what is currently installed — diff them to gauge update severity.",
+    "An empty array means no updates are pending (or the apt cache is stale); trigger an apt-get update on the node if the list looks unexpectedly empty.",
+    "Cross-reference Origin field against 'Proxmox' to distinguish PVE-specific packages from upstream Debian packages."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_apt_changelog",
+    "post_pve_remotes_remote_nodes_node_apt_update"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "operationId": "post_cluster_sdn_vnets",
+  "usageNotes": "Use this to create a new SDN VNet object within an existing SDN zone. The caller must hold SDN.Allocate on the target zone (/sdn/zones/{zone}). After creation, the new VNet does not take effect on cluster nodes until you apply the pending SDN configuration via PUT /cluster/sdn; VMs will not see the network until that apply step completes.",
+  "examples": [
+    {
+      "summary": "Create a VXLAN-backed VNet named 'prodnet' in the 'evpnzone' zone with a VXLAN VNI of 10001",
+      "path_params": {},
+      "params": {
+        "vnet": "prodnet",
+        "zone": "evpnzone",
+        "tag": 10001,
+        "alias": "Production Network",
+        "vlanaware": false
+      }
+    }
+  ],
+  "tips": [
+    "The 'vnet' identifier must be 2–8 alphanumeric characters, start with a letter, and end with a letter or digit — plan names carefully since renaming requires delete and recreate.",
+    "Set 'vlanaware' to true only if VMs on this VNet need to trunk multiple VLANs across the bridge (e.g., for nested virtualisation or router-on-a-stick setups).",
+    "Enable 'isolate-ports' to prevent VM-to-VM traffic on the same bridge without going through a router, useful for zero-trust or tenant-isolation scenarios.",
+    "Changes are staged — always follow up with PUT /cluster/sdn to push the pending configuration to all nodes.",
+    "The lock-token parameter is only needed if you are coordinating concurrent SDN writes and have obtained a lock; most single-operator workflows can omit it."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets",
+    "get_cluster_sdn_vnets_vnet",
+    "put_cluster_sdn_vnets_vnet",
+    "delete_cluster_sdn_vnets_vnet",
+    "put_cluster_sdn",
+    "get_cluster_sdn_zones"
+  ]
+}

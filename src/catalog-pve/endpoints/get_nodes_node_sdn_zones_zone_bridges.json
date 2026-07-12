@@ -1,0 +1,98 @@
+{
+  "operationId": "get_nodes_node_sdn_zones_zone_bridges",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "bridges",
+  "method": "GET",
+  "path": "/nodes/{node}/sdn/zones/{zone}/bridges",
+  "description": "Get a list of all bridges (vnets) that are part of a zone, as well as the ports that are members of that bridge.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "zone",
+      "type": "string",
+      "required": true,
+      "description": "zone name or \"localnetwork\"",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "description": "List of bridges contained in the SDN zone.",
+      "properties": {
+        "name": {
+          "description": "Name of the bridge.",
+          "type": "string"
+        },
+        "ports": {
+          "description": "All ports that are members of the bridge",
+          "items": {
+            "description": "Information about bridge ports.",
+            "properties": {
+              "index": {
+                "description": "The index of the guests network device that this interface belongs to.",
+                "optional": 1,
+                "type": "string"
+              },
+              "name": {
+                "description": "The name of the bridge port.",
+                "type": "string"
+              },
+              "primary_vlan": {
+                "description": "The primary VLAN configured for the port of this bridge (= PVID). Only for VLAN-aware bridges.",
+                "optional": 1,
+                "type": "number"
+              },
+              "vlans": {
+                "description": "A list of VLANs and VLAN ranges that are allowed for this bridge port in addition to the primary VLAN. Only for VLAN-aware bridges.",
+                "items": {
+                  "description": "A single VLAN (123) or a VLAN range (234-435).",
+                  "type": "string"
+                },
+                "optional": 1,
+                "type": "array"
+              },
+              "vmid": {
+                "description": "The ID of the guest that this interface belongs to.",
+                "optional": 1,
+                "type": "number"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "vlan_filtering": {
+          "description": "Whether VLAN filtering is enabled for this bridge (= VLAN-aware).",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/zones/{zone}",
+      [
+        "SDN.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/sdn/zones/<zone>/bridges'"
+}

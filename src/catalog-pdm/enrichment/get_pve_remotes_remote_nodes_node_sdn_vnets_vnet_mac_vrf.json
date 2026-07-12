@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_sdn_vnets_vnet_mac_vrf",
+  "usageNotes": "Retrieves the MAC-VRF (MAC Virtual Routing and Forwarding) table entry for a specific EVPN-backed VNet as seen by a given node on a remote PVE cluster. Use this to inspect the EVPN control-plane state — specifically which IP and nexthop are associated with a learned MAC address — when troubleshooting L2/L3 EVPN reachability across fabric nodes. The VNet must be backed by an EVPN zone; calling this against a plain VXLAN or VLAN zone will yield no meaningful result.",
+  "examples": [
+    {
+      "summary": "Fetch the MAC-VRF entry for VNet 'vnet10' on node 'pve01' of remote cluster 'dc-west'",
+      "path_params": {
+        "remote": "dc-west",
+        "node": "pve01",
+        "vnet": "vnet10"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'mac' field uses a locally-administered address pattern (second nibble in [02468ace]); this is normal for EVPN-generated MAC entries.",
+    "The 'nexthop' IP is the VTEP address of the remote node advertising the route — cross-reference it against node tunnel IPs to identify which physical host owns the endpoint.",
+    "If the response returns an empty or missing 'ip' field, the MAC was learned at L2 only (no ARP/ND snooping entry yet).",
+    "Use 'localhost' as the node value when targeting the PDM host's local PVE node without knowing its hostname."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_sdn_vnets_vnet",
+    "get_pve_remotes_remote_nodes_node_sdn_vnets",
+    "get_pve_remotes_remote_nodes_node_sdn"
+  ]
+}

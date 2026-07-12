@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_firewall_aliases",
+  "usageNotes": "Returns all named IP/CIDR aliases defined at the cluster firewall level. Aliases are reusable labels (e.g. 'mgmt-net') that can be referenced in cluster or node firewall rules instead of hardcoding CIDRs. Requires Sys.Audit on the root path ('/'); API tokens are supported.",
+  "examples": [
+    {
+      "summary": "List all cluster firewall aliases",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Each alias object includes a 'digest' field — pass it to update/delete calls to prevent concurrent-modification conflicts.",
+    "These aliases are cluster-scoped; node- or VM-level aliases are fetched via their respective firewall alias endpoints.",
+    "An empty array is a valid response when no aliases have been created yet."
+  ],
+  "relatedOperations": [
+    "create_cluster_firewall_alias",
+    "get_cluster_firewall_alias",
+    "update_cluster_firewall_alias",
+    "delete_cluster_firewall_alias",
+    "get_cluster_firewall_rules"
+  ]
+}

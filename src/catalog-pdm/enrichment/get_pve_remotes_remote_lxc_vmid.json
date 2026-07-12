@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid",
+  "usageNotes": "Returns the directory index for a specific LXC container on a PDM-managed PVE remote, listing the available sub-endpoints for that container. This is a navigation/discovery call — use it to enumerate what operations or sub-resources are available under a given vmid before drilling into config, status, or snapshots. No privileges beyond basic authentication are required, and the call is read-only with no side effects.",
+  "examples": [
+    {
+      "summary": "List available sub-endpoints for LXC container 101 on the remote named 'hetzner-pve1'",
+      "path_params": {
+        "remote": "hetzner-pve1",
+        "vmid": "101"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response type is null in the schema, meaning the actual payload is an array of directory entries — treat the body as a list of available child routes rather than container data.",
+    "Useful as a capability probe: if a sub-endpoint appears in the result, the remote's API version supports it.",
+    "vmid should be a positive integer passed as a string; non-existent vmids will return a 404 from the remote."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc",
+    "get_pve_remotes_remote_lxc_vmid_config",
+    "get_pve_remotes_remote_lxc_vmid_status"
+  ]
+}

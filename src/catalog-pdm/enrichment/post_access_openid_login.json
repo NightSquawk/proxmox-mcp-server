@@ -1,0 +1,26 @@
+{
+  "operationId": "post_access_openid_login",
+  "usageNotes": "Call this endpoint to complete the OpenID Connect authorization code flow and obtain a PDM session ticket. The caller must supply the authorization code, state, and redirect URL exactly as returned by the identity provider and used in the initial authorization request — any mismatch will result in rejection. The response sets an HttpOnly session cookie; subsequent API calls should present the CSRFPreventionToken header alongside the cookie to satisfy CSRF protection.",
+  "examples": [
+    {
+      "summary": "Exchange an OpenID authorization code for a PDM session ticket",
+      "path_params": {},
+      "params": {
+        "code": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.abc123",
+        "redirect-url": "https://pdm.nightsquawk.tech:8443",
+        "state": "a7f3c2d1e8b04f5a9c6d2e3f1a0b7c8d"
+      }
+    }
+  ],
+  "tips": [
+    "The redirect-url must exactly match the value registered with the OpenID provider; even a trailing-slash difference will cause the token exchange to fail.",
+    "On success, the real ticket is delivered as an HttpOnly cookie (not in the JSON body); the response body's ticket-info field contains an unsigned version useful only for client-side display.",
+    "Store the CSRFPreventionToken from the response and send it as the CSRFPreventionToken header on all subsequent write requests.",
+    "This endpoint requires no prior authentication (permissions: world), making it safe to call before any session exists."
+  ],
+  "relatedOperations": [
+    "get_access_openid_login",
+    "post_access_ticket",
+    "delete_access_ticket"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "post_cluster_notifications_targets_name_test",
+  "usageNotes": "Use this to verify a notification target is reachable and correctly configured before relying on it for alerts. The caller must hold at least Mapping.Audit, Mapping.Use, or Mapping.Modify on /mapping/notifications. The endpoint returns null synchronously — a missing error response indicates success, while an HTTP error body describes the delivery failure.",
+  "examples": [
+    {
+      "summary": "Send a test notification to the 'ops-slack' target",
+      "path_params": {
+        "name": "ops-slack"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The target name must match a pve-configid (alphanumeric, hyphens, underscores; no spaces) — use get_cluster_notifications_targets to list valid names.",
+    "A 200 response with null body means the test message was dispatched; verify delivery on the receiving end (email inbox, webhook log, etc.) since PVE does not confirm downstream receipt.",
+    "If the target's back-end service (SMTP relay, Gotify, webhook URL) is temporarily unreachable, this call will return an error — useful for pre-maintenance smoke tests."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_targets",
+    "get_cluster_notifications_targets_name",
+    "post_cluster_notifications_targets_gotify",
+    "post_cluster_notifications_targets_sendmail",
+    "post_cluster_notifications_targets_smtp",
+    "post_cluster_notifications_targets_webhook"
+  ]
+}

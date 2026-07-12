@@ -1,0 +1,20 @@
+{
+  "operationId": "get_cluster_bulk_action_guest",
+  "usageNotes": "Returns the list of available bulk-action sub-resources under /cluster/bulk-action/guest (e.g. start, stop, shutdown). Call this to discover which guest bulk-action verbs the cluster exposes before invoking a specific bulk-action endpoint. Requires no privileges — any authenticated user or API token can call it.",
+  "examples": [
+    {
+      "summary": "Discover available guest bulk-action sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is an index of child links (e.g. 'start', 'stop', 'shutdown') — follow the 'name' field in each item to construct the child endpoint path.",
+    "Because this endpoint has no parameters and requires only 'user: all' privileges, it is safe to call during bootstrap or health checks to confirm the bulk-action API surface is reachable."
+  ],
+  "relatedOperations": [
+    "post_cluster_bulk_action_guest_start",
+    "post_cluster_bulk_action_guest_stop",
+    "post_cluster_bulk_action_guest_shutdown"
+  ]
+}

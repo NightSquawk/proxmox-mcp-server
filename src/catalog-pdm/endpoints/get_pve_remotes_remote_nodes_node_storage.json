@@ -1,0 +1,200 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_storage",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "storage",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/nodes/{node}/storage",
+  "description": "Get status for all datastores",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "content",
+      "type": "array",
+      "required": false,
+      "description": "A list of contenttypes to filter for"
+    },
+    {
+      "name": "enabled",
+      "type": "boolean",
+      "required": false,
+      "description": "Only include enabled storages."
+    },
+    {
+      "name": "format",
+      "type": "boolean",
+      "required": false,
+      "description": "Include format information."
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": false,
+      "description": "Only list status for specified storage."
+    },
+    {
+      "name": "target",
+      "type": "string",
+      "required": false,
+      "description": "If target is different to 'node', only list shared storages which are accessible by both."
+    }
+  ],
+  "returns": {
+    "description": "A list of storages of a PVE remote.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Object.",
+      "properties": {
+        "active": {
+          "default": false,
+          "description": "Set when storage is accessible.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "avail": {
+          "description": "Available storage space in bytes.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "content": {
+          "description": "Allowed storage content types.",
+          "format": {
+            "description": "list",
+            "items": {
+              "description": "Storage content type.",
+              "enum": [
+                "backup",
+                "images",
+                "import",
+                "iso",
+                "none",
+                "rootdir",
+                "snippets",
+                "vztmpl"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "type": "string",
+          "typetext": "[<enum>, ...]"
+        },
+        "enabled": {
+          "default": false,
+          "description": "Set when storage is enabled (not disabled).",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "formats": {
+          "additionalProperties": false,
+          "description": "Lists the supported and default format. Use 'formats' instead. Only included\nif 'format' parameter is set.",
+          "optional": 1,
+          "properties": {
+            "default": {
+              "description": "The default format of the storage.",
+              "enum": [
+                "qcow2",
+                "raw",
+                "subvol",
+                "vmdk"
+              ],
+              "type": "string"
+            },
+            "supported": {
+              "description": "The list of supported formats",
+              "items": {
+                "description": "The default format of the storage.",
+                "enum": [
+                  "qcow2",
+                  "raw",
+                  "subvol",
+                  "vmdk"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "select_existing": {
+          "default": false,
+          "description": "Instead of creating new volumes, one must select one that is already\nexisting. Only included if 'format' parameter is set.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "shared": {
+          "default": false,
+          "description": "Shared flag from storage configuration.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "storage": {
+          "description": "The storage identifier.",
+          "pattern": "/^(?i:[a-z][a-z0-9\\-_.]*[a-z0-9])$/",
+          "type": "string"
+        },
+        "total": {
+          "description": "Total storage space in bytes.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "type": {
+          "description": "Storage type.",
+          "type": "string"
+        },
+        "used": {
+          "description": "Used storage space in bytes.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "used_fraction": {
+          "description": "Used fraction (used/total).",
+          "optional": 1,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "node",
+        "{node}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    },
+    "description": "if `target` is set, also requires PRIV_RESOURCE_AUDIT on /resource/{remote}/node/{target}"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/nodes/<node>/storage'"
+}

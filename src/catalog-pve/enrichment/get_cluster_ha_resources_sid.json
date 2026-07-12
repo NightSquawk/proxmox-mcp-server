@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_ha_resources_sid",
+  "usageNotes": "Use this to inspect the HA configuration for a specific VM or container — its desired state, group membership, failback/rebalance settings, and retry limits. Requires Sys.Audit on the root path; no cluster node needs to be online to read the config. The returned `digest` field should be passed to any subsequent update call to prevent concurrent modification conflicts.",
+  "examples": [
+    {
+      "summary": "Fetch HA resource config for VM 105",
+      "path_params": {
+        "sid": "vm:105"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The sid can be given as a bare integer (e.g. '105') as a shortcut for VM/CT IDs — Proxmox resolves it automatically.",
+    "Check the `state` field to distinguish between operator-intended state (e.g. 'started') and temporary states set during maintenance.",
+    "Capture `digest` before calling the update endpoint to safely serialize concurrent changes.",
+    "A resource listed here is managed by the HA manager; if `state` is 'ignored', HA will not act on it even though it is registered."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_resources",
+    "create_cluster_ha_resources",
+    "update_cluster_ha_resources_sid",
+    "delete_cluster_ha_resources_sid",
+    "get_cluster_ha_status_current"
+  ]
+}

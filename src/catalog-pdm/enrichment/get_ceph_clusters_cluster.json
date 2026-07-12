@@ -1,0 +1,24 @@
+{
+  "operationId": "get_ceph_clusters_cluster",
+  "usageNotes": "Returns the sub-resource directory index for a specific Ceph cluster registered in PDM. Use it to discover what child endpoints are available under a given cluster identifier before drilling into status, OSDs, pools, or health. The cluster name must match a cluster already registered with PDM; an unknown or mis-spelled name will return a 404.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for the cluster named 'prod-ceph'",
+      "path_params": {
+        "cluster": "prod-ceph"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response type is null in the schema, meaning PDM returns a directory index (list of child links) rather than structured data — parse the 'data' array for available sub-paths.",
+    "This endpoint requires no special privilege beyond authenticated access ('user: all'), so any valid API token can call it.",
+    "Use this as a discovery call when you are unsure which sub-operations (e.g., health, OSDs, pools) are exposed for a cluster in your PDM version."
+  ],
+  "relatedOperations": [
+    "get_ceph_clusters",
+    "get_ceph_clusters_cluster_health",
+    "get_ceph_clusters_cluster_osd",
+    "get_ceph_clusters_cluster_pools"
+  ]
+}

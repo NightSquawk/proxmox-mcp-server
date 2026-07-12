@@ -1,0 +1,205 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "qemu",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/qemu",
+  "description": "Query the remote's list of qemu VMs. If no node is provided, the all nodes are queried.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": false,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "returns": {
+    "description": "Get a list of VMs",
+    "items": {
+      "additionalProperties": false,
+      "description": "Object.",
+      "properties": {
+        "cpu": {
+          "description": "Current CPU usage.",
+          "optional": 1,
+          "type": "number"
+        },
+        "cpus": {
+          "description": "Maximum usable CPUs.",
+          "optional": 1,
+          "type": "number"
+        },
+        "diskread": {
+          "description": "The amount of bytes the guest read from it's block devices since the\nguest was started. (Note: This info is not available for all storage\ntypes.)",
+          "optional": 1,
+          "type": "integer"
+        },
+        "diskwrite": {
+          "description": "The amount of bytes the guest wrote from it's block devices since the\nguest was started. (Note: This info is not available for all storage\ntypes.)",
+          "optional": 1,
+          "type": "integer"
+        },
+        "lock": {
+          "description": "The current config lock, if any.",
+          "optional": 1,
+          "type": "string"
+        },
+        "maxdisk": {
+          "description": "Root disk size in bytes.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "maxmem": {
+          "description": "Maximum memory in bytes.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "mem": {
+          "description": "Currently used memory in bytes. Does not take into account kernel\nsame-page merging (KSM). Uses information from ballooning when\navailable.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "memhost": {
+          "description": "Current memory usage on the host. Does not take into account kernel\nsame-page merging (KSM).",
+          "optional": 1,
+          "type": "integer"
+        },
+        "name": {
+          "description": "VM (host)name.",
+          "optional": 1,
+          "type": "string"
+        },
+        "netin": {
+          "description": "The amount of traffic in bytes that was sent to the guest over the\nnetwork since it was started.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "netout": {
+          "description": "The amount of traffic in bytes that was sent from the guest over the\nnetwork since it was started.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "pid": {
+          "description": "PID of the QEMU process, if the VM is running.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "pressurecpufull": {
+          "description": "CPU Full pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "pressurecpusome": {
+          "description": "CPU Some pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "pressureiofull": {
+          "description": "IO Full pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "pressureiosome": {
+          "description": "IO Some pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "pressurememoryfull": {
+          "description": "Memory Full pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "pressurememorysome": {
+          "description": "Memory Some pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "qmpstatus": {
+          "description": "VM run state from the 'query-status' QMP monitor command.",
+          "optional": 1,
+          "type": "string"
+        },
+        "running-machine": {
+          "description": "The currently running machine type (if running).",
+          "optional": 1,
+          "type": "string"
+        },
+        "running-qemu": {
+          "description": "The QEMU version the VM is currently using (if running).",
+          "optional": 1,
+          "type": "string"
+        },
+        "serial": {
+          "default": false,
+          "description": "Guest has serial device configured.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "status": {
+          "description": "A guest's run state.",
+          "enum": [
+            "running",
+            "stopped"
+          ],
+          "type": "string"
+        },
+        "tags": {
+          "description": "The current configured tags, if any",
+          "optional": 1,
+          "type": "string"
+        },
+        "template": {
+          "default": false,
+          "description": "Determines if the guest is a template.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "uptime": {
+          "description": "Uptime in seconds.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "vmid": {
+          "description": "The (unique) ID of the VM.",
+          "maximum": 999999999,
+          "minimum": 100,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/qemu'"
+}

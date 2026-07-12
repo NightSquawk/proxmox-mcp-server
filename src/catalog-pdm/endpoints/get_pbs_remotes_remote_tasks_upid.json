@@ -1,0 +1,37 @@
+{
+  "operationId": "get_pbs_remotes_remote_tasks_upid",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "{upid}",
+  "method": "GET",
+  "path": "/pbs/remotes/{remote}/tasks/{upid}",
+  "description": "Directory index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Path parameter (no further detail in Proxmox schema; inherited from parent resource)."
+    },
+    {
+      "name": "upid",
+      "type": "string",
+      "required": true,
+      "description": "Path parameter (no further detail in Proxmox schema; inherited from parent resource)."
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/tasks/<upid>'"
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "get_pbs_remotes_remote_datastore_datastore_snapshots",
+  "usageNotes": "Use this to list all backup snapshots in a specific datastore on a PBS remote, optionally scoped to a namespace. Requires the remote to be reachable from PDM and the caller to hold Resource.Audit on the target remote/datastore path. Each result includes backup-type (vm/ct/host), backup-time (Unix epoch), the constituent archive files, protection status, and any last verification result — making this the primary read for auditing backup coverage or checking whether a snapshot was verified.",
+  "examples": [
+    {
+      "summary": "List all snapshots in the 'main' datastore on the 'hetzner-pbs' remote, scoped to the 'clients/acme' namespace",
+      "path_params": {
+        "remote": "hetzner-pbs",
+        "datastore": "main"
+      },
+      "params": {
+        "ns": "clients/acme"
+      }
+    }
+  ],
+  "tips": [
+    "Omit the 'ns' query param to list snapshots from the datastore root namespace; nested namespaces are not returned unless explicitly targeted.",
+    "backup-time is a Unix epoch integer — convert to a human-readable date before displaying to users.",
+    "The 'fingerprint' field is present only for encrypted backups; its absence means the snapshot is unencrypted.",
+    "A snapshot with 'protected: true' will be skipped by prune jobs — check this field before assuming a snapshot is eligible for cleanup.",
+    "The verification.state field reflects the most recent verify task outcome ('ok' or 'failed'); a missing verification object means no verify has ever been run on that snapshot."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_datastore_datastore",
+    "get_pbs_remotes"
+  ]
+}

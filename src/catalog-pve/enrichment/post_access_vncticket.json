@@ -1,0 +1,29 @@
+{
+  "operationId": "post_access_vncticket",
+  "usageNotes": "Used by VNC proxy services to verify a short-lived VNC ticket issued during console session setup before allowing the WebSocket/TCP connection to proceed. The ticket, issuing user (authid), resource path, and required privileges must all match for validation to succeed. This is a server-side handshake call — clients do not call it directly; it is invoked by the noVNC/SPICE proxy internally after the ticket is generated via the node-level VNC console endpoints.",
+  "examples": [
+    {
+      "summary": "Verify a VNC ticket for a user accessing the console of VM 100",
+      "path_params": {},
+      "params": {
+        "authid": "admin@pam",
+        "path": "/vms/100",
+        "privs": "VM.Console",
+        "vncticket": "PVEVNC:65000000::abcdef1234567890abcdef1234567890::1",
+        "port": 5900
+      }
+    }
+  ],
+  "tips": [
+    "VNC tickets are time-limited (typically ~2 minutes); verification must occur promptly after ticket issuance.",
+    "The 'path' and 'privs' fields mirror those checked when the ticket was originally generated — mismatches cause rejection even with a valid ticket.",
+    "Returns null on success; any non-2xx response indicates an invalid or expired ticket.",
+    "Port verification (the 'port' param) is optional but recommended to prevent ticket reuse on a different port."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_vncproxy",
+    "get_nodes_node_lxc_vmid_vncproxy",
+    "get_nodes_node_vncshell",
+    "get_access_ticket"
+  ]
+}

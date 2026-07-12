@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_feature",
+  "usageNotes": "Use this before attempting a snapshot, clone, or linked-copy operation to confirm the VM's storage backend supports it — not all storage types (e.g. raw on LVM) support all features. When checking snapshot support for a specific existing snapshot rather than the live VM state, pass the optional `snapname` to scope the check to that snapshot's storage. Returns `hasFeature: false` if any disk in the VM is on an unsupported storage, along with the `nodes` array listing cluster nodes where the feature is available.",
+  "examples": [
+    {
+      "summary": "Check whether VM 105 supports cloning on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {
+        "feature": "clone"
+      }
+    }
+  ],
+  "tips": [
+    "A VM with mixed storage (e.g., one disk on ZFS, one on LVM-thin) may return hasFeature: false for snapshot/clone even if most disks are compatible — all disks must be on supported storage.",
+    "The `nodes` array in the response reflects cluster-wide availability; a non-empty array does not mean every node listed has the VM — it means those nodes' storage pools support the feature.",
+    "Run this check programmatically before calling clone or snapshot creation endpoints to surface a clear error rather than a mid-task UPID failure."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_snapshot",
+    "post_nodes_node_qemu_vmid_clone",
+    "get_nodes_node_qemu_vmid_snapshot"
+  ]
+}

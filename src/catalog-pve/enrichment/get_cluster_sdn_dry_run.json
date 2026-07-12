@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_sdn_dry_run",
+  "usageNotes": "Use this before applying SDN changes (POST /cluster/sdn) to preview exactly what will change — the diff covers both FRR routing daemon config and the network interfaces file on the specified node. Because SDN config is per-node, run this against each node in the cluster to understand the full blast radius before committing. The caller must hold Sys.Audit on /nodes/{node}; the target node must be online and reachable by the API host.",
+  "examples": [
+    {
+      "summary": "Preview pending SDN changes on node pve1",
+      "path_params": {},
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "Both frr-diff and interfaces-diff are optional in the response; an empty or absent field means no changes are pending for that subsystem.",
+    "Run this against every cluster node, not just the local one — SDN zones and VNets may generate different interface diffs per node depending on which bridges/VLANs are active there.",
+    "A non-empty frr-diff indicates BGP/EVPN routing changes; review carefully before applying as route flaps can affect VM connectivity."
+  ],
+  "relatedOperations": [
+    "post_cluster_sdn",
+    "get_cluster_sdn",
+    "get_cluster_sdn_zones",
+    "get_cluster_sdn_vnets"
+  ]
+}

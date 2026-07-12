@@ -1,0 +1,26 @@
+{
+  "operationId": "put_nodes_node_dns",
+  "usageNotes": "Use this to update the DNS resolver configuration (nameservers and search domain) for a specific PDM node; changes take effect immediately on the node's /etc/resolv.conf without a reboot. The caller must hold System.Modify on the node's system/network/dns ACL path. Pass the digest from get_nodes_node_dns to guard against concurrent modifications — the call will fail if the config has changed since you last read it.",
+  "examples": [
+    {
+      "summary": "Set primary and secondary DNS servers with a search domain on a node",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {
+        "dns1": "1.1.1.1",
+        "dns2": "8.8.8.8",
+        "search": "nightsquawk.tech"
+      }
+    }
+  ],
+  "tips": [
+    "All DNS parameters are optional — omit any you do not want to change, or use the 'delete' array to remove dns2/dns3/search without touching the others.",
+    "IPv6 nameserver addresses are accepted; the validation pattern covers both IPv4 and IPv6 formats.",
+    "The 'options' field maps to freeform lines in resolv.conf (e.g. 'timeout:2 attempts:3') — use sparingly and only for content you would manually place in that file.",
+    "Returns null on success; any error (bad IP format, wrong digest, insufficient privilege) surfaces as an HTTP 4xx response."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_dns"
+  ]
+}

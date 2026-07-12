@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pbs_remotes_remote_nodes_node_apt_repositories",
+  "usageNotes": "Use this to inspect the APT repository configuration on a PBS node managed through a PDM remote — useful for verifying the node is pointing at the correct Proxmox enterprise or no-subscription repository before triggering updates. The caller needs Resource.Audit on the remote/node/system path; the target PBS node must be reachable by PDM at call time. Note that the spec declares returns as null, so the useful data is in the response envelope rather than a typed schema.",
+  "examples": [
+    {
+      "summary": "List APT repositories on the default node of a PBS remote named 'pbs-hetzner'",
+      "path_params": {
+        "remote": "pbs-hetzner",
+        "node": "localhost"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Use 'localhost' as the node value when the PBS remote exposes only a single node and you do not know its hostname.",
+    "Cross-reference results with update-related endpoints to confirm repository health before scheduling an APT upgrade.",
+    "API tokens are supported (allowtoken: true), so a read-only audit token scoped to Resource.Audit is sufficient — no interactive session needed."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_nodes_node_apt_versions",
+    "get_pbs_remotes_remote_nodes_node_apt_update",
+    "post_pbs_remotes_remote_nodes_node_apt_repositories"
+  ]
+}

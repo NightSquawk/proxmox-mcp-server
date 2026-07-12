@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_storage_storage_file_restore_download",
+  "usageNotes": "Use this endpoint to extract and download a specific file or directory from a PBS backup snapshot without fully restoring the VM or container. The `filepath` parameter must be base64-encoded; pass `tar=true` to receive directories as a `.tar.zst` archive instead of the default `.zip`. Only PBS-backed storage volumes are supported — backups on other storage types will be rejected.",
+  "examples": [
+    {
+      "summary": "Download a single config file from a PBS VM backup as a zip",
+      "path_params": {
+        "node": "pve01",
+        "storage": "pbs-main"
+      },
+      "params": {
+        "volume": "backup/vm/101/2024-06-01T02:00:00Z",
+        "filepath": "L2V0Yy9uZ2lueC9uZ2lueC5jb25m",
+        "tar": false
+      }
+    }
+  ],
+  "tips": [
+    "Base64-encode the full absolute path (e.g. /etc/nginx/nginx.conf) before passing it as `filepath`.",
+    "Set `tar=true` when downloading a directory — zip output for large directories can be slower to stream.",
+    "The response streams binary archive data directly; pipe or save it immediately rather than buffering the full body in memory.",
+    "Requires the calling user or API token to have Datastore.Read (or equivalent) on the PBS storage — verify permissions on the PBS side, not just the PVE side."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_file_restore_list",
+    "post_nodes_node_storage_storage_file_restore_list"
+  ]
+}

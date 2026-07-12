@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_storage_storage_content",
+  "usageNotes": "Use this endpoint to allocate a new disk image on a storage pool and assign it to a specific VM owner. The caller requires `Datastore.AllocateSpace` on the target storage. The operation returns the new volume identifier (e.g. `local-lvm:vm-100-disk-0`) synchronously — there is no async UPID; the disk is ready to attach once the response is received.",
+  "examples": [
+    {
+      "summary": "Allocate a 32 GB qcow2 disk on local storage for VM 101",
+      "path_params": {
+        "node": "pve01",
+        "storage": "local"
+      },
+      "params": {
+        "filename": "vm-101-disk-1",
+        "vmid": 101,
+        "size": "32G",
+        "format": "qcow2"
+      }
+    }
+  ],
+  "tips": [
+    "The `format` parameter must be compatible with the storage type: `raw`/`qcow2`/`vmdk` for file-based stores (dir, NFS), `raw` only for block/LVM stores, `subvol` for ZFS/btrfs container volumes.",
+    "The returned volume ID (e.g. `local-lvm:vm-100-disk-0`) is what you pass to VM config endpoints to attach the disk.",
+    "Allocating a disk does not attach it to the VM — follow up with a PUT to the VM's config endpoint (e.g. `put_nodes_node_qemu_vmid_config`) and add the volume ID to the desired SCSI/VirtIO/IDE slot.",
+    "Use suffix `G` or `M` for human-readable sizes; bare numbers are interpreted as kilobytes."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_content",
+    "put_nodes_node_qemu_vmid_config",
+    "delete_nodes_node_storage_storage_content_volume",
+    "post_nodes_node_qemu_vmid_move_disk"
+  ]
+}

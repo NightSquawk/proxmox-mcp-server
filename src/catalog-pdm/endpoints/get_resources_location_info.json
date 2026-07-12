@@ -1,0 +1,42 @@
+{
+  "operationId": "get_resources_location_info",
+  "surface": "pdm",
+  "resource": "resources",
+  "category": "Resources",
+  "name": "location-info",
+  "method": "GET",
+  "path": "/resources/location-info",
+  "description": "Get the location info of the selected view (or all remotes)",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "max-age",
+      "type": "integer",
+      "required": false,
+      "description": "Maximum age (in seconds) of cached remote resources. If remote is not reachable or returns an error for the location, the last value from the cache will be returned in any case",
+      "default": 86400,
+      "minimum": 0
+    },
+    {
+      "name": "view",
+      "type": "string",
+      "required": false,
+      "description": "View name.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/resources/location-info'"
+}

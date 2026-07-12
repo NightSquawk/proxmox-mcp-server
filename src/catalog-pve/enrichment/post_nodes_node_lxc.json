@@ -1,0 +1,42 @@
+{
+  "operationId": "post_nodes_node_lxc",
+  "usageNotes": "Use this to provision a new LXC container or restore one from a backup/template on a specific cluster node. The caller must supply a valid `vmid` (>= 100, unique across the cluster) and an `ostemplate` pointing to a storage-resident template or vzdump archive; the node must be online and the target storage must have `Datastore.AllocateSpace` permission granted. The response is a task UPID — the container is created asynchronously, so poll the task status before assuming the container is ready.",
+  "examples": [
+    {
+      "summary": "Create an Ubuntu 22.04 unprivileged container with 2 cores, 1 GB RAM, 8 GB rootfs, and a DHCP network interface",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "vmid": 120,
+        "ostemplate": "local:vztmpl/ubuntu-22.04-standard_22.04-1_amd64.tar.zst",
+        "hostname": "web-proxy",
+        "cores": 2,
+        "memory": 1024,
+        "swap": 512,
+        "rootfs": "local-lvm:8",
+        "net0": "name=eth0,bridge=vmbr0,ip=dhcp,firewall=1",
+        "unprivileged": 1,
+        "start": 1,
+        "timezone": "host",
+        "tags": "ubuntu;prod",
+        "ssh-public-keys": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... admin@nightsquawk.tech"
+      }
+    }
+  ],
+  "tips": [
+    "The return value is a UPID string (e.g. 'UPID:pve1:...'). Use get_nodes_node_tasks_upid_status to poll completion before interacting with the new container.",
+    "Omitting `rootfs` does not auto-allocate disk; always specify it explicitly using the STORAGE_ID:SIZE_IN_GiB shorthand (e.g. 'local-lvm:8') to avoid creation failures.",
+    "For privileged containers (unprivileged=0), the API caller also needs 'Sys.Modify' on '/' — this is a common permission error when using restricted API tokens.",
+    "When restoring from a vzdump backup, set `restore: true` alongside the backup path in `ostemplate`; this preserves the original container config stored inside the archive.",
+    "DNS settings (nameserver, searchdomain) default to the host's values if omitted — explicitly set them if the container needs different resolvers.",
+    "Use `unique: true` when cloning or restoring to avoid MAC address collisions across containers."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc",
+    "get_nodes_node_lxc_vmid_status",
+    "post_nodes_node_lxc_vmid_status_start",
+    "delete_nodes_node_lxc_vmid",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_auto_install_tokens_id",
+  "usageNotes": "Permanently deletes an auto-install token by its name. The deletion will fail if the token is currently referenced by any prepared answer configuration, so you must remove or reassign those references first. Requires the System.Modify privilege on the system/auto-installation ACL path.",
+  "examples": [
+    {
+      "summary": "Delete an auto-install token named 'lab-deploy-01'",
+      "path_params": {
+        "id": "lab-deploy-01"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the auto-install token; any automated provisioning workflows that reference this token by name will break until updated.",
+  "tips": [
+    "Token names must be 3–64 characters and match ^[A-Za-z0-9_][A-Za-z0-9._\\-]*$.",
+    "Verify no prepared answer configurations reference this token before deleting — the API will reject the request if any dependency exists.",
+    "Returns null on success; a non-null error response indicates the token is still in use or the name was not found."
+  ],
+  "relatedOperations": [
+    "get_auto_install_tokens",
+    "get_auto_install_tokens_id",
+    "post_auto_install_tokens",
+    "put_auto_install_tokens_id"
+  ]
+}

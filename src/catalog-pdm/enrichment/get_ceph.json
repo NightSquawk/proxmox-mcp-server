@@ -1,0 +1,20 @@
+{
+  "operationId": "get_ceph",
+  "usageNotes": "Returns the top-level Ceph directory index for the PDM API, listing available Ceph sub-resources and endpoints. Use this as a discovery call to determine which Ceph operations are exposed before drilling into specific cluster, pool, or OSD endpoints. Accessible to all authenticated users with no additional privilege requirements.",
+  "examples": [
+    {
+      "summary": "List available Ceph API sub-resources on PDM",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The return type is null in the spec, meaning the response is an index array of sub-endpoint names rather than structured Ceph cluster data — parse the links array to discover callable children.",
+    "Use this before calling any specific Ceph operation to verify which sub-resources are available on the connected PDM instance."
+  ],
+  "relatedOperations": [
+    "get_ceph_cluster",
+    "get_ceph_pools",
+    "get_ceph_osds"
+  ]
+}

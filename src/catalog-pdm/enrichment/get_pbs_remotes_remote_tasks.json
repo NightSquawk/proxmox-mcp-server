@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pbs_remotes_remote_tasks",
+  "usageNotes": "Use this to audit or monitor task history on a PBS remote registered in PDM — useful for verifying that backup/sync/verify jobs completed and identifying failures by checking the 'status' field. The caller must hold Resource.Audit on the remote resource path; the remote must already be configured in PDM via its remote ID. Because there are no query filter params, all tasks are returned at once, so callers should filter client-side by worker_type, starttime, or status as needed.",
+  "examples": [
+    {
+      "summary": "List all tasks for a PBS remote named 'hetzner-pbs'",
+      "path_params": {
+        "remote": "hetzner-pbs"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'upid' field is a Unique Process ID that encodes node, PID, start time, worker type, and auth entity — it can be used with task-log endpoints on the PBS node itself to fetch full task output.",
+    "Tasks still in progress will have no 'endtime' or 'status' field; poll until both appear to confirm completion.",
+    "The 'worker_type' field identifies the job kind (e.g. 'backup', 'verify', 'sync', 'prune') — filter on this to narrow results to a specific operation type.",
+    "Remote IDs must be 2–32 characters matching [A-Za-z0-9_][A-Za-z0-9._-]* — verify the exact remote name with the list-remotes endpoint if unsure."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes",
+    "get_pbs_remotes_remote",
+    "get_pbs_remotes_remote_datastores"
+  ]
+}

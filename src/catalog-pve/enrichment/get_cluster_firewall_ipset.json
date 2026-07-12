@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_firewall_ipset",
+  "usageNotes": "Use this to list all named IP sets defined in the cluster-level firewall configuration. Requires the Sys.Audit privilege on the root path (/). IP set names returned here are used as references in firewall rules via the '+setname' syntax, so enumerate them before creating or auditing firewall rules.",
+  "examples": [
+    {
+      "summary": "List all cluster firewall IP sets",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The digest field in each returned item can be passed to write operations to guard against concurrent modifications.",
+    "IP set names follow the pattern [A-Za-z][A-Za-z0-9\\-\\_]+ — they must start with a letter and be at least 2 characters.",
+    "This endpoint lists cluster-level IP sets only; node or VM/CT firewall IP sets are managed under their respective paths."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_ipset_name",
+    "create_cluster_firewall_ipset",
+    "delete_cluster_firewall_ipset_name",
+    "get_cluster_firewall_rules"
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "operationId": "delete_nodes_node_network",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "network",
+  "method": "DELETE",
+  "path": "/nodes/{node}/network",
+  "description": "Revert network configuration (rm /etc/network/interfaces.new).",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "network",
+        "interfaces"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/network'"
+}

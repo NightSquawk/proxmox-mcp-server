@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_sdn",
+  "usageNotes": "Returns the list of SDN sub-resources available under a specific node (e.g., zones, vnets, interfaces). Use this as an index/discovery call before drilling into node-level SDN configuration — the returned items act as child links. Accessible to all authenticated users; no special privilege is required.",
+  "examples": [
+    {
+      "summary": "List SDN sub-resources on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is an array of child link objects; follow each item's 'name' field to traverse deeper into SDN configuration (zones, vnets, etc.).",
+    "This endpoint is node-scoped — SDN policy is cluster-wide but some state is queried per-node; run against the node where you need to inspect local SDN status.",
+    "Use the cluster-level SDN endpoints (/cluster/sdn) to manage SDN configuration; this endpoint is read-only discovery only."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn",
+    "get_cluster_sdn_zones",
+    "get_cluster_sdn_vnets"
+  ]
+}

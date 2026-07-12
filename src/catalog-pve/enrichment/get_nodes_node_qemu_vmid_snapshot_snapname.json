@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_snapshot_snapname",
+  "usageNotes": "Returns the list of sub-commands available under a specific QEMU VM snapshot (e.g., 'config' and 'rollback'). Use this as a discovery step to confirm which actions are exposed before calling a snapshot sub-resource. The snapshot must already exist on the specified node; the snapname must match exactly (case-sensitive, pve-configid format).",
+  "examples": [
+    {
+      "summary": "List available sub-commands for a snapshot named 'pre-upgrade' on VM 101",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101,
+        "snapname": "pre-upgrade"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is an index array of child links (e.g., 'config', 'rollback') — not snapshot content itself. Call the child endpoints to read config or perform a rollback.",
+    "snapname follows pve-configid rules: alphanumeric plus hyphens/underscores, max 40 characters, no spaces.",
+    "This endpoint returns HTTP 500/not-found if the snapshot does not exist; use list_nodes_node_qemu_vmid_snapshot to enumerate valid snapnames first.",
+    "Accessible by all authenticated users (no VM.Snapshot privilege required), but child operations like rollback will enforce their own privilege checks."
+  ],
+  "relatedOperations": [
+    "list_nodes_node_qemu_vmid_snapshot",
+    "get_nodes_node_qemu_vmid_snapshot_snapname_config",
+    "post_nodes_node_qemu_vmid_snapshot_snapname_rollback",
+    "post_nodes_node_qemu_vmid_snapshot",
+    "delete_nodes_node_qemu_vmid_snapshot_snapname"
+  ]
+}

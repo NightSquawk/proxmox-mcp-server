@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_disks_zfs_name",
+  "usageNotes": "Use this to inspect a specific ZFS pool's health on a given node — including its vdev layout, per-vdev read/write/checksum error counters, overall pool state (ONLINE/DEGRADED/FAULTED), and the last scrub result. Requires the Sys.Audit privilege at the root path; API tokens are supported. The node must be online and ZFS must be loaded — pools on offline or unreachable nodes will return an error, not empty data.",
+  "examples": [
+    {
+      "summary": "Get details for the 'rpool' ZFS pool on node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "name": "rpool"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'children' array is nested: top-level entries represent vdev groups (e.g. 'mirror-0', 'cache', 'spares'), and their children are the individual member disks.",
+    "Non-zero 'cksum', 'read', or 'write' counters on a vdev child indicate I/O errors — a pool in ONLINE state can still have silent errors accumulating.",
+    "The 'scan' field contains the last scrub timestamp and result; an empty or missing value means no scrub has ever completed.",
+    "The optional 'action' field surfaces ZFS's own recommended remediation step (e.g. 'resilver in progress', 'replace the disk') — useful to surface directly in alerts.",
+    "Use list_nodes_node_disks_zfs to enumerate all pool names on a node before calling this endpoint."
+  ],
+  "relatedOperations": [
+    "list_nodes_node_disks_zfs",
+    "create_nodes_node_disks_zfs",
+    "delete_nodes_node_disks_zfs_name",
+    "get_nodes_node_disks_list"
+  ]
+}

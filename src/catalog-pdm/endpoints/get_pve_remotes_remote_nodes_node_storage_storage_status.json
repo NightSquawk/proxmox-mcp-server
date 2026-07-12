@@ -1,0 +1,123 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_storage_storage_status",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "status",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/nodes/{node}/storage/{storage}/status",
+  "description": "Get the status of a qemu VM from a remote. If a node is provided, the VM must be on that\nnode, otherwise the node is determined automatically.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "Storage ID.",
+      "pattern": "/^(?i:[a-z][a-z0-9\\-_.]*[a-z0-9])$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object.",
+    "properties": {
+      "active": {
+        "default": false,
+        "description": "Set when storage is accessible.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "avail": {
+        "description": "Available storage space in bytes.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "content": {
+        "description": "Allowed storage content types.",
+        "format": {
+          "description": "list",
+          "items": {
+            "description": "Storage content type.",
+            "enum": [
+              "backup",
+              "images",
+              "import",
+              "iso",
+              "none",
+              "rootdir",
+              "snippets",
+              "vztmpl"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "type": "string",
+        "typetext": "[<enum>, ...]"
+      },
+      "enabled": {
+        "default": false,
+        "description": "Set when storage is enabled (not disabled).",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "shared": {
+        "default": false,
+        "description": "Shared flag from storage configuration.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "total": {
+        "description": "Total storage space in bytes.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "type": {
+        "description": "Storage type.",
+        "type": "string"
+      },
+      "used": {
+        "description": "Used storage space in bytes.",
+        "optional": 1,
+        "type": "integer"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "storage",
+        "{storage}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/nodes/<node>/storage/<storage>/status'"
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_aplinfo",
+  "usageNotes": "Use this to download an LXC appliance template from the Proxmox template repository to a local storage. The caller must have `Datastore.AllocateTemplate` permission on the target storage, and the node must be online with internet access to reach the template source. The return value is a task UPID — poll the task status endpoint to confirm the download completes before attempting to provision a container from the template.",
+  "examples": [
+    {
+      "summary": "Download the Ubuntu 22.04 LXC template to local storage on pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "storage": "local",
+        "template": "ubuntu-22.04-standard_22.04-1_amd64.tar.zst"
+      }
+    }
+  ],
+  "tips": [
+    "Use GET /nodes/{node}/aplinfo first to list available templates and get the exact template string required by this endpoint.",
+    "The returned UPID can be tracked via GET /nodes/{node}/tasks/{upid}/status to detect download failures (e.g., network errors or insufficient storage space).",
+    "Template downloads go to the 'vztmpl' content type directory on the target storage; ensure the storage is configured to accept 'vztmpl' content or the request will fail.",
+    "Large templates (several hundred MB) may take a minute or more — always wait for task completion before using the template."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_aplinfo",
+    "get_nodes_node_tasks_upid_status",
+    "post_nodes_node_lxc"
+  ]
+}

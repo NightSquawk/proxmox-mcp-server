@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_cluster_firewall_groups_group_pos",
+  "usageNotes": "Use this to permanently remove a specific rule from a cluster-level firewall security group by its zero-based position index. Requires the `Sys.Modify` privilege at the root (`/`) path. Pass the `digest` parameter when scripting concurrent-safe deletions — it prevents accidental overwrites if the ruleset was modified between your read and this delete.",
+  "examples": [
+    {
+      "summary": "Delete the first rule (pos 0) from the security group 'webservers'",
+      "path_params": {
+        "group": "webservers",
+        "pos": 0
+      },
+      "params": {
+        "digest": "a3f1c2e4b5d6789012345678901234567890abcd"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the firewall rule at the specified position from the security group; all remaining rules shift up by one position and there is no undo.",
+  "tips": [
+    "Rule positions are zero-based and shift after each deletion — re-read the group's rule list before deleting multiple rules in sequence.",
+    "Omitting `pos` from the path is technically allowed by the spec but will likely target rule 0; always specify the position explicitly to avoid unintended deletions.",
+    "Use `get_cluster_firewall_groups_group` to retrieve the current ruleset and its digest before calling this endpoint.",
+    "Returns null on success; any non-null response indicates an error."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_groups_group",
+    "post_cluster_firewall_groups_group",
+    "put_cluster_firewall_groups_group_pos",
+    "get_cluster_firewall_groups_group_pos",
+    "get_cluster_firewall_groups"
+  ]
+}

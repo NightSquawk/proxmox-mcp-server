@@ -1,0 +1,89 @@
+{
+  "operationId": "post_remotes_remote",
+  "surface": "pdm",
+  "resource": "remotes",
+  "category": "Remotes",
+  "name": "remote",
+  "method": "POST",
+  "path": "/remotes/remote",
+  "description": "List all the remotes this instance is managing.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "authid",
+      "type": "string",
+      "required": true,
+      "description": "Authentication ID",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)|(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)!(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))$/"
+    },
+    {
+      "name": "create-token",
+      "type": "string",
+      "required": false,
+      "description": "If given, create this token on the remote and use it.",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "nodes",
+      "type": "array",
+      "required": true,
+      "description": "A list of cluster node addresses."
+    },
+    {
+      "name": "token",
+      "type": "string",
+      "required": true,
+      "description": "The access token's secret."
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "description": "The type of a remote entry.",
+      "enum": [
+        "pve",
+        "pbs"
+      ],
+      "default": "pve"
+    },
+    {
+      "name": "web-url",
+      "type": "string",
+      "required": false,
+      "description": "Configuration for the Web UI URL link generation."
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource"
+      ],
+      "privs": [
+        "Resource.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"authid\":\"<authid>\",\"id\":\"<id>\",\"nodes\":\"<nodes>\",\"token\":\"<token>\",\"type\":\"pve\"}' 'https://PDM_HOST:8443/api2/json/remotes/remote'"
+}

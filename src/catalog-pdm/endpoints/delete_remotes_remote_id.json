@@ -1,0 +1,50 @@
+{
+  "operationId": "delete_remotes_remote_id",
+  "surface": "pdm",
+  "resource": "remotes",
+  "category": "Remotes",
+  "name": "{id}",
+  "method": "DELETE",
+  "path": "/remotes/remote/{id}",
+  "description": "Remove a remote that this instance is managing.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "delete-token",
+      "type": "boolean",
+      "required": false,
+      "description": "If true, deletes the API token on the remote.",
+      "default": false
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource"
+      ],
+      "privs": [
+        "Resource.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/remotes/remote/<id>'"
+}

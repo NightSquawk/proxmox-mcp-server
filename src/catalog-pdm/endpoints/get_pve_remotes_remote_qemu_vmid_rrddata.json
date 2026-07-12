@@ -1,0 +1,140 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_rrddata",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "rrddata",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/qemu/{vmid}/rrddata",
+  "description": "Read qemu stats",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "A guest ID",
+      "minimum": 1
+    }
+  ],
+  "params": [
+    {
+      "name": "cf",
+      "type": "string",
+      "required": true,
+      "description": "RRD consolidation mode",
+      "enum": [
+        "MAX",
+        "AVERAGE"
+      ]
+    },
+    {
+      "name": "timeframe",
+      "type": "string",
+      "required": true,
+      "description": "RRD time frame",
+      "enum": [
+        "hour",
+        "day",
+        "week",
+        "month",
+        "year",
+        "decade"
+      ]
+    }
+  ],
+  "returns": {
+    "description": "A list of RRD data points for a QEMU guest.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Single point in time with all known data points for VMs.",
+      "properties": {
+        "cpu-current": {
+          "description": "Current CPU utilization",
+          "optional": 1,
+          "type": "number"
+        },
+        "cpu-max": {
+          "description": "Max CPU utiliziation (Number of cores)",
+          "optional": 1,
+          "type": "number"
+        },
+        "disk-read": {
+          "description": "Disk read rate",
+          "optional": 1,
+          "type": "number"
+        },
+        "disk-total": {
+          "description": "Total disk size",
+          "optional": 1,
+          "type": "number"
+        },
+        "disk-write": {
+          "description": "Disk write rate",
+          "optional": 1,
+          "type": "number"
+        },
+        "mem-total": {
+          "description": "Total memory size",
+          "optional": 1,
+          "type": "number"
+        },
+        "mem-used": {
+          "description": "Currently used memory",
+          "optional": 1,
+          "type": "number"
+        },
+        "net-in": {
+          "description": "Inbound network data rate",
+          "optional": 1,
+          "type": "number"
+        },
+        "net-out": {
+          "description": "Outboud network data rate",
+          "optional": 1,
+          "type": "number"
+        },
+        "time": {
+          "description": "Timestamp (UNIX epoch)",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "uptime": {
+          "description": "Guest uptime",
+          "optional": 1,
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "guest",
+        "{vmid}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/qemu/0/rrddata?cf=MAX&timeframe=hour'"
+}

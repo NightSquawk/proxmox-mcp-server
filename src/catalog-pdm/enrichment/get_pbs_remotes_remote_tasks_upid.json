@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pbs_remotes_remote_tasks_upid",
+  "usageNotes": "Returns the directory index for a specific task UPID on a PBS remote, exposing the sub-resources available under that task node (e.g., log, status). Use this as a discovery step before fetching task log or status details — the null return type means the useful data comes from child endpoints, not from this call directly. The `remote` must already be configured in PDM and the `upid` must correspond to an actual task that exists on that remote.",
+  "examples": [
+    {
+      "summary": "Discover sub-resources for a PBS verify task on the 'pbs-primary' remote",
+      "path_params": {
+        "remote": "pbs-primary",
+        "upid": "UPID:pbs-primary:00001A2B:3C4D5E6F:67890ABC:verificationjob:store1:root@pam:"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The return type is null — this is a directory index; traverse to child endpoints (e.g., /log or /status) to get actionable task data.",
+    "The UPID string encodes the node, PID, start time, task type, and user — obtain it from the task list endpoint for the same remote.",
+    "API token auth is supported (allowtoken: true); no special privilege beyond 'user: all' is required, but the remote must be accessible to the authenticated user in PDM."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_tasks",
+    "get_pbs_remotes_remote_tasks_upid_log",
+    "get_pbs_remotes_remote_tasks_upid_status"
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "operationId": "put_cluster_ha_resources_sid",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "update",
+  "method": "PUT",
+  "path": "/cluster/ha/resources/{sid}",
+  "description": "Update resource configuration.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "sid",
+      "type": "string",
+      "required": true,
+      "description": "HA resource ID. This consists of a resource type followed by a resource specific name, separated with colon (example: vm:100 / ct:100). For virtual machines and containers, you can simply use the VM or CT id as a shortcut (example: 100).",
+      "format": "pve-ha-resource-or-vm-id",
+      "typetext": "<type>:<name>"
+    }
+  ],
+  "params": [
+    {
+      "name": "auto-rebalance",
+      "type": "boolean",
+      "required": false,
+      "description": "HA resource may be migrated during automatic rebalancing",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Description.",
+      "maxLength": 4096,
+      "typetext": "<string>"
+    },
+    {
+      "name": "delete",
+      "type": "string",
+      "required": false,
+      "description": "A list of settings you want to delete.",
+      "format": "pve-configid-list",
+      "maxLength": 4096,
+      "typetext": "<string>"
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "failback",
+      "type": "boolean",
+      "required": false,
+      "description": "Automatically migrate HA resource to the node with the highest priority according to their node affinity  rules, if a node with a higher priority than the current node comes online.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "group",
+      "type": "string",
+      "required": false,
+      "description": "The HA group identifier.",
+      "format": "pve-configid",
+      "typetext": "<string>"
+    },
+    {
+      "name": "max_relocate",
+      "type": "integer",
+      "required": false,
+      "description": "Maximal number of resource relocate tries when a resource fails to start.",
+      "default": 1,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "max_restart",
+      "type": "integer",
+      "required": false,
+      "description": "Maximal number of tries to restart the resource on a node after its start failed. When reached, the HA manager will try to relocate the resource to an eligible node.",
+      "default": 1,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "required": false,
+      "description": "Requested resource state.",
+      "enum": [
+        "started",
+        "stopped",
+        "enabled",
+        "disabled",
+        "ignored"
+      ],
+      "default": "started"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Console"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/ha/resources/<sid>'"
+}

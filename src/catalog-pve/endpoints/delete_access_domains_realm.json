@@ -1,0 +1,40 @@
+{
+  "operationId": "delete_access_domains_realm",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "delete",
+  "method": "DELETE",
+  "path": "/access/domains/{realm}",
+  "description": "Delete an authentication server.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "realm",
+      "type": "string",
+      "required": true,
+      "description": "Authentication domain ID",
+      "format": "pve-realm",
+      "maxLength": 32,
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/access/realm",
+      [
+        "Realm.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/domains/<realm>'"
+}

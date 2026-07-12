@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_notifications_matcher_field_values",
+  "usageNotes": "Call this before creating or updating a notification matcher to discover which metadata fields (e.g. severity, type, service) and their allowed values are recognized by the cluster. The response is purely informational — no params are accepted and results reflect what the cluster currently knows based on its configured services and event sources. Requires either Mapping.Modify or Mapping.Audit on /mapping/notifications.",
+  "examples": [
+    {
+      "summary": "List all known matcher field values for use in a new notification matcher",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'comment' field is optional and provides human-readable context for a value — check it when a value's meaning is ambiguous.",
+    "Use the returned 'field' and 'value' strings verbatim when configuring match-criteria in notification matchers via create_cluster_notifications_matcher or update_cluster_notifications_matcher.",
+    "Results are cluster-scoped and reflect dynamically discovered values — re-query after adding new notification endpoints or storage services to pick up newly registered field values."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_matchers",
+    "create_cluster_notifications_matcher",
+    "update_cluster_notifications_matcher",
+    "get_cluster_notifications_matcher_fields"
+  ]
+}

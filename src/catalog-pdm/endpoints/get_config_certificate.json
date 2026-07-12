@@ -1,0 +1,208 @@
+{
+  "operationId": "get_config_certificate",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "certificate",
+  "method": "GET",
+  "path": "/config/certificate",
+  "description": "Get the node configuration",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Certificate configuration.",
+    "properties": {
+      "acme": {
+        "description": "The acme account to use.",
+        "format": {
+          "additionalProperties": false,
+          "description": "The ACME configuration.\n\nCurrently only contains the name of the account use.",
+          "properties": {
+            "account": {
+              "description": "Account to use to acquire ACME certificates.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[account=<string>]"
+      },
+      "acmedomain0": {
+        "description": "ACME domain configuration string",
+        "format": {
+          "additionalProperties": false,
+          "default_key": "domain",
+          "description": "A domain entry for an ACME certificate.",
+          "properties": {
+            "alias": {
+              "description": "The domain to use for challenges instead of the default acme challenge domain.\n\nThis is useful if you use CNAME entries to redirect `_acme-challenge.*` domains to a\ndifferent DNS server.",
+              "optional": 1,
+              "pattern": "/^(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9_](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))$/",
+              "type": "string"
+            },
+            "domain": {
+              "description": "The domain to certify for.",
+              "pattern": "/^(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))$/",
+              "type": "string"
+            },
+            "plugin": {
+              "description": "The plugin to use to validate this domain.\n\nEmpty means standalone HTTP validation is used.",
+              "optional": 1,
+              "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[domain=<string> [,alias=<string>] [,plugin=<string>]]"
+      },
+      "acmedomain1": {
+        "description": "ACME domain configuration string",
+        "format": {
+          "additionalProperties": false,
+          "default_key": "domain",
+          "description": "A domain entry for an ACME certificate.",
+          "properties": {
+            "alias": {
+              "description": "The domain to use for challenges instead of the default acme challenge domain.\n\nThis is useful if you use CNAME entries to redirect `_acme-challenge.*` domains to a\ndifferent DNS server.",
+              "optional": 1,
+              "pattern": "/^(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9_](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))$/",
+              "type": "string"
+            },
+            "domain": {
+              "description": "The domain to certify for.",
+              "pattern": "/^(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))$/",
+              "type": "string"
+            },
+            "plugin": {
+              "description": "The plugin to use to validate this domain.\n\nEmpty means standalone HTTP validation is used.",
+              "optional": 1,
+              "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[domain=<string> [,alias=<string>] [,plugin=<string>]]"
+      },
+      "acmedomain2": {
+        "description": "ACME domain configuration string",
+        "format": {
+          "additionalProperties": false,
+          "default_key": "domain",
+          "description": "A domain entry for an ACME certificate.",
+          "properties": {
+            "alias": {
+              "description": "The domain to use for challenges instead of the default acme challenge domain.\n\nThis is useful if you use CNAME entries to redirect `_acme-challenge.*` domains to a\ndifferent DNS server.",
+              "optional": 1,
+              "pattern": "/^(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9_](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))$/",
+              "type": "string"
+            },
+            "domain": {
+              "description": "The domain to certify for.",
+              "pattern": "/^(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))$/",
+              "type": "string"
+            },
+            "plugin": {
+              "description": "The plugin to use to validate this domain.\n\nEmpty means standalone HTTP validation is used.",
+              "optional": 1,
+              "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[domain=<string> [,alias=<string>] [,plugin=<string>]]"
+      },
+      "acmedomain3": {
+        "description": "ACME domain configuration string",
+        "format": {
+          "additionalProperties": false,
+          "default_key": "domain",
+          "description": "A domain entry for an ACME certificate.",
+          "properties": {
+            "alias": {
+              "description": "The domain to use for challenges instead of the default acme challenge domain.\n\nThis is useful if you use CNAME entries to redirect `_acme-challenge.*` domains to a\ndifferent DNS server.",
+              "optional": 1,
+              "pattern": "/^(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9_](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))$/",
+              "type": "string"
+            },
+            "domain": {
+              "description": "The domain to certify for.",
+              "pattern": "/^(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))$/",
+              "type": "string"
+            },
+            "plugin": {
+              "description": "The plugin to use to validate this domain.\n\nEmpty means standalone HTTP validation is used.",
+              "optional": 1,
+              "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[domain=<string> [,alias=<string>] [,plugin=<string>]]"
+      },
+      "acmedomain4": {
+        "description": "ACME domain configuration string",
+        "format": {
+          "additionalProperties": false,
+          "default_key": "domain",
+          "description": "A domain entry for an ACME certificate.",
+          "properties": {
+            "alias": {
+              "description": "The domain to use for challenges instead of the default acme challenge domain.\n\nThis is useful if you use CNAME entries to redirect `_acme-challenge.*` domains to a\ndifferent DNS server.",
+              "optional": 1,
+              "pattern": "/^(?:(?:(?:[a-zA-Z0-9_](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9_](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))$/",
+              "type": "string"
+            },
+            "domain": {
+              "description": "The domain to certify for.",
+              "pattern": "/^(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))$/",
+              "type": "string"
+            },
+            "plugin": {
+              "description": "The plugin to use to validate this domain.\n\nEmpty means standalone HTTP validation is used.",
+              "optional": 1,
+              "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[domain=<string> [,alias=<string>] [,plugin=<string>]]"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/certificate'"
+}

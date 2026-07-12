@@ -1,0 +1,110 @@
+{
+  "operationId": "get_nodes_node_disks_zfs_name",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "detail",
+  "method": "GET",
+  "path": "/nodes/{node}/disks/zfs/{name}",
+  "description": "Get details about a zpool.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "properties": {
+      "action": {
+        "description": "Information about the recommended action to fix the state.",
+        "optional": 1,
+        "type": "string"
+      },
+      "children": {
+        "description": "The pool configuration information, including the vdevs for each section (e.g. spares, cache), may be nested.",
+        "items": {
+          "properties": {
+            "cksum": {
+              "optional": 1,
+              "type": "number"
+            },
+            "msg": {
+              "description": "An optional message about the vdev.",
+              "type": "string"
+            },
+            "name": {
+              "description": "The name of the vdev or section.",
+              "type": "string"
+            },
+            "read": {
+              "optional": 1,
+              "type": "number"
+            },
+            "state": {
+              "description": "The state of the vdev.",
+              "optional": 1,
+              "type": "string"
+            },
+            "write": {
+              "optional": 1,
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "errors": {
+        "description": "Information about the errors on the zpool.",
+        "type": "string"
+      },
+      "name": {
+        "description": "The name of the zpool.",
+        "type": "string"
+      },
+      "scan": {
+        "description": "Information about the last/current scrub.",
+        "optional": 1,
+        "type": "string"
+      },
+      "state": {
+        "description": "The state of the zpool.",
+        "type": "string"
+      },
+      "status": {
+        "description": "Information about the state of the zpool.",
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/disks/zfs/<name>'"
+}

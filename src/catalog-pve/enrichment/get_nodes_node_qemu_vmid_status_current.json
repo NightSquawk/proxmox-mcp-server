@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_status_current",
+  "usageNotes": "Use this to poll the live runtime state of a specific QEMU VM — power state, CPU/memory usage, uptime, and I/O counters since last boot. The caller must have VM.Audit permission on /vms/{vmid} and the target node must be reachable in the cluster; querying a VM on an offline node returns an error, not a stopped status. Check the 'lock' field before issuing any write operations (migrate, backup, snapshot) — a non-empty lock means another task already owns the VM.",
+  "examples": [
+    {
+      "summary": "Get current status of VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'status' field returns only 'stopped' or 'running'; use 'qmpstatus' for finer-grained QEMU states such as 'paused' or 'prelaunch'.",
+    "diskread/diskwrite counters reset to zero on each VM start; they are cumulative since last boot, not lifetime totals.",
+    "mem reflects ballooning-reported usage when the guest agent supports it; memhost reflects actual host-level allocation — these can differ significantly under memory pressure.",
+    "The 'ha' object is always present but will be empty/minimal if HA is not configured for the VM.",
+    "Pressure stall metrics (pressurecpu*, pressureio*, pressuremem*) require a Linux host kernel with PSI support and are absent on older PVE hosts."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_config",
+    "post_nodes_node_qemu_vmid_status_start",
+    "post_nodes_node_qemu_vmid_status_stop",
+    "post_nodes_node_qemu_vmid_status_shutdown",
+    "get_nodes_node_qemu_vmid_status_vnc"
+  ]
+}

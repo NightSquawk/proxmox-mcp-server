@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_cluster_metrics_server_id",
+  "usageNotes": "Permanently removes a metrics server (InfluxDB or Graphite) from the cluster configuration by its config ID. Requires `Sys.Modify` at the root (`/`) path — API tokens must carry this privilege explicitly. The operation returns null synchronously; there is no UPID, but the change propagates cluster-wide on the next config sync.",
+  "examples": [
+    {
+      "summary": "Remove an InfluxDB metrics server named 'influx-prod'",
+      "path_params": {
+        "id": "influx-prod"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the named metrics server entry from the cluster config; all nodes stop shipping metrics to that server immediately and the configuration cannot be recovered without re-adding it manually.",
+  "tips": [
+    "Use get_cluster_metrics_server_id to confirm the exact config ID before deleting — IDs follow the pve-configid format (alphanumeric plus hyphens, no spaces).",
+    "Deletion takes effect cluster-wide without a restart; verify in the Datacenter → Metric Server UI or via list_cluster_metrics_servers that the entry is gone.",
+    "If metrics pipelines (dashboards, alerting) depend on this server, coordinate removal with the monitoring team to avoid silent data gaps."
+  ],
+  "relatedOperations": [
+    "get_cluster_metrics_server_id",
+    "list_cluster_metrics_servers",
+    "create_cluster_metrics_server",
+    "update_cluster_metrics_server_id"
+  ]
+}

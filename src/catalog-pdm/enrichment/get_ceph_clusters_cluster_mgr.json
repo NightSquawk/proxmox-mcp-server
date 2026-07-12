@@ -1,0 +1,24 @@
+{
+  "operationId": "get_ceph_clusters_cluster_mgr",
+  "usageNotes": "Use this to enumerate all Ceph Manager (MGR) daemons for a given cluster — both the single active MGR and any standby daemons. The cluster path parameter is the cluster's FSID (UUID-like string), not its friendly name; retrieve it via the clusters list endpoint first. Daemons in 'stopped' or 'unknown' state indicate a MGR that PDM is aware of but cannot see in the cluster map, which may signal a daemon crash or misconfiguration.",
+  "examples": [
+    {
+      "summary": "List all MGR daemons for a specific Ceph cluster",
+      "path_params": {
+        "cluster": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A healthy cluster should have exactly one 'active' MGR and one or more 'standby' MGRs; zero active or zero standby is a resiliency concern.",
+    "The 'direxists' field is node-local — it only reflects whether the data directory exists on the PDM-managed node, not cluster-wide.",
+    "The 'service' field being false for an active or standby MGR may mean the systemd unit was manually started or is managed outside PDM."
+  ],
+  "relatedOperations": [
+    "get_ceph_clusters",
+    "get_ceph_clusters_cluster_mon",
+    "get_ceph_clusters_cluster_osd",
+    "get_ceph_clusters_cluster_status"
+  ]
+}

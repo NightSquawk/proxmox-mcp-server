@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_nodes_node_network_iface",
+  "usageNotes": "Removes a network interface configuration from the node's /etc/network/interfaces — the change is staged and does not take effect until the network is reloaded (use PUT /nodes/{node}/network to apply). Only removes the Proxmox-managed config entry; the physical NIC or bond members themselves are unaffected. Requires Sys.Modify on the target node.",
+  "examples": [
+    {
+      "summary": "Delete a Linux bridge that is no longer needed",
+      "path_params": {
+        "node": "pve01",
+        "iface": "vmbr1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the named interface's configuration from the node; any VMs or containers bound to that interface will lose network connectivity once the change is applied.",
+  "tips": [
+    "The deletion is staged — run PUT /nodes/{node}/network (reload) to commit it; until then the interface remains active.",
+    "Verify no VMs or CTs reference the interface before deleting to avoid silent connectivity loss.",
+    "Returns null on success; check the node's pending network config with GET /nodes/{node}/network to confirm the entry is gone before reloading.",
+    "If the node is a cluster member, ensure the interface is not used for corosync/cluster traffic before removing it."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network_iface",
+    "put_nodes_node_network_iface",
+    "get_nodes_node_network",
+    "put_nodes_node_network",
+    "post_nodes_node_network"
+  ]
+}

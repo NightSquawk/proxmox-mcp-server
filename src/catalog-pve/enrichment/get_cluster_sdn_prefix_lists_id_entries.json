@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_sdn_prefix_lists_id_entries",
+  "usageNotes": "Use this to inspect the individual CIDR entries belonging to a specific SDN prefix list, which is useful for auditing route filters or verifying BGP/EVPN policy before pushing changes. Requires the SDN.Audit privilege on the prefix list's SDN path (/sdn/prefix-lists/{id}). The prefix list must already exist; use get_cluster_sdn_prefix_lists to enumerate valid IDs first.",
+  "examples": [
+    {
+      "summary": "List all entries in a prefix list named 'trusted-ranges'",
+      "path_params": {
+        "id": "trusted-ranges"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "After a prefix list is modified, run this endpoint to confirm the expected entries are present before applying or reloading SDN.",
+    "An empty array response is valid and simply means the prefix list exists but has no entries configured yet.",
+    "API tokens are supported (allowtoken: true), making this safe to call from automation scripts with a read-only SDN.Audit token."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_prefix_lists",
+    "get_cluster_sdn_prefix_lists_id",
+    "get_cluster_sdn"
+  ]
+}

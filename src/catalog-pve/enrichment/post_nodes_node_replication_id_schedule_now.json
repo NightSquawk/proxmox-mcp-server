@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_replication_id_schedule_now",
+  "usageNotes": "Use this to immediately trigger a replication job rather than waiting for its next scheduled run — useful after a config change, manual failover prep, or to verify replication is healthy on demand. The node specified must be the source node for the job, and the caller needs VM.Replicate on the guest's /vms/<vmid> path. Returns a task UPID string; poll the node's task log to confirm completion.",
+  "examples": [
+    {
+      "summary": "Force-run replication job 100-0 immediately on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "id": "100-0"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The id format is '<VMID>-<JOBNUM>' (e.g. '100-0'); VMID must be 3–9 digits starting with 1–9.",
+    "The returned UPID can be passed to GET /nodes/{node}/tasks/{upid}/status to track replication progress.",
+    "If the job is already running, Proxmox will reject the request — check task status before calling.",
+    "Replication must be enabled and the target storage reachable; a paused or error-state job will still attempt to run when scheduled this way."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_replication",
+    "get_nodes_node_replication_id",
+    "get_nodes_node_replication_id_log",
+    "get_nodes_node_replication_id_status",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

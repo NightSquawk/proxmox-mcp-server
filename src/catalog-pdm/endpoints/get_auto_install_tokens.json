@@ -1,0 +1,71 @@
+{
+  "operationId": "get_auto_install_tokens",
+  "surface": "pdm",
+  "resource": "auto-install",
+  "category": "Auto Install",
+  "name": "tokens",
+  "method": "GET",
+  "path": "/auto-install/tokens",
+  "description": "GET /auto-install/tokens\n\nGet all tokens that can be used for authenticating automated installations requests.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of tokens for authenticating automated installations requests.",
+    "items": {
+      "additionalProperties": false,
+      "description": "A token for authenticating requests from the automated installer.",
+      "properties": {
+        "comment": {
+          "description": "Comment.",
+          "maxLength": 128,
+          "optional": 1,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "created-by": {
+          "description": "Name of the user that created it",
+          "type": "string"
+        },
+        "enabled": {
+          "default": true,
+          "description": "Whether this token is enabled",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "expire-at": {
+          "description": "Token expiration date (seconds since epoch). '0' means no expiration date.",
+          "minimum": 0,
+          "optional": 1,
+          "type": "integer"
+        },
+        "id": {
+          "description": "API Token name",
+          "maxLength": 64,
+          "minLength": 3,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "auto-installation"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/auto-install/tokens'"
+}

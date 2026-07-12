@@ -1,0 +1,30 @@
+{
+  "operationId": "post_nodes_node_ceph_init",
+  "usageNotes": "Run this once on any node in the cluster before installing OSDs or creating pools; it writes ceph.conf and sets up required symlinks. The call is idempotent — re-running it when a [global] section already exists preserves the existing fsid, auth, and pool defaults, so it is safe to retry. Requires Sys.Modify on the root path; the node must be online and reachable by the PVE API.",
+  "examples": [
+    {
+      "summary": "Initialize Ceph on pve1 with a dedicated replication/heartbeat VLAN and standard 3-replica defaults",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "network": "10.10.10.0/24",
+        "cluster-network": "10.10.20.0/24",
+        "size": 3,
+        "min_size": 2
+      }
+    }
+  ],
+  "tips": [
+    "Set 'network' and 'cluster-network' to separate CIDRs (storage vs. replication) for best isolation; these cannot be changed without re-initialising the cluster.",
+    "Leave 'pg_bits' at its default — the parameter is deprecated in recent Ceph versions and has no practical effect on modern clusters.",
+    "Never set 'disable_cephx' to true on any network that is not fully private and air-gapped; it removes authentication between all Ceph daemons.",
+    "Returns null on success (not a UPID); any error is surfaced immediately as an HTTP 4xx/5xx response rather than via a task log."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_config",
+    "post_nodes_node_ceph_osd",
+    "post_nodes_node_ceph_mon",
+    "post_nodes_node_ceph_pools"
+  ]
+}

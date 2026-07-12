@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_interfaces",
+  "usageNotes": "Use this endpoint to retrieve the live IP and MAC addresses of all network interfaces inside a running LXC container; the guest agent (qemu-guest-agent equivalent for LXC) must be active and the container must be in a running state for data to be returned. Requires VM.Audit on /vms/{vmid}. Results reflect the in-guest network state, not just the Proxmox config, so DHCP-assigned or manually configured addresses appear here.",
+  "examples": [
+    {
+      "summary": "List all network interfaces and IPs for container 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The container must be running; a stopped container returns an error or empty result.",
+    "Both 'inet' (legacy flat field) and 'ip-addresses' (structured array) may be present — prefer 'ip-addresses' for CIDR prefix information.",
+    "The 'hardware-address' and 'hwaddr' fields carry the same MAC; 'hwaddr' is the older alias.",
+    "If the container uses a veth bridge, lo (loopback) will always appear in the list — filter it out when enumerating externally-reachable addresses."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_config",
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_nodes_node_lxc"
+  ]
+}

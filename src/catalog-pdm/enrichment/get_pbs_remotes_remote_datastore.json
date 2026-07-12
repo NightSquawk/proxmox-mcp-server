@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pbs_remotes_remote_datastore",
+  "usageNotes": "Use this to enumerate all datastores configured on a specific PBS remote registered in PDM, including their retention schedules, maintenance state, and GC/prune settings. The caller must hold Resource.Audit on the remote path — a read-only API token with that privilege is sufficient. Datastores in maintenance-mode (especially 'offline') will appear in the list but may be inaccessible for backup or restore operations.",
+  "examples": [
+    {
+      "summary": "List datastores on the 'hetzner-pbs' remote",
+      "path_params": {
+        "remote": "hetzner-pbs"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Check the 'maintenance-mode' field in each returned datastore before triggering sync or verify jobs — an 'offline' or 'read-only' mode will cause those jobs to fail.",
+    "Retention policy fields (keep-daily, keep-weekly, etc.) are per-datastore config snapshots from the remote; they reflect the remote PBS node's settings, not a PDM-level override.",
+    "The 'path' field is the absolute filesystem path on the remote PBS server, useful for cross-referencing with disk usage or SMART data from that host.",
+    "Remote names must match the pattern /^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/ with length 2–32; mismatches will return a 400 before reaching the remote."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes",
+    "get_pbs_remotes_remote",
+    "get_pbs_remotes_remote_datastore_snapshots"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_resources_top_entities",
+  "usageNotes": "Use this endpoint to get a cross-remote leaderboard of the highest-consuming VMs/containers (guest-cpu), hypervisor nodes (node-cpu), and hypervisor nodes by RAM (node-memory) — useful for capacity planning and identifying runaway workloads across all remotes in one call. Each result entry includes both the current resource snapshot and an RRD time-series for the chosen timeframe, so omitting 'timeframe' returns only point-in-time data without historical trend. Only remotes and resources for which the authenticated user holds Resource.Audit on /resource/{remote_name} are included; remotes without that privilege are silently excluded from the rankings.",
+  "examples": [
+    {
+      "summary": "Get top CPU/memory consumers over the past day across all remotes",
+      "path_params": {},
+      "params": {
+        "timeframe": "day"
+      }
+    }
+  ],
+  "tips": [
+    "RRD data points may contain null values for intervals where no sample was collected; handle sparse arrays in the client.",
+    "The 'view' parameter scopes results to a named PDM view — omit it to query across all remotes the token can see.",
+    "CPU values (cpu field) are fractional utilization ratios (0.0–1.0 per vCPU allocated), not percentages.",
+    "Results are returned pre-sorted descending by utilization; no client-side sorting is needed."
+  ],
+  "relatedOperations": [
+    "get_resources",
+    "get_resources_location_info",
+    "get_pve_remotes_remote_nodes_node_rrddata",
+    "get_pve_remotes_remote_qemu_vmid_rrddata",
+    "get_pbs_remotes_remote_rrddata"
+  ]
+}

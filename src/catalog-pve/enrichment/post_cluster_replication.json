@@ -1,0 +1,31 @@
+{
+  "operationId": "post_cluster_replication",
+  "usageNotes": "Use this to configure continuous ZFS-based replication of a VM or container to another cluster node, providing a warm standby for failover. The `id` must follow the `<VMID>-<JOBNUM>` pattern (e.g., `100-0`), the target node must be online and reachable within the cluster, and the caller must hold `VM.Replicate` on `/vms/<vmid>`. The operation returns null synchronously — replication runs are triggered by the scheduler and can be monitored via the replication status endpoints.",
+  "examples": [
+    {
+      "summary": "Replicate VM 100 to node pve2 every 15 minutes with a rate cap",
+      "path_params": {},
+      "params": {
+        "id": "100-0",
+        "target": "pve2",
+        "type": "local",
+        "schedule": "*/15",
+        "rate": 50,
+        "comment": "HA warm standby for VM 100"
+      }
+    }
+  ],
+  "tips": [
+    "The `type` field only accepts 'local', meaning replication is within the same Proxmox cluster (not cross-cluster).",
+    "Replication requires shared or ZFS storage; VMs on non-replicated storage types (e.g., directory-backed) will fail at runtime.",
+    "The default schedule '*/15' means every 15 minutes; use systemd calendar syntax for custom intervals (e.g., 'hourly', '00:00', '*/5').",
+    "Avoid setting `remove_job` on creation — it is intended for cleanup of existing jobs and will immediately mark the new job for deletion.",
+    "Use `get_cluster_replication` to verify the job was created and `get_cluster_replication_id` to inspect a specific job's config."
+  ],
+  "relatedOperations": [
+    "get_cluster_replication",
+    "get_cluster_replication_id",
+    "put_cluster_replication_id",
+    "delete_cluster_replication_id"
+  ]
+}

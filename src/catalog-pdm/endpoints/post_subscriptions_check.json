@@ -1,0 +1,49 @@
+{
+  "operationId": "post_subscriptions_check",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "check",
+  "method": "POST",
+  "path": "/subscriptions/check",
+  "description": "Trigger a fresh shop-side subscription check on `remote`/`node`.\n\nMirrors the per-product \"Check\" button on PVE / PBS: drives the remote's\n`update_subscription(force=true)` endpoint so a status that went stale at the shop (Invalid,\nExpired) gets re-verified without waiting for the next periodic check. The cached\nsubscription state for the remote is invalidated so the next node-status read reflects the\nfresh verdict instead of a 5-minute-stale snapshot.\n\nPer-remote `PRIV_RESOURCE_MODIFY` is enforced inside the handler since the call costs an\noutbound HTTPS request to the shop.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"node\":\"<node>\",\"remote\":\"<remote>\"}' 'https://PDM_HOST:8443/api2/json/subscriptions/check'"
+}

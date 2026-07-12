@@ -1,0 +1,30 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_snapshot_snapname_rollback",
+  "usageNotes": "Rolls back a QEMU VM's disk and configuration state to the named snapshot; the VM must be powered off before rolling back (unless the snapshot includes RAM state, in which case it restores live memory as well). Returns a UPID task string — poll the task API to confirm completion before acting on the VM. All changes made to the VM after the snapshot was taken are permanently discarded.",
+  "examples": [
+    {
+      "summary": "Roll back VM 105 to a pre-patch snapshot and start it automatically afterward",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105,
+        "snapname": "pre_patch_2026_06"
+      },
+      "params": {
+        "start": true
+      }
+    }
+  ],
+  "destructiveReason": "All disk writes and configuration changes made after the snapshot was taken are permanently lost upon rollback.",
+  "tips": [
+    "Shut the VM down before rolling back a disk-only snapshot; Proxmox will refuse or produce inconsistent state if the VM is running without RAM included in the snapshot.",
+    "If the snapshot includes RAM state, the VM resumes in memory as it was at snapshot time — set start=false to prevent an automatic resume if you need to inspect config first.",
+    "The returned UPID can be polled via GET /nodes/{node}/tasks/{upid}/status to detect failure before assuming the rollback succeeded.",
+    "Requires either VM.Snapshot or VM.Snapshot.Rollback privilege on /vms/{vmid} — prefer the narrower VM.Snapshot.Rollback role for accounts that should only roll back, not create snapshots."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_snapshot",
+    "post_nodes_node_qemu_vmid_snapshot",
+    "delete_nodes_node_qemu_vmid_snapshot_snapname",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

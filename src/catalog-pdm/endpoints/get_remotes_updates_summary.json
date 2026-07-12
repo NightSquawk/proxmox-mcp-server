@@ -1,0 +1,35 @@
+{
+  "operationId": "get_remotes_updates_summary",
+  "surface": "pdm",
+  "resource": "remotes",
+  "category": "Remotes",
+  "name": "summary",
+  "method": "GET",
+  "path": "/remotes/updates/summary",
+  "description": "Return available update summary for managed remote nodes.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Update summary for all remotes.",
+    "properties": {
+      "remotes": {
+        "additionalProperties": true,
+        "description": "Map of per-remote update summaries",
+        "properties": {},
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "description": "Resource.Modify privileges are needed on /resource/{remote}",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/remotes/updates/summary'"
+}

@@ -1,0 +1,30 @@
+{
+  "operationId": "put_storage_storage",
+  "usageNotes": "Use this to modify an existing cluster-wide storage definition — changing allowed content types, bandwidth limits, pruning policy, or toggling the storage disabled/enabled. Requires the Datastore.Allocate privilege at /storage. Changes are synchronous and take effect immediately across all nodes that have the storage configured; use the 'digest' param to guard against concurrent modifications when multiple operators may be editing storage config.",
+  "examples": [
+    {
+      "summary": "Update an NFS storage to allow backups and VM images, and set a 500 MiB/s restore bandwidth limit",
+      "path_params": {
+        "storage": "nfs-backups"
+      },
+      "params": {
+        "content": "backup,images",
+        "bwlimit": "restore=512000,default=0",
+        "prune-backups": "keep-daily=7,keep-weekly=4,keep-monthly=3"
+      }
+    }
+  ],
+  "tips": [
+    "Pass 'delete' with a comma-separated list of param names to unset optional fields (e.g. 'delete=bwlimit,nodes' to remove per-storage bandwidth limits and node restrictions).",
+    "Setting 'disable=true' is a safe, reversible way to take a storage offline for maintenance without removing it from the cluster config.",
+    "The 'shared' flag does not replicate data — it only tells PVE that the storage is already shared at the infrastructure level (e.g. a SAN or NFS share). Misusing it on local storage can cause VM scheduling errors.",
+    "For PBS targets, the 'password' field updates the stored credential used for authentication against the Proxmox Backup Server datastore.",
+    "Retrieve the current 'digest' value from get_storage_storage before calling this endpoint if concurrent edits are a concern."
+  ],
+  "relatedOperations": [
+    "get_storage_storage",
+    "get_storage",
+    "post_storage",
+    "delete_storage_storage"
+  ]
+}

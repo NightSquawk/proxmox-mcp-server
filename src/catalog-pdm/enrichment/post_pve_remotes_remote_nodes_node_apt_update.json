@@ -1,0 +1,24 @@
+{
+  "operationId": "post_pve_remotes_remote_nodes_node_apt_update",
+  "usageNotes": "Triggers an `apt-get update` on the specified remote PVE node to refresh its package index; run this before querying available upgrades or installing packages. The operation is asynchronous — the response is a remote UPID that must be polled for completion status before acting on the updated package list. The caller requires the `Resource.Modify` privilege on the target remote/node/system path.",
+  "examples": [
+    {
+      "summary": "Refresh APT package index on node pve1 of the prod-cluster remote",
+      "path_params": {
+        "remote": "prod-cluster",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned UPID is a 'remote UPID' (minimum 42 chars) — use the appropriate task-status endpoint to poll completion before querying apt/versions or triggering an upgrade.",
+    "Node name accepts 'localhost' as a special value when PDM itself is the target node.",
+    "No body parameters are required; send an empty JSON object ({}) as the request body."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_apt_versions",
+    "post_pve_remotes_remote_nodes_node_apt_upgrade",
+    "get_pve_remotes_remote_tasks_upid_status"
+  ]
+}

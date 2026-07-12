@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_get_timezone",
+  "usageNotes": "Retrieves the timezone configured inside the guest OS via the QEMU Guest Agent. Requires the Guest Agent to be installed, running, and connected inside the VM — the call will fail if the agent is offline or the VM is not running. Useful for verifying guest timezone alignment across a fleet before scheduling maintenance windows or cron jobs.",
+  "examples": [
+    {
+      "summary": "Get the timezone of VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The QEMU Guest Agent must be installed (qemu-guest-agent package) and enabled in the VM hardware settings — check Proxmox UI under Options > QEMU Guest Agent.",
+    "The returned `result` object contains the timezone string as reported by the guest OS (e.g., 'America/Los_Angeles' on Linux, or a Windows timezone name on Windows guests).",
+    "If the guest agent is not running, the API returns a 500-level error; use get_nodes_node_qemu_vmid_agent to check agent status first."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_get_osinfo",
+    "get_nodes_node_qemu_vmid_agent_get_host_name",
+    "get_nodes_node_qemu_vmid_agent_get_time",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

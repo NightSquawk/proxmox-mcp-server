@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_ceph_osd",
+  "usageNotes": "Use this to provision a new Ceph OSD on a bare block device attached to the target node; the node must be online and already joined to the Ceph cluster before calling this. The operation is asynchronous — the return value is a task UPID; poll the task status endpoint to confirm the OSD comes up. The target device will be wiped, so ensure it holds no data and is not mounted.",
+  "examples": [
+    {
+      "summary": "Create a basic OSD on /dev/sdb with a separate NVMe DB device",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "dev": "/dev/sdb",
+        "db_dev": "/dev/nvme0n1",
+        "db_dev_size": 30,
+        "crush-device-class": "hdd"
+      }
+    }
+  ],
+  "tips": [
+    "Use 'osds-per-device' (≥2) only on high-throughput NVMe drives; it is mutually exclusive with db_dev and wal_dev.",
+    "Set 'encrypted' to true before the OSD is created — encryption cannot be toggled after the fact.",
+    "crush-device-class should match the physical media type ('hdd', 'ssd', or 'nvme') so CRUSH rules can tier storage correctly.",
+    "db_dev and wal_dev should reside on a faster device (SSD/NVMe) than the main OSD device to improve small-write performance."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_osd",
+    "delete_nodes_node_ceph_osd_osdid",
+    "get_nodes_node_ceph_status",
+    "post_nodes_node_ceph_init",
+    "get_nodes_node_disks_list"
+  ]
+}

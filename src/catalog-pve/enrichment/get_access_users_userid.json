@@ -1,0 +1,26 @@
+{
+  "operationId": "get_access_users_userid",
+  "usageNotes": "Use this to retrieve the full configuration of a single Proxmox VE user, including group memberships, account status, expiry, email, and any API tokens defined on the account. The caller must hold either User.Modify or Sys.Audit on the relevant user path — regular users without these privileges cannot inspect other accounts. The userid must be in name@realm format (e.g., admin@pam or jdoe@pve); realm omission will fail.",
+  "examples": [
+    {
+      "summary": "Fetch configuration for a local PVE user to check group membership and token list",
+      "path_params": {
+        "userid": "jdoe@pve"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "API tokens are returned as an object keyed by token ID; each entry includes its own expiry and privsep flag — useful for auditing whether any token has unrestricted (privsep=false) privileges.",
+    "The 'enable' field defaults to true and is omitted from the response when not explicitly set; absence means the account is active.",
+    "expire=0 means no expiration; a non-zero value is a Unix timestamp — compare against current time to determine if the account is expired.",
+    "This endpoint returns the YubiKey OTP key IDs (keys field) if configured, which is relevant for auditing 2FA enrollment."
+  ],
+  "relatedOperations": [
+    "get_access_users",
+    "put_access_users_userid",
+    "post_access_users",
+    "delete_access_users_userid",
+    "get_access_users_userid_token_tokenid"
+  ]
+}

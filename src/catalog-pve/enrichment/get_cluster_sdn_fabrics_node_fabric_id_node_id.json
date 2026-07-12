@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_sdn_fabrics_node_fabric_id_node_id",
+  "usageNotes": "Use this to inspect the configuration of a specific node within an SDN fabric — including its IP addresses, protocol-specific interfaces, and (for WireGuard fabrics) its public key, allowed IPs, role, and peer definitions. The caller must hold SDN.Audit or SDN.Allocate on the fabric path AND Sys.Audit or Sys.Modify on the node path. The returned digest can be passed to update operations to guard against concurrent modifications.",
+  "examples": [
+    {
+      "summary": "Retrieve WireGuard fabric node configuration for 'pve1' in fabric 'wg01'",
+      "path_params": {
+        "fabric_id": "wg01",
+        "node_id": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'protocol' field in the response determines which optional fields are present — only wireguard nodes include 'public_key', 'allowed_ips', 'endpoint', 'role', and 'peers'.",
+    "Save the returned 'digest' before issuing any update call; passing a stale digest will cause the update to be rejected, preventing accidental overwrites.",
+    "For WireGuard external nodes, 'public_key' must already be set; if it is absent, the node is incomplete and peering will fail.",
+    "The 'lock-token' field, when present, indicates the SDN global config is locked by a pending apply operation — avoid writes until it clears."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics_node",
+    "put_cluster_sdn_fabrics_node_fabric_id_node_id",
+    "delete_cluster_sdn_fabrics_node_fabric_id_node_id",
+    "get_cluster_sdn_fabrics_fabric_id"
+  ]
+}

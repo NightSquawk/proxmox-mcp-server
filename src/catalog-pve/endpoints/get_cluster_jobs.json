@@ -1,0 +1,40 @@
+{
+  "operationId": "get_cluster_jobs",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "index",
+  "method": "GET",
+  "path": "/cluster/jobs",
+  "description": "Index for jobs related endpoints.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "Directory index.",
+    "items": {
+      "properties": {
+        "subdir": {
+          "description": "API sub-directory endpoint",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{subdir}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/jobs'"
+}

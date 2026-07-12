@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_notifications_endpoints",
+  "usageNotes": "Use this to discover all configured notification endpoint types available in the cluster (e.g. gotify, sendmail, smtp, webhook). No parameters are required and no special privilege is needed beyond a valid API token. This is typically the first call when building a notification workflow — use the returned name values as child identifiers to drill into specific endpoint configurations.",
+  "examples": [
+    {
+      "summary": "List all notification endpoint types on the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is an index of endpoint type categories (e.g. 'gotify', 'sendmail', 'smtp', 'webhook') — not individual configured endpoints; follow child links (the 'name' field) to enumerate instances.",
+    "Accessible by all authenticated users, including unprivileged API tokens, making it safe to use in read-only automation."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_gotify",
+    "get_cluster_notifications_endpoints_sendmail",
+    "get_cluster_notifications_endpoints_smtp",
+    "get_cluster_notifications_endpoints_webhook",
+    "get_cluster_notifications_matchers"
+  ]
+}

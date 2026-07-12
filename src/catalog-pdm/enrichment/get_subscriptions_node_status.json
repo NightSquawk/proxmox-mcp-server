@@ -1,0 +1,24 @@
+{
+  "operationId": "get_subscriptions_node_status",
+  "usageNotes": "Use this endpoint to get a fleet-wide view of subscription health across all PVE and PBS remotes managed by PDM; results are filtered to remotes the caller has PRIV_RESOURCE_AUDIT on, so output scope varies by user. Results are cached for 5 minutes by default — pass max-age=0 to force a live query from each remote node, which is slower but necessary when validating a key assignment that was just changed. The pending-clear field signals that a pool key removal is queued but has not yet propagated to the node.",
+  "examples": [
+    {
+      "summary": "Force a fresh subscription check across all auditable remotes",
+      "path_params": {},
+      "params": {
+        "max-age": 0
+      }
+    }
+  ],
+  "tips": [
+    "A node with status=active but assigned-key differing from current-key means a key rotation is in progress or stale — re-query with max-age=0 to confirm.",
+    "The sockets field is only populated for PVE remotes; expect it absent for PBS nodes.",
+    "pending-clear is omitted from the wire when false — treat its absence as false, not unknown.",
+    "level=Unknown typically means the remote was reachable but could not confirm subscription details; check connectivity to that remote's subscription server."
+  ],
+  "relatedOperations": [
+    "get_subscriptions_list",
+    "get_subscriptions_node_info",
+    "post_subscriptions_assign_key"
+  ]
+}

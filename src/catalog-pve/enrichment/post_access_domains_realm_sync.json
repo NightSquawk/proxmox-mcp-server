@@ -1,0 +1,31 @@
+{
+  "operationId": "post_access_domains_realm_sync",
+  "usageNotes": "Triggers an LDAP/AD directory sync for the specified realm, writing users and/or groups into Proxmox's user.cfg; the call returns a task UPID immediately and the sync runs asynchronously (poll with the task API to confirm completion). The realm must already be configured as an LDAP/AD domain and the caller needs both 'Realm.AllocateUser' on '/access/realm/<realm>' and 'User.Modify' on '/access/groups/'. Prefer 'remove-vanished' over the deprecated 'full'/'purge' params; synced groups are always suffixed with '-<realm>', so pre-existing groups with that naming pattern will be overwritten.",
+  "examples": [
+    {
+      "summary": "Sync both users and groups from the 'corp' LDAP realm, enabling new accounts and removing vanished entries and their ACLs",
+      "path_params": {
+        "realm": "corp"
+      },
+      "params": {
+        "scope": "both",
+        "enable-new": true,
+        "remove-vanished": "entry;acl"
+      }
+    }
+  ],
+  "tips": [
+    "Use 'dry-run': true first to preview what would be written without touching user.cfg — useful before the first production sync.",
+    "The returned UPID can be passed to GET /nodes/{node}/tasks/{upid}/status to monitor completion.",
+    "Synced group names are always '<ldap-groupname>-<realm>'; ensure no manually created groups share that pattern or they will be overwritten.",
+    "'remove-vanished': 'none' (the default) is the safest option — it adds/updates but never deletes, making it idempotent for most scheduled sync jobs.",
+    "If 'enable-new' is false, newly discovered LDAP users are created in a disabled state and must be manually enabled before they can log in."
+  ],
+  "relatedOperations": [
+    "get_access_domains",
+    "get_access_domains_realm",
+    "post_access_domains",
+    "put_access_domains_realm",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

@@ -1,0 +1,384 @@
+{
+  "operationId": "put_access_domains_realm",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "update",
+  "method": "PUT",
+  "path": "/access/domains/{realm}",
+  "description": "Update authentication server settings.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "realm",
+      "type": "string",
+      "required": true,
+      "description": "Authentication domain ID",
+      "format": "pve-realm",
+      "maxLength": 32,
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "acr-values",
+      "type": "string",
+      "required": false,
+      "description": "Specifies the Authentication Context Class Reference values that theAuthorization Server is being requested to use for the Auth Request.",
+      "pattern": "^[^\\x00-\\x1F\\x7F <>#\"]*$"
+    },
+    {
+      "name": "audiences",
+      "type": "string",
+      "required": false,
+      "description": "A list of audiences that the OpenID Issuer may include that are accepted in addition to 'client-id'.",
+      "pattern": "^[^\\x00-\\x1F\\x7F <>#\"]*$"
+    },
+    {
+      "name": "autocreate",
+      "type": "boolean",
+      "required": false,
+      "description": "Automatically create users if they do not exist.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "base_dn",
+      "type": "string",
+      "required": false,
+      "description": "LDAP base domain name",
+      "maxLength": 256,
+      "typetext": "<string>"
+    },
+    {
+      "name": "bind_dn",
+      "type": "string",
+      "required": false,
+      "description": "LDAP bind domain name",
+      "maxLength": 256,
+      "typetext": "<string>"
+    },
+    {
+      "name": "capath",
+      "type": "string",
+      "required": false,
+      "description": "Path to the CA certificate store",
+      "default": "/etc/ssl/certs",
+      "typetext": "<string>"
+    },
+    {
+      "name": "case-sensitive",
+      "type": "boolean",
+      "required": false,
+      "description": "username is case-sensitive",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "cert",
+      "type": "string",
+      "required": false,
+      "description": "Path to the client certificate",
+      "typetext": "<string>"
+    },
+    {
+      "name": "certkey",
+      "type": "string",
+      "required": false,
+      "description": "Path to the client certificate key",
+      "typetext": "<string>"
+    },
+    {
+      "name": "check-connection",
+      "type": "boolean",
+      "required": false,
+      "description": "Check bind connection to the server.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "client-id",
+      "type": "string",
+      "required": false,
+      "description": "OpenID Client ID",
+      "maxLength": 256,
+      "typetext": "<string>"
+    },
+    {
+      "name": "client-key",
+      "type": "string",
+      "required": false,
+      "description": "OpenID Client Key",
+      "maxLength": 256,
+      "typetext": "<string>"
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Description.",
+      "maxLength": 4096,
+      "typetext": "<string>"
+    },
+    {
+      "name": "default",
+      "type": "boolean",
+      "required": false,
+      "description": "Use this as default realm",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "delete",
+      "type": "string",
+      "required": false,
+      "description": "A list of settings you want to delete.",
+      "format": "pve-configid-list",
+      "maxLength": 4096,
+      "typetext": "<string>"
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "domain",
+      "type": "string",
+      "required": false,
+      "description": "AD domain name",
+      "maxLength": 256,
+      "pattern": "\\S+"
+    },
+    {
+      "name": "filter",
+      "type": "string",
+      "required": false,
+      "description": "LDAP filter for user sync.",
+      "maxLength": 2048,
+      "typetext": "<string>"
+    },
+    {
+      "name": "group_classes",
+      "type": "string",
+      "required": false,
+      "description": "The objectclasses for groups.",
+      "format": "ldap-simple-attr-list",
+      "default": "groupOfNames, group, univentionGroup, ipausergroup",
+      "typetext": "<string>"
+    },
+    {
+      "name": "group_dn",
+      "type": "string",
+      "required": false,
+      "description": "LDAP base domain name for group sync. If not set, the base_dn will be used.",
+      "maxLength": 256,
+      "typetext": "<string>"
+    },
+    {
+      "name": "group_filter",
+      "type": "string",
+      "required": false,
+      "description": "LDAP filter for group sync.",
+      "maxLength": 2048,
+      "typetext": "<string>"
+    },
+    {
+      "name": "group_name_attr",
+      "type": "string",
+      "required": false,
+      "description": "LDAP attribute representing a groups name. If not set or found, the first value of the DN will be used as name.",
+      "format": "ldap-simple-attr",
+      "maxLength": 256,
+      "typetext": "<string>"
+    },
+    {
+      "name": "groups-autocreate",
+      "type": "boolean",
+      "required": false,
+      "description": "Automatically create groups if they do not exist.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "groups-claim",
+      "type": "string",
+      "required": false,
+      "description": "OpenID claim used to retrieve groups with.",
+      "maxLength": 256,
+      "pattern": "(?^:[A-Za-z0-9\\.\\-_]+)"
+    },
+    {
+      "name": "groups-overwrite",
+      "type": "boolean",
+      "required": false,
+      "description": "All groups will be overwritten for the user on login.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "issuer-url",
+      "type": "string",
+      "required": false,
+      "description": "OpenID Issuer Url",
+      "maxLength": 256,
+      "typetext": "<string>"
+    },
+    {
+      "name": "mode",
+      "type": "string",
+      "required": false,
+      "description": "LDAP protocol mode.",
+      "enum": [
+        "ldap",
+        "ldaps",
+        "ldap+starttls"
+      ],
+      "default": "ldap"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": false,
+      "description": "LDAP bind password. Will be stored in '/etc/pve/priv/realm/<REALM>.pw'.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "port",
+      "type": "integer",
+      "required": false,
+      "description": "Server port.",
+      "minimum": 1,
+      "maximum": 65535,
+      "typetext": "<integer> (1 - 65535)"
+    },
+    {
+      "name": "prompt",
+      "type": "string",
+      "required": false,
+      "description": "Specifies whether the Authorization Server prompts the End-User for reauthentication and consent.",
+      "pattern": "(?:none|login|consent|select_account|\\S+)"
+    },
+    {
+      "name": "query-userinfo",
+      "type": "boolean",
+      "required": false,
+      "description": "Enables querying the userinfo endpoint for claims values.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "scopes",
+      "type": "string",
+      "required": false,
+      "description": "Specifies the scopes (user details) that should be authorized and returned, for example 'email' or 'profile'.",
+      "default": "email profile",
+      "typetext": "<string>"
+    },
+    {
+      "name": "secure",
+      "type": "boolean",
+      "required": false,
+      "description": "Use secure LDAPS protocol. DEPRECATED: use 'mode' instead.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "server1",
+      "type": "string",
+      "required": false,
+      "description": "Server IP address (or DNS name)",
+      "format": "address",
+      "maxLength": 256,
+      "typetext": "<string>"
+    },
+    {
+      "name": "server2",
+      "type": "string",
+      "required": false,
+      "description": "Fallback Server IP address (or DNS name)",
+      "format": "address",
+      "maxLength": 256,
+      "typetext": "<string>"
+    },
+    {
+      "name": "sslversion",
+      "type": "string",
+      "required": false,
+      "description": "LDAPS TLS/SSL version. It's not recommended to use version older than 1.2!",
+      "enum": [
+        "tlsv1",
+        "tlsv1_1",
+        "tlsv1_2",
+        "tlsv1_3"
+      ]
+    },
+    {
+      "name": "sync-defaults-options",
+      "type": "string",
+      "required": false,
+      "description": "The default options for behavior of synchronizations.",
+      "format": "realm-sync-options",
+      "typetext": "[enable-new=<1|0>] [,full=<1|0>] [,purge=<1|0>] [,remove-vanished=([acl];[properties];[entry])|none] [,scope=<users|groups|both>]"
+    },
+    {
+      "name": "sync_attributes",
+      "type": "string",
+      "required": false,
+      "description": "Comma separated list of key=value pairs for specifying which LDAP attributes map to which PVE user field. For example, to map the LDAP attribute 'mail' to PVEs 'email', write  'email=mail'. By default, each PVE user field is represented  by an LDAP attribute of the same name.",
+      "pattern": "\\w+=[^,]+(,\\s*\\w+=[^,]+)*"
+    },
+    {
+      "name": "tfa",
+      "type": "string",
+      "required": false,
+      "description": "Use Two-factor authentication.",
+      "format": "pve-tfa-config",
+      "maxLength": 128,
+      "typetext": "type=<TFATYPE> [,digits=<COUNT>] [,id=<ID>] [,key=<KEY>] [,step=<SECONDS>] [,url=<URL>]"
+    },
+    {
+      "name": "user_attr",
+      "type": "string",
+      "required": false,
+      "description": "LDAP user attribute name",
+      "maxLength": 256,
+      "pattern": "\\S{2,}"
+    },
+    {
+      "name": "user_classes",
+      "type": "string",
+      "required": false,
+      "description": "The objectclasses for users.",
+      "format": "ldap-simple-attr-list",
+      "default": "inetorgperson, posixaccount, person, user",
+      "typetext": "<string>"
+    },
+    {
+      "name": "verify",
+      "type": "boolean",
+      "required": false,
+      "description": "Verify the server's SSL certificate",
+      "default": 0,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/access/realm",
+      [
+        "Realm.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/access/domains/<realm>'"
+}

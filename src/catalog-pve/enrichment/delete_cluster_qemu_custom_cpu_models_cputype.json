@@ -1,0 +1,24 @@
+{
+  "operationId": "delete_cluster_qemu_custom_cpu_models_cputype",
+  "usageNotes": "Permanently removes a custom CPU model definition from the cluster. The caller must hold Mapping.Modify on /mapping/cpu/{cputype}. Any VM or template already configured with this CPU type will retain the reference in its config but Proxmox will be unable to resolve the model on next start — remove or retype those VMs before deleting the model.",
+  "examples": [
+    {
+      "summary": "Delete the custom CPU model 'custom-epyc-v4-tuned'",
+      "path_params": {
+        "cputype": "custom-epyc-v4-tuned"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "The custom CPU model definition is permanently erased from the cluster; any VM referencing it will fail to start until its CPU type is updated.",
+  "tips": [
+    "The 'custom-' prefix in the cputype value is optional — 'epyc-v4-tuned' and 'custom-epyc-v4-tuned' both resolve to the same model.",
+    "Check which VMs reference this model with get_cluster_qemu_custom_cpu_models or by scanning VM configs before deleting.",
+    "Returns null on success — no UPID is issued; the deletion is synchronous."
+  ],
+  "relatedOperations": [
+    "get_cluster_qemu_custom_cpu_models",
+    "create_cluster_qemu_custom_cpu_models",
+    "update_cluster_qemu_custom_cpu_models_cputype"
+  ]
+}

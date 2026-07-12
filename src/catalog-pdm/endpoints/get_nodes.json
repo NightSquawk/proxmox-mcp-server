@@ -1,0 +1,22 @@
+{
+  "operationId": "get_nodes",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "nodes",
+  "method": "GET",
+  "path": "/nodes",
+  "description": "List Nodes (only for compatibility)",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes'"
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_mtunnelwebsocket",
+  "usageNotes": "This endpoint is strictly internal to the Proxmox live-migration subsystem — it upgrades an HTTP connection to a WebSocket tunnel used to relay data between source and destination nodes during LXC container migration. It should not be called directly by external tooling; the correct entry point is the mtunnel API call, which issues the socket path and ticket required here. The ticket is short-lived and scoped to the specific unix socket, so both values must be obtained immediately before use.",
+  "examples": [
+    {
+      "summary": "WebSocket upgrade for an in-progress LXC migration (as initiated by the migration subsystem)",
+      "path_params": {
+        "node": "pve-htz-de1",
+        "vmid": 201
+      },
+      "params": {
+        "socket": "/var/run/pve/migration-201.sock",
+        "ticket": "MIGRATE:pve-htz-de1:201:abc123def456"
+      }
+    }
+  ],
+  "tips": [
+    "Never call this endpoint manually — it is invoked automatically by pve-manager during container live migration.",
+    "The ticket is obtained from the initial mtunnel call or via the 'ticket' tunnel command; it expires quickly.",
+    "Permissions are validated through the ticket itself, not through the standard PVE privilege tree, which is why 'user: all' is shown in the spec.",
+    "A failed or stale ticket will result in an authentication error; restart the migration rather than retrying with the same ticket."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_migrate",
+    "get_nodes_node_lxc_vmid_mtunnel"
+  ]
+}

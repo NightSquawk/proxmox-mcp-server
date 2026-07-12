@@ -1,0 +1,29 @@
+{
+  "operationId": "get_cluster_sdn_ipams",
+  "usageNotes": "Use this to list all configured SDN IPAM integrations on the cluster, optionally filtered by type (netbox, phpipam, or pve). Requires 'SDN.Audit' or 'SDN.Allocate' permission on '/sdn/ipams/<ipam>' — results are filtered per caller's privileges, so an empty list may mean missing permissions rather than no IPAMs configured. SDN must be enabled and the cluster-wide SDN configuration must be applied before IPAM entries appear.",
+  "examples": [
+    {
+      "summary": "List all configured SDN IPAMs",
+      "path_params": {},
+      "params": {}
+    },
+    {
+      "summary": "List only NetBox IPAM integrations",
+      "path_params": {},
+      "params": {
+        "type": "netbox"
+      }
+    }
+  ],
+  "tips": [
+    "The built-in 'pve' IPAM type uses Proxmox's own IP tracking and is available without any external integration.",
+    "If you expect an IPAM to appear but the list is empty, check your SDN.Audit or SDN.Allocate permission on /sdn/ipams/<ipam> rather than assuming it is unconfigured.",
+    "IPAM entries must be committed via the SDN apply step before they are active on nodes."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_ipams_{ipam}",
+    "get_cluster_sdn",
+    "get_cluster_sdn_vnets",
+    "get_cluster_sdn_zones"
+  ]
+}

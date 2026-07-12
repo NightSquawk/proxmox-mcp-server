@@ -1,0 +1,27 @@
+{
+  "operationId": "get_cluster_replication",
+  "usageNotes": "Returns all cluster-wide replication jobs the calling user has VM.Audit permission to see; jobs for VMs the caller cannot audit are silently omitted, so an empty result does not necessarily mean no jobs exist. Each job ID follows the pattern '<VMID>-<JOBNUM>' (e.g. '100-0') and links to a specific target node. Use this as a starting point before creating, modifying, or troubleshooting replication schedules — it requires no parameters and is safe to call at any time.",
+  "examples": [
+    {
+      "summary": "List all replication jobs visible to the current user",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Jobs with 'remove_job' set ('local' or 'full') are already marked for deletion — they will disappear after their next scheduled run completes cleanup.",
+    "The 'source' field is populated internally to detect VM migrations (guest stolen from another node); it is not user-settable.",
+    "The default schedule '*/15' means every 15 minutes; check the 'schedule' field to understand replication frequency before making bandwidth assumptions.",
+    "A job with 'disable: true' will not run but still appears in this list — filter client-side if you only want active jobs.",
+    "Rate is expressed in megabytes per second (not megabits); a value of 10 means 10 MB/s."
+  ],
+  "relatedOperations": [
+    "get_cluster_replication_id",
+    "create_cluster_replication",
+    "update_cluster_replication_id",
+    "delete_cluster_replication_id",
+    "get_nodes_node_replication",
+    "get_nodes_node_replication_id_log",
+    "get_nodes_node_replication_id_status"
+  ]
+}

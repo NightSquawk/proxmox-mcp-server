@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_vzdump_defaults",
+  "usageNotes": "Use this endpoint to inspect the node-level vzdump backup defaults before triggering or scheduling a backup job — it reveals the effective compression, mode, retention, and storage settings that will apply if not explicitly overridden. Optionally pass a storage ID to see storage-specific defaults (some fields like notes-template and protected are only returned when a storage is provided). A caller needs at least Datastore.Audit or Datastore.AllocateSpace on the target storage; Sys.Audit on the node is required to see node-scoped settings like the hook script path.",
+  "examples": [
+    {
+      "summary": "Retrieve vzdump defaults for node pve1 scoped to local-zfs storage",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "storage": "local-zfs"
+      }
+    }
+  ],
+  "tips": [
+    "If no storage is passed, the response reflects global node defaults; storage-specific fields (notes-template, protected) will be absent.",
+    "The mailto and mailnotification fields are deprecated — prefer notification-mode set to 'notification-system' with configured PVE notification targets.",
+    "Default compress is '0' (none) and default mode is 'snapshot'; confirm these match your backup policy before scheduling jobs.",
+    "prune-backups defaults to 'keep-all=1', meaning backups are never pruned unless explicitly overridden — check this if storage space is a concern."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_vzdump",
+    "get_nodes_node_vzdump_extractconfig",
+    "get_cluster_backup"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_certificates_acme",
+  "usageNotes": "Returns the ACME sub-resource index for a specific node, listing the available child endpoints (e.g. certificate, challenge-schema) under /nodes/{node}/certificates/acme. Use this to discover what ACME operations are supported before calling more specific endpoints. No query parameters are required and any authenticated user or API token may call it.",
+  "examples": [
+    {
+      "summary": "List ACME sub-resources for node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a navigation index (links with rel=child), not ACME certificate data itself — follow child hrefs to get certificate info or manage ACME settings.",
+    "Accessible to all authenticated users, including read-only API tokens, so no special privilege is needed.",
+    "The node must be reachable by the Proxmox cluster; if the node is offline, the API request will fail at the proxy layer."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_certificates_acme_certificate",
+    "get_nodes_node_certificates_acme_challengeschema",
+    "get_nodes_node_certificates_info"
+  ]
+}

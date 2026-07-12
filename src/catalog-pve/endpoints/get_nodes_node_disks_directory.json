@@ -1,0 +1,64 @@
+{
+  "operationId": "get_nodes_node_disks_directory",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "index",
+  "method": "GET",
+  "path": "/nodes/{node}/disks/directory",
+  "description": "PVE Managed Directory storages.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "device": {
+          "description": "The mounted device.",
+          "type": "string"
+        },
+        "options": {
+          "description": "The mount options.",
+          "type": "string"
+        },
+        "path": {
+          "description": "The mount path.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The filesystem type.",
+          "type": "string"
+        },
+        "unitfile": {
+          "description": "The path of the mount unit.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/disks/directory'"
+}

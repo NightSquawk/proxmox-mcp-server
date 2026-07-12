@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_config_access_ad_realm",
+  "usageNotes": "Use this to permanently remove an LDAP/AD realm from Proxmox Datacenter Manager. The caller must hold the Realm.Allocate privilege on the access/domains path. Pass the optional digest (obtained from a prior get of the realm config) to guard against concurrent modifications — the delete will be rejected if the config has changed since the digest was captured.",
+  "examples": [
+    {
+      "summary": "Delete an AD realm named 'corp-ad', with optimistic-lock digest to prevent race conditions",
+      "path_params": {
+        "realm": "corp-ad"
+      },
+      "params": {
+        "digest": "a3f1c2e4b5d6789012345678901234567890abcdef1234567890abcdef123456"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the LDAP/AD realm configuration; any users or tokens associated with this realm will lose authentication access and cannot be recovered without reconfiguring the realm.",
+  "tips": [
+    "Fetch the current realm config first (e.g. GET /config/access/ad/{realm}) to obtain the SHA256 digest before deleting — this prevents accidental deletion if the config was modified concurrently.",
+    "Ensure no active users depend on this realm before deletion; PDM does not cascade-delete user accounts tied to the realm.",
+    "Returns null on success — a 2xx with no body is the expected response."
+  ],
+  "relatedOperations": [
+    "get_config_access_ad_realm",
+    "create_config_access_ad_realm",
+    "update_config_access_ad_realm",
+    "list_config_access_ad"
+  ]
+}

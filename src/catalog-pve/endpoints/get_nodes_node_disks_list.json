@@ -1,0 +1,132 @@
+{
+  "operationId": "get_nodes_node_disks_list",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "list",
+  "method": "GET",
+  "path": "/nodes/{node}/disks/list",
+  "description": "List local disks.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "include-partitions",
+      "type": "boolean",
+      "required": false,
+      "description": "Also include partitions.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "skipsmart",
+      "type": "boolean",
+      "required": false,
+      "description": "Skip smart checks.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "description": "Only list specific types of disks.",
+      "enum": [
+        "unused",
+        "journal_disks"
+      ]
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "devpath": {
+          "description": "The device path",
+          "type": "string"
+        },
+        "gpt": {
+          "type": "boolean"
+        },
+        "health": {
+          "optional": 1,
+          "type": "string"
+        },
+        "model": {
+          "optional": 1,
+          "type": "string"
+        },
+        "mounted": {
+          "type": "boolean"
+        },
+        "osdid": {
+          "type": "integer"
+        },
+        "osdid-list": {
+          "items": {
+            "type": "integer"
+          },
+          "type": "array"
+        },
+        "parent": {
+          "description": "For partitions only. The device path of the disk the partition resides on.",
+          "optional": 1,
+          "type": "string"
+        },
+        "serial": {
+          "optional": 1,
+          "type": "string"
+        },
+        "size": {
+          "type": "integer"
+        },
+        "used": {
+          "optional": 1,
+          "type": "string"
+        },
+        "vendor": {
+          "optional": 1,
+          "type": "string"
+        },
+        "wwn": {
+          "optional": 1,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "perm",
+        "/",
+        [
+          "Sys.Audit"
+        ]
+      ],
+      [
+        "perm",
+        "/nodes/{node}",
+        [
+          "Sys.Audit"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/disks/list'"
+}

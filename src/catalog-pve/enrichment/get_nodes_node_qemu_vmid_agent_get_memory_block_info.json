@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_get_memory_block_info",
+  "usageNotes": "Retrieves memory block (DIMM/hotplug slot) information from the QEMU guest agent running inside the VM; the guest agent must be installed, running, and the VM must be in a powered-on state. The response's `result` object reflects the guest OS view of memory topology, which is useful for verifying memory hotplug operations or auditing effective RAM layout inside the guest. Requires at least the `VM.GuestAgent.Audit` permission on `/vms/{vmid}`.",
+  "examples": [
+    {
+      "summary": "Get memory block info for VM 105 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If the guest agent is not running or not installed, Proxmox will return a 500-level error rather than an empty result — ensure qemu-guest-agent is active inside the guest before calling.",
+    "The `result` object structure varies by guest OS; Linux guests typically return an array of memory block entries with online/offline state, while Windows guests may return a different schema.",
+    "Memory block info reflects the guest kernel's view, which may differ from the hypervisor's configured RAM if hotplug changes are pending a guest-side acknowledgment."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_get_memory_blocks",
+    "get_nodes_node_qemu_vmid_agent_info",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

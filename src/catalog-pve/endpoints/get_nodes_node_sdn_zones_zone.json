@@ -1,0 +1,62 @@
+{
+  "operationId": "get_nodes_node_sdn_zones_zone",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "diridx",
+  "method": "GET",
+  "path": "/nodes/{node}/sdn/zones/{zone}",
+  "description": "Directory index for SDN zone status.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "zone",
+      "type": "string",
+      "required": true,
+      "description": "The SDN zone object identifier.",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "subdir": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{subdir}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/zones/{zone}",
+      [
+        "SDN.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/sdn/zones/<zone>'"
+}

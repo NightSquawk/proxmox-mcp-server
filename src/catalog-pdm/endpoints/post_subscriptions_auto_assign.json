@@ -1,0 +1,80 @@
+{
+  "operationId": "post_subscriptions_auto_assign",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "auto-assign",
+  "method": "POST",
+  "path": "/subscriptions/auto-assign",
+  "description": "Compute a proposed mapping of unused pool keys to nodes without an active subscription.\n\nReturns the plan plus snapshots of the inputs (pool digest and a hash of the consulted\nnode-status). The plan is committed by `bulk_assign` and rejected there if either snapshot no\nlonger matches the live state, so an operator never silently applies a plan that drifted\nbetween preview and commit.\n\n`PRIV_SYS_MODIFY` is required to *preview* the plan; the actual commit performed by\n`bulk_assign` additionally drops proposals on any remote the caller cannot\n`PRIV_RESOURCE_MODIFY`, so an audit-only-on-a-remote operator can see the suggestion but the\nwrite never lands there.\n\nThe response carries nested `AutoAssignProposal` data; clients must submit follow-up\n`bulk_assign` calls with an `application/json` body, the form-urlencoded path cannot encode\nthe nested structure.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "The full plan returned by auto-assign and accepted by bulk-assign.\n\n`keys_digest` and `node_status_digest` are snapshots taken when the plan was computed.\n`bulk_assign` rejects the plan with 409 if either has changed in the meantime, so the\noperator never silently commits a plan that no longer matches the live state.",
+    "properties": {
+      "assignments": {
+        "description": "Proposed assignments. Empty when nothing matches.",
+        "items": {
+          "additionalProperties": false,
+          "description": "A proposed key-to-node assignment from the auto-assign algorithm.",
+          "properties": {
+            "key": {
+              "description": "The subscription key to assign.",
+              "type": "string"
+            },
+            "key-sockets": {
+              "description": "Socket count of the key (PVE only).",
+              "maximum": 4294967295,
+              "minimum": 0,
+              "optional": 1,
+              "type": "integer"
+            },
+            "node": {
+              "description": "Target node.",
+              "type": "string"
+            },
+            "node-sockets": {
+              "description": "Socket count of the node (PVE only).",
+              "optional": 1,
+              "type": "integer"
+            },
+            "remote": {
+              "description": "Target remote.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "keys-digest": {
+        "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+        "pattern": "/^[a-f0-9]{64}$/",
+        "type": "string"
+      },
+      "node-status-digest": {
+        "description": "SHA-256 over the relevant slice of node status (sorted JSON) at proposal time.",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/subscriptions/auto-assign'"
+}

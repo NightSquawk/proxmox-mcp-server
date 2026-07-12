@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_storage_storage_identity",
+  "usageNotes": "Use this to confirm which storage plugin type backs a named storage and retrieve its internal identifier, which is plugin-dependent (e.g., a pool name for ZFS/LVM, a share path for NFS/CIFS). Requires either Datastore.Audit or Datastore.AllocateSpace on the /storage/{storage} ACL path. The target node must be online and have the storage mounted/accessible.",
+  "examples": [
+    {
+      "summary": "Get identity info for an NFS storage on pve1",
+      "path_params": {
+        "node": "pve1",
+        "storage": "nfs-backup"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'id' field format varies by plugin: ZFS returns the pool/dataset name, LVM returns the VG name, PBS returns the datastore name, NFS/CIFS return the share path.",
+    "Use this endpoint to validate that a storage ID maps to the expected backend before automating provisioning or backup jobs against it.",
+    "If the storage is not available on the specified node, the API will return an error even if it is defined cluster-wide — check node-specific storage availability first."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage",
+    "get_nodes_node_storage_storage_status",
+    "get_storage"
+  ]
+}

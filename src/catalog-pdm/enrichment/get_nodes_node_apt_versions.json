@@ -1,0 +1,22 @@
+{
+  "operationId": "get_nodes_node_apt_versions",
+  "usageNotes": "Use this endpoint to check the currently installed versions of key Proxmox Backup Server packages on a given node — useful for verifying the PBS software stack before or after an `apt-upgrade` operation. The response scope is limited to packages that PDM considers important (not the full dpkg database). The node must be online and reachable by PDM; requires the System.Audit privilege.",
+  "examples": [
+    {
+      "summary": "List installed PBS package versions on node 'pbs01'",
+      "path_params": {
+        "node": "pbs01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'OldVersion' field is only present when an upgrade is available; if absent, the installed version matches 'Version'.",
+    "Use this alongside get_nodes_node_apt_update to first refresh the package index, then call this endpoint to see current vs. available versions.",
+    "Passing 'localhost' as the node name works when calling the API directly on the PDM node itself."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_update",
+    "post_nodes_node_apt_update"
+  ]
+}

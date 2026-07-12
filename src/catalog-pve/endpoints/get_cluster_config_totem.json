@@ -1,0 +1,30 @@
+{
+  "operationId": "get_cluster_config_totem",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "totem",
+  "method": "GET",
+  "path": "/cluster/config/totem",
+  "description": "Get corosync totem protocol settings.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/config/totem'"
+}

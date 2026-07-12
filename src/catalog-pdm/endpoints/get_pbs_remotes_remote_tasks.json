@@ -1,0 +1,97 @@
+{
+  "operationId": "get_pbs_remotes_remote_tasks",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "tasks",
+  "method": "GET",
+  "path": "/pbs/remotes/{remote}/tasks",
+  "description": "Get the list of tasks either for a specific node, or query all at once.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "A list of tasks.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Task properties.",
+      "properties": {
+        "endtime": {
+          "description": "The task end time (Epoch)",
+          "optional": 1,
+          "type": "integer"
+        },
+        "node": {
+          "description": "The node name where the task is running on.",
+          "type": "string"
+        },
+        "pid": {
+          "description": "The Unix PID",
+          "type": "integer"
+        },
+        "pstart": {
+          "description": "The task start time (Epoch)",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "starttime": {
+          "description": "The task start time (Epoch)",
+          "type": "integer"
+        },
+        "status": {
+          "description": "Task end status",
+          "optional": 1,
+          "type": "string"
+        },
+        "upid": {
+          "description": "Unique Process/Task Identifier",
+          "minLength": 36,
+          "pattern": "/^UPID:(?P<node>[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?):(?P<pid>[0-9A-Fa-f]{8}):(?P<pstart>[0-9A-Fa-f]{8,9}):(?P<task_id>[0-9A-Fa-f]{8,16}):(?P<starttime>[0-9A-Fa-f]{8}):(?P<wtype>[^:\\s]+):(?P<wid>[^:\\s]*):(?P<authid>[^:\\s]+):$/",
+          "type": "string"
+        },
+        "user": {
+          "description": "The authenticated entity who started the task",
+          "type": "string"
+        },
+        "worker_id": {
+          "description": "Worker ID (arbitrary ASCII string)",
+          "optional": 1,
+          "type": "string"
+        },
+        "worker_type": {
+          "description": "Worker type (arbitrary ASCII string)",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/tasks'"
+}

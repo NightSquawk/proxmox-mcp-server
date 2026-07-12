@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_aliases_name",
+  "usageNotes": "Retrieves a single named firewall alias defined at the VM (QEMU guest) level, returning its CIDR value and any comment. Use this to inspect a specific alias before referencing it in firewall rules, or to verify the IP/network it resolves to. Requires VM.Audit on /vms/{vmid}; alias names must start with a letter and be 2–64 characters.",
+  "examples": [
+    {
+      "summary": "Read the 'WebServers' alias for VM 201 on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 201,
+        "name": "WebServers"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Alias names are case-sensitive and must match the pattern [A-Za-z][A-Za-z0-9\\-\\_]+.",
+    "VM-level aliases are scoped to the individual VM firewall; they do not exist in the cluster-level alias namespace.",
+    "If the alias is not found the API returns a 500-series error, not a 404 — check spelling and scope before assuming it is absent.",
+    "Use list_aliases (GET /nodes/{node}/qemu/{vmid}/firewall/aliases) first if you are unsure of the exact alias name."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_aliases",
+    "post_nodes_node_qemu_vmid_firewall_aliases",
+    "put_nodes_node_qemu_vmid_firewall_aliases_name",
+    "delete_nodes_node_qemu_vmid_firewall_aliases_name"
+  ]
+}

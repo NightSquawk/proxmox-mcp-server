@@ -1,0 +1,28 @@
+{
+  "operationId": "get_cluster_sdn_controllers",
+  "usageNotes": "Use this to enumerate all SDN routing controllers (BGP, EVPN, IS-IS, Faucet) configured in the cluster. Pass 'pending: true' to preview staged changes that have not yet been applied via 'apply', or 'running: true' to see only what is currently active on the data plane. Requires 'SDN.Audit' or 'SDN.Allocate' on each controller path — callers without either privilege on a controller will simply not see that entry in the response.",
+  "examples": [
+    {
+      "summary": "List only EVPN controllers with pending (unapplied) changes visible",
+      "path_params": {},
+      "params": {
+        "type": "evpn",
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "A 'state' field of 'changed' or 'new' on a returned controller means the config has been saved but not yet applied — run the SDN apply operation to push it to the data plane.",
+    "Omitting both 'pending' and 'running' returns the stored config; it may differ from what is actually running if changes were made but not applied.",
+    "The 'digest' field on each controller can be used as an optimistic-lock value when updating or deleting a specific controller.",
+    "Filter by 'type' to scope results when you only care about, e.g., BGP controllers in a mixed SDN deployment."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_controllers_controller",
+    "create_cluster_sdn_controllers",
+    "update_cluster_sdn_controllers_controller",
+    "delete_cluster_sdn_controllers_controller",
+    "get_cluster_sdn",
+    "apply_cluster_sdn"
+  ]
+}

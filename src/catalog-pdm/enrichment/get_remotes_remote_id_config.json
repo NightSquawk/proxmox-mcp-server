@@ -1,0 +1,25 @@
+{
+  "operationId": "get_remotes_remote_id_config",
+  "usageNotes": "Use this to retrieve the full connection configuration for a registered PDM remote, including its node addresses, authentication ID, token secret, and type (pve or pbs). Requires Resource.Audit privilege on the specific remote resource. Note that the response includes the token secret in plaintext, so treat the result with the same care as credentials.",
+  "examples": [
+    {
+      "summary": "Fetch config for a registered PVE remote named 'hetzner-pve'",
+      "path_params": {
+        "id": "hetzner-pve"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'authid' field uses the format 'user@realm!tokenid' — this is the API token identity, not a password.",
+    "The 'type' field distinguishes PVE clusters from PBS backup servers; default is 'pve' if not explicitly set.",
+    "The optional 'web-url' field controls how PDM generates clickable links to the remote's web UI — absence does not affect API connectivity.",
+    "Remote IDs must be 2–32 characters and match the pattern [A-Za-z0-9_][A-Za-z0-9._-]* — use this to validate IDs before calling.",
+    "This endpoint returns the stored token secret; avoid logging or caching the full response."
+  ],
+  "relatedOperations": [
+    "get_remotes",
+    "get_remotes_remote_id_status",
+    "put_remotes_remote_id_config"
+  ]
+}

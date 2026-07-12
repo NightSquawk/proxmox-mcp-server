@@ -1,0 +1,43 @@
+{
+  "operationId": "get_cluster_acme_challenge_schema",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "challengeschema",
+  "method": "GET",
+  "path": "/cluster/acme/challenge-schema",
+  "description": "Get schema of ACME challenge types.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "additionalProperties": 0,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "name": {
+          "description": "Human readable name, falls back to id",
+          "type": "string"
+        },
+        "schema": {
+          "type": "object"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/acme/challenge-schema'"
+}

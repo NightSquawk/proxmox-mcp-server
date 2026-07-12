@@ -1,0 +1,28 @@
+{
+  "operationId": "post_nodes_node_services_service_stop",
+  "usageNotes": "Stops a named system service on a specific cluster node; requires `Sys.Modify` on `/nodes/{node}`. Stopping critical services like `pvedaemon`, `pve-cluster`, `corosync`, or `sshd` will disrupt cluster communication, API access, or remote connectivity on that node — only use when the node can be recovered via console. The return value is a UPID string for the resulting task, which can be polled with the task status endpoint.",
+  "examples": [
+    {
+      "summary": "Stop the PVE firewall service on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "service": "pve-firewall"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Immediately stops the target system service on the node, which can interrupt active connections, cluster coordination, or VM/container operations depending on which service is stopped.",
+  "tips": [
+    "Stopping `corosync` or `pve-cluster` on a multi-node cluster will cause quorum loss or split-brain — coordinate with other nodes first.",
+    "Stopping `sshd` or `pveproxy` will cut off remote shell and web UI access; ensure console (IPMI/KVM) access is available before doing so.",
+    "Use the sibling `restart` endpoint instead of stop+start when you only need to reload a service config change.",
+    "The returned UPID can be tracked via GET /nodes/{node}/tasks/{upid}/status to confirm the service has fully stopped."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_services_service_start",
+    "post_nodes_node_services_service_restart",
+    "post_nodes_node_services_service_reload",
+    "get_nodes_node_services_service_state",
+    "get_nodes_node_services"
+  ]
+}

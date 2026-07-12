@@ -1,0 +1,23 @@
+{
+  "operationId": "put_config_notes",
+  "usageNotes": "Use this to set or update the freeform notes text stored in the PDM system configuration — useful for recording maintenance windows, handoff notes, or datacenter context visible to all administrators. Requires the System.Modify privilege on the /system/notes ACL path. Pass the current config digest to guard against concurrent overwrites; omit it only when last-write-wins behavior is acceptable.",
+  "examples": [
+    {
+      "summary": "Update PDM notes with a maintenance reminder, using digest to prevent overwrite conflicts",
+      "path_params": {},
+      "params": {
+        "notes": "Scheduled maintenance window: 2026-07-05 02:00–04:00 UTC. All PDM nodes expected to restart. Contact hello@nightsquawk.tech for emergencies.",
+        "digest": "a3f1c2e4b5d6789012345678abcdef0123456789abcdef0123456789abcdef01"
+      }
+    }
+  ],
+  "tips": [
+    "The endpoint returns null on success — a 200 with no body is the expected success response.",
+    "Supplying 'digest' is strongly recommended in multi-admin environments; PDM will reject the write if the config has changed since the digest was read, preventing silent overwrites.",
+    "Notes are stored in the PDM configuration file and are visible to any user who can read the config — do not store credentials or secrets here.",
+    "To read the current notes (and obtain a fresh digest), use get_config_notes before writing."
+  ],
+  "relatedOperations": [
+    "get_config_notes"
+  ]
+}

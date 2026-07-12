@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_ipset_name",
+  "usageNotes": "Lists all CIDR entries inside a named IPSet scoped to a specific VM's firewall. The IPSet must already exist on that VM — use the list-ipsets endpoint first if the name is unknown. Each returned entry includes the CIDR, an optional comment, a digest (use it as an optimistic-lock token for subsequent writes), and an optional 'nomatch' flag that inverts the entry's match behavior.",
+  "examples": [
+    {
+      "summary": "List all entries in the 'trusted-mgmt' IPSet for VM 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110,
+        "name": "trusted-mgmt"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'digest' field in each entry is used to prevent concurrent modifications — pass it when updating or deleting an entry to ensure the set hasn't changed since you read it.",
+    "The 'nomatch' flag negates a CIDR entry, effectively creating an exclusion within the IPSet — useful for carving out a subnet from a broader range.",
+    "IPSet names must start with a letter and can only contain letters, digits, hyphens, and underscores (2–64 chars).",
+    "This endpoint is VM-firewall scoped; cluster-level IPSets live under a different path (/cluster/firewall/ipset/{name})."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_ipset",
+    "post_nodes_node_qemu_vmid_firewall_ipset_name",
+    "delete_nodes_node_qemu_vmid_firewall_ipset_name_cidr",
+    "get_nodes_node_qemu_vmid_firewall_refs"
+  ]
+}

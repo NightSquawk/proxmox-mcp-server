@@ -1,0 +1,23 @@
+{
+  "operationId": "put_nodes_node_time",
+  "usageNotes": "Use this to set the system timezone on a specific Proxmox node. The timezone value must be a valid IANA timezone name (e.g. 'America/New_York') — consult /usr/share/zoneinfo/zone.tab on the node for the full list. Requires Sys.Modify on /nodes/{node}; this operation completes synchronously and returns null on success.",
+  "examples": [
+    {
+      "summary": "Set the timezone on node pve1 to US Eastern Time",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "timezone": "America/New_York"
+      }
+    }
+  ],
+  "tips": [
+    "Timezone names are case-sensitive and must exactly match an entry in /usr/share/zoneinfo/zone.tab on the node.",
+    "Changing the timezone affects log timestamps and scheduled tasks on that node; consider restarting time-sensitive services (e.g. cron) after the change.",
+    "Use get_nodes_node_time (GET /nodes/{node}/time) to verify the current timezone before and after setting it."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_time"
+  ]
+}

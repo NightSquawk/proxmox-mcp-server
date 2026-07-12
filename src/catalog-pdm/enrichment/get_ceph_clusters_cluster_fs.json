@@ -1,0 +1,23 @@
+{
+  "operationId": "get_ceph_clusters_cluster_fs",
+  "usageNotes": "Use this to enumerate all CephFS file systems on a given Ceph cluster before mounting, configuring, or reporting on shared filesystem capacity. The cluster path parameter is the cluster's fsid (UUID-like string), not a human-readable name — retrieve it first from the cluster list endpoint. Each returned item includes both the primary data pool (for backward-compat) and the full data_pools array, which you should prefer when a filesystem uses multiple pools.",
+  "examples": [
+    {
+      "summary": "List all CephFS file systems on a known cluster",
+      "path_params": {
+        "cluster": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A CephFS with multiple device-class-specific data pools will show them all in data_pools but only the first in data_pool — always prefer data_pools for complete pool accounting.",
+    "An empty array response means no CephFS file systems exist on this cluster yet; it does not indicate an error.",
+    "The cluster identifier is the Ceph fsid (a UUID), not the PDM cluster display name — check get_ceph_clusters if unsure."
+  ],
+  "relatedOperations": [
+    "get_ceph_clusters",
+    "get_ceph_clusters_cluster_pools",
+    "get_ceph_clusters_cluster_status"
+  ]
+}

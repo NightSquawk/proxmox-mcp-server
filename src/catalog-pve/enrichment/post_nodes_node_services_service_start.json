@@ -1,0 +1,28 @@
+{
+  "operationId": "post_nodes_node_services_service_start",
+  "usageNotes": "Use this to start a stopped or failed system service on a specific PVE node; the target node must be online and reachable by the cluster. Requires Sys.Modify on /nodes/{node}. Returns a task UPID string — poll the task endpoint to confirm the service reached the running state.",
+  "examples": [
+    {
+      "summary": "Start the pveproxy service on node pve1 (e.g. after manual stop or crash)",
+      "path_params": {
+        "node": "pve1",
+        "service": "pveproxy"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The return value is a UPID task string; use get_nodes_node_tasks_upid_status to poll completion.",
+    "Starting corosync or pve-cluster on a node that is already joined may cause quorum disruption — verify cluster health first.",
+    "If pvedaemon or pveproxy is the target, be aware that in-flight API connections may drop briefly during the restart window.",
+    "sshd is included in the enum; starting it via the API requires an already-working API connection — useful for re-enabling SSH after an accidental stop.",
+    "Not all services support start if their dependencies are missing (e.g. corosync requires a valid cluster.conf)."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_services_service_stop",
+    "post_nodes_node_services_service_restart",
+    "get_nodes_node_services_service_state",
+    "get_nodes_node_services",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

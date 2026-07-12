@@ -1,0 +1,68 @@
+{
+  "operationId": "get_ceph_clusters_cluster_flags",
+  "surface": "pdm",
+  "resource": "ceph",
+  "category": "Ceph",
+  "name": "flags",
+  "method": "GET",
+  "path": "/ceph/clusters/{cluster}/flags",
+  "description": "Cluster-wide Ceph flags.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "cluster",
+      "type": "string",
+      "required": true,
+      "description": "Ceph cluster identifier (fsid).",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "Ceph OSD flags and their state.",
+    "items": {
+      "additionalProperties": true,
+      "description": "Object.",
+      "properties": {
+        "description": {
+          "description": "Flag description.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Flag name.",
+          "enum": [
+            "nobackfill",
+            "nodeep-scrub",
+            "nodown",
+            "noin",
+            "noout",
+            "norebalance",
+            "norecover",
+            "noscrub",
+            "notieragent",
+            "noup",
+            "pause"
+          ],
+          "type": "string"
+        },
+        "value": {
+          "default": false,
+          "description": "Flag value.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/ceph/clusters/<cluster>/flags'"
+}

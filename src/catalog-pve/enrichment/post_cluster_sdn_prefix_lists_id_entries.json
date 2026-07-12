@@ -1,0 +1,31 @@
+{
+  "operationId": "post_cluster_sdn_prefix_lists_id_entries",
+  "usageNotes": "Adds a permit or deny entry for a CIDR prefix to an existing SDN prefix list, which is used by SDN firewall or routing policies to match traffic. The prefix list must already exist (create it first with the prefix list create endpoint), and the caller needs SDN.Allocate on /sdn/prefix-lists/{id}. Changes take effect cluster-wide only after the SDN configuration is applied (reload); use the lock-token if your workflow requires serialized concurrent edits.",
+  "examples": [
+    {
+      "summary": "Permit the 10.10.0.0/16 subnet with a ge/le range allowing /24 through /28 subnets",
+      "path_params": {
+        "id": "rfc1918-private"
+      },
+      "params": {
+        "action": "permit",
+        "prefix": "10.10.0.0/16",
+        "ge": 24,
+        "le": 28,
+        "seq": 10
+      }
+    }
+  ],
+  "tips": [
+    "seq controls match order within the list (lower = matched first); if omitted, Proxmox auto-assigns the next sequence number.",
+    "ge and le are prefix-length range qualifiers: ge sets the minimum prefix length and le sets the maximum, allowing one entry to match a block of more-specific subnets.",
+    "Returns null on success — no UPID is issued; the write is synchronous but the SDN config still needs a separate apply/reload step to propagate.",
+    "For IPv6 prefixes, ge/le values up to 128 are valid; for IPv4 practical maximum is 32."
+  ],
+  "relatedOperations": [
+    "post_cluster_sdn_prefix_lists",
+    "get_cluster_sdn_prefix_lists_id_entries",
+    "delete_cluster_sdn_prefix_lists_id_entries_id",
+    "put_cluster_sdn"
+  ]
+}

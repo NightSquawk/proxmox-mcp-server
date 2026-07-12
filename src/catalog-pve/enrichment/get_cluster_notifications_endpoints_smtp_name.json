@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_notifications_endpoints_smtp_name",
+  "usageNotes": "Use this to inspect the configuration of a specific SMTP notification endpoint by its config ID — useful before updating it or verifying delivery settings. Requires either Mapping.Modify or Mapping.Audit on /mapping/notifications; note that SMTP credentials (password) are never returned, only the username. The response includes a 'digest' field that should be passed to any subsequent update call to guard against concurrent modifications.",
+  "examples": [
+    {
+      "summary": "Fetch the 'mail-alerts' SMTP endpoint configuration",
+      "path_params": {
+        "name": "mail-alerts"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'digest' in the response is a config-file hash — pass it to the corresponding update operation to prevent overwriting concurrent changes.",
+    "If 'disable' is true in the response, notifications will not be sent through this endpoint even if it is referenced by active notification rules.",
+    "SMTP passwords are write-only in Proxmox; this endpoint will never reveal them — verify authentication by testing the endpoint via the UI or a separate test notification.",
+    "Default TLS mode is 'tls' (implicit TLS, port 465); if the server requires STARTTLS, confirm 'mode' is 'starttls' and 'port' is 587."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_smtp",
+    "create_cluster_notifications_endpoints_smtp",
+    "update_cluster_notifications_endpoints_smtp_name",
+    "delete_cluster_notifications_endpoints_smtp_name"
+  ]
+}

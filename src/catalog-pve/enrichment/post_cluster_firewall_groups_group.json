@@ -1,0 +1,36 @@
+{
+  "operationId": "post_cluster_firewall_groups_group",
+  "usageNotes": "Use this to append a new firewall rule to an existing cluster-level security group; the security group must already exist (create it first via POST /cluster/firewall/groups). Requires 'Sys.Modify' on the root path, so only cluster administrators can call it. Rules are appended at the end by default — use 'pos' to insert at a specific position, keeping in mind that rules are evaluated top-down.",
+  "examples": [
+    {
+      "summary": "Block inbound SSH from the internet to any VM in the 'external-vms' security group, logged at warning level",
+      "path_params": {
+        "group": "external-vms"
+      },
+      "params": {
+        "type": "in",
+        "action": "DROP",
+        "proto": "tcp",
+        "dport": "22",
+        "comment": "Block inbound SSH from untrusted sources",
+        "log": "warning",
+        "enable": 1
+      }
+    }
+  ],
+  "tips": [
+    "The 'group' path parameter must match an existing security group name (2–18 chars, starts with a letter); creating a rule against a non-existent group returns an error.",
+    "Omitting 'enable' leaves the rule disabled by default in some PVE versions — explicitly set enable=1 to activate immediately.",
+    "Use the 'macro' field (e.g., 'SSH', 'HTTP', 'HTTPS') to apply predefined port+protocol combinations instead of manually setting proto/dport.",
+    "Set 'digest' to the current ruleset digest to guard against concurrent edits overwriting each other in multi-admin environments.",
+    "Rules referencing IP sets must prefix the set name with '+' (e.g., '+trusted-hosts') and the IP set must already exist at the cluster firewall level."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_groups",
+    "post_cluster_firewall_groups",
+    "get_cluster_firewall_groups_group",
+    "put_cluster_firewall_groups_group_pos",
+    "delete_cluster_firewall_groups_group_pos",
+    "get_cluster_firewall_groups_group_pos"
+  ]
+}

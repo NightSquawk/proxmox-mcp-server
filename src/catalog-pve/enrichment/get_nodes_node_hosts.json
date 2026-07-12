@@ -1,0 +1,21 @@
+{
+  "operationId": "get_nodes_node_hosts",
+  "usageNotes": "Use this to read the raw content of /etc/hosts on a specific PVE node, useful for auditing static hostname mappings or capturing the current digest before issuing an update. The returned digest should be passed to the corresponding write operation to prevent concurrent modification conflicts. Requires Sys.Audit privilege at the root path.",
+  "examples": [
+    {
+      "summary": "Fetch /etc/hosts content from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Capture the 'digest' field from the response and pass it to the update endpoint to guard against race conditions when multiple operators may edit hosts concurrently.",
+    "Each node maintains its own /etc/hosts — run this per-node to audit cluster-wide hostname resolution rather than assuming all nodes are in sync.",
+    "Static entries here affect name resolution for guests and host services on that node; verify entries are consistent with your DNS infrastructure."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_hosts"
+  ]
+}

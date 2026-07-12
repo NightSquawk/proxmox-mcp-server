@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_ceph_stop",
+  "usageNotes": "Stops one or all Ceph services on a specific PVE node; omitting 'service' stops the entire ceph.target unit, which halts all Ceph daemons (MON, OSD, MGR, MDS) on that node. Use when decommissioning a node from the Ceph cluster, performing maintenance, or diagnosing daemon-level issues. Returns a task UPID string — poll the task endpoint to confirm completion before assuming services are fully stopped.",
+  "examples": [
+    {
+      "summary": "Stop all Ceph services on node pve1 (default ceph.target)",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Stopping Ceph services on a node removes that node's OSDs and MON from active cluster participation, reducing redundancy and potentially causing I/O degradation or client-visible storage interruptions if the cluster lacks sufficient remaining active OSDs to maintain quorum or the configured replication count.",
+  "tips": [
+    "To stop a single daemon rather than all services, pass the 'service' param using the pattern e.g. 'osd.0' or 'mon.pve1'.",
+    "Before stopping on a multi-OSD node, verify the cluster is HEALTH_OK and has enough remaining OSDs to maintain the replication minimum (default min_size=2).",
+    "Use 'get_nodes_node_ceph_status' to check cluster health before and after this call.",
+    "Stopping services does not remove them from the cluster config — use the appropriate remove/destroy endpoints for permanent removal."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_ceph_start",
+    "post_nodes_node_ceph_restart",
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_tasks"
+  ]
+}

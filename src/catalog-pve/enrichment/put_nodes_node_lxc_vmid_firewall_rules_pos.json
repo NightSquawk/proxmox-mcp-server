@@ -1,0 +1,38 @@
+{
+  "operationId": "put_nodes_node_lxc_vmid_firewall_rules_pos",
+  "usageNotes": "Use this to modify an existing firewall rule on an LXC container by its zero-based position index; requires VM.Config.Network on the container. Supply `digest` (from the GET rules response) to guard against concurrent edits overwriting each other. To reorder a rule without changing its properties, set only `moveto`; all other body fields are ignored when `moveto` is present.",
+  "examples": [
+    {
+      "summary": "Change an existing inbound TCP rule at position 2 to DROP port 23 (Telnet) and add a comment",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110,
+        "pos": 2
+      },
+      "params": {
+        "type": "in",
+        "action": "DROP",
+        "proto": "tcp",
+        "dport": "23",
+        "comment": "Block inbound Telnet",
+        "enable": 1,
+        "log": "info"
+      }
+    }
+  ],
+  "tips": [
+    "Position (pos) is zero-based; use GET /nodes/{node}/lxc/{vmid}/firewall/rules to list current rules and their positions before editing.",
+    "Setting `moveto` to a new index repositions the rule atomically; combine with a separate PUT call if you also need to change rule properties.",
+    "Use the `delete` param (comma-separated field names) to unset optional fields like `source`, `dest`, or `comment` rather than sending an empty string.",
+    "The container firewall must be enabled at both the container level and the host/cluster level for rules to take effect.",
+    "LXC interface names in `iface` must follow the net\\d+ pattern (e.g., net0), not arbitrary names as allowed for host rules."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_rules",
+    "get_nodes_node_lxc_vmid_firewall_rules_pos",
+    "post_nodes_node_lxc_vmid_firewall_rules",
+    "delete_nodes_node_lxc_vmid_firewall_rules_pos",
+    "get_nodes_node_lxc_vmid_firewall_options",
+    "put_nodes_node_lxc_vmid_firewall_options"
+  ]
+}

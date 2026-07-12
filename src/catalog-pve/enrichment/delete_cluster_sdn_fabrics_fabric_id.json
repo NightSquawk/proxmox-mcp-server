@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_cluster_sdn_fabrics_fabric_id",
+  "usageNotes": "Permanently removes an SDN fabric configuration from the cluster. Before deleting, ensure no zones, VNets, or subnets reference the fabric, as dependent objects must be removed first. This operation returns null synchronously; apply pending SDN changes afterward via the SDN apply endpoint to propagate the removal to all nodes.",
+  "examples": [
+    {
+      "summary": "Delete an SDN fabric named 'myfab1'",
+      "path_params": {
+        "id": "myfab1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the specified SDN fabric definition from the cluster configuration; any networking policies or topology tied to this fabric must be reconfigured manually.",
+  "tips": [
+    "Fabric IDs are 2–8 alphanumeric characters (hyphens allowed in the middle); ensure the exact ID is known before issuing the delete.",
+    "Run 'get_cluster_sdn_fabrics_fabric_id' first to confirm the fabric exists and note any dependent resources.",
+    "After deletion, call the SDN apply operation to push the updated configuration to cluster nodes; skipping this leaves nodes with stale state.",
+    "Requires the SDN.Allocate privilege on /sdn/fabrics/{id}; API tokens must carry this privilege explicitly."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics_fabric_id",
+    "get_cluster_sdn_fabrics",
+    "create_cluster_sdn_fabrics",
+    "update_cluster_sdn_fabrics_fabric_id",
+    "put_cluster_sdn_fabrics"
+  ]
+}

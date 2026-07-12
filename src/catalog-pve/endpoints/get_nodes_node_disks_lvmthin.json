@@ -1,0 +1,68 @@
+{
+  "operationId": "get_nodes_node_disks_lvmthin",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "index",
+  "method": "GET",
+  "path": "/nodes/{node}/disks/lvmthin",
+  "description": "List LVM thinpools",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "lv": {
+          "description": "The name of the thinpool.",
+          "type": "string"
+        },
+        "lv_size": {
+          "description": "The size of the thinpool in bytes.",
+          "type": "integer"
+        },
+        "metadata_size": {
+          "description": "The size of the metadata lv in bytes.",
+          "type": "integer"
+        },
+        "metadata_used": {
+          "description": "The used bytes of the metadata lv.",
+          "type": "integer"
+        },
+        "used": {
+          "description": "The used bytes of the thinpool.",
+          "type": "integer"
+        },
+        "vg": {
+          "description": "The associated volume group.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/disks/lvmthin'"
+}

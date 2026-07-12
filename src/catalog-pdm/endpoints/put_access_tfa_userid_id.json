@@ -1,0 +1,79 @@
+{
+  "operationId": "put_access_tfa_userid_id",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "{id}",
+  "method": "PUT",
+  "path": "/access/tfa/{userid}/{id}",
+  "description": "Update user's TFA entry description.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "User ID",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "the tfa entry id"
+    }
+  ],
+  "params": [
+    {
+      "name": "description",
+      "type": "string",
+      "required": false,
+      "description": "A description to distinguish multiple entries from one another",
+      "maxLength": 255
+    },
+    {
+      "name": "enable",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether this entry should currently be enabled or disabled"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": false,
+      "description": "Password.",
+      "minLength": 1,
+      "maxLength": 1024,
+      "pattern": "/^[[:^cntrl:]]*$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "or": [
+      {
+        "check": {
+          "partial": false,
+          "path": [
+            "access",
+            "users"
+          ],
+          "privs": [
+            "Access.Modify"
+          ]
+        }
+      },
+      {
+        "userParam": "userid"
+      }
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/access/tfa/<userid>/<id>'"
+}

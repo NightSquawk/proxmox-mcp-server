@@ -1,0 +1,88 @@
+{
+  "operationId": "get_pools_poolid",
+  "surface": "pve",
+  "resource": "pools",
+  "category": "Pools",
+  "name": "read_pool",
+  "method": "GET",
+  "path": "/pools/{poolid}",
+  "description": "Get pool configuration (deprecated, no support for nested pools, use 'GET /pools/?poolid={poolid}').",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "poolid",
+      "type": "string",
+      "required": true,
+      "format": "pve-poolid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "enum": [
+        "qemu",
+        "lxc",
+        "storage"
+      ]
+    }
+  ],
+  "returns": {
+    "additionalProperties": 0,
+    "properties": {
+      "comment": {
+        "optional": 1,
+        "type": "string"
+      },
+      "members": {
+        "items": {
+          "additionalProperties": 1,
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "node": {
+              "type": "string"
+            },
+            "storage": {
+              "optional": 1,
+              "type": "string"
+            },
+            "type": {
+              "enum": [
+                "qemu",
+                "lxc",
+                "openvz",
+                "storage"
+              ],
+              "type": "string"
+            },
+            "vmid": {
+              "optional": 1,
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/pool/{poolid}",
+      [
+        "Pool.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/pools/<poolid>'"
+}

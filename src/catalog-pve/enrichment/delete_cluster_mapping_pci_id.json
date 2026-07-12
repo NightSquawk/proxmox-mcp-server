@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_cluster_mapping_pci_id",
+  "usageNotes": "Permanently removes a cluster-wide PCI hardware mapping by its config ID. Before deleting, ensure no VMs or containers reference the mapping — Proxmox does not block deletion even if the mapping is in use, which will cause affected guests to fail at next start. Requires the `Mapping.Modify` privilege on `/mapping/pci`.",
+  "examples": [
+    {
+      "summary": "Delete a GPU PCI mapping named 'gpu-quadro'",
+      "path_params": {
+        "id": "gpu-quadro"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the named PCI hardware mapping from the cluster; any VM or LXC configuration referencing this mapping by ID will fail to start until the reference is removed or the mapping is recreated.",
+  "tips": [
+    "List existing mappings first with get_cluster_mapping_pci to confirm the correct ID before deleting.",
+    "Check VM configs for references to this mapping ID (e.g., via grep on /etc/pve/qemu-server/) before removal.",
+    "Deletion is immediate and cluster-wide — there is no soft-delete or recycle bin."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_pci",
+    "get_cluster_mapping_pci_id",
+    "create_cluster_mapping_pci",
+    "update_cluster_mapping_pci_id"
+  ]
+}

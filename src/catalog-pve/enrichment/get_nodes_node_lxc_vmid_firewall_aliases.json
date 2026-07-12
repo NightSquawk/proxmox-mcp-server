@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_aliases",
+  "usageNotes": "Lists all firewall IP aliases defined at the container level for a specific LXC guest. These aliases are container-scoped (not cluster- or datacenter-wide) and can be referenced by name in the container's firewall rules to simplify rule management. Requires VM.Audit on the target VMID; the node must be reachable and the container must exist.",
+  "examples": [
+    {
+      "summary": "List firewall aliases for LXC container 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Each alias entry includes a digest field — pass this digest when creating or updating aliases to guard against concurrent modifications.",
+    "Aliases defined here are container-scoped; they are not visible to other containers or the datacenter firewall unless also defined at those levels.",
+    "If the container's firewall is not enabled, aliases still exist in config but have no active effect on traffic."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_firewall_aliases",
+    "get_nodes_node_lxc_vmid_firewall_aliases_name",
+    "put_nodes_node_lxc_vmid_firewall_aliases_name",
+    "delete_nodes_node_lxc_vmid_firewall_aliases_name",
+    "get_nodes_node_lxc_vmid_firewall_rules"
+  ]
+}

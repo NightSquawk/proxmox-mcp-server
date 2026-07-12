@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_status",
+  "usageNotes": "Use to reboot or gracefully shut down a Proxmox VE node. The caller must hold Sys.PowerMgmt on /nodes/{node}; API tokens work if that privilege is granted. The call returns null synchronously — the node begins the command immediately, so any running VMs or containers should be stopped or migrated first to avoid data loss.",
+  "examples": [
+    {
+      "summary": "Reboot a node after a kernel update",
+      "path_params": {
+        "node": "pve-hetzner-01"
+      },
+      "params": {
+        "command": "reboot"
+      }
+    }
+  ],
+  "tips": [
+    "Shut down or live-migrate all VMs and containers before issuing 'shutdown' to prevent ungraceful guest termination.",
+    "Use GET /nodes/{node}/status first to confirm the node is online and not already in a degraded state.",
+    "In a cluster, ensure quorum will be maintained after the node goes offline — avoid rebooting more than (N-1)/2 nodes simultaneously.",
+    "There is no UPID returned; poll GET /nodes/{node}/status or watch cluster logs to confirm the node comes back online after a reboot."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_status",
+    "post_nodes_node_migrateall",
+    "get_nodes_node_tasks"
+  ]
+}

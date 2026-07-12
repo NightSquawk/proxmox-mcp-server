@@ -1,0 +1,30 @@
+{
+  "operationId": "put_cluster_sdn_vnets_vnet",
+  "usageNotes": "Use this to modify an existing SDN VNet's properties such as its VLAN/VXLAN tag, zone assignment, alias, or port-isolation setting. Requires 'SDN.Allocate' on '/sdn/zones/<zone>/<vnet>'; changes are staged and must be applied via POST /cluster/sdn/reload (or the Proxmox UI 'Apply' button) before taking effect on the data plane. Use the 'digest' parameter when making changes programmatically to guard against concurrent edits clobbering each other.",
+  "examples": [
+    {
+      "summary": "Reassign a VNet to a new VXLAN tag and enable VLAN-awareness",
+      "path_params": {
+        "vnet": "prodvnet1"
+      },
+      "params": {
+        "tag": 10200,
+        "vlanaware": true,
+        "alias": "Production Segment 1"
+      }
+    }
+  ],
+  "tips": [
+    "Changes are not live until the SDN configuration is explicitly applied (POST /cluster/sdn/reload); plan for a brief propagation window.",
+    "To clear an optional field (e.g., alias), include its name in the 'delete' param as a comma-separated config-id list rather than passing an empty string.",
+    "The 'isolate-ports' flag affects all VM interfaces attached to this VNet's bridge — use with care on shared-bridge zones.",
+    "The 'vnet' identifier is immutable after creation; to rename, delete and recreate with get_cluster_sdn_vnets + delete_cluster_sdn_vnets_vnet + post_cluster_sdn_vnets."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet",
+    "post_cluster_sdn_vnets",
+    "delete_cluster_sdn_vnets_vnet",
+    "get_cluster_sdn_vnets",
+    "put_cluster_sdn"
+  ]
+}

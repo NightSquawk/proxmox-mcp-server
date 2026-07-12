@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_certificates_info",
+  "usageNotes": "Use this to inspect the TLS certificates currently installed on a PDM node, including validity windows, issuer, SANs, and fingerprint. Useful for proactively checking certificate expiry before renewals or troubleshooting HTTPS trust issues. The 'node' path param accepts 'localhost' when querying the node you are directly connected to; no query params are required.",
+  "examples": [
+    {
+      "summary": "List certificate info for PDM node 'pdm-node1'",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "notafter and notbefore are UNIX epoch integers — convert with 'date -d @<value>' or JavaScript's new Date(<value>*1000) to get a human-readable timestamp.",
+    "The san array lists all Subject Alternative Names; verify the node's hostname or IP appears here if clients report certificate mismatch errors.",
+    "Use 'localhost' as the node value when calling this from a script running on the PDM node itself to avoid hardcoding the hostname."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_certificates_custom",
+    "delete_nodes_node_certificates_custom",
+    "post_nodes_node_certificates_acme_certificate"
+  ]
+}

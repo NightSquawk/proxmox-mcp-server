@@ -1,0 +1,35 @@
+{
+  "operationId": "post_cluster_ha_resources",
+  "usageNotes": "Use this to register a VM or container with the Proxmox HA manager so the cluster can automatically start, restart, and migrate it when nodes fail. The target resource (VM or CT) must already exist on a cluster node before adding it to HA — the HA manager does not create resources. Requires the 'Sys.Console' privilege at the root path, so only cluster administrators can add HA resources.",
+  "examples": [
+    {
+      "summary": "Enable HA for VM 105, pinned to group 'production', with failback on",
+      "path_params": {},
+      "params": {
+        "sid": "vm:105",
+        "state": "started",
+        "group": "production",
+        "failback": true,
+        "max_restart": 2,
+        "max_relocate": 2,
+        "comment": "Primary web server — keep running"
+      }
+    }
+  ],
+  "tips": [
+    "The 'sid' shorthand (e.g. '105') resolves to 'vm:105' or 'ct:105' automatically, but using the explicit form avoids ambiguity when VM and CT IDs overlap.",
+    "Setting 'state' to 'stopped' at creation is useful for registering a resource without immediately letting the HA manager start it — helpful when you want HA tracking but control the first start manually.",
+    "The 'group' field references an HA group created via POST /cluster/ha/groups; omit it to let the HA manager use any available node.",
+    "After creating the resource, verify it appears with GET /cluster/ha/resources and that the 'status' field transitions from 'fence' or 'recovery' to 'started' within a few seconds on a healthy cluster.",
+    "auto-rebalance defaults to true (1); set it to false on latency-sensitive workloads to prevent unexpected live migrations during routine cluster rebalancing."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_resources",
+    "get_cluster_ha_resources_sid",
+    "put_cluster_ha_resources_sid",
+    "delete_cluster_ha_resources_sid",
+    "get_cluster_ha_groups",
+    "post_cluster_ha_groups",
+    "get_cluster_ha_status_current"
+  ]
+}

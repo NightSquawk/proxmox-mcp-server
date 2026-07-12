@@ -1,0 +1,69 @@
+{
+  "operationId": "put_cluster_firewall_ipset_name_cidr",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "update_ip",
+  "method": "PUT",
+  "path": "/cluster/firewall/ipset/{name}/{cidr}",
+  "description": "Update IP or Network settings",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "IP set name.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    },
+    {
+      "name": "cidr",
+      "type": "string",
+      "required": true,
+      "description": "Network/IP specification in CIDR format.",
+      "format": "IPorCIDRorAlias",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "typetext": "<string>"
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "nomatch",
+      "type": "boolean",
+      "required": false,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/firewall/ipset/<name>/<cidr>'"
+}

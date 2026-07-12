@@ -1,0 +1,49 @@
+{
+  "operationId": "get_cluster_sdn_prefix_lists_id_entries",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_prefix_list_entries",
+  "method": "GET",
+  "path": "/cluster/sdn/prefix-lists/{id}/entries",
+  "description": "List Prefix List Entries",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "The SDN prefix list identifier",
+      "format": "pve-sdn-prefix-list-id",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {},
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{seq}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/prefix-lists/{id}",
+      [
+        "SDN.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/prefix-lists/<id>/entries'"
+}

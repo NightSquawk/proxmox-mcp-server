@@ -1,0 +1,58 @@
+{
+  "operationId": "get_cluster_notifications_matcher_field_values",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_matcher_field_values",
+  "method": "GET",
+  "path": "/cluster/notifications/matcher-field-values",
+  "description": "Returns known notification metadata fields and their known values",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "comment": {
+          "description": "Additional comment for this value.",
+          "optional": 1,
+          "type": "string"
+        },
+        "field": {
+          "description": "Field this value belongs to.",
+          "type": "string"
+        },
+        "value": {
+          "description": "Notification metadata value known by the system.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "perm",
+        "/mapping/notifications",
+        [
+          "Mapping.Modify"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/notifications",
+        [
+          "Mapping.Audit"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/notifications/matcher-field-values'"
+}

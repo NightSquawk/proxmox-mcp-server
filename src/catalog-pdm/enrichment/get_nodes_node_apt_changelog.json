@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_apt_changelog",
+  "usageNotes": "Use this endpoint to inspect what changes a package update will introduce before applying it — useful for change-control review or auditing upgrade risk. The node must be reachable and the package must exist in the APT cache on that node; if no version is specified, the candidate (available-to-install) version's changelog is returned. Requires the System.Modify privilege, so API tokens scoped below that level will receive a permission error.",
+  "examples": [
+    {
+      "summary": "Fetch the changelog for the candidate version of proxmox-datacenter-manager on node pdm01",
+      "path_params": {
+        "node": "pdm01"
+      },
+      "params": {
+        "name": "proxmox-datacenter-manager"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting 'version' returns the changelog for the candidate (newest available) version, which is the most useful for pre-upgrade review.",
+    "The response is a plain text string (Debian-style changelog), not JSON — handle it as raw text in your client.",
+    "If the package is not in the local APT cache, the node may return an error; run an apt update equivalent first if the package was recently published."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_update",
+    "get_nodes_node_apt_versions"
+  ]
+}

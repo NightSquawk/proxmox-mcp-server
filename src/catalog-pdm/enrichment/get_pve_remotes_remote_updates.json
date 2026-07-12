@@ -1,0 +1,23 @@
+{
+  "operationId": "get_pve_remotes_remote_updates",
+  "usageNotes": "Use this to check pending package updates on a PVE remote without triggering a live refresh — PDM returns its cached snapshot, so results reflect the last time the remote synced update metadata. The caller needs Resource.Audit on the remote resource; no query parameters are accepted. If the cache is stale, trigger a refresh via the corresponding update-fetch operation before calling this endpoint.",
+  "examples": [
+    {
+      "summary": "Get cached update list for a PVE remote named 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response reflects cached data — it does not poll the remote live. Schedule or manually trigger a cache refresh if up-to-date package counts are needed.",
+    "The remote name must be 2–32 characters and match the pattern ^[A-Za-z0-9_][A-Za-z0-9._-]*$ — alphanumeric/underscore start, dots and hyphens allowed after.",
+    "API tokens are accepted (allowtoken: true); no special protected-resource flag means standard PDM token scopes apply."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes",
+    "get_pve_remotes_remote",
+    "get_pve_remotes_remote_status"
+  ]
+}

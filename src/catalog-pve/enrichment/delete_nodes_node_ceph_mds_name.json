@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_nodes_node_ceph_mds_name",
+  "usageNotes": "Use this to permanently remove a Ceph MDS (Metadata Server) daemon from a specific node — typically after migrating the workload to another MDS or when decommissioning a node from the CephFS cluster. The target node must be online and reachable; the operation requires `Sys.Modify` at the root level. The return value is a task UPID, so poll the task status to confirm the daemon has been fully stopped and removed before proceeding with node changes.",
+  "examples": [
+    {
+      "summary": "Remove the MDS daemon named 'mds0' from node 'pve-ceph1'",
+      "path_params": {
+        "node": "pve-ceph1",
+        "name": "mds0"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently destroys the specified Ceph MDS daemon on the node, removing it from the CephFS metadata service pool; if it is the only active or standby MDS, CephFS will become unavailable until another MDS is deployed.",
+  "tips": [
+    "Verify at least one other active or standby MDS exists before destroying this one to avoid CephFS downtime.",
+    "MDS name must match the pattern `[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?` — no leading/trailing hyphens.",
+    "Use `get_nodes_node_ceph_mds` to list current MDS daemons and their states before proceeding.",
+    "Poll the returned UPID via the tasks API to confirm destruction completes before making further cluster changes."
+  ],
+  "relatedOperations": [
+    "create_nodes_node_ceph_mds_name",
+    "get_nodes_node_ceph_mds",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "get_pbs_remotes_remote_tasks_upid_status",
+  "usageNotes": "Use this endpoint to poll the status of any async task running on a PBS remote, such as a sync job, prune, or garbage collection — you get the UPID from the triggering operation's response. Set `wait=true` to block until the task completes rather than polling repeatedly, which is convenient for short-lived tasks but should be avoided for long-running jobs to prevent timeout issues. Requires `Resource.Audit` privilege on the target remote.",
+  "examples": [
+    {
+      "summary": "Check status of a running PBS garbage-collection task on remote 'pbs-hetzner'",
+      "path_params": {
+        "remote": "pbs-hetzner",
+        "upid": "UPID:pbs-hetzner:00001A2B:5F3C1D00:67A1B200:garbage_collect:local:root@pam:"
+      },
+      "params": {
+        "wait": false
+      }
+    }
+  ],
+  "tips": [
+    "Check `status` field first: 'running' means the task is still active; 'stopped' means it has finished.",
+    "`exitstatus` is only present when `status` is 'stopped' — a value of 'OK' means success; any other string is an error message.",
+    "UPIDs are at least 42 characters; validate length before calling to avoid a 400 error.",
+    "Use `wait=true` only for fast tasks (prune, small syncs); for garbage collection or large syncs, poll on a schedule instead."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_tasks_upid_log",
+    "get_pbs_remotes_remote_tasks",
+    "post_pbs_remotes_remote_sync"
+  ]
+}

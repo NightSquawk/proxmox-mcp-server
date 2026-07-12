@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_network",
+  "usageNotes": "Use this to enumerate all network interfaces on a specific node — bridges, bonds, physical NICs, VLANs, and OVS types — useful before attaching a VM network device or diagnosing connectivity. The node must be online; the response reflects the running config parsed from /etc/network/interfaces, which may differ from a pending (not-yet-applied) config. No special privilege beyond basic cluster membership is required ('user: all').",
+  "examples": [
+    {
+      "summary": "List only Linux bridge interfaces on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "type": "bridge"
+      }
+    }
+  ],
+  "tips": [
+    "Omit the 'type' filter to get every interface in a single call; filter client-side if you need multiple types.",
+    "Check the 'active' field to distinguish interfaces that are up versus those defined but not yet applied (pending 'ifreload -a').",
+    "The 'exists' field indicates whether the interface physically exists on the OS; a false value means it is defined in config only.",
+    "Use 'any_bridge' or 'any_local_bridge' as the type filter to capture both standard Linux bridges and OVSBridges in one query."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network_iface",
+    "put_nodes_node_network_iface",
+    "post_nodes_node_network",
+    "put_nodes_node_network",
+    "delete_nodes_node_network_iface"
+  ]
+}

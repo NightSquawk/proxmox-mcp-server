@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_sdn_fabrics_fabric_interfaces",
+  "usageNotes": "Use this to inspect which network interfaces on a specific node are participating in an SDN fabric and what their current link state and topology role are. The caller needs SDN.Audit permission on /sdn/fabrics/{fabric}; the target node must be online and the fabric must already exist. Results are node-local — run the same call against each cluster node to get a full fabric-wide picture.",
+  "examples": [
+    {
+      "summary": "List all interfaces on node 'pve1' that belong to the fabric 'evpn01'",
+      "path_params": {
+        "node": "pve1",
+        "fabric": "evpn01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "fabric id must be 2–8 alphanumeric characters and cannot start or end with a hyphen.",
+    "The 'type' field distinguishes Point-to-Point underlay links from Broadcast segments — useful when diagnosing OSPF/BGP neighborship issues.",
+    "An interface in 'down' state while the fabric is otherwise healthy usually indicates a physical or VLAN misconfiguration on that specific node.",
+    "This endpoint is node-scoped; iterate over all nodes in the cluster to build a complete interface-to-fabric map."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_fabrics_fabric",
+    "get_sdn_fabrics",
+    "get_nodes_node_network"
+  ]
+}

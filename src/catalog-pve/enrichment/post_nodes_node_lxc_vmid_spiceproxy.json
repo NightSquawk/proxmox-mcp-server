@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_spiceproxy",
+  "usageNotes": "Use this to obtain a SPICE connection ticket for a running LXC container; the returned object (host, tls-port, password, proxy, type) can be passed directly to 'remote-viewer' or a compatible SPICE client. The container must be running and the target node must be online; the caller requires the VM.Console privilege on /vms/{vmid}. The optional 'proxy' parameter should be set to the hostname or IP the client will use to reach the SPICE proxy — omit it to default to the node where the container is currently running.",
+  "examples": [
+    {
+      "summary": "Get SPICE config for LXC 200 on node pve1, with proxy hint matching the API host",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 200
+      },
+      "params": {
+        "proxy": "pve1.nightsquawk.tech"
+      }
+    }
+  ],
+  "tips": [
+    "Pass the full response object directly to 'remote-viewer' via a .vv file or stdin — no manual field mapping needed.",
+    "If the SPICE window never opens, confirm the container has a console device configured (e.g. lxc.console.size set or Proxmox default tty); pure network-only containers may not expose a usable console.",
+    "The password in the response is a short-lived one-time token; request a fresh proxy config each time a session is opened rather than caching it.",
+    "All cluster nodes run spiceproxy on port 3128 by default — set 'proxy' to whichever node is reachable from the client's network segment."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_status_current",
+    "post_nodes_node_lxc_vmid_status_start",
+    "post_nodes_node_lxc_vmid_vncproxy"
+  ]
+}

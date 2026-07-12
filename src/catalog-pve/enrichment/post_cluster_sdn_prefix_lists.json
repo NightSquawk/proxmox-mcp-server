@@ -1,0 +1,27 @@
+{
+  "operationId": "post_cluster_sdn_prefix_lists",
+  "usageNotes": "Creates a named SDN prefix list that can be referenced by BGP route-map filters or firewall rules to match sets of IP prefixes. Requires the SDN.Allocate privilege on /sdn/prefix-lists. Changes to SDN configuration are staged until applied with the SDN apply operation; the prefix list is not active in the data plane until that apply is run.",
+  "examples": [
+    {
+      "summary": "Create a prefix list for RFC 1918 private address space",
+      "path_params": {},
+      "params": {
+        "id": "rfc1918-private",
+        "entries": ["10.0.0.0/8", "172.16.0.0/12", "192.168.0.0/16"]
+      }
+    }
+  ],
+  "tips": [
+    "The id must conform to the pve-sdn-prefix-list-id format — use lowercase alphanumeric characters and hyphens only.",
+    "Supply the current config digest to guard against concurrent edits overwriting each other.",
+    "After creating the prefix list, run the SDN apply operation (POST /cluster/sdn) to push the change to all nodes.",
+    "The lock-token param is only needed when you hold an explicit SDN config lock; omit it for normal single-operation writes."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_prefix_lists",
+    "get_cluster_sdn_prefix_lists_prefix_list",
+    "put_cluster_sdn_prefix_lists_prefix_list",
+    "delete_cluster_sdn_prefix_lists_prefix_list",
+    "put_cluster_sdn"
+  ]
+}

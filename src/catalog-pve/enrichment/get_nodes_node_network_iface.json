@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_network_iface",
+  "usageNotes": "Use this to inspect the current configuration of a specific network interface on a Proxmox node — useful for auditing interface type (bridge, bond, VLAN, etc.) and its addressing method before making changes. Requires `Sys.Audit` on `/nodes/{node}`, so API tokens with read-only audit scope work here. Returns the persisted config from `/etc/network/interfaces`, not live runtime state, so it may differ from what `ip addr` shows if pending changes have not been applied.",
+  "examples": [
+    {
+      "summary": "Read configuration of the primary bridge interface on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "iface": "vmbr0"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response reflects the on-disk network config, not live kernel state — use a system call or SSH to check runtime state if needed.",
+    "Interface name must be 2–20 characters; common names include vmbr0, bond0, eth0, ens18, vlan100.",
+    "To see all interfaces at once, use the list endpoint (GET /nodes/{node}/network) before drilling into a specific iface."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network",
+    "put_nodes_node_network_iface",
+    "delete_nodes_node_network_iface",
+    "put_nodes_node_network"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent",
+  "usageNotes": "Use this endpoint to execute QEMU Guest Agent (QGA) commands against a running VM that has the guest agent installed and active. The VM must be powered on and the guest agent daemon must be running inside the guest OS; calls will fail with an error if the agent is unreachable. Commands are synchronous and return a `result` object immediately — no UPID is issued. The `fsfreeze-freeze` / `fsfreeze-thaw` pair is commonly used before and after live snapshots to ensure filesystem consistency.",
+  "examples": [
+    {
+      "summary": "Query guest OS network interfaces on VM 101",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101
+      },
+      "params": {
+        "command": "network-get-interfaces"
+      }
+    }
+  ],
+  "tips": [
+    "Before taking a live snapshot, call `fsfreeze-freeze` then immediately call `fsfreeze-thaw` after the snapshot completes to avoid leaving the guest filesystem in a frozen state.",
+    "`ping` is the cheapest way to verify the guest agent is responsive before issuing more impactful commands.",
+    "`shutdown` via QGA is a clean OS-level shutdown (equivalent to pressing the power button inside the OS), unlike the forceful ACPI or stop calls available through other endpoints.",
+    "`suspend-disk` (hibernate), `suspend-ram` (suspend-to-RAM), and `suspend-hybrid` depend on guest OS support — they will error on guests that lack the capability.",
+    "The caller needs the `VM.GuestAgent.Unrestricted` privilege on `/vms/{vmid}` — a standard API token scoped to a single VM is sufficient."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent",
+    "get_nodes_node_qemu_vmid_agent_fsfreeze_status",
+    "post_nodes_node_qemu_vmid_snapshot",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

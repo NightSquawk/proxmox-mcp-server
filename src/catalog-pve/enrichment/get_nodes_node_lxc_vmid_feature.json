@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_feature",
+  "usageNotes": "Use this before attempting a snapshot, clone, or copy operation on an LXC container to confirm the underlying storage driver supports it — not all storage types (e.g. NFS, ZFS without snapshots enabled) support every feature. Pass `snapname` when checking feature availability against a specific existing snapshot rather than the running container. Returns a single boolean `hasFeature`; gate any dependent operation on a `true` result.",
+  "examples": [
+    {
+      "summary": "Check whether LXC 110 on node pve1 supports cloning",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {
+        "feature": "clone"
+      }
+    }
+  ],
+  "tips": [
+    "Feature support is determined by the storage backend of the container's root disk, not the container config itself — a container on local-lvm may behave differently than one on a directory-backed storage.",
+    "Use `snapname` to verify that a specific snapshot can still be cloned or copied after the container config has changed.",
+    "This endpoint is read-only and lightweight; safe to call in pre-flight checks before any clone/snapshot/copy workflow."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_snapshot",
+    "post_nodes_node_lxc_vmid_clone",
+    "get_nodes_node_lxc_vmid_snapshot"
+  ]
+}

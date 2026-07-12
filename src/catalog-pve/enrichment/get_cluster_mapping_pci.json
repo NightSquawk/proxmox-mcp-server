@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_mapping_pci",
+  "usageNotes": "Returns all cluster-wide PCI hardware mappings visible to the authenticated user based on Mapping.Modify, Mapping.Use, or Mapping.Audit permissions. Use the optional `check-node` parameter to validate that each mapping's physical devices are present and healthy on a specific node — the response will then include per-mapping diagnostics (warnings or errors). The node named in `check-node` must be online and reachable for diagnostics to populate.",
+  "examples": [
+    {
+      "summary": "List all PCI mappings and validate them against node pve01",
+      "path_params": {},
+      "params": {
+        "check-node": "pve01"
+      }
+    }
+  ],
+  "tips": [
+    "Without `check-node`, the `checks` field is absent from every mapping entry — include it when troubleshooting VM passthrough failures.",
+    "PCI mappings are cluster-scoped abstractions; the `map` array entries describe per-node device bindings (node:path pairs), so a single logical mapping can cover multiple physical hosts.",
+    "Results are filtered per caller privileges — a restricted API token may see fewer mappings than an admin; audit with a root@pam token to see the full list."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_pci_id",
+    "create_cluster_mapping_pci",
+    "update_cluster_mapping_pci_id",
+    "delete_cluster_mapping_pci_id",
+    "get_cluster_mapping_usb"
+  ]
+}

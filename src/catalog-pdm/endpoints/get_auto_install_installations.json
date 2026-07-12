@@ -1,0 +1,439 @@
+{
+  "operationId": "get_auto_install_installations",
+  "surface": "pdm",
+  "resource": "auto-install",
+  "category": "Auto Install",
+  "name": "installations",
+  "method": "GET",
+  "path": "/auto-install/installations",
+  "description": "GET /auto-install/installations\n\nGet all automated installations.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of all automated installations.",
+    "items": {
+      "additionalProperties": false,
+      "description": "A installation received from some proxmox-auto-installer instance.",
+      "properties": {
+        "answer-id": {
+          "description": "Answer that was sent to the target machine.",
+          "optional": 1,
+          "type": "string"
+        },
+        "info": {
+          "additionalProperties": false,
+          "description": "Information about the hardware and installer in use.",
+          "properties": {
+            "dmi": {
+              "additionalProperties": false,
+              "description": "Collection of various DMI information categories.",
+              "properties": {
+                "baseboard": {
+                  "additionalProperties": true,
+                  "description": "Information about the system baseboard.",
+                  "properties": {},
+                  "type": "object"
+                },
+                "chassis": {
+                  "additionalProperties": true,
+                  "description": "Information about the system chassis.",
+                  "properties": {},
+                  "type": "object"
+                },
+                "system": {
+                  "additionalProperties": true,
+                  "description": "Information about the hardware itself, mostly identifiers.",
+                  "properties": {},
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "iso": {
+              "additionalProperties": false,
+              "description": "Information about the ISO itself.",
+              "properties": {
+                "isorelease": {
+                  "description": "Version of the ISO itself, e.g. the spin.",
+                  "type": "string"
+                },
+                "release": {
+                  "description": "Version of the product.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "network_interfaces": {
+              "description": "Network devices present on the system.",
+              "items": {
+                "additionalProperties": false,
+                "description": "A unique network interface.",
+                "properties": {
+                  "link": {
+                    "description": "The network link name",
+                    "type": "string"
+                  },
+                  "mac": {
+                    "description": "MAC address",
+                    "maxLength": 17,
+                    "minLength": 17,
+                    "pattern": "/([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}/",
+                    "type": "string"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "product": {
+              "additionalProperties": false,
+              "description": "The per-product configuration of the installer.",
+              "properties": {
+                "enable_btrfs": {
+                  "description": "Whether to enable installations on Btrfs.",
+                  "type": "boolean"
+                },
+                "fullname": {
+                  "description": "Full name of the product.",
+                  "type": "string"
+                },
+                "product": {
+                  "description": "The name of the product.",
+                  "enum": [
+                    "pve",
+                    "pbs",
+                    "pmg",
+                    "pdm"
+                  ],
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "post-hook-data": {
+          "additionalProperties": false,
+          "description": "All data sent as request payload with the post-installation-webhook POST request.\n\nNOTE: The format is versioned through `schema.version` (`$schema.version` in the\nresulting JSON), ensure you update it when this struct or any of its members gets modified.",
+          "optional": 1,
+          "properties": {
+            "$schema": {
+              "additionalProperties": false,
+              "description": "Metadata of the hook, such as schema version of the document.",
+              "properties": {
+                "version": {
+                  "description": "major.minor version describing the schema version of this document, in a semanticy-version\nway.\n\nmajor: Incremented for incompatible/breaking API changes, e.g. removing an existing\nfield.\nminor: Incremented when adding functionality in a backwards-compatible matter, e.g.\nadding a new field.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "boot-info": {
+              "additionalProperties": false,
+              "description": "Information about the system boot status.",
+              "properties": {
+                "mode": {
+                  "description": "Whether the system boots using legacy BIOS or (U)EFI.",
+                  "enum": [
+                    "bios",
+                    "efi"
+                  ],
+                  "type": "string"
+                },
+                "secureboot": {
+                  "description": "Whether SecureBoot is enabled for the installation.",
+                  "optional": 1,
+                  "type": "boolean"
+                }
+              },
+              "type": "object"
+            },
+            "cpu-info": {
+              "additionalProperties": false,
+              "description": "Information about the CPU(s) installed in the system",
+              "properties": {
+                "cores": {
+                  "description": "Number of physical CPU cores.",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "cpus": {
+                  "description": "Number of logical CPU cores aka. threads.",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "flags": {
+                  "description": "CPU feature flag set as a space-delimited list.",
+                  "type": "string"
+                },
+                "hvm": {
+                  "description": "Whether hardware-accelerated virtualization is supported.",
+                  "type": "boolean"
+                },
+                "model": {
+                  "description": "Reported model of the CPU(s)",
+                  "type": "string"
+                },
+                "sockets": {
+                  "description": "Number of physical CPU sockets",
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "type": "object"
+            },
+            "debian-version": {
+              "description": "major.minor version of Debian as installed, retrieved from /etc/debian_version",
+              "type": "string"
+            },
+            "disks": {
+              "description": "All disks detected on the system.",
+              "items": {
+                "additionalProperties": false,
+                "description": "Holds information about a single disk in the system.",
+                "properties": {
+                  "is-bootdisk": {
+                    "description": "Set to true if the disk is used for booting.",
+                    "optional": 1,
+                    "type": "boolean"
+                  },
+                  "size": {
+                    "description": "Size in bytes",
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "udev-properties": {
+                    "additionalProperties": true,
+                    "description": "Properties about the device as given by udev.",
+                    "properties": {},
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "dmi": {
+              "additionalProperties": false,
+              "description": "Collection of various DMI information categories.",
+              "properties": {
+                "baseboard": {
+                  "additionalProperties": true,
+                  "description": "Information about the system baseboard.",
+                  "properties": {},
+                  "type": "object"
+                },
+                "chassis": {
+                  "additionalProperties": true,
+                  "description": "Information about the system chassis.",
+                  "properties": {},
+                  "type": "object"
+                },
+                "system": {
+                  "additionalProperties": true,
+                  "description": "Information about the hardware itself, mostly identifiers.",
+                  "properties": {},
+                  "type": "object"
+                }
+              },
+              "type": "object"
+            },
+            "filesystem": {
+              "description": "Filesystem used for boot disk(s)",
+              "type": "string"
+            },
+            "fqdn": {
+              "description": "Fully qualified domain name of the installed system",
+              "type": "string"
+            },
+            "iso": {
+              "additionalProperties": false,
+              "description": "Information about the ISO itself.",
+              "properties": {
+                "isorelease": {
+                  "description": "Version of the ISO itself, e.g. the spin.",
+                  "type": "string"
+                },
+                "release": {
+                  "description": "Version of the product.",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "kernel-version": {
+              "additionalProperties": false,
+              "description": "The current kernel version (output of `uname`)",
+              "properties": {
+                "machine": {
+                  "description": "The machine architecture",
+                  "type": "string"
+                },
+                "release": {
+                  "description": "The kernel release number",
+                  "type": "string"
+                },
+                "sysname": {
+                  "description": "The systemname/nodename",
+                  "type": "string"
+                },
+                "version": {
+                  "description": "The kernel version",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "machine-id": {
+              "description": "Unique systemd-id128 identifier of the installed system (128-bit, 16 bytes)",
+              "type": "string"
+            },
+            "network-interfaces": {
+              "description": "All network interfaces detected on the system.",
+              "items": {
+                "additionalProperties": false,
+                "description": "Holds information about the management network interface.",
+                "properties": {
+                  "address": {
+                    "description": "IP address (IPv4 or IPv6) with netmask (CIDR notation).",
+                    "maxLength": 43,
+                    "optional": 1,
+                    "pattern": "/^(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))/\\d{1,2})$|(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){6})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:::(?:(?:[0-9a-fA-F]{1,4}):){5})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){4})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,1}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){3})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,2}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){2})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,3}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){1})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,4}(?:[0-9a-fA-F]{1,4}))?::)(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,5}(?:[0-9a-fA-F]{1,4}))?::)(?:[0-9a-fA-F]{1,4}))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,6}(?:[0-9a-fA-F]{1,4}))?::)))/\\d{1,3})$)$/",
+                    "type": "string"
+                  },
+                  "is-management": {
+                    "description": "Set to true if the interface is the chosen management interface during\ninstallation.",
+                    "optional": 1,
+                    "type": "boolean"
+                  },
+                  "is-pinned": {
+                    "description": "Set to true if the network interface name was pinned based on the MAC\naddress during the installation.",
+                    "optional": 1,
+                    "type": "boolean"
+                  },
+                  "mac": {
+                    "description": "MAC address of the interface",
+                    "type": "string"
+                  },
+                  "name": {
+                    "description": "Name of the interface",
+                    "type": "string"
+                  },
+                  "udev-properties": {
+                    "additionalProperties": true,
+                    "description": "Properties about the device as given by udev.",
+                    "properties": {},
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "product": {
+              "additionalProperties": false,
+              "description": "Information about the installed product itself.",
+              "properties": {
+                "fullname": {
+                  "description": "Full name of the product",
+                  "type": "string"
+                },
+                "short": {
+                  "description": "The name of the product.",
+                  "enum": [
+                    "pve",
+                    "pbs",
+                    "pmg",
+                    "pdm"
+                  ],
+                  "type": "string"
+                },
+                "version": {
+                  "description": "Version of the installed product",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "reboot-mode": {
+              "default": "reboot",
+              "description": "Action to take after the installation completed successfully.",
+              "enum": [
+                "reboot",
+                "power-off"
+              ],
+              "type": "string"
+            },
+            "ssh-public-host-keys": {
+              "additionalProperties": false,
+              "description": "Holds all the public keys for the different algorithms available.",
+              "properties": {
+                "ecdsa": {
+                  "description": "ECDSA-based public host key",
+                  "type": "string"
+                },
+                "ed25519": {
+                  "description": "ED25519-based public host key",
+                  "type": "string"
+                },
+                "rsa": {
+                  "description": "RSA-based public host key",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "post-hook-token": {
+          "description": "Per-installation secret used to authenticate the post-hook callback.\nPersisted on disk only; stripped before being returned over the API.",
+          "optional": 1,
+          "type": "string"
+        },
+        "received-at": {
+          "description": "Time the installation request was received (Unix Epoch).",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "status": {
+          "description": "Current status of an installation.",
+          "enum": [
+            "answer-sent",
+            "no-answer-found",
+            "in-progress",
+            "finished"
+          ],
+          "type": "string"
+        },
+        "uuid": {
+          "description": "UUID of a installation.",
+          "pattern": "/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "auto-installation"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/auto-install/installations'"
+}

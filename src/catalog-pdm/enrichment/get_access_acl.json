@@ -1,0 +1,25 @@
+{
+  "operationId": "get_access_acl",
+  "usageNotes": "Use this endpoint to inspect the ACL tree for a PDM realm — either the full tree or a scoped subtree by path. Pass `exact=true` to avoid inheriting child ACEs and get only the entry at that exact path. Use `all-for-authid=true` when you want to see the effective permissions of the currently authenticated identity (token or user), but note that results are normalized to `ugid_type: user` and cannot be used as input to rebuild the ACL tree.",
+  "examples": [
+    {
+      "summary": "List all ACL entries under the /datacenters path",
+      "path_params": {},
+      "params": {
+        "path": "/datacenters",
+        "exact": false
+      }
+    }
+  ],
+  "tips": [
+    "Omitting `path` returns the entire ACL tree — useful for a full audit but can be verbose on busy deployments.",
+    "`propagate: true` on an entry means the role is inherited by child paths; audit entries where propagate is false if narrowing access.",
+    "When `all-for-authid=true`, the response always reports `ugid_type: user` regardless of actual group membership — do not rely on it to determine group ACEs."
+  ],
+  "relatedOperations": [
+    "update_access_acl",
+    "get_access_users",
+    "get_access_groups",
+    "get_access_roles"
+  ]
+}

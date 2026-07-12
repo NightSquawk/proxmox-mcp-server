@@ -1,0 +1,196 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_migrate",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "migrate",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/qemu/{vmid}/migrate",
+  "description": "Qemu (local) migrate preconditions",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "A guest ID",
+      "minimum": 1
+    }
+  ],
+  "params": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": false,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "target",
+      "type": "string",
+      "required": false,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object.",
+    "properties": {
+      "allowed_nodes": {
+        "description": "List of nodes allowed for migration.",
+        "items": {
+          "description": "An allowed node",
+          "type": "string"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "dependent-ha-resources": {
+        "description": "HA resources, which will be migrated to the same target node as the VM,\nbecause these are in positive affinity with the VM.",
+        "items": {
+          "description": "The '<ty>:<id>' resource IDs of a HA resource with a positive affinity rule to this VM.",
+          "type": "string"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "has-dbus-vmstate": {
+        "default": false,
+        "description": "Whether the VM host supports migrating additional VM state, such as\nconntrack entries.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "local_disks": {
+        "description": "List local disks including CD-Rom, unused and not referenced disks",
+        "items": {
+          "additionalProperties": false,
+          "description": "Object.",
+          "properties": {
+            "cdrom": {
+              "default": false,
+              "description": "True if the disk is a cdrom.",
+              "type": "boolean"
+            },
+            "is_unused": {
+              "default": false,
+              "description": "True if the disk is unused.",
+              "type": "boolean"
+            },
+            "size": {
+              "description": "The size of the disk in bytes.",
+              "type": "integer"
+            },
+            "volid": {
+              "description": "The volid of the disk.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "local_resources": {
+        "description": "List local resources (e.g. pci, usb) that block migration.",
+        "items": {
+          "description": "A local resource",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "mapped-resource-info": {
+        "additionalProperties": false,
+        "description": "Object of mapped resources with additional information such if they're live migratable.",
+        "properties": {},
+        "type": "object"
+      },
+      "mapped-resources": {
+        "description": "List of mapped resources e.g. pci, usb. Deprecated, use\n'mapped-resource-info' instead.",
+        "items": {
+          "description": "A mapped resource",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "not_allowed_nodes": {
+        "additionalProperties": false,
+        "description": "List of not allowed nodes with additional information.",
+        "optional": 1,
+        "properties": {
+          "blocking-ha-resources": {
+            "description": "HA resources, which are blocking the VM from being migrated to the node.",
+            "items": {
+              "additionalProperties": false,
+              "description": "A blocking HA resource",
+              "properties": {
+                "cause": {
+                  "description": "The reason why the HA resource is blocking the migration.",
+                  "enum": [
+                    "node-affinity",
+                    "resource-affinity"
+                  ],
+                  "type": "string"
+                },
+                "sid": {
+                  "description": "The blocking HA resource id",
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "optional": 1,
+            "type": "array"
+          },
+          "unavailable_storages": {
+            "description": "A list of not available storages.",
+            "items": {
+              "description": "A storage",
+              "type": "string"
+            },
+            "optional": 1,
+            "type": "array"
+          }
+        },
+        "type": "object"
+      },
+      "running": {
+        "default": false,
+        "description": "Determines if the VM is running.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "and": [
+      {
+        "check": {
+          "partial": false,
+          "path": [
+            "resource",
+            "{remote}",
+            "guest",
+            "{vmid}"
+          ],
+          "privs": [
+            "Resource.Migrate"
+          ]
+        }
+      }
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/qemu/0/migrate'"
+}

@@ -1,0 +1,31 @@
+{
+  "operationId": "post_cluster_config_join",
+  "usageNotes": "Use this to add the current node to an existing Proxmox VE cluster; the node must not already belong to a cluster and must be freshly installed with no VMs or containers running. You must supply the root password of an active cluster member and the cluster's certificate fingerprint (obtainable via get_cluster_config_join on any existing member). If the cluster uses multiple corosync links, pass explicit link[n] addresses — the hostname-based fallback only works for single-link clusters.",
+  "examples": [
+    {
+      "summary": "Join a single-link cluster using an existing member's IP and fingerprint",
+      "path_params": {},
+      "params": {
+        "hostname": "192.168.10.11",
+        "fingerprint": "A1:B2:C3:D4:E5:F6:A1:B2:C3:D4:E5:F6:A1:B2:C3:D4:E5:F6:A1:B2:C3:D4:E5:F6:A1:B2:C3:D4:E5:F6:A1:B2",
+        "password": "rootpassword",
+        "link0": "address=192.168.10.12",
+        "nodeid": 3,
+        "votes": 1
+      }
+    }
+  ],
+  "tips": [
+    "Retrieve the correct fingerprint and cluster hostname by calling get_cluster_config_join on an existing member before calling this endpoint.",
+    "The password field is the root (superuser) password of the peer node specified in hostname — not of the node being joined.",
+    "For multi-link clusters, specify link0 through link7 matching the existing cluster's link layout; a mismatch will cause corosync communication failures.",
+    "Once joined, the node immediately participates in quorum; ensure the cluster has an odd number of votes (or a QDevice) to avoid split-brain after the join.",
+    "The force flag suppresses errors if the node name already exists in the cluster database but does not resolve underlying membership conflicts — use with caution."
+  ],
+  "relatedOperations": [
+    "get_cluster_config_join",
+    "get_cluster_config",
+    "get_cluster_status",
+    "get_nodes"
+  ]
+}

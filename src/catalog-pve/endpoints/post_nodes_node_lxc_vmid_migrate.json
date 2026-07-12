@@ -1,0 +1,98 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_migrate",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "migrate_vm",
+  "method": "POST",
+  "path": "/nodes/{node}/lxc/{vmid}/migrate",
+  "description": "Migrate the container to another node. Creates a new migration task.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "bwlimit",
+      "type": "number",
+      "required": false,
+      "description": "Override I/O bandwidth limit (in KiB/s).",
+      "default": "migrate limit from datacenter or storage config",
+      "minimum": "0",
+      "typetext": "<number> (0 - N)"
+    },
+    {
+      "name": "online",
+      "type": "boolean",
+      "required": false,
+      "description": "Use online/live migration.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "restart",
+      "type": "boolean",
+      "required": false,
+      "description": "Use restart migration",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "target",
+      "type": "string",
+      "required": true,
+      "description": "Target node.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "target-storage",
+      "type": "string",
+      "required": false,
+      "description": "Mapping from source to target storages. Providing only a single storage ID maps all source storages to that storage. Providing the special value '1' will map each source storage to itself.",
+      "format": "storage-pair-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "timeout",
+      "type": "integer",
+      "required": false,
+      "description": "Timeout in seconds for shutdown for restart migration",
+      "default": 180,
+      "typetext": "<integer>"
+    }
+  ],
+  "returns": {
+    "description": "the task ID.",
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Migrate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"target\":\"<target>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100/migrate'"
+}

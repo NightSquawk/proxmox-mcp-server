@@ -1,0 +1,30 @@
+{
+  "operationId": "post_cluster_sdn_dns",
+  "usageNotes": "Use this to register a new SDN DNS integration object (currently only PowerDNS is supported), which allows Proxmox SDN to dynamically create and remove DNS records for VMs and networks. The caller must hold the SDN.Allocate privilege on /sdn/dns, and the SDN configuration must subsequently be applied via PUT /cluster/sdn to take effect. The key field is the PowerDNS API key; if the PowerDNS endpoint uses a self-signed certificate, supply its SHA-256 fingerprint via the fingerprint field.",
+  "examples": [
+    {
+      "summary": "Register a PowerDNS integration for SDN automatic DNS record management",
+      "path_params": {},
+      "params": {
+        "dns": "pdns01",
+        "type": "powerdns",
+        "url": "http://10.0.0.10:8081",
+        "key": "supersecretapikey123",
+        "ttl": 300
+      }
+    }
+  ],
+  "tips": [
+    "After creating the DNS object, run PUT /cluster/sdn (apply) to push the new configuration to all nodes — the object is not active until applied.",
+    "The dns identifier must start with a letter, end with a letter or digit, and contain only alphanumeric characters (no hyphens/underscores).",
+    "reversemaskv6 and reversev6mask are alternative fields for IPv6 reverse-zone prefix length; check your PowerDNS version for which field is expected.",
+    "The fingerprint field uses the colon-delimited SHA-256 format (AA:BB:...) and is only needed when the PowerDNS API URL uses HTTPS with a self-signed or private-CA certificate."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_dns",
+    "get_cluster_sdn_dns_dns",
+    "put_cluster_sdn_dns_dns",
+    "delete_cluster_sdn_dns_dns",
+    "put_cluster_sdn"
+  ]
+}

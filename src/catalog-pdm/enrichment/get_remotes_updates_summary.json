@@ -1,0 +1,17 @@
+{
+  "operationId": "get_remotes_updates_summary",
+  "usageNotes": "Use this to get a at-a-glance count of pending updates across all PDM-managed remote nodes without querying each node individually. The caller must hold Resource.Modify on /resource/{remote} for each remote they want included in the result; remotes the token lacks access to will be omitted. Returns synchronously — no UPID.",
+  "examples": [
+    {
+      "summary": "Fetch pending update counts for all managed remotes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'remotes' object is keyed by remote name; missing remotes typically indicate a permission gap or an unreachable node.",
+    "Use this as a lightweight poll before deciding whether to invoke a per-remote package update operation.",
+    "API tokens are supported (allowtoken: true), making this safe to call from automation without interactive credentials."
+  ],
+  "relatedOperations": []
+}

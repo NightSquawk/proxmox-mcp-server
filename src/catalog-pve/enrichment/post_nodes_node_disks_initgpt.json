@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_disks_initgpt",
+  "usageNotes": "Use this to wipe and initialize a raw block device on a PVE node with a fresh GPT partition table before creating partitions or adding the disk to a storage pool. The disk must not be mounted or in use (e.g. not part of an active ZFS pool or LVM group). Returns a UPID string; poll the tasks API to confirm completion before issuing follow-up disk operations.",
+  "examples": [
+    {
+      "summary": "Initialize /dev/sdb with a new GPT table on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "disk": "/dev/sdb"
+      }
+    }
+  ],
+  "tips": [
+    "Check current disk usage first via get_nodes_node_disks_list to confirm the target disk is not mounted or part of an existing storage.",
+    "Omit the uuid parameter to let Proxmox generate a random GPT UUID automatically — only supply it when you need a deterministic UUID (e.g. scripted reprovisioning).",
+    "After the task UPID completes, the disk will have a GPT label but no partitions — use subsequent partition/storage APIs to finish setup.",
+    "Requires Sys.Modify at the root path; API tokens must have this privilege explicitly granted."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_list",
+    "post_nodes_node_disks_directory",
+    "post_nodes_node_disks_lvm",
+    "post_nodes_node_disks_lvmthin",
+    "post_nodes_node_disks_zfs",
+    "get_nodes_node_tasks"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "operationId": "get_config_acme_tos",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "tos",
+  "method": "GET",
+  "path": "/config/acme/tos",
+  "description": "Get the Terms of Service URL for an ACME directory.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "directory",
+      "type": "string",
+      "required": false,
+      "description": "The ACME Directory."
+    }
+  ],
+  "returns": {
+    "description": "The ACME Directory's ToS URL, if any.",
+    "optional": 1,
+    "type": "string"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/acme/tos'"
+}

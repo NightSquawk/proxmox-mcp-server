@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_storage_storage_content_volume",
+  "usageNotes": "Copies a storage volume to a new target volume on the same or a different node; the source node must be online and both storage backends must be accessible. This endpoint is explicitly marked experimental by Proxmox and is not recommended for production use. The return value is a string (likely a task UPID or target volume ID) — check task status via the task API if a UPID is returned.",
+  "examples": [
+    {
+      "summary": "Copy a VM disk image to a different storage on a remote node",
+      "path_params": {
+        "node": "pve-htz-01",
+        "storage": "local-lvm",
+        "volume": "vm-100-disk-0"
+      },
+      "params": {
+        "target": "vm-100-disk-0-copy",
+        "target_node": "pve-htz-02"
+      }
+    }
+  ],
+  "tips": [
+    "This API is flagged experimental in Proxmox source; prefer snapshot-and-clone workflows (clone VM disk via POST /nodes/{node}/qemu/{vmid}/clone) for reliable volume duplication in production.",
+    "Omitting target_node defaults the copy to the same node as the source; specify it explicitly when copying cross-node.",
+    "The storage path param is marked required:false in the spec but is required in practice to resolve the volume — always supply it.",
+    "If the return value looks like 'UPID:...', poll GET /nodes/{node}/tasks/{upid}/status to confirm completion before using the target volume."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_content_volume",
+    "delete_nodes_node_storage_storage_content_volume",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

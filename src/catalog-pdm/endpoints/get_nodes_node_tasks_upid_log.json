@@ -1,0 +1,107 @@
+{
+  "operationId": "get_nodes_node_tasks_upid_log",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "log",
+  "method": "GET",
+  "path": "/nodes/{node}/tasks/{upid}/log",
+  "description": "Read the task log",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "upid",
+      "type": "string",
+      "required": true,
+      "description": "Unique Process/Task Identifier",
+      "minLength": 36,
+      "pattern": "/^UPID:(?P<node>[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?):(?P<pid>[0-9A-Fa-f]{8}):(?P<pstart>[0-9A-Fa-f]{8,9}):(?P<task_id>[0-9A-Fa-f]{8,16}):(?P<starttime>[0-9A-Fa-f]{8}):(?P<wtype>[^:\\s]+):(?P<wid>[^:\\s]*):(?P<authid>[^:\\s]+):$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "download",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether the tasklog file should be downloaded. This parameter can't be used in conjunction with other parameters",
+      "default": false
+    },
+    {
+      "name": "limit",
+      "type": "integer",
+      "required": false,
+      "description": "The amount of lines to read from the tasklog. Setting this parameter to 0 will return all lines until the end of the file.",
+      "default": 50,
+      "minimum": 0
+    },
+    {
+      "name": "start",
+      "type": "integer",
+      "required": false,
+      "description": "Start at this line when reading the tasklog",
+      "default": 0,
+      "minimum": 0
+    },
+    {
+      "name": "test-status",
+      "type": "boolean",
+      "required": false,
+      "description": "Test task status, and set result attribute \"active\" accordingly."
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Returns lines of a task log. If `download` is set to `true`, instead of providing a JSONresponse the log file will be downloaded.",
+    "optional": 1,
+    "properties": {
+      "active": {
+        "description": "Whether the task is still active.",
+        "type": "boolean"
+      },
+      "data": {
+        "additionalProperties": false,
+        "description": "A line of a task log.",
+        "properties": {
+          "n": {
+            "description": "Line number.",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "t": {
+            "description": "The line of the log.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "success": {
+        "description": "Whether the request was successful.",
+        "maximum": 1,
+        "minimum": 0,
+        "type": "integer"
+      },
+      "total": {
+        "description": "Total number of lines.",
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "description": "Users can access their own tasks, or need Sys.Audit on /system/tasks.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/tasks/<upid>/log'"
+}

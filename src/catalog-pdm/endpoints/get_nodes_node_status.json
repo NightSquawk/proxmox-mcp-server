@@ -1,0 +1,210 @@
+{
+  "operationId": "get_nodes_node_status",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "status",
+  "method": "GET",
+  "path": "/nodes/{node}/status",
+  "description": "Read node memory, CPU and (root) disk usage",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "The Node status",
+    "properties": {
+      "boot-info": {
+        "additionalProperties": false,
+        "description": "Holds the Bootmodes",
+        "properties": {
+          "mode": {
+            "description": "The possible BootModes",
+            "enum": [
+              "efi",
+              "legacy-bios"
+            ],
+            "type": "string"
+          },
+          "secureboot": {
+            "description": "SecureBoot status",
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "cpu": {
+        "description": "Total CPU usage since last query.",
+        "type": "number"
+      },
+      "cpuinfo": {
+        "additionalProperties": false,
+        "description": "Information about the CPU",
+        "properties": {
+          "cpus": {
+            "description": "The number of CPU cores (incl. threads)",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "model": {
+            "description": "The CPU model",
+            "type": "string"
+          },
+          "sockets": {
+            "description": "The number of CPU sockets",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "current-kernel": {
+        "additionalProperties": false,
+        "description": "The current kernel version (output of `uname`)",
+        "properties": {
+          "machine": {
+            "description": "The machine architecture",
+            "type": "string"
+          },
+          "release": {
+            "description": "The kernel release number",
+            "type": "string"
+          },
+          "sysname": {
+            "description": "The systemname/nodename",
+            "type": "string"
+          },
+          "version": {
+            "description": "The kernel version",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "info": {
+        "additionalProperties": false,
+        "description": "Contains general node information such as the fingerprint`",
+        "properties": {
+          "fingerprint": {
+            "description": "The SSL Fingerprint",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "kversion": {
+        "description": "The current kernel version (LEGACY string type).",
+        "type": "string"
+      },
+      "loadavg": {
+        "description": "Load for 1, 5 and 15 minutes.",
+        "items": {
+          "description": "the load",
+          "type": "number"
+        },
+        "type": "array"
+      },
+      "memory": {
+        "additionalProperties": false,
+        "description": "Node memory usage counters",
+        "properties": {
+          "free": {
+            "description": "Free memory",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "total": {
+            "description": "Total memory",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "used": {
+            "description": "Used memory",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "root": {
+        "additionalProperties": false,
+        "description": "Storage space usage information.",
+        "properties": {
+          "avail": {
+            "description": "Available space (bytes).",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "total": {
+            "description": "Total space (bytes).",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "used": {
+            "description": "Used space (bytes).",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "swap": {
+        "additionalProperties": false,
+        "description": "Node swap usage counters",
+        "properties": {
+          "free": {
+            "description": "Free swap",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "total": {
+            "description": "Total swap",
+            "minimum": 0,
+            "type": "integer"
+          },
+          "used": {
+            "description": "Used swap",
+            "minimum": 0,
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "uptime": {
+        "description": "The current uptime of the server.",
+        "minimum": 0,
+        "type": "integer"
+      },
+      "wait": {
+        "description": "Total IO wait since last query.",
+        "type": "number"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "status"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/status'"
+}

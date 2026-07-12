@@ -1,0 +1,19 @@
+{
+  "operationId": "get_config",
+  "usageNotes": "Use this to enumerate the top-level configuration sub-resources exposed by the PDM API; it acts as a directory index rather than returning configuration values directly. The response is a list of available sub-endpoints under /config, not a settings payload. No special privilege beyond a valid API token is required.",
+  "examples": [
+    {
+      "summary": "List available configuration sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The return type is null in the spec, meaning the useful data is in the array of child links — iterate those to discover which /config/* endpoints are available on your PDM version.",
+    "Because this endpoint requires no parameters and is read-only, it is safe to call during health checks or capability probing."
+  ],
+  "relatedOperations": [
+    "get_config_remotes",
+    "get_config_nodes"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_startall",
+  "usageNotes": "Triggers a bulk start of all VMs and containers on the specified node; by default only guests with onboot=1 are started unless force=true is passed. The operation is asynchronous — the return value is a task UPID that must be polled via GET /nodes/{node}/tasks/{upid}/status to confirm completion. Requires VM.PowerMgmt on / or on each individual /vms/<ID> if the vms parameter is used.",
+  "examples": [
+    {
+      "summary": "Start all onboot-enabled VMs on pve1, limiting to 4 concurrent start tasks",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "max-workers": 4
+      }
+    }
+  ],
+  "tips": [
+    "Omit 'vms' to target all eligible guests on the node; supply a comma-separated VMID list (e.g. '100,101,105') to limit scope.",
+    "Set force=true during post-maintenance boot when some guests intentionally have onboot=0 but still need to come up.",
+    "max-workers defaults to the datacenter.cfg setting or CPU threads capped at 8; lower it on resource-constrained nodes to avoid boot storms.",
+    "Poll the returned UPID against GET /nodes/{node}/tasks/{upid}/status to detect failures for individual guests — the bulk task succeeds even if some guests fail to start."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_stopall",
+    "post_nodes_node_migrateall",
+    "get_nodes_node_tasks"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_notifications_matchers_name",
+  "usageNotes": "Permanently removes a notification matcher from the cluster. Matchers define routing rules that link notification events to targets; deleting one silently drops all routing rules it contained, so any notifications previously matched by it will fall back to other matchers or go undelivered. Requires Mapping.Modify on /mapping/notifications at the cluster level.",
+  "examples": [
+    {
+      "summary": "Delete the matcher named 'high-priority-alerts'",
+      "path_params": {
+        "name": "high-priority-alerts"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the matcher and all its routing rules; any notification events that relied on this matcher will no longer be delivered to their associated targets.",
+  "tips": [
+    "Matcher names follow the pve-configid format: lowercase alphanumeric and hyphens only.",
+    "There is no soft-delete or recycle bin — deletion is immediate and irreversible via the API.",
+    "Before deleting, review which notification targets depend on this matcher using the GET /cluster/notifications/matchers/{name} endpoint to avoid silent notification gaps.",
+    "Returns null on success; a non-null error response indicates the matcher does not exist or a permission issue."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_matchers_name",
+    "create_cluster_notifications_matchers",
+    "update_cluster_notifications_matchers_name",
+    "get_cluster_notifications_matchers"
+  ]
+}

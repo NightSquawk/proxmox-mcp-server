@@ -1,0 +1,39 @@
+{
+  "operationId": "get_storage_storage",
+  "surface": "pve",
+  "resource": "storage",
+  "category": "Storage",
+  "name": "read",
+  "method": "GET",
+  "path": "/storage/{storage}",
+  "description": "Read storage configuration.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage/{storage}",
+      [
+        "Datastore.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/storage/<storage>'"
+}

@@ -1,0 +1,73 @@
+{
+  "operationId": "get_nodes_node_sdn_zones_zone_ip_vrf",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "ip-vrf",
+  "method": "GET",
+  "path": "/nodes/{node}/sdn/zones/{zone}/ip-vrf",
+  "description": "Get the IP VRF of an EVPN zone.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "zone",
+      "type": "string",
+      "required": true,
+      "description": "Name of an EVPN zone.",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "All entries in the VRF table of zone {zone} of the node.This does not include /32 routes for guests on this host,since they are handled via the respective vnet bridge directly.",
+    "items": {
+      "properties": {
+        "ip": {
+          "description": "The CIDR of the route table entry.",
+          "format": "CIDR",
+          "type": "string"
+        },
+        "metric": {
+          "description": "This route's metric.",
+          "type": "integer"
+        },
+        "nexthops": {
+          "description": "A list of nexthops for the route table entry.",
+          "items": {
+            "description": "the interface name or ip address of the next hop",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "protocol": {
+          "description": "The protocol where this route was learned from (e.g. BGP).",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/zones/{zone}",
+      [
+        "SDN.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/sdn/zones/<zone>/ip-vrf'"
+}

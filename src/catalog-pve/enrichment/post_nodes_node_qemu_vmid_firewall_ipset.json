@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_firewall_ipset",
+  "usageNotes": "Creates a named IPSet on a specific VM's firewall, which can then be populated with CIDRs/IPs and referenced in firewall rules. Requires VM.Config.Network on the VM; the VM's firewall must be enabled for IPSets to take effect. The 'rename' parameter doubles as an update path — pass the same value for both 'name' and 'rename' to update only the comment on an existing IPSet.",
+  "examples": [
+    {
+      "summary": "Create an IPSet named 'trusted-mgmt' for a management VM",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {
+        "name": "trusted-mgmt",
+        "comment": "Trusted management IPs for SSH and RDP access"
+      }
+    }
+  ],
+  "tips": [
+    "IPSet names must start with a letter and may only contain letters, digits, hyphens, and underscores (min 2, max 64 chars).",
+    "Creating an IPSet here only registers the set; populate it afterward using the IPSet entries endpoint before referencing it in any firewall rules.",
+    "Use the 'digest' parameter to guard against concurrent edits when scripting changes to a busy VM's firewall config.",
+    "This endpoint is VM-scoped; for cluster-wide shared IPSets use the cluster firewall IPSet endpoints instead."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_ipset",
+    "post_nodes_node_qemu_vmid_firewall_ipset_name",
+    "get_nodes_node_qemu_vmid_firewall_ipset_name",
+    "delete_nodes_node_qemu_vmid_firewall_ipset_name",
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "post_nodes_node_qemu_vmid_firewall_rules"
+  ]
+}

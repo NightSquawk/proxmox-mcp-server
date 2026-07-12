@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_status_shutdown",
+  "usageNotes": "Sends a clean ACPI shutdown signal to a running LXC container and returns a task UPID for async tracking; the container must be in a running state on the specified node. Use `forceStop: true` to guarantee the container stops if the guest does not respond within the timeout window — omitting it on an unresponsive container will leave it running after the timeout expires. Requires the `VM.PowerMgmt` privilege on `/vms/{vmid}`.",
+  "examples": [
+    {
+      "summary": "Graceful shutdown of container 101 with a 90-second timeout and forced stop fallback",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101
+      },
+      "params": {
+        "timeout": 90,
+        "forceStop": true
+      }
+    }
+  ],
+  "destructiveReason": "Stops the container, interrupting all running processes and making its services unavailable until it is started again.",
+  "tips": [
+    "Poll the returned UPID via GET /nodes/{node}/tasks/{upid}/status to confirm the shutdown completed before taking dependent actions.",
+    "The default timeout of 60 seconds is often too short for containers running databases or heavy workloads — increase it when services need a graceful drain.",
+    "Prefer this endpoint over the stop endpoint for production containers; stop is a hard kill, whereas shutdown allows the init system to run teardown hooks.",
+    "If the container is already stopped, the API returns an error — check status first with GET /nodes/{node}/lxc/{vmid}/status/current."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_status_stop",
+    "post_nodes_node_lxc_vmid_status_start",
+    "post_nodes_node_lxc_vmid_status_reboot",
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

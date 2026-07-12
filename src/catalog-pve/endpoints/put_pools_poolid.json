@@ -1,0 +1,78 @@
+{
+  "operationId": "put_pools_poolid",
+  "surface": "pve",
+  "resource": "pools",
+  "category": "Pools",
+  "name": "update_pool_deprecated",
+  "method": "PUT",
+  "path": "/pools/{poolid}",
+  "description": "Update pool data (deprecated, no support for nested pools - use 'PUT /pools/?poolid={poolid}' instead).",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "poolid",
+      "type": "string",
+      "required": true,
+      "format": "pve-poolid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "allow-move",
+      "type": "boolean",
+      "required": false,
+      "description": "Allow adding a guest even if already in another pool. The guest will be removed from its current pool and added to this one.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "typetext": "<string>"
+    },
+    {
+      "name": "delete",
+      "type": "boolean",
+      "required": false,
+      "description": "Remove the passed VMIDs and/or storage IDs instead of adding them.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": false,
+      "description": "List of storage IDs to add or remove from this pool.",
+      "format": "pve-storage-id-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vms",
+      "type": "string",
+      "required": false,
+      "description": "List of guest VMIDs to add or remove from this pool.",
+      "format": "pve-vmid-list",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/pool/{poolid}",
+      [
+        "Pool.Allocate"
+      ]
+    ],
+    "description": "You also need the right to modify permissions on any object you add/delete."
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/pools/<poolid>'"
+}

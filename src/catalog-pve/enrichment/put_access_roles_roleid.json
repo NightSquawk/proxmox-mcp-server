@@ -1,0 +1,29 @@
+{
+  "operationId": "put_access_roles_roleid",
+  "usageNotes": "Use this to modify the privilege set of a custom Proxmox role. By default the update replaces the role's entire privilege list; pass `append: true` to add privileges without removing existing ones. The role must already exist (use `post_access_roles` to create it), and the caller requires `Sys.Modify` on `/access`.",
+  "examples": [
+    {
+      "summary": "Grant VM.PowerMgmt and VM.Console to the existing 'HelpDesk' role, preserving current privileges",
+      "path_params": {
+        "roleid": "HelpDesk"
+      },
+      "params": {
+        "privs": "VM.PowerMgmt,VM.Console",
+        "append": true
+      }
+    }
+  ],
+  "tips": [
+    "Omitting `append` (or setting it false) performs a full replacement — all existing privileges are discarded and only the supplied `privs` list remains.",
+    "`privs` is a comma-separated list of Proxmox privilege strings (e.g. VM.Allocate, Datastore.AllocateSpace). Pass an empty string to clear all privileges from the role.",
+    "Built-in roles (Administrator, PVEVMUser, etc.) cannot be modified; only custom roles created via the API or UI are editable.",
+    "Returns null on success; any error is signalled by a non-2xx HTTP status with a JSON error body."
+  ],
+  "relatedOperations": [
+    "get_access_roles",
+    "get_access_roles_roleid",
+    "post_access_roles",
+    "delete_access_roles_roleid",
+    "put_access_acl"
+  ]
+}

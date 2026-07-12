@@ -1,0 +1,53 @@
+{
+  "operationId": "get_nodes_node_apt_changelog",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "changelog",
+  "method": "GET",
+  "path": "/nodes/{node}/apt/changelog",
+  "description": "Retrieve the changelog of the specified package.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "Package name to get changelog of.",
+      "pattern": "/^[a-z0-9][-+.a-z0-9:]+$/"
+    },
+    {
+      "name": "version",
+      "type": "string",
+      "required": false,
+      "description": "Package version to get changelog of. Omit to use candidate version."
+    }
+  ],
+  "returns": {
+    "description": "The Package changelog.",
+    "type": "string"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/apt/changelog?name=<name>'"
+}

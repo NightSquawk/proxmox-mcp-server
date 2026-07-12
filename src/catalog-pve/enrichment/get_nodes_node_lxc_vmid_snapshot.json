@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_snapshot",
+  "usageNotes": "Returns the full snapshot list for a specific LXC container, including a synthetic 'current' entry representing the live state. Use this before creating, rolling back, or deleting snapshots to confirm names and the parent-child chain. Requires VM.Audit on /vms/{vmid}; the node must be online and the container must exist.",
+  "examples": [
+    {
+      "summary": "List all snapshots for LXC container 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'current' entry in the result is not a real snapshot — it marks the live container state and has no snaptime.",
+    "Use the 'parent' field to reconstruct the snapshot tree before deciding which snapshot to roll back to.",
+    "snaptime is a Unix timestamp; convert it to a human-readable date when displaying to users."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_snapshot",
+    "delete_nodes_node_lxc_vmid_snapshot_snapname",
+    "post_nodes_node_lxc_vmid_snapshot_snapname_rollback",
+    "get_nodes_node_lxc_vmid_snapshot_snapname_config"
+  ]
+}

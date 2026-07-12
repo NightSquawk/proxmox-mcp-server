@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_qemu_cpu_flags",
+  "usageNotes": "Use this to discover which CPU flags are available cluster-wide and which specific nodes support each flag under a given acceleration mode (KVM or TCG). This is the correct pre-flight call before enabling CPU flags in a VM's hardware config — consult `supported-on` to avoid scheduling a VM on a node that lacks the required flag. Note that aarch64 always returns an empty list; this endpoint is only meaningful for x86_64 workloads.",
+  "examples": [
+    {
+      "summary": "List all KVM-accelerated CPU flags for x86_64, showing which cluster nodes support each",
+      "path_params": {},
+      "params": {
+        "accel": "kvm",
+        "arch": "x86_64"
+      }
+    }
+  ],
+  "tips": [
+    "The `supported-on` field in each returned item is a list of node names — if it is absent or empty for a flag, no node in the cluster supports it under the chosen acceleration type.",
+    "When using TCG (software emulation), more flags may appear available than with KVM, but performance will differ significantly; always prefer KVM for production VMs.",
+    "Pair with CPU type enumeration (e.g., get_cluster_qemu_cpu) to understand which flags are already bundled into a chosen CPU model before adding individual flag overrides."
+  ],
+  "relatedOperations": [
+    "get_cluster_qemu_cpu",
+    "get_node_qemu_config",
+    "put_node_qemu_config"
+  ]
+}

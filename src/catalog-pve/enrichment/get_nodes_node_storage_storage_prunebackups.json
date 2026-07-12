@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_storage_storage_prunebackups",
+  "usageNotes": "Use this endpoint to preview which backups would be kept or removed if a prune operation were run against a storage target — without actually deleting anything. Supply the same retention policy (via `prune-backups`) that you plan to pass to the actual DELETE prune call to ensure the preview matches the real outcome. Note that the result is a snapshot in time; backups added or removed between this preview and the subsequent prune call may produce different results.",
+  "examples": [
+    {
+      "summary": "Preview prune results for VM 101 on local backup storage, keeping the last 3 backups and 1 per week",
+      "path_params": {
+        "node": "pve01",
+        "storage": "backups"
+      },
+      "params": {
+        "vmid": 101,
+        "type": "qemu",
+        "prune-backups": "keep-last=3,keep-weekly=1"
+      }
+    }
+  ],
+  "tips": [
+    "Backups marked 'protected' or with non-standard naming are never removed — they will appear in the response with mark='protected' or mark='renamed' regardless of the retention policy.",
+    "If you omit `prune-backups`, the preview uses the retention policy already configured on the storage itself, which is the most common use case when validating existing policy.",
+    "Filter by `type` (qemu or lxc) to scope the preview to one guest type when a storage holds mixed backup sets.",
+    "The caller needs either Datastore.Audit or Datastore.AllocateSpace on /storage/{storage} — API tokens are supported."
+  ],
+  "relatedOperations": [
+    "delete_nodes_node_storage_storage_prunebackups",
+    "get_nodes_node_storage_storage_content",
+    "get_storage"
+  ]
+}

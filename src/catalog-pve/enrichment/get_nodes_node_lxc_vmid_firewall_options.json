@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_options",
+  "usageNotes": "Use this to inspect the top-level firewall configuration for a specific LXC container, including whether the firewall is enabled, default input/output policies, and which protocol helpers (DHCP, NDP, MAC filter, IP filter) are active. Requires VM.Audit on the container's path — no write privilege needed. Note that this returns container-level options only; individual firewall rules are fetched via the separate rules endpoint.",
+  "examples": [
+    {
+      "summary": "Retrieve firewall options for LXC container 110 on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If 'enable' is false (the default), all firewall rules for the container are bypassed regardless of what rules exist.",
+    "ipfilter=true is the recommended security baseline for containers — it auto-populates interface ipsets with MAC-derived IPv6 link-local restrictions and the container's configured IP addresses.",
+    "macfilter defaults to true (enabled), providing an extra layer against ARP spoofing; verify it is not unexpectedly disabled on untrusted networks.",
+    "log_level_in and log_level_out default to 'nolog' — set to 'info' or 'debug' temporarily when troubleshooting dropped traffic."
+  ],
+  "relatedOperations": [
+    "put_nodes_node_lxc_vmid_firewall_options",
+    "get_nodes_node_lxc_vmid_firewall_rules",
+    "get_nodes_node_lxc_vmid_firewall_ipsets",
+    "get_nodes_node_lxc_vmid_firewall_aliases",
+    "get_nodes_node_lxc_vmid_firewall_log"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_stopall",
+  "usageNotes": "Use this to gracefully (or forcefully) shut down all VMs and containers on a specific node — typically before a planned node maintenance window, hardware reboot, or controlled power-off. The `vms` parameter lets you limit the scope to specific VMIDs instead of everything on the node. By default, each guest gets 180 seconds to shut down cleanly before a hard-stop is forced; lower `timeout` or set `force-stop` to false if you want a pure graceful-only approach. Returns a task UPID you can poll to track overall completion.",
+  "examples": [
+    {
+      "summary": "Stop all guests on node pve1 with a 5-minute timeout and hard-stop fallback",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "force-stop": true,
+        "timeout": 300,
+        "max-workers": 4
+      }
+    }
+  ],
+  "destructiveReason": "Sends a shutdown (or hard-stop) signal to every running VM and container on the target node, causing immediate service disruption and potential data loss for guests that do not gracefully handle ACPI shutdown.",
+  "tips": [
+    "Use the `vms` parameter (comma-separated VMIDs) to stop a subset of guests without touching the rest of the node.",
+    "The returned string is a UPID — poll it via GET /nodes/{node}/tasks/{upid}/status to know when all stop tasks have completed.",
+    "max-workers caps parallel stop tasks; keeping it low (2–4) reduces I/O contention during flushing and is safer for storage-heavy guests.",
+    "force-stop defaults to true (1); explicitly set it to false if you need a strictly graceful shutdown with no hard-kill fallback."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_startall",
+    "post_nodes_node_migrateall",
+    "get_nodes_node_tasks"
+  ]
+}

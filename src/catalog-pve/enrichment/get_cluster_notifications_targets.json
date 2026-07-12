@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_notifications_targets",
+  "usageNotes": "Use this endpoint to enumerate all notification targets configured on the cluster before creating or updating a notification matcher or routing rule. The caller must hold at least one of Mapping.Modify, Mapping.Audit, or Mapping.Use on /mapping/notifications. Results include both built-in targets (e.g., the default sendmail target) and user-created ones; check the 'origin' and 'disable' fields to avoid referencing a disabled or unmodifiable built-in.",
+  "examples": [
+    {
+      "summary": "List all notification targets to find available sendmail and webhook endpoints",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "origin='builtin' targets cannot be deleted; origin='modified-builtin' means a built-in was customized by the user.",
+    "A target with disable=true will silently drop notifications — filter these out before assigning to a matcher.",
+    "The 'name' field uses pve-configid format (alphanumeric + hyphens, no spaces), which is required when referencing targets in notification matchers."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_matchers",
+    "get_cluster_notifications_endpoints_sendmail",
+    "get_cluster_notifications_endpoints_gotify",
+    "get_cluster_notifications_endpoints_smtp",
+    "get_cluster_notifications_endpoints_webhook"
+  ]
+}

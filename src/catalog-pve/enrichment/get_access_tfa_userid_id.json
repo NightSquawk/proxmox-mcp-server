@@ -1,0 +1,25 @@
+{
+  "operationId": "get_access_tfa_userid_id",
+  "usageNotes": "Use this to inspect a specific TFA entry for a user — useful for verifying the type (totp, webauthn, yubico, etc.), enabled state, and creation time before deciding to update or delete it. Requires either the requesting user to be looking up their own entry, or the caller to hold User.Modify or Sys.Audit on the user's realm. The TFA entry ID is not human-readable; retrieve it first via the list endpoint (get_access_tfa_userid).",
+  "examples": [
+    {
+      "summary": "Fetch a specific TOTP entry for a PVE admin user",
+      "path_params": {
+        "userid": "admin@pve",
+        "id": "totp-7f3a1c2d4e5b6a8f"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "TFA entry IDs are opaque strings — always list first with get_access_tfa_userid to get the correct ID.",
+    "The 'enable' field defaults to true; a missing field in the response means the entry is active.",
+    "Recovery codes are returned as type 'recovery' — avoid exposing these in logs or automation output.",
+    "API tokens can call this endpoint (allowtoken: true), making it safe for read-only automation."
+  ],
+  "relatedOperations": [
+    "get_access_tfa_userid",
+    "put_access_tfa_userid_id",
+    "delete_access_tfa_userid_id"
+  ]
+}

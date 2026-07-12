@@ -1,0 +1,39 @@
+{
+  "operationId": "put_config_access_ad_realm",
+  "usageNotes": "Use this to update an existing Active Directory realm configuration in Proxmox Datacenter Manager — for example, to rotate the bind password, switch to LDAPS, add a fallback server, or adjust user-sync defaults. The realm must already exist (use the POST endpoint to create it). Requires the `Realm.Allocate` privilege on `/access/domains`; pass the `digest` field from the current config to guard against concurrent overwrites.",
+  "examples": [
+    {
+      "summary": "Upgrade an AD realm to LDAPS, add a fallback server, and map LDAP mail/givenName/sn attributes to PDM user fields",
+      "path_params": {
+        "realm": "corp-ad"
+      },
+      "params": {
+        "mode": "ldaps",
+        "server1": "dc1.corp.example.com",
+        "server2": "dc2.corp.example.com",
+        "port": 636,
+        "base-dn": "DC=corp,DC=example,DC=com",
+        "bind-dn": "CN=pdm-bind,OU=ServiceAccounts,DC=corp,DC=example,DC=com",
+        "password": "S3cur3B1ndP@ss!",
+        "verify": true,
+        "sync-attributes": "email=mail,firstname=givenName,lastname=sn",
+        "sync-defaults-options": "enable-new=1,remove-vanished=entry;properties",
+        "user-classes": "user,person",
+        "comment": "Production AD realm — LDAPS enforced"
+      }
+    }
+  ],
+  "tips": [
+    "Use the `delete` array to explicitly clear optional fields (e.g. `[\"server2\",\"comment\"]`) rather than sending an empty string, which may not unset them.",
+    "When switching from `ldap` to `ldaps` or `ldap+starttls`, also set `verify: true` and supply `capath` if the DC cert is signed by an internal CA — otherwise the sync will fail TLS verification.",
+    "The `digest` field (SHA-256 of the current config) enables optimistic locking; retrieve it from `get_config_access_ad_realm` before writing to avoid silently stomping a concurrent change.",
+    "The `password` field is write-only — it does not appear in GET responses; always re-supply it on updates if the bind account credentials have not changed, or the stored password will be cleared on some PDM versions.",
+    "User sync does not run automatically after this call; trigger a sync separately via the sync endpoint if you want immediate attribute propagation."
+  ],
+  "relatedOperations": [
+    "get_config_access_ad_realm",
+    "post_config_access_ad",
+    "delete_config_access_ad_realm",
+    "post_config_access_ad_realm_sync"
+  ]
+}

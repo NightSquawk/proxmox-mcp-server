@@ -1,0 +1,50 @@
+{
+  "operationId": "delete_pbs_remotes_remote_tasks_upid",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "{upid}",
+  "method": "DELETE",
+  "path": "/pbs/remotes/{remote}/tasks/{upid}",
+  "description": "Get the status of a task from a Proxmox VE instance.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "upid",
+      "type": "string",
+      "required": true,
+      "description": "A remote UPID",
+      "minLength": 42
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Manage"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/tasks/<upid>'"
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "get_auto_install_prepared_id",
+  "usageNotes": "Use this endpoint to retrieve the full answer configuration for a specific prepared auto-installer definition by its ID. The caller must hold the System.Audit privilege on the system/auto-installation ACL path. The `id` must be between 3 and 64 characters; the API returns null on success, so the useful payload is in the HTTP response body rather than a typed schema.",
+  "examples": [
+    {
+      "summary": "Fetch a prepared auto-install configuration by ID",
+      "path_params": {
+        "id": "ubuntu-22-04-base"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returns type is listed as null in the spec, meaning the API currently does not define a typed schema — inspect the raw response body for the actual answer-file content.",
+    "IDs are between 3 and 64 characters; slugs like 'debian-12-standard' work well for human-readable identifiers.",
+    "API tokens are supported (allowtoken: true), so a scoped token with System.Audit is preferred over a full user credential for read operations."
+  ],
+  "relatedOperations": [
+    "get_auto_install_prepared",
+    "post_auto_install_prepared",
+    "put_auto_install_prepared_id",
+    "delete_auto_install_prepared_id"
+  ]
+}

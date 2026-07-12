@@ -1,0 +1,31 @@
+{
+  "operationId": "delete_cluster_config_nodes_node",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delnode",
+  "method": "DELETE",
+  "path": "/cluster/config/nodes/{node}",
+  "description": "Removes a node from the cluster configuration.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/config/nodes/<node>'"
+}

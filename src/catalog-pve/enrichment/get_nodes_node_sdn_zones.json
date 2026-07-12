@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_sdn_zones",
+  "usageNotes": "Use this endpoint to check the operational status of all SDN zones as seen from a specific cluster node. The response reflects node-local zone state, so a zone showing 'error' on one node may be fine on others — always query the affected node directly when diagnosing SDN issues. Requires 'SDN.Audit' privilege on the SDN zone objects; results are filtered to only zones the caller can audit.",
+  "examples": [
+    {
+      "summary": "List all SDN zone statuses on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Zone status 'pending' means SDN config has been saved in the cluster database but not yet applied to this node — run 'pvesh set /cluster/sdn' or reload SDN to push the config.",
+    "Zone status 'error' is node-specific; check /var/log/syslog on that node for OVS or FRR errors.",
+    "Zone IDs are 2–8 alphanumeric characters and are returned in the 'zone' field — use these as path parameters for zone-specific endpoints."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_zones",
+    "get_nodes_node_sdn",
+    "get_cluster_sdn"
+  ]
+}

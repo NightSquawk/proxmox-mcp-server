@@ -1,0 +1,28 @@
+{
+  "operationId": "get_access_users",
+  "usageNotes": "Use this to list all Proxmox VE users visible to the authenticated principal; every authenticated user always sees themselves in the result even with minimal privileges, but the full list is filtered to users where the caller holds 'User.Modify' or 'Sys.Audit' on '/access/groups' or on a group the user belongs to. Pass 'full=true' to include each user's group memberships and API tokens in the response, which is useful for auditing access or building user-management tooling. Users with a non-zero 'expire' timestamp or 'enable=false' are still returned unless you filter with the 'enabled' query param.",
+  "examples": [
+    {
+      "summary": "List all enabled users including their group and token details",
+      "path_params": {},
+      "params": {
+        "enabled": true,
+        "full": true
+      }
+    }
+  ],
+  "tips": [
+    "User IDs are always in 'name@realm' format (e.g. 'admin@pam', 'kevin@pve'); use this format when referencing users in ACL or token operations.",
+    "The 'tokens' array is only populated when 'full=true'; omitting it keeps the response lean for large user sets.",
+    "A non-zero 'tfa-locked-until' value means the user is temporarily locked out of 2FA — useful to surface in monitoring or alerting pipelines.",
+    "The 'realm-type' field distinguishes PAM, PVE, LDAP, and AD realms; filter on it client-side to scope operations to a specific auth backend."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid",
+    "post_access_users",
+    "put_access_users_userid",
+    "delete_access_users_userid",
+    "get_access_groups",
+    "get_access_roles"
+  ]
+}

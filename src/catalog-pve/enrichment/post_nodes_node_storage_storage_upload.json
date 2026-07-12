@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_storage_storage_upload",
+  "usageNotes": "Use this endpoint to upload ISO images, LXC container templates, or OVA/VM import images directly to a storage pool on a specific node. The caller must hold the Datastore.AllocateTemplate privilege on the target storage path. The response returns a task UPID string — poll the task API to confirm completion before referencing the uploaded file.",
+  "examples": [
+    {
+      "summary": "Upload an Ubuntu 24.04 ISO to local storage on pve1",
+      "path_params": {
+        "node": "pve1",
+        "storage": "local"
+      },
+      "params": {
+        "content": "iso",
+        "filename": "ubuntu-24.04-live-server-amd64.iso",
+        "checksum-algorithm": "sha256",
+        "checksum": "8762f7e74e4d64d72fceb5f70682e6b069932deedb4949c6975d0f0fe0a91be3"
+      }
+    }
+  ],
+  "tips": [
+    "The filename field is normalized by Proxmox (spaces replaced, etc.) — verify the final stored name via the storage content list after the task completes.",
+    "The 'import' content type is for OVA/VM disk images; use 'iso' for installation media and 'vztmpl' for LXC container templates.",
+    "This endpoint expects a multipart file upload in practice (via the web UI or curl with --form); the JSON body sample only shows metadata fields.",
+    "tmpfilename is restricted to localhost trusted-port use only — do not set it from remote API clients.",
+    "Providing a checksum and checksum-algorithm is strongly recommended for large ISOs to detect transfer corruption."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_content",
+    "delete_nodes_node_storage_storage_content_volume",
+    "get_nodes_node_tasks"
+  ]
+}

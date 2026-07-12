@@ -1,0 +1,29 @@
+{
+  "operationId": "delete_nodes_node_ceph_fs_name",
+  "usageNotes": "Destroys a named CephFS filesystem from the cluster node; the operation is blocked and will refuse if any enabled PVE storage entry of type 'cephfs' still references the filesystem — disable or remove those first. Pass remove-storages=true to let Proxmox clean up the pveceph-managed storage configs automatically, and remove-pools=true to also purge the underlying Ceph metadata and data pools; omitting both leaves the pools and any storage entries intact. Returns a task UPID string — poll the task endpoint to confirm completion before treating the filesystem as gone.",
+  "examples": [
+    {
+      "summary": "Destroy the CephFS named 'cephfs' on node pve1, removing both its storage entries and underlying pools",
+      "path_params": {
+        "node": "pve1",
+        "name": "cephfs"
+      },
+      "params": {
+        "remove-storages": true,
+        "remove-pools": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently destroys the CephFS filesystem and, if the optional flags are set, deletes the associated Ceph metadata and data pools along with all data stored in them.",
+  "tips": [
+    "Check for active mounts or running VMs using the filesystem before issuing this call — active clients will not be cleanly disconnected.",
+    "If remove-pools is false, the orphaned Ceph pools must be deleted manually via the pool destroy endpoint afterward.",
+    "Requires Sys.Modify at the root path ('/'); API tokens must have that privilege explicitly granted."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_fs",
+    "post_nodes_node_ceph_fs_name",
+    "delete_nodes_node_ceph_pools_name",
+    "get_nodes_node_tasks"
+  ]
+}

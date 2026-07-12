@@ -1,0 +1,86 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_ipset_name",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "get_ipset",
+  "method": "GET",
+  "path": "/nodes/{node}/lxc/{vmid}/firewall/ipset/{name}",
+  "description": "List IPSet content",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "IP set name.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "cidr": {
+          "type": "string"
+        },
+        "comment": {
+          "optional": 1,
+          "type": "string"
+        },
+        "digest": {
+          "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+          "maxLength": 64,
+          "optional": 0,
+          "type": "string"
+        },
+        "nomatch": {
+          "optional": 1,
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{cidr}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100/firewall/ipset/<name>'"
+}

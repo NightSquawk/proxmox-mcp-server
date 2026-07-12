@@ -1,0 +1,21 @@
+{
+  "operationId": "get_auto_install_tokens",
+  "usageNotes": "Use this to audit all auto-install tokens configured in Proxmox Datacenter Manager, including their enabled state, expiration, and who created them. Requires the System.Audit privilege on the system/auto-installation ACL path. Check the 'enabled' and 'expire-at' fields to identify stale or expired tokens before issuing new ones.",
+  "examples": [
+    {
+      "summary": "List all auto-install tokens to review active and expired entries",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "An 'expire-at' value of 0 means the token never expires — flag these during security audits.",
+    "Disabled tokens (enabled: false) remain listed but cannot authenticate installer requests.",
+    "Token secrets are not returned by this endpoint; the secret is only available at creation time."
+  ],
+  "relatedOperations": [
+    "create_auto_install_token",
+    "delete_auto_install_token",
+    "get_auto_install_token"
+  ]
+}

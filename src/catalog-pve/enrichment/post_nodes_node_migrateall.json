@@ -1,0 +1,30 @@
+{
+  "operationId": "post_nodes_node_migrateall",
+  "usageNotes": "Use this to bulk-evacuate all (or a filtered subset of) VMs and containers off a node — typically before maintenance, hardware replacement, or decommissioning. Either 'max-workers' must be specified or 'max_workers' must be set in datacenter.cfg; the call will fail if neither is configured. The endpoint returns a UPID string for an async task; poll the task status via the node tasks API to confirm completion before powering off or removing the source node.",
+  "examples": [
+    {
+      "summary": "Evacuate all guests from pve-node1 to pve-node2 with up to 3 parallel migrations, including guests with local disks",
+      "path_params": {
+        "node": "pve-node1"
+      },
+      "params": {
+        "target": "pve-node2",
+        "max-workers": 3,
+        "with-local-disks": true
+      }
+    }
+  ],
+  "tips": [
+    "Omit 'vms' to migrate everything on the node; pass a comma-separated VMID list to migrate only specific guests.",
+    "Use 'max-workers' (not the deprecated 'maxworkers') for new automation — one of the two must be set or the API returns an error.",
+    "'with-local-disks' triggers live storage migration; without it, guests using only local storage will be skipped or fail to migrate.",
+    "Running guests are live-migrated if the storage is compatible; stopped guests are cold-migrated regardless.",
+    "The returned UPID can be checked with GET /nodes/{node}/tasks/{upid}/status to monitor progress."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_migrate",
+    "post_nodes_node_lxc_vmid_migrate",
+    "get_nodes_node_tasks",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

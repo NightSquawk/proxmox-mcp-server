@@ -1,0 +1,29 @@
+{
+  "operationId": "post_sdn_vnets",
+  "usageNotes": "Creates a new SDN VNet across one or more PVE remotes managed by PDM; each entry in the `remotes` array specifies the remote and the zone in which the VNet should be provisioned. The operation is asynchronous — the response is a UPID that must be polled to confirm completion before the VNet is usable. If `tag` is supplied it sets the VXLAN VNI (1–16777215); omit it only when the zone assigns VNIs automatically.",
+  "examples": [
+    {
+      "summary": "Create VNet 'prod10' with VXLAN VNI 10010 on two PVE remotes in their respective EVPN zones",
+      "path_params": {},
+      "params": {
+        "vnet": "prod10",
+        "tag": 10010,
+        "remotes": [
+          { "remote": "pve-hetzner", "zone": "evpn-zone" },
+          { "remote": "pve-ovh", "zone": "evpn-zone" }
+        ]
+      }
+    }
+  ],
+  "tips": [
+    "Poll the returned UPID against the PDM tasks API to detect failures before assuming the VNet is live.",
+    "VNet names must satisfy the SDN object naming rules (letters, digits, hyphens; typically ≤8 chars for PVE compatibility).",
+    "Each remote in the array must already be registered in PDM and reachable; an unreachable remote will cause the task to fail for that remote.",
+    "After creation, use get_sdn_vnets with `pending=true` to verify the VNet is in 'new' state and then check the running config once the task completes."
+  ],
+  "relatedOperations": [
+    "get_sdn_vnets",
+    "get_nodes_node_sdn_vnets_vnet",
+    "get_pve_remotes_remote_nodes_node_sdn_vnets_vnet"
+  ]
+}

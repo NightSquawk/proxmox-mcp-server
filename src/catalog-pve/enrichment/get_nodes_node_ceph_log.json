@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_ceph_log",
+  "usageNotes": "Use this endpoint to tail or page through the Ceph log on a specific PVE node — useful for diagnosing OSD failures, HEALTH_WARN/HEALTH_ERR transitions, or slow I/O events. The caller must hold the Sys.Syslog privilege on /nodes/{node}; API tokens are supported. Paginate with start and limit together to walk large logs without truncation, since omitting limit typically caps output at ~50 lines.",
+  "examples": [
+    {
+      "summary": "Fetch the most recent 100 Ceph log lines from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "start": 0,
+        "limit": 100
+      }
+    }
+  ],
+  "tips": [
+    "Each returned object has 'n' (1-based line number) and 't' (text); use 'n' to track position when paginating with subsequent start offsets.",
+    "This reads the Ceph log from the perspective of the queried node — log content may differ between nodes if Ceph is in a degraded or split-brain state.",
+    "Combine with get_nodes_node_ceph_status to correlate log events with current cluster health."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph_osd",
+    "get_nodes_node_syslog"
+  ]
+}

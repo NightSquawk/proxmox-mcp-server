@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_apt_repositories",
+  "usageNotes": "Use this endpoint to audit the APT repository configuration on a specific PDM node — useful before running updates or troubleshooting package availability. The response includes a top-level SHA256 digest that must be passed to any subsequent write operations to guard against concurrent modification. Check the 'errors' array first; parse failures mean the repository state is unreliable and updates should not proceed.",
+  "examples": [
+    {
+      "summary": "Retrieve APT repository list for node 'pdm1'",
+      "path_params": {
+        "node": "pdm1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The top-level 'digest' field is a concurrency guard — pass it to any repository write API to prevent overwriting concurrent changes.",
+    "The 'standard-repos' array shows whether Proxmox enterprise/no-subscription/test repos are configured and whether each is currently enabled, making it easy to spot missing or disabled official sources.",
+    "A non-empty 'errors' array means one or more /etc/apt/ files could not be parsed; treat repository state as incomplete until the errors are resolved.",
+    "The 'infos' array surfaces warnings (e.g. deprecated suite names or mixed signed/unsigned repos) even when parsing succeeds — review before applying updates."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_apt_repositories",
+    "put_nodes_node_apt_repositories",
+    "get_nodes_node_apt_update_database",
+    "get_nodes_node_apt_changelog"
+  ]
+}

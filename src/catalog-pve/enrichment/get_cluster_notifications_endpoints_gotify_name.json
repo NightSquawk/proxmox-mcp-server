@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_notifications_endpoints_gotify_name",
+  "usageNotes": "Use this to retrieve the current configuration of a specific Gotify push notification endpoint by name, including its server URL, enabled/disabled state, and optional comment. Requires either Mapping.Modify or Mapping.Audit privilege on /mapping/notifications. The response includes a digest field — capture it before calling an update operation to guard against concurrent configuration changes.",
+  "examples": [
+    {
+      "summary": "Fetch the 'gotify-alerts' endpoint configuration",
+      "path_params": {
+        "name": "gotify-alerts"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'digest' value should be passed to the corresponding update operation to prevent overwriting concurrent changes.",
+    "If 'disable' is absent from the response, the endpoint is enabled (default is false/not disabled).",
+    "Endpoint names follow the pve-configid format: alphanumeric and hyphens, no spaces or special characters."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_gotify",
+    "create_cluster_notifications_endpoints_gotify",
+    "update_cluster_notifications_endpoints_gotify_name",
+    "delete_cluster_notifications_endpoints_gotify_name"
+  ]
+}

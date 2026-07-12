@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_sdn_route_maps_entries",
+  "usageNotes": "Use this endpoint to list all SDN route map entries across all route maps, inspecting their match criteria, set actions, and permit/deny policy. Pass `pending=true` to preview staged (unapplied) changes before committing them with the SDN apply operation, or `running=true` to see the currently active dataplane state. Results are filtered to route maps where the caller holds at least SDN.Audit or SDN.Allocate on the relevant object path.",
+  "examples": [
+    {
+      "summary": "List all route map entries including any pending (unapplied) changes",
+      "path_params": {},
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "Each entry belongs to a specific route-map-id; use the returned route-map-id to scope follow-up calls to a single route map.",
+    "The `order` field (0-65535) determines evaluation sequence within a route map -- lower order is evaluated first.",
+    "exit-action controls what happens after a match: 'on-match-next' continues to the next entry, 'on-match-goto' jumps to a specific order index, 'continue' evaluates remaining entries regardless of match.",
+    "Changes made via POST/PUT are staged and require an SDN apply operation (PUT /cluster/sdn) to take effect in the running dataplane; use pending=true to review before applying.",
+    "The digest field returned per entry can be supplied on update/delete calls to guard against concurrent modification races."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_route_maps",
+    "get_cluster_sdn_route_maps_{name}_entries",
+    "put_cluster_sdn"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "post_access_groups",
+  "usageNotes": "Use this to create a new Proxmox access group, which can then be assigned permissions on paths (via put_access_acl) and have users added to it. The caller must hold the Group.Allocate privilege on /access/groups. The groupid must match the pve-groupid format (alphanumeric, hyphens, underscores; max 64 chars) and must not already exist — creating a duplicate returns an error.",
+  "examples": [
+    {
+      "summary": "Create an 'it-admins' group for IT administrators",
+      "path_params": {},
+      "params": {
+        "groupid": "it-admins",
+        "comment": "IT administrators with full node access"
+      }
+    }
+  ],
+  "tips": [
+    "Group names are case-sensitive and must be unique cluster-wide.",
+    "Creating the group does not assign any permissions — follow up with put_access_acl to grant path-based privileges.",
+    "To add users to the group after creation, use put_access_users_userid with the groups field."
+  ],
+  "relatedOperations": [
+    "get_access_groups",
+    "get_access_groups_groupid",
+    "put_access_acl",
+    "delete_access_groups_groupid"
+  ]
+}

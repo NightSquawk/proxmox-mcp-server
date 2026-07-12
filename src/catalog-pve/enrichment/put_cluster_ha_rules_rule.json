@@ -1,0 +1,33 @@
+{
+  "operationId": "put_cluster_ha_rules_rule",
+  "usageNotes": "Use this to modify an existing HA rule's affinity type, node list, resource assignments, or enabled/disabled state — changes take effect immediately with no UPID returned. The `type` parameter is required even when you are not changing it; always pass the current type to avoid an API error. Use `digest` to guard against concurrent edits, especially in automated workflows.",
+  "examples": [
+    {
+      "summary": "Switch a node-affinity rule to negative (anti-affinity) and add a second node with lower priority",
+      "path_params": {
+        "rule": "ha-affinity-rule1"
+      },
+      "params": {
+        "type": "node-affinity",
+        "affinity": "negative",
+        "nodes": "pve1:100,pve2:50",
+        "comment": "Keep HA VMs on separate nodes for fault isolation",
+        "strict": false
+      }
+    }
+  ],
+  "tips": [
+    "The `type` field is required on every PUT even if you are only updating other fields like `affinity` or `comment`.",
+    "Use the `delete` param (comma-separated field names, e.g. `delete: 'comment,nodes'`) to clear optional fields rather than setting them to empty strings.",
+    "Fetch the current rule's digest via GET /cluster/ha/rules/{rule} and pass it back to prevent lost-update races.",
+    "Disabling a rule (`disable: true`) keeps the rule definition intact while temporarily suspending enforcement — useful for maintenance windows.",
+    "Node priorities in the `nodes` list are relative integers; higher values are preferred. Omitting `:pri` defaults to priority 0.",
+    "For `resource-affinity` rules the `nodes` field is not applicable; use `resources` to specify vm:<vmid> or ct:<vmid> pairs."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_rules_rule",
+    "post_cluster_ha_rules",
+    "delete_cluster_ha_rules_rule",
+    "get_cluster_ha_rules"
+  ]
+}

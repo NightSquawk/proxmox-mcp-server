@@ -1,0 +1,28 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_vncproxy",
+  "usageNotes": "Use this to open a VNC console session to a running QEMU VM — the response returns a one-time ticket, port, and TLS cert that a VNC client (or the Proxmox noVNC web client) uses to connect. The caller must hold the VM.Console privilege on the VM. The VM must be in a running state on the specified node; calling this against a stopped or migrating VM will fail.",
+  "examples": [
+    {
+      "summary": "Open a VNC proxy session for VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "websocket": true
+      }
+    }
+  ],
+  "tips": [
+    "The returned ticket is short-lived — use it immediately to establish the VNC connection before it expires.",
+    "Set websocket: true when your client will upgrade to WebSocket transport; this is required for the serial-terminal path but harmless for standard VGA console access.",
+    "The generate-password param is deprecated and ignored; do not pass it in new code.",
+    "Use the returned cert fingerprint to validate the TLS connection and avoid MITM on the VNC channel.",
+    "If you need the SPICE protocol instead of VNC, use the sibling spiceproxy endpoint."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_spiceproxy",
+    "post_nodes_node_qemu_vmid_termproxy"
+  ]
+}

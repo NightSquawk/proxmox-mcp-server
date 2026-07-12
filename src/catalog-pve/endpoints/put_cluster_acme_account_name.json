@@ -1,0 +1,41 @@
+{
+  "operationId": "put_cluster_acme_account_name",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "update_account",
+  "method": "PUT",
+  "path": "/cluster/acme/account/{name}",
+  "description": "Update existing ACME account information with CA. Note: not specifying any new account information triggers a refresh.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "description": "ACME account config file name.",
+      "format": "pve-configid",
+      "default": "default",
+      "typetext": "<name>"
+    }
+  ],
+  "params": [
+    {
+      "name": "contact",
+      "type": "string",
+      "required": false,
+      "description": "Contact email addresses.",
+      "format": "email-list",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/acme/account/<name>'"
+}

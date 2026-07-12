@@ -1,0 +1,88 @@
+{
+  "operationId": "get_access_users_userid_token_token_name",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "{token-name}",
+  "method": "GET",
+  "path": "/access/users/{userid}/token/{token-name}",
+  "description": "Read user's API token metadata",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "User ID",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "token-name",
+      "type": "string",
+      "required": true,
+      "description": "The token ID part of an API token authentication id.\n\nThis alone does NOT uniquely identify the API token - use a full `Authid` for such use cases.",
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "ApiToken properties.",
+    "properties": {
+      "comment": {
+        "description": "Comment.",
+        "maxLength": 128,
+        "optional": 1,
+        "pattern": "/^[[:^cntrl:]]*$/",
+        "type": "string"
+      },
+      "enable": {
+        "default": true,
+        "description": "Enable the account (default). You can set this to '0' to disable the account.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "expire": {
+        "default": 0,
+        "description": "Account expiration date (seconds since epoch). '0' means no expiration date.",
+        "minimum": 0,
+        "optional": 1,
+        "type": "integer"
+      },
+      "tokenid": {
+        "description": "API Token ID",
+        "maxLength": 64,
+        "minLength": 3,
+        "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)!(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "or": [
+      {
+        "check": {
+          "partial": false,
+          "path": [
+            "access",
+            "users"
+          ],
+          "privs": [
+            "System.Audit"
+          ]
+        }
+      },
+      {
+        "userParam": "userid"
+      }
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/users/<userid>/token/<token-name>'"
+}

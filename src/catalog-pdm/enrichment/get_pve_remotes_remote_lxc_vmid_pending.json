@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid_pending",
+  "usageNotes": "Use this to retrieve pending (unapplied) configuration changes for an LXC container on a remote PVE cluster — changes that have been queued but not yet activated, typically requiring a container restart to take effect. The caller needs Resource.Audit privilege on the remote's guest resource. If the container's node is not specified, PDM resolves it automatically; supply the node parameter to skip that lookup or to disambiguate when the same VMID exists on multiple nodes.",
+  "examples": [
+    {
+      "summary": "Get pending config for LXC 201 on remote 'pve-hetzner', auto-resolved node",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 201
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A non-empty response means the container has staged config changes that differ from its running config — a restart is usually required to apply them.",
+    "If the container is actively running, pending changes will not be visible in the current/active config; always check this endpoint before and after making config edits.",
+    "Supplying the node query parameter avoids an extra cluster lookup and is slightly faster on large PVE clusters.",
+    "Returns null per spec when no pending changes exist — treat a null/empty response as 'no pending changes', not an error."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc_vmid_config",
+    "get_pve_remotes_remote_lxc",
+    "get_pve_remotes_remote_lxc_vmid_status_current"
+  ]
+}

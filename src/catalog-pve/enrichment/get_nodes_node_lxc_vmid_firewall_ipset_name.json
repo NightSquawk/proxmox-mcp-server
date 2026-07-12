@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_ipset_name",
+  "usageNotes": "Use this to list all CIDR entries within a named IPSet scoped to a specific LXC container's firewall. The IPSet must already exist on the container; call the IPSet list endpoint first if you need to confirm the name. Each returned entry includes a digest — capture it before any subsequent add/remove operations to guard against concurrent modifications.",
+  "examples": [
+    {
+      "summary": "List all CIDRs in the 'trusted-mgmt' IPSet for LXC 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110,
+        "name": "trusted-mgmt"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "IPSet names must start with a letter and match [A-Za-z][A-Za-z0-9\\-\\_]+; names like '10net' are invalid.",
+    "The 'nomatch' flag on an entry inverts that CIDR (acts as an exclusion within the set); check it before assuming all returned CIDRs are allow-listed.",
+    "This endpoint reads the container-level IPSet, which is separate from cluster-level IPSets defined under datacenter firewall — verify scope when troubleshooting rule mismatches.",
+    "The digest in each entry is per-entry, not per-set; use it with modification calls to prevent race conditions when multiple admins manage the same set."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_ipsets",
+    "post_nodes_node_lxc_vmid_firewall_ipset_name",
+    "delete_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+    "get_nodes_node_lxc_vmid_firewall_rules"
+  ]
+}

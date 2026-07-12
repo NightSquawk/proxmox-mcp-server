@@ -1,0 +1,489 @@
+{
+  "operationId": "get_resources_status",
+  "surface": "pdm",
+  "resource": "resources",
+  "category": "Resources",
+  "name": "status",
+  "method": "GET",
+  "path": "/resources/status",
+  "description": "Return the amount of configured/seen resources by type",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "max-age",
+      "type": "integer",
+      "required": false,
+      "description": "Maximum age (in seconds) of cached remote resources.",
+      "default": 30,
+      "minimum": 0
+    },
+    {
+      "name": "view",
+      "type": "string",
+      "required": false,
+      "description": "View name.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Resource API response",
+    "properties": {
+      "error": {
+        "description": "Any error that occurred when querying remote resources",
+        "optional": 1,
+        "type": "string"
+      },
+      "remote": {
+        "description": "Remote ID.",
+        "maxLength": 32,
+        "minLength": 2,
+        "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      },
+      "resources": {
+        "description": "Array of resources found at this remote.",
+        "items": {
+          "description": "A resource entry.",
+          "oneOf": [
+            {
+              "additionalProperties": false,
+              "description": "PBS datastore resource",
+              "properties": {
+                "backend-type": {
+                  "description": "Datastore backend type",
+                  "optional": 1,
+                  "type": "string"
+                },
+                "backing-device": {
+                  "description": "Datastore backing device",
+                  "optional": 1,
+                  "type": "string"
+                },
+                "disk": {
+                  "description": "Use space",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "id": {
+                  "description": "Resource ID",
+                  "type": "string"
+                },
+                "maintenance": {
+                  "description": "Datastore maintenance mode",
+                  "optional": 1,
+                  "type": "string"
+                },
+                "maxdisk": {
+                  "description": "Total space",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "name": {
+                  "description": "Datastore name",
+                  "type": "string"
+                },
+                "usage": {
+                  "description": "Datastore contents disk usage",
+                  "type": "number"
+                }
+              },
+              "title": "pbs-datastore",
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "PBS node remote resource",
+              "properties": {
+                "cpu": {
+                  "description": "Current CPU utilization",
+                  "type": "number"
+                },
+                "id": {
+                  "description": "Resource ID",
+                  "type": "string"
+                },
+                "maxcpu": {
+                  "description": "Maximum CPU utilization (Number of CPUs)",
+                  "type": "number"
+                },
+                "maxmem": {
+                  "description": "System memory",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "mem": {
+                  "description": "Current memory usage",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "name": {
+                  "description": "Node name",
+                  "type": "string"
+                },
+                "uptime": {
+                  "description": "Uptime",
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "pbs-node",
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "LXC container resource on a PVE remote",
+              "properties": {
+                "cpu": {
+                  "description": "Current CPU utilization",
+                  "type": "number"
+                },
+                "disk": {
+                  "description": "Root disk usage",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "id": {
+                  "description": "Resource ID",
+                  "type": "string"
+                },
+                "maxcpu": {
+                  "description": "Maximum CPU utilization (Number of CPUs)",
+                  "type": "number"
+                },
+                "maxdisk": {
+                  "description": "Root disk size",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "maxmem": {
+                  "description": "System memory",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "mem": {
+                  "description": "Current memory usage",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "name": {
+                  "description": "Guest name",
+                  "type": "string"
+                },
+                "node": {
+                  "description": "Cluster node name",
+                  "type": "string"
+                },
+                "pool": {
+                  "description": "Pool name",
+                  "type": "string"
+                },
+                "status": {
+                  "description": "Current status",
+                  "type": "string"
+                },
+                "tags": {
+                  "description": "Tags",
+                  "items": {
+                    "description": "A tag",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "template": {
+                  "description": "Is template",
+                  "type": "boolean"
+                },
+                "uptime": {
+                  "description": "Guest uptime",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "vmid": {
+                  "description": "VMID",
+                  "maximum": 4294967295,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "pve-lxc",
+              "type": "object"
+            },
+            {
+              "description": "PVE Network resource",
+              "oneOf": [
+                {
+                  "additionalProperties": false,
+                  "description": "SDN Fabric",
+                  "properties": {
+                    "id": {
+                      "description": "Resource ID",
+                      "type": "string"
+                    },
+                    "network": {
+                      "description": "Name of the resource",
+                      "type": "string"
+                    },
+                    "node": {
+                      "description": "Cluster node name",
+                      "type": "string"
+                    },
+                    "protocol": {
+                      "description": "faabric protocol",
+                      "type": "string"
+                    },
+                    "status": {
+                      "description": "SDN status",
+                      "type": "string"
+                    }
+                  },
+                  "title": "fabric",
+                  "type": "object"
+                },
+                {
+                  "additionalProperties": false,
+                  "description": "SDN Zone",
+                  "properties": {
+                    "id": {
+                      "description": "Resource ID",
+                      "type": "string"
+                    },
+                    "legacy": {
+                      "description": "legacy",
+                      "type": "boolean"
+                    },
+                    "network": {
+                      "description": "Name of the resource",
+                      "type": "string"
+                    },
+                    "node": {
+                      "description": "Cluster node name",
+                      "type": "string"
+                    },
+                    "status": {
+                      "description": "SDN status",
+                      "type": "string"
+                    },
+                    "zone-type": {
+                      "description": "Zone type",
+                      "type": "string"
+                    }
+                  },
+                  "title": "zone",
+                  "type": "object"
+                }
+              ],
+              "title": "pve-network",
+              "type": "object",
+              "typeProperty": "network_type",
+              "typeSchema": {
+                "description": "PVE Network resource type",
+                "enum": [
+                  "zone",
+                  "fabric"
+                ],
+                "type": "string"
+              }
+            },
+            {
+              "additionalProperties": false,
+              "description": "Node resource in a PVE cluster",
+              "properties": {
+                "cgroup-mode": {
+                  "description": "CGroup Mode",
+                  "type": "integer"
+                },
+                "cpu": {
+                  "description": "Current CPU utilization",
+                  "type": "number"
+                },
+                "id": {
+                  "description": "Resource ID",
+                  "type": "string"
+                },
+                "level": {
+                  "description": "Subscription level",
+                  "type": "string"
+                },
+                "maxcpu": {
+                  "description": "Maximum CPU utilization (Number of CPUs)",
+                  "type": "number"
+                },
+                "maxmem": {
+                  "description": "System memory",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "mem": {
+                  "description": "Current memory usage",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "node": {
+                  "description": "Cluster node name",
+                  "type": "string"
+                },
+                "status": {
+                  "description": "Node status",
+                  "type": "string"
+                },
+                "uptime": {
+                  "description": "Node uptime",
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "pve-node",
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "QEMU VM resource on a PVE remote",
+              "properties": {
+                "cpu": {
+                  "description": "Current CPU utilization",
+                  "type": "number"
+                },
+                "disk": {
+                  "description": "Root disk usage",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "id": {
+                  "description": "Resource ID",
+                  "type": "string"
+                },
+                "maxcpu": {
+                  "description": "Maximum CPU utilization (Number of CPUs)",
+                  "type": "number"
+                },
+                "maxdisk": {
+                  "description": "Root disk size",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "maxmem": {
+                  "description": "System memory",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "mem": {
+                  "description": "Current memory usage",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "name": {
+                  "description": "Guest name",
+                  "type": "string"
+                },
+                "node": {
+                  "description": "Cluster node name",
+                  "type": "string"
+                },
+                "pool": {
+                  "description": "Pool name",
+                  "type": "string"
+                },
+                "status": {
+                  "description": "Current status",
+                  "type": "string"
+                },
+                "tags": {
+                  "description": "Tags",
+                  "items": {
+                    "description": "A tag",
+                    "type": "string"
+                  },
+                  "type": "array"
+                },
+                "template": {
+                  "description": "Is template",
+                  "type": "boolean"
+                },
+                "uptime": {
+                  "description": "Guest uptime",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "vmid": {
+                  "description": "VMID",
+                  "maximum": 4294967295,
+                  "minimum": 0,
+                  "type": "integer"
+                }
+              },
+              "title": "pve-qemu",
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "description": "Storage resource in a PVE remote",
+              "properties": {
+                "disk": {
+                  "description": "Storage usage",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "id": {
+                  "description": "Resource ID",
+                  "type": "string"
+                },
+                "maxdisk": {
+                  "description": "Storage size",
+                  "minimum": 0,
+                  "type": "integer"
+                },
+                "node": {
+                  "description": "Cluster node name",
+                  "type": "string"
+                },
+                "shared": {
+                  "description": "shared flag",
+                  "type": "boolean"
+                },
+                "status": {
+                  "description": "Storage status",
+                  "type": "string"
+                },
+                "storage": {
+                  "description": "Storage name",
+                  "type": "string"
+                }
+              },
+              "title": "pve-storage",
+              "type": "object"
+            }
+          ],
+          "type": "object",
+          "typeProperty": "type",
+          "typeSchema": {
+            "description": "Type of the object.",
+            "enum": [
+              "pve-storage",
+              "pve-qemu",
+              "pve-lxc",
+              "pve-node",
+              "pve-network",
+              "pbs-node",
+              "pbs-datastore"
+            ],
+            "type": "string"
+          }
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/resources/status'"
+}

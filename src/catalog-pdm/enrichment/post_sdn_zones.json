@@ -1,0 +1,30 @@
+{
+  "operationId": "post_sdn_zones",
+  "usageNotes": "Use this to create an SDN zone that is deployed across one or more Proxmox remotes managed by the Datacenter Manager. The zone name must conform to the SDN object naming rules (alphanumeric, used as an identifier across the fabric). Returns a UPID — poll the task API to confirm completion before creating VNets in the zone.",
+  "examples": [
+    {
+      "summary": "Create a VXLAN-backed zone on two remotes",
+      "path_params": {},
+      "params": {
+        "zone": "vxlan-prod",
+        "remotes": [
+          { "remote": "hetzner-de", "controller": "evpn-ctrl-01" },
+          { "remote": "ovh-us", "controller": "evpn-ctrl-01" }
+        ],
+        "vrf-vxlan": 10001
+      }
+    }
+  ],
+  "tips": [
+    "The returned UPID is asynchronous — wait for task success before creating VNets or subnets in the new zone.",
+    "Zone names are cluster-wide identifiers; choose a name that is unique across all remotes in the fabric to avoid conflicts.",
+    "vrf-vxlan is optional but required when using EVPN/VRF routing; valid range is 1–16777215 (24-bit VNI space).",
+    "Each entry in the remotes array should specify both the remote name and the controller responsible for that remote."
+  ],
+  "relatedOperations": [
+    "get_sdn_zones",
+    "put_sdn_zones_zone",
+    "delete_sdn_zones_zone",
+    "post_sdn_vnets"
+  ]
+}

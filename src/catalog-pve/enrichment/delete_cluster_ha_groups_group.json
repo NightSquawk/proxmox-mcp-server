@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_ha_groups_group",
+  "usageNotes": "Permanently removes an HA group configuration from the cluster. This endpoint is deprecated in favor of HA rules; prefer managing high-availability through the rules API for new configurations. Before deleting, ensure no HA resources are still assigned to the group, as removing a group with active members can disrupt service protection.",
+  "examples": [
+    {
+      "summary": "Delete an HA group named 'production'",
+      "path_params": {
+        "group": "production"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the HA group configuration; any HA resources still referencing this group will lose their group assignment and may fall back to default HA behavior or become unprotected.",
+  "tips": [
+    "Check for HA resources still using this group via GET /cluster/ha/resources before deleting.",
+    "This API is marked deprecated — use HA rules (/cluster/ha/rules) for managing high availability in current Proxmox versions.",
+    "Returns null on success; errors if the group does not exist or if the caller lacks Sys.Console on /."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_groups_group",
+    "get_cluster_ha_groups",
+    "create_cluster_ha_groups",
+    "update_cluster_ha_groups_group",
+    "get_cluster_ha_resources"
+  ]
+}

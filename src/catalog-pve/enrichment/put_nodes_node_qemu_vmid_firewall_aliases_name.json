@@ -1,0 +1,31 @@
+{
+  "operationId": "put_nodes_node_qemu_vmid_firewall_aliases_name",
+  "usageNotes": "Use this to update the CIDR, comment, or name of an existing IP/network alias scoped to a specific VM's firewall. The alias must already exist — create it first with the corresponding POST endpoint. Supply the `digest` field from the current alias to guard against concurrent overwrites; Proxmox will reject the update if the config has changed since you read it.",
+  "examples": [
+    {
+      "summary": "Rename alias 'db-backend' to 'db-primary' and update its CIDR",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105,
+        "name": "db-backend"
+      },
+      "params": {
+        "cidr": "10.10.20.0/24",
+        "rename": "db-primary",
+        "comment": "Primary database subnet after rack reorganization"
+      }
+    }
+  ],
+  "tips": [
+    "The `name` path param must match the alias as it currently exists; use `rename` in the body to give it a new name in the same request.",
+    "Alias names must start with a letter and may contain letters, digits, hyphens, and underscores (2–64 chars); the same pattern applies to `rename`.",
+    "Returns null on success — no UPID is issued because this is a synchronous, in-place config file update.",
+    "VM-level aliases are only visible to that VM's firewall rules; they are not shared with the cluster-wide alias pool."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_aliases_name",
+    "post_nodes_node_qemu_vmid_firewall_aliases",
+    "delete_nodes_node_qemu_vmid_firewall_aliases_name",
+    "get_nodes_node_qemu_vmid_firewall_aliases"
+  ]
+}

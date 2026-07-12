@@ -1,0 +1,26 @@
+{
+  "operationId": "post_access_ticket",
+  "usageNotes": "Use this endpoint to authenticate a user and obtain a session ticket for subsequent API calls. The response includes a ticket (used as a Bearer token or cookie) and a CSRFPreventionToken required for all POST/PUT/DELETE requests. If the user has TFA configured, the initial response returns a TFA challenge string that must be answered in a second request using the 'tfa-challenge' parameter.",
+  "examples": [
+    {
+      "summary": "Authenticate a local PDM user and retrieve a session ticket",
+      "path_params": {},
+      "params": {
+        "username": "admin@pam",
+        "password": "s3cur3P@ssword"
+      }
+    }
+  ],
+  "tips": [
+    "The returned ticket must be sent as 'Authorization: PDMAPIToken=...' or as a cookie on subsequent requests; the CSRFPreventionToken must be included as 'CSRFPreventionToken' header for non-GET requests.",
+    "Tickets are time-limited (typically 2 hours); re-authenticate before expiry if running long-lived automations.",
+    "The optional 'path' and 'privs' parameters allow ticket verification plus privilege checking in a single call — useful for SSO flows that need to confirm access before redirecting.",
+    "When authenticating via an API token (USER@REALM!TOKENID=SECRET), this endpoint is not needed — API tokens are passed directly in the Authorization header.",
+    "Username format must match the pattern user@realm (e.g., admin@pam, kevin@pve)."
+  ],
+  "relatedOperations": [
+    "delete_access_ticket",
+    "get_access_ticket",
+    "post_access_tfa_response"
+  ]
+}

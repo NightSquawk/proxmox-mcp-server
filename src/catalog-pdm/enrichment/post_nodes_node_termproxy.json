@@ -1,0 +1,25 @@
+{
+  "operationId": "post_nodes_node_termproxy",
+  "usageNotes": "Use this to open a web-based terminal session on a PDM node; it returns a short-lived ticket and port that the browser-based terminal UI (noVNC/xterm.js) uses to establish the WebSocket connection. The caller must be authenticated as a PAM-realm user with Sys.Console on the system path — API tokens are accepted but the PAM realm restriction still applies. Omit `cmd` for a plain login shell, or pass `cmd=upgrade` to launch an interactive system-upgrade session.",
+  "examples": [
+    {
+      "summary": "Open a login shell terminal on node 'pdm-node1'",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {
+        "cmd": "login"
+      }
+    }
+  ],
+  "tips": [
+    "The returned `ticket` and `port` must be passed to the termproxy WebSocket endpoint to actually connect; obtaining them alone does not open a shell.",
+    "Tickets are short-lived — connect immediately after calling this endpoint.",
+    "The `upid` in the response tracks the background termproxy process; it is not a long-running async task UPID in the usual sense — the shell is ready once you receive the response.",
+    "Using 'localhost' as the node value targets the PDM manager node itself, not a managed PVE node."
+  ],
+  "relatedOperations": [
+    "get_nodes_node",
+    "get_nodes"
+  ]
+}

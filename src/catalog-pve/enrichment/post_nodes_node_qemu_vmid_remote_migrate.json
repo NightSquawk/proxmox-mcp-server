@@ -1,0 +1,35 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_remote_migrate",
+  "usageNotes": "Use this endpoint to migrate a QEMU VM from the local cluster to a completely separate, unrelated Proxmox cluster (remote migration). This is an EXPERIMENTAL feature — prefer the standard intra-cluster migrate endpoint when both source and target nodes share the same cluster. The caller must supply a `target-endpoint` with a valid API token for the remote cluster and explicit bridge/storage mappings; the operation returns a UPID task string that must be polled via the tasks API to track completion. By default the source VM is left stopped on the source cluster after migration; pass `delete: true` to remove it automatically only after a confirmed successful transfer.",
+  "examples": [
+    {
+      "summary": "Live-migrate VM 102 from node pve1 to a remote cluster, deleting the source after success",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 102
+      },
+      "params": {
+        "target-endpoint": "apitoken=PVEAPIToken=root@pam!migrate=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx,host=remote-pve.example.com,fingerprint=AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33:44:55:66:77:88:99",
+        "target-bridge": "vmbr0",
+        "target-storage": "local-lvm",
+        "online": true,
+        "delete": true,
+        "bwlimit": 102400
+      }
+    }
+  ],
+  "tips": [
+    "The `target-endpoint` API token must have sufficient privileges on the remote cluster (at minimum VM.Allocate and Datastore.AllocateSpace on the destination).",
+    "Use `target-bridge: '1'` or `target-storage: '1'` as shorthand to map each source bridge/storage to an identically-named resource on the target — useful when both clusters share the same naming scheme.",
+    "Online migration across clusters requires the VM's disks to be on shared or replicable storage; non-shared local storage will cause the task to fail if `online: true`.",
+    "The returned UPID can be polled with GET /nodes/{node}/tasks/{upid}/status; check for `exitstatus: OK` before concluding the migration succeeded.",
+    "If `target-vmid` is omitted, the remote cluster will attempt to use the same VMID — ensure there is no ID collision on the target beforehand.",
+    "Set `bwlimit` (in KiB/s) to throttle disk transfer and avoid saturating the WAN link during business hours."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_migrate",
+    "get_nodes_node_tasks",
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

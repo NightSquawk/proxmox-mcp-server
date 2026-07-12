@@ -1,0 +1,27 @@
+{
+  "operationId": "post_pbs_scan",
+  "usageNotes": "Use this endpoint to probe a Proxmox Backup Server remote by credentials before committing it as a configured remote — it validates connectivity and login without persisting anything. Requires the `System.Modify` privilege at the root path (`/`). The response echoes back the connection details along with discovered node addresses, making it useful for confirming the correct hostname/authid combination prior to calling the remote-add endpoint.",
+  "examples": [
+    {
+      "summary": "Scan a PBS instance using an API token before adding it as a remote",
+      "path_params": {},
+      "params": {
+        "authid": "backup@pbs!mcp-token",
+        "hostname": "pbs.nightsquawk.tech:8007",
+        "token": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "fingerprint": "AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78"
+      }
+    }
+  ],
+  "tips": [
+    "The `authid` format is `user@realm` for password auth or `user@realm!tokenid` for API token auth — match the format to whatever `token` value you are supplying.",
+    "Omitting `fingerprint` is allowed but will cause TLS verification to fall back to system trust store; always supply the fingerprint for self-signed PBS certificates to avoid connection failures.",
+    "This call returns synchronously (no UPID); if it returns connection info the credentials are valid — a failed login surfaces as an API error, not a task.",
+    "Port 8007 is the PBS default; include it explicitly in `hostname` if PDM cannot reach the standard PBS port."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes",
+    "post_pbs_remotes",
+    "get_pbs_remote_datastores"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_firewall",
+  "usageNotes": "Returns the directory index of the cluster-level firewall API, listing available child endpoints (e.g. rules, groups, options, refs). Use this as a discovery call to confirm which firewall sub-resources are accessible on the cluster before querying them individually. No parameters are required and no special privilege beyond cluster membership is needed.",
+  "examples": [
+    {
+      "summary": "List available cluster firewall sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned array contains child resource names (e.g. 'rules', 'groups', 'options', 'refs') that map directly to sub-paths under /cluster/firewall/.",
+    "This endpoint is purely navigational — use child endpoints to read or modify actual firewall rules and settings.",
+    "Accessible with API tokens (allowtoken: true), making it safe to include in read-only monitoring or discovery scripts."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_options",
+    "get_cluster_firewall_rules",
+    "get_cluster_firewall_groups",
+    "get_cluster_firewall_refs"
+  ]
+}

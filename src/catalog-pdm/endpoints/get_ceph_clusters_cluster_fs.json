@@ -1,0 +1,77 @@
+{
+  "operationId": "get_ceph_clusters_cluster_fs",
+  "surface": "pdm",
+  "resource": "ceph",
+  "category": "Ceph",
+  "name": "fs",
+  "method": "GET",
+  "path": "/ceph/clusters/{cluster}/fs",
+  "description": "List the cluster's CephFS file systems.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "cluster",
+      "type": "string",
+      "required": true,
+      "description": "Ceph cluster identifier (fsid).",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "CephFS file systems of the cluster.",
+    "items": {
+      "additionalProperties": true,
+      "description": "Object.",
+      "properties": {
+        "data_pool": {
+          "description": "Name of the filesystem's first data pool. A CephFS can have more than\none data pool; consumers interested in the full set should read\n'data_pools' instead. Kept for backwards compatibility.",
+          "type": "string"
+        },
+        "data_pool_ids": {
+          "description": "Numeric ids of the data pools.",
+          "items": {
+            "description": "Data pool id.",
+            "type": "integer"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "data_pools": {
+          "description": "Names of all data pools assigned to the filesystem; a CephFS can have\nmultiple data pools (e.g. replicated metadata plus EC data, or multiple\ndevice-class-specific data pools).",
+          "items": {
+            "description": "Data pool name.",
+            "type": "string"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "metadata_pool": {
+          "description": "Name of the metadata pool.",
+          "type": "string"
+        },
+        "metadata_pool_id": {
+          "description": "Numeric id of the metadata pool.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "name": {
+          "description": "The ceph filesystem name.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/ceph/clusters/<cluster>/fs'"
+}

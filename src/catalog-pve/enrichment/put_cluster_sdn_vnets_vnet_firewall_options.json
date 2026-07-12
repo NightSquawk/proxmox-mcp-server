@@ -1,0 +1,29 @@
+{
+  "operationId": "put_cluster_sdn_vnets_vnet_firewall_options",
+  "usageNotes": "Use this to enable or configure firewall enforcement on a specific SDN vnet, including setting the default forward policy (ACCEPT or DROP) and log verbosity for forwarded traffic. The caller must hold SDN.Allocate on the vnet's zone path ('/sdn/zones/<zone>/<vnet>'); changes take effect after the cluster SDN config is applied via 'put_cluster_sdn_reload'. Pass 'digest' from a prior GET to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Enable firewall with DROP forward policy and info-level logging on vnet 'prod01'",
+      "path_params": {
+        "vnet": "prod01"
+      },
+      "params": {
+        "enable": true,
+        "policy_forward": "DROP",
+        "log_level_forward": "info"
+      }
+    }
+  ],
+  "tips": [
+    "Firewall changes on a vnet are not live until SDN is reloaded cluster-wide; call put_cluster_sdn_reload after this.",
+    "The default 'enable' value is 0 (disabled); traffic is not filtered until explicitly enabled.",
+    "Use the 'delete' param to reset specific options (e.g., 'log_level_forward') back to defaults rather than sending an empty string.",
+    "Retrieve the current digest with get_cluster_sdn_vnets_vnet_firewall_options before writing to prevent race conditions in automated workflows."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_firewall_options",
+    "put_cluster_sdn_reload",
+    "get_cluster_sdn_vnets_vnet_firewall_rules",
+    "post_cluster_sdn_vnets_vnet_firewall_rules"
+  ]
+}

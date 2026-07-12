@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_storage",
+  "usageNotes": "Use this endpoint to list all datastores visible to a specific node along with their live capacity metrics (total, used, available bytes). The node must be online — offline nodes return no storage status. Results are filtered by the caller's permissions: only storages where the caller holds 'Datastore.Audit' or 'Datastore.AllocateSpace' on '/storage/<storage>' will appear.",
+  "examples": [
+    {
+      "summary": "List only ISO-capable, enabled storages on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "content": "iso",
+        "enabled": true
+      }
+    }
+  ],
+  "tips": [
+    "The 'active' field in each result indicates whether the storage is currently reachable/mounted, which can differ from 'enabled' (config-level toggle).",
+    "Use the 'target' param when planning a VM migration: it restricts results to shared storages accessible by both the source node and the target node.",
+    "Set 'format=true' to get the list of supported disk image formats (qcow2, raw, vmdk, subvol) — useful before provisioning a new VM disk.",
+    "Capacity fields (avail, used, total) may be absent for storage types that do not report usage (e.g. some directory stores or external backends that are unreachable)."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_status",
+    "get_nodes_node_storage_storage_content",
+    "get_storage",
+    "get_nodes_node_status"
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "operationId": "get_subscriptions_keys",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "keys",
+  "method": "GET",
+  "path": "/subscriptions/keys",
+  "description": "List all subscription keys in the key pool the caller has audit access to.\n\nUnbound pool entries are visible to anyone holding the system-AUDIT bit. Bound entries are\nadditionally gated on per-remote `PRIV_RESOURCE_AUDIT` so that an operator who can audit the\npool but not a specific remote does not learn which keys are pinned to it (and through that,\nthe existence and rough size of that remote's deployment).",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of subscription keys in the pool.",
+    "items": {
+      "additionalProperties": false,
+      "description": "An entry in the subscription key pool.",
+      "properties": {
+        "check-time": {
+          "description": "Epoch of last import or refresh of this key's data.\n\nAccepts the upstream `checktime` spelling on deserialisation; canonical form is\n`check-time`.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "key": {
+          "description": "Subscription key.",
+          "maxLength": 18,
+          "minLength": 15,
+          "pattern": "/^(?:pve[0-9]+|pbs)[cbsp]-[0-9a-f]{10}$/",
+          "type": "string"
+        },
+        "level": {
+          "default": "None",
+          "description": "Describes the level of subscription",
+          "enum": [
+            "None",
+            "Unknown",
+            "Community",
+            "Basic",
+            "Standard",
+            "Premium"
+          ],
+          "optional": 1,
+          "type": "string"
+        },
+        "next-due-date": {
+          "description": "Next due date.\n\nAccepts the upstream `nextduedate` spelling on deserialisation so a future shop-bundle\nimport path can hand a raw `SubscriptionInfo` blob through without a field-name\ntranslation step; canonical (and on-disk) form is `next-due-date` per the struct's\nkebab-case rename.",
+          "optional": 1,
+          "type": "string"
+        },
+        "node": {
+          "description": "Node within the remote this key is assigned to (if any).",
+          "optional": 1,
+          "type": "string"
+        },
+        "pending-clear": {
+          "description": "True when the operator queued a clear for this entry's bound node, that is, a request\nto free the key from `remote`/`node` so it can be reassigned to a different node.\n\nApply Pending issues a DELETE on the remote and then clears `remote`/`node` on success.\nDiscard Pending only resets this flag and leaves the binding untouched so the operator can\nretry. A bare flag is enough since the (remote, node) binding lives next to it.\n\nOmitted from the serialised representation when false so the on-disk section and the\nAPI response do not carry `pending-clear false` lines for every entry.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "product-name": {
+          "description": "Product name.\n\nAccepts the upstream `productname` spelling on deserialisation; canonical form is\n`product-name` to stay self-consistent with the sibling `product-type` field.",
+          "optional": 1,
+          "type": "string"
+        },
+        "product-type": {
+          "default": "pve",
+          "description": "Proxmox product line a subscription key belongs to.",
+          "enum": [
+            "pve",
+            "pbs",
+            "pmg",
+            "pom"
+          ],
+          "type": "string"
+        },
+        "remote": {
+          "description": "Remote this key is assigned to (if any).",
+          "optional": 1,
+          "type": "string"
+        },
+        "serverid": {
+          "description": "Server ID this key is bound to (from signed info, if available).",
+          "optional": 1,
+          "type": "string"
+        },
+        "source": {
+          "default": "manual",
+          "description": "Origin of a subscription key entry.",
+          "enum": [
+            "manual",
+            "adopted"
+          ],
+          "optional": 1,
+          "type": "string"
+        },
+        "status": {
+          "default": "notfound",
+          "description": "Subscription status",
+          "enum": [
+            "new",
+            "notfound",
+            "active",
+            "invalid",
+            "expired",
+            "suspended"
+          ],
+          "optional": 1,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/subscriptions/keys'"
+}

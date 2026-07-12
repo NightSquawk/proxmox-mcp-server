@@ -1,0 +1,30 @@
+{
+  "operationId": "post_cluster_mapping_dir",
+  "usageNotes": "Use this to register a new cluster-wide directory mapping that abstracts host-specific local paths behind a shared identifier — required before you can reference the mapping in storage or VM configurations. The caller must hold `Mapping.Modify` on `/mapping/dir`. The `map` array must contain at least one node-to-path entry; the mapping ID (`id`) must be a valid PVE config identifier (alphanumeric plus hyphens/underscores, no spaces).",
+  "examples": [
+    {
+      "summary": "Create a directory mapping for a shared ISO store path that differs by node",
+      "path_params": {},
+      "params": {
+        "id": "iso-store",
+        "description": "Per-node ISO image directory mapping",
+        "map": [
+          "node=pve01,path=/mnt/iso",
+          "node=pve02,path=/mnt/iso"
+        ]
+      }
+    }
+  ],
+  "tips": [
+    "The mapping ID must follow pve-configid format: start with a letter, use only [A-Za-z0-9_-], max 64 chars.",
+    "Each entry in `map` is a string in `node=<nodename>,path=<absolute-path>` format; every cluster node you want covered needs its own entry.",
+    "Returns null on success — confirm creation with get_cluster_mapping_dir or list_cluster_mapping_dir.",
+    "Directory mappings are cluster-wide metadata; the underlying path must exist on each referenced node independently."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_dir",
+    "put_cluster_mapping_dir",
+    "delete_cluster_mapping_dir",
+    "get_cluster_mapping_dir_id"
+  ]
+}

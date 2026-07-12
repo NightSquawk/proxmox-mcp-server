@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_metrics_server",
+  "usageNotes": "Use this to list all metric server integrations configured on the cluster (e.g. InfluxDB, Graphite). Requires `Sys.Audit` on the root path — API tokens are supported. The `disable` flag on each entry indicates whether the plugin is currently active; a server appearing in the list does not guarantee it is receiving metrics.",
+  "examples": [
+    {
+      "summary": "List all configured metric servers on the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Check the `disable` field on each result — a configured server with `disable: true` is not receiving any metrics.",
+    "Use `type` to distinguish InfluxDB vs. Graphite entries when multiple backends are configured.",
+    "Pair with the individual get/update endpoints (e.g. get_cluster_metrics_server_id) to inspect or modify a specific entry by its `id`."
+  ],
+  "relatedOperations": [
+    "get_cluster_metrics_server_id",
+    "create_cluster_metrics_server_influxdb",
+    "create_cluster_metrics_server_graphite",
+    "update_cluster_metrics_server_id",
+    "delete_cluster_metrics_server_id"
+  ]
+}

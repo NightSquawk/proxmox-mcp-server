@@ -1,0 +1,321 @@
+{
+  "operationId": "get_auto_install_prepared",
+  "surface": "pdm",
+  "resource": "auto-install",
+  "category": "Auto Install",
+  "name": "prepared",
+  "method": "GET",
+  "path": "/auto-install/prepared",
+  "description": "GET /auto-install/prepared\n\nGet all prepared auto-installer answer configurations.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of prepared auto-installer answer configurations.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Configuration describing an automated installation.\n\nCertain fields support simple templating via [MiniJinja]. Currently, following fields will\nresolve MiniJinja expressions upon instantiation of an answer:\n\n* `fqdn`\n* `mailto`\n* `cidr`\n* `gateway`\n* `dns`\n\n[MiniJinja]: https://docs.rs/minijinja/",
+      "properties": {
+        "authorized-tokens": {
+          "description": "List of token IDs that are authorized to retrieve this answer.",
+          "items": {
+            "description": "API Token name",
+            "maxLength": 64,
+            "minLength": 3,
+            "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+            "type": "string"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "cidr": {
+          "description": "IP address and netmask if not using DHCP.\n\nSupports templating via MiniJinja, so this holds either a literal CIDR or a template that\nresolves to one; it is parsed and validated at render time.",
+          "optional": 1,
+          "type": "string"
+        },
+        "country": {
+          "description": "Country to use for apt mirrors.",
+          "maxLength": 2,
+          "minLength": 2,
+          "pattern": "/^[a-z]{2}$/",
+          "type": "string"
+        },
+        "disk-filter": {
+          "additionalProperties": true,
+          "description": "Filter against udev properties to select the disks for the installation,\nto allow dynamic selection of disks.",
+          "optional": 1,
+          "properties": {},
+          "type": "object"
+        },
+        "disk-filter-match": {
+          "default": "any",
+          "description": "Whether the associated filters must all match for a device or if any one\nis enough.",
+          "enum": [
+            "any",
+            "all"
+          ],
+          "optional": 1,
+          "type": "string"
+        },
+        "disk-list": {
+          "description": "List of raw disk identifiers to use for the root filesystem.",
+          "items": {
+            "description": "Block device name (/sys/block/<name>).",
+            "maxLength": 64,
+            "minLength": 3,
+            "pattern": "/^(?:(?:h|s|x?v)d[a-z]+)|(?:nvme\\d+n\\d+)$/",
+            "type": "string"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "disk-mode": {
+          "description": "Whether to use the fixed disk list or select disks dynamically by udev filters.",
+          "type": "string"
+        },
+        "dns": {
+          "description": "DNS server address if not using DHCP.\n\nSupports templating via MiniJinja, so this holds either a literal address or a template that\nresolves to one; it is parsed and validated at render time.",
+          "optional": 1,
+          "type": "string"
+        },
+        "filesystem": {
+          "additionalProperties": true,
+          "description": "Filesystem-specific options to set on the root disk.",
+          "properties": {
+            "arc_max": {
+              "description": "Maximum ARC size that ZFS should use, in MiB",
+              "minimum": 64,
+              "optional": 1,
+              "type": "integer"
+            },
+            "ashift": {
+              "default": 12,
+              "description": "`ashift` value to create the zpool with.",
+              "maximum": 16,
+              "minimum": 9,
+              "optional": 1,
+              "type": "integer"
+            },
+            "copies": {
+              "default": 1,
+              "description": "`copies` value to create the zpool with.",
+              "maximum": 3,
+              "minimum": 1,
+              "optional": 1,
+              "type": "integer"
+            },
+            "filesystem": {
+              "description": "Available filesystem during installation.",
+              "enum": [
+                "ext4",
+                "xfs",
+                "zfs",
+                "btrfs"
+              ],
+              "type": "string"
+            },
+            "hdsize": {
+              "description": "Size of the root disk to use, in GiB.",
+              "minimum": 2,
+              "optional": 1,
+              "type": "number"
+            },
+            "maxfree": {
+              "description": "Minimum amount of free space to leave on the LVM volume group, in GiB.",
+              "minimum": 0,
+              "optional": 1,
+              "type": "number"
+            },
+            "maxroot": {
+              "description": "Maximum size of the `root` volume, in GiB.",
+              "minimum": 2,
+              "optional": 1,
+              "type": "number"
+            },
+            "maxvz": {
+              "description": "Maximum size of the `data` volume, in GiB.",
+              "minimum": 0,
+              "optional": 1,
+              "type": "number"
+            },
+            "minfree": {
+              "description": "Minimum amount of free space that should be left in the LVM volume group.",
+              "minimum": 0,
+              "optional": 1,
+              "type": "number"
+            },
+            "swapsize": {
+              "description": "Size of the swap volume, in GiB.",
+              "minimum": 0,
+              "optional": 1,
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "fqdn": {
+          "description": "FQDN to set for the installed system. Only used if `use_dhcp_fqdn` is true.\n\nSupports templating via MiniJinja.\nThe [`proxmox_network_types::fqdn::Fqdn`] type cannot be used here\nbecause of that, as curly brackets are not valid in hostnames.",
+          "type": "string"
+        },
+        "gateway": {
+          "description": "Gateway if not using DHCP.\n\nSupports templating via MiniJinja, so this holds either a literal address or a template that\nresolves to one; it is parsed and validated at render time.",
+          "optional": 1,
+          "type": "string"
+        },
+        "id": {
+          "description": "ID of prepared configuration for automated installations.",
+          "maxLength": 64,
+          "minLength": 3,
+          "type": "string"
+        },
+        "is-default": {
+          "description": "Whether this is the default answer. There can only ever be one default answer.\n`target_filter` below is ignored if this is `true`.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "keyboard": {
+          "default": "en-us",
+          "description": "Keyboard layout of the system.",
+          "enum": [
+            "de",
+            "de-ch",
+            "dk",
+            "en-gb",
+            "en-us",
+            "es",
+            "fi",
+            "fr",
+            "fr-be",
+            "fr-ca",
+            "fr-ch",
+            "hu",
+            "is",
+            "it",
+            "jp",
+            "lt",
+            "mk",
+            "nl",
+            "no",
+            "pl",
+            "pt",
+            "pt-br",
+            "se",
+            "si",
+            "tr"
+          ],
+          "type": "string"
+        },
+        "mailto": {
+          "description": "E-Mail Address.",
+          "maxLength": 64,
+          "minLength": 2,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "netdev-filter": {
+          "additionalProperties": true,
+          "description": "Filter for network devices, to select a specific management interface.",
+          "optional": 1,
+          "properties": {},
+          "type": "object"
+        },
+        "netif-name-pinning-enabled": {
+          "description": "Whether to enable network interface name pinning.",
+          "type": "boolean"
+        },
+        "post-hook-base-url": {
+          "description": "HTTP(s) url with optional port.",
+          "optional": 1,
+          "pattern": "/^https?://(?:(?:(?:(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?))|(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|\\[(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){6})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:::(?:(?:[0-9a-fA-F]{1,4}):){5})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){4})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,1}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){3})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,2}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){2})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,3}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){1})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,4}(?:[0-9a-fA-F]{1,4}))?::)(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,5}(?:[0-9a-fA-F]{1,4}))?::)(?:[0-9a-fA-F]{1,4}))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,6}(?:[0-9a-fA-F]{1,4}))?::))))\\]))(?::(?:[0-9]{1,4}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5]))?)|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){6})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:::(?:(?:[0-9a-fA-F]{1,4}):){5})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){4})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,1}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){3})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,2}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){2})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,3}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){1})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,4}(?:[0-9a-fA-F]{1,4}))?::)(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,5}(?:[0-9a-fA-F]{1,4}))?::)(?:[0-9a-fA-F]{1,4}))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,6}(?:[0-9a-fA-F]{1,4}))?::))))(?:/[^\u0000-\u001f]*)?$/",
+          "type": "string"
+        },
+        "post-hook-cert-fp": {
+          "description": "X509 certificate fingerprint (sha256).",
+          "optional": 1,
+          "pattern": "/^(?:[0-9a-fA-F][0-9a-fA-F])(?::[0-9a-fA-F][0-9a-fA-F]){31}$/",
+          "type": "string"
+        },
+        "reboot-mode": {
+          "default": "reboot",
+          "description": "Action to take after the installation completed successfully.",
+          "enum": [
+            "reboot",
+            "power-off"
+          ],
+          "type": "string"
+        },
+        "reboot-on-error": {
+          "description": "Whether to reboot the machine if an error occurred during the\ninstallation.",
+          "type": "boolean"
+        },
+        "root-password-hashed": {
+          "description": "Pre-hashed password to set for the `root` PAM account.",
+          "optional": 1,
+          "type": "string"
+        },
+        "root-ssh-keys": {
+          "description": "Newline-separated list of public SSH keys to set up for the `root` PAM account.",
+          "items": {
+            "description": "SSH public key.",
+            "type": "string"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "subscription-key": {
+          "description": "A Proxmox subscription key for the installed product.",
+          "maxLength": 32,
+          "minLength": 11,
+          "optional": 1,
+          "pattern": "/^(?:pve[0-9]+|pbs|pmg)[cbsp]-[0-9a-f]{10}$/",
+          "type": "string"
+        },
+        "target-filter": {
+          "additionalProperties": true,
+          "description": "Map of filters for matching against a property in [`answer::fetch::AnswerFetchData`].\nThe keys are JSON Pointers as per [RFC6901], the values globs as accepted\nby the [glob] crate.\n\nUsed to check this configuration against incoming automated installation requests. If this\nis unset, it will match any installation not matched \"narrower\" by other prepared\nconfigurations, thus being the default.\n\n[RFC6901] https://datatracker.ietf.org/doc/html/rfc6901\n[glob crate] https://docs.rs/glob/",
+          "optional": 1,
+          "properties": {},
+          "type": "object"
+        },
+        "template-counters": {
+          "additionalProperties": true,
+          "description": "Key-value pairs of (auto-incrementing) counters.",
+          "optional": 1,
+          "properties": {},
+          "type": "object"
+        },
+        "timezone": {
+          "description": "Timezone to set on the new system.",
+          "type": "string"
+        },
+        "use-dhcp-fqdn": {
+          "description": "Whether to use the FQDN from the DHCP lease or the user-provided one.",
+          "type": "boolean"
+        },
+        "use-dhcp-network": {
+          "description": "Whether to use the network configuration from the DHCP lease or not.",
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "auto-installation"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/auto-install/prepared'"
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_disks",
+  "usageNotes": "Returns the list of disk-related sub-resource endpoints available under the specified node (e.g., list, smart, initgpt, wipedisk). Use this to discover what disk operations are supported before calling a specific sub-endpoint. Requires the node to be online; the response is a directory index, not actual disk data.",
+  "examples": [
+    {
+      "summary": "List available disk sub-resources on node 'pve1'",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a directory index only — to get actual disk inventory, call get_nodes_node_disks_list instead.",
+    "All authenticated users can call this endpoint; no elevated privilege is required.",
+    "The returned 'name' values in each object correspond to child API paths you can call next (e.g., 'list', 'smart', 'initgpt', 'wipedisk', 'directory', 'zfs', 'lvm', 'lvmthin')."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_list",
+    "get_nodes_node_disks_smart",
+    "get_nodes_node_disks_directory",
+    "get_nodes_node_disks_zfs",
+    "get_nodes_node_disks_lvm",
+    "get_nodes_node_disks_lvmthin"
+  ]
+}

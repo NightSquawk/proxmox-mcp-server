@@ -1,0 +1,31 @@
+{
+  "operationId": "get_nodes_node_scan_pbs",
+  "usageNotes": "Use this endpoint to discover which datastores are available on a remote Proxmox Backup Server before adding it as a PVE storage target. The scan is performed from the specified cluster node, so that node must be online and able to reach the PBS server over the network. The caller must hold the Datastore.Allocate privilege on /storage, and credentials (username + password or API token) for the PBS server are passed in the query string — supply the certificate fingerprint when the PBS server uses a self-signed TLS certificate to avoid rejection.",
+  "examples": [
+    {
+      "summary": "Discover datastores on an internal PBS server using an API token",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "server": "192.168.10.50",
+        "port": 8007,
+        "username": "backup@pbs!mcp-token",
+        "password": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
+        "fingerprint": "A1:B2:C3:D4:E5:F6:A1:B2:C3:D4:E5:F6:A1:B2:C3:D4:E5:F6:A1:B2:C3:D4:E5:F6:A1:B2:C3:D4:E5:F6:A1:B2"
+      }
+    }
+  ],
+  "tips": [
+    "Credentials are sent as query parameters (GET request); prefer API tokens over plain passwords to limit exposure.",
+    "If the PBS server uses a self-signed certificate and no fingerprint is provided, the scan will fail with a TLS verification error — copy the fingerprint from the PBS web UI under Administration > Certificates.",
+    "The default port is 8007; only specify port if the PBS instance listens on a non-standard port.",
+    "Results feed directly into the storage add workflow — use the returned store names as the datastore value when calling the PBS storage create endpoint."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_scan_nfs",
+    "get_nodes_node_scan_cifs",
+    "get_storage",
+    "post_storage"
+  ]
+}

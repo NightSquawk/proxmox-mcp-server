@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_cloudinit_dump",
+  "usageNotes": "Use this to inspect the cloud-init configuration that Proxmox auto-generates for a VM before or after first boot — useful for verifying that user-data, network config, or metadata will be rendered as expected. The VM must exist on the specified node and have cloud-init configured (cicustom or inline ci* options set); calling this on a VM without cloud-init yields an empty or minimal response. Requires only VM.Audit on the VM path, so it is safe to call in read-only monitoring contexts.",
+  "examples": [
+    {
+      "summary": "Dump the generated network config for VM 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {
+        "type": "network"
+      }
+    }
+  ],
+  "tips": [
+    "Run with type=user, type=network, and type=meta separately — each returns a distinct cloud-init document (user-data YAML, network-config YAML, and meta-data respectively).",
+    "The output reflects the config that will be written to the cloud-init ISO at next VM start; changes to cicustom or inline ci* options are not reflected until the VM is restarted or the cloud-init drive is regenerated.",
+    "If the VM was cloned from a template, verify the dump to confirm hostname, IP, and SSH keys were correctly inherited or overridden before first boot."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_config",
+    "put_nodes_node_qemu_vmid_config",
+    "post_nodes_node_qemu_vmid_cloudinit"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "get_pbs_remotes_remote_tasks_upid_log",
+  "usageNotes": "Use this endpoint to retrieve task log output for any async operation (backup, sync, verify, prune, etc.) that ran on a PBS remote. The UPID is returned by the triggering operation and encodes node, PID, and task type — pass it here to poll progress or retrieve the completed log. Set `limit=0` to retrieve the full log at once; use `start` + `limit` for paginated tailing of large logs.",
+  "examples": [
+    {
+      "summary": "Fetch the first 100 lines of a backup task log from PBS remote 'pbs-hetzner'",
+      "path_params": {
+        "remote": "pbs-hetzner",
+        "upid": "UPID:pbs-hetzner:00001A2B:5F3C7E10:67A1B2C3:backup:store1:root@pam:"
+      },
+      "params": {
+        "start": 0,
+        "limit": 100
+      }
+    }
+  ],
+  "tips": [
+    "Each response item has `n` (line number) and `t` (text); use `n` from the last item as the next `start` value to tail a running task.",
+    "Set `limit=0` to retrieve the entire log in one request — useful after a task completes to capture full output for audit or debugging.",
+    "The `download` flag returns the raw log file and cannot be combined with `start` or `limit`; use it only when you need to save or stream the full file outside the API.",
+    "UPIDs are returned by operations such as run-gc, verify, sync, and prune on this remote — always capture the UPID from those responses before polling here.",
+    "Requires `Resource.Audit` privilege on the specific remote resource path, not a global audit role."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_tasks_upid_status",
+    "get_pbs_remotes_remote_tasks",
+    "post_pbs_remotes_remote_tasks_upid_stop"
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "operationId": "post_access_domains_realm_sync",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "sync",
+  "method": "POST",
+  "path": "/access/domains/{realm}/sync",
+  "description": "Syncs users and/or groups from the configured LDAP to user.cfg. NOTE: Synced groups will have the name 'name-$realm', so make sure those groups do not exist to prevent overwriting.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "realm",
+      "type": "string",
+      "required": true,
+      "description": "Authentication domain ID",
+      "format": "pve-realm",
+      "maxLength": 32,
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "dry-run",
+      "type": "boolean",
+      "required": false,
+      "description": "If set, does not write anything.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "enable-new",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable newly synced users immediately.",
+      "default": "1",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "full",
+      "type": "boolean",
+      "required": false,
+      "description": "DEPRECATED: use 'remove-vanished' instead. If set, uses the LDAP Directory as source of truth, deleting users or groups not returned from the sync and removing all locally modified properties of synced users. If not set, only syncs information which is present in the synced data, and does not delete or modify anything else.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "purge",
+      "type": "boolean",
+      "required": false,
+      "description": "DEPRECATED: use 'remove-vanished' instead. Remove ACLs for users or groups which were removed from the config during a sync.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "remove-vanished",
+      "type": "string",
+      "required": false,
+      "description": "A semicolon-separated list of things to remove when they or the user vanishes during a sync. The following values are possible: 'entry' removes the user/group when not returned from the sync. 'properties' removes the set properties on existing user/group that do not appear in the source (even custom ones). 'acl' removes acls when the user/group is not returned from the sync. Instead of a list it also can be 'none' (the default).",
+      "default": "none",
+      "typetext": "([acl];[properties];[entry])|none",
+      "pattern": "(?:(?:(?:acl|properties|entry);)*(?:acl|properties|entry))|none"
+    },
+    {
+      "name": "scope",
+      "type": "string",
+      "required": false,
+      "description": "Select what to sync.",
+      "enum": [
+        "users",
+        "groups",
+        "both"
+      ]
+    }
+  ],
+  "returns": {
+    "description": "Worker Task-UPID",
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "and",
+      [
+        "perm",
+        "/access/realm/{realm}",
+        [
+          "Realm.AllocateUser"
+        ]
+      ],
+      [
+        "perm",
+        "/access/groups",
+        [
+          "User.Modify"
+        ]
+      ]
+    ],
+    "description": "'Realm.AllocateUser' on '/access/realm/<realm>' and  'User.Modify' permissions to '/access/groups/'."
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/access/domains/<realm>/sync'"
+}

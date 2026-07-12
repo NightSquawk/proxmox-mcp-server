@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_hardware_pci_pci_id_or_mapping",
+  "usageNotes": "Returns the list of available sub-methods (child endpoints) for a specific PCI device or PCI mapping on a node — useful as a discovery step before calling device-info or mdev sub-endpoints. The path parameter accepts either a PCI address in the form `[domain:]bus:slot.function` (e.g. `0000:00:02.0` or `00:02.0`) or a named mapping identifier (e.g. `gpu-mapping`). The node must be reachable; this endpoint does not validate that the device is currently in use by a VM.",
+  "examples": [
+    {
+      "summary": "List available sub-methods for a GPU at PCI address 0000:01:00.0 on pve1",
+      "path_params": {
+        "node": "pve1",
+        "pci-id-or-mapping": "0000:01:00.0"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Use the short form (bus:slot.function, e.g. '01:00.0') when the domain is 0000 — Proxmox accepts both.",
+    "Named mapping identifiers must start with a letter and contain only letters, digits, hyphens, or underscores.",
+    "Child methods typically include 'mdev' (for mediated device types) and device info — call those sub-endpoints after discovering them here.",
+    "Accessible by all authenticated users (no node-level privilege required), so safe to call for discovery without elevated tokens."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_hardware_pci",
+    "get_nodes_node_hardware_pci_pci_id_or_mapping_mdev",
+    "get_nodes_node_hardware_pci_pci_id_or_mapping_reports"
+  ]
+}

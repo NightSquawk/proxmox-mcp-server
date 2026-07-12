@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_cluster_firewall_aliases_name",
+  "usageNotes": "Permanently removes a named IP/network alias from the cluster-level firewall configuration. The alias must not be actively referenced by any firewall rules or IPSets before deletion; removing a referenced alias can silently break rule resolution. Use the `digest` parameter when scripting concurrent workflows to guard against race conditions overwriting an in-flight configuration change.",
+  "examples": [
+    {
+      "summary": "Delete the alias 'mgmt-net' from cluster firewall aliases",
+      "path_params": {
+        "name": "mgmt-net"
+      },
+      "params": {
+        "digest": "a3f5c2e1b8d047629f1e3a5c7b90d2f4e6c8a1b3"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently deletes the named alias from the cluster firewall; any firewall rules or IPSets that reference it by name will silently lose their target, potentially allowing or blocking unintended traffic.",
+  "tips": [
+    "Fetch the current digest via GET /cluster/firewall/aliases/{name} and pass it here to prevent clobbering concurrent edits.",
+    "Search all cluster and node firewall rules for references to the alias name before deletion — Proxmox does not enforce referential integrity on aliases.",
+    "Returns null (HTTP 200) on success; no UPID is issued since this is a synchronous configuration change, not an async task."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_aliases_name",
+    "get_cluster_firewall_aliases",
+    "post_cluster_firewall_aliases",
+    "put_cluster_firewall_aliases_name"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_fsfreeze_freeze",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "fsfreeze-freeze",
+  "method": "POST",
+  "path": "/nodes/{node}/qemu/{vmid}/agent/fsfreeze-freeze",
+  "description": "Execute fsfreeze-freeze.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "Returns an object with a single `result` property.",
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.GuestAgent.FileSystemMgmt",
+        "VM.GuestAgent.Unrestricted"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/agent/fsfreeze-freeze'"
+}

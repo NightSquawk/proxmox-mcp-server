@@ -1,0 +1,28 @@
+{
+  "operationId": "put_cluster_sdn",
+  "usageNotes": "Call this after making changes to SDN zones, VNets, or subnets to push the pending configuration to all cluster nodes and reload the SDN controllers (e.g. OVN, EVPN). Requires the `SDN.Allocate` privilege on `/sdn`. If a `lock-token` was acquired before editing (to prevent concurrent SDN edits), pass it here; `release-lock` defaults to true so the lock is dropped automatically on success.",
+  "examples": [
+    {
+      "summary": "Apply pending SDN changes and release the configuration lock",
+      "path_params": {},
+      "params": {
+        "lock-token": "sdn-lock-abc123",
+        "release-lock": true
+      }
+    }
+  ],
+  "tips": [
+    "Returns a task UPID string — poll the task status endpoint to confirm all nodes applied the config before assuming success.",
+    "If no SDN changes are pending, the call still succeeds but triggers a gratuitous reload; safe to call but unnecessary.",
+    "Omit `lock-token` if you did not explicitly acquire a lock before editing; passing a stale or wrong token will cause the commit to fail.",
+    "In large clusters this is a cluster-wide operation — all nodes must be reachable for a clean reload."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn",
+    "get_cluster_sdn_zones",
+    "post_cluster_sdn_zones",
+    "put_cluster_sdn_zones_{zone}",
+    "get_cluster_sdn_vnets",
+    "post_cluster_sdn_vnets"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node",
+  "usageNotes": "Use this endpoint to retrieve the directory index for a specific PDM node, which serves as a navigation entry point listing the available sub-resources under that node. It requires no query parameters and is accessible to all authenticated users. Useful as a first call to confirm a node is reachable and to discover the resource paths it exposes.",
+  "examples": [
+    {
+      "summary": "Fetch the directory index for a node named 'pve-hetzner'",
+      "path_params": {
+        "node": "pve-hetzner"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response type is null per the schema — the practical return is a directory listing of available child endpoints rather than a data object; parse it as an array of route entries.",
+    "This endpoint is commonly used to verify node connectivity before querying guests or metrics on that node.",
+    "Token-based authentication is supported (allowtoken: true), making it safe to call from automated scripts."
+  ],
+  "relatedOperations": [
+    "get_nodes",
+    "get_nodes_node_guests",
+    "get_nodes_node_status"
+  ]
+}

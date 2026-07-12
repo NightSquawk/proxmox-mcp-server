@@ -1,0 +1,131 @@
+{
+  "operationId": "get_nodes_node_services",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "index",
+  "method": "GET",
+  "path": "/nodes/{node}/services",
+  "description": "Service list.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "active-state": {
+          "description": "Current state of the service process (systemd ActiveState).",
+          "enum": [
+            "active",
+            "inactive",
+            "failed",
+            "activating",
+            "deactivating",
+            "maintenance",
+            "reloading",
+            "refreshing",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "desc": {
+          "description": "Description of the service.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Short identifier for the service (e.g., \"pveproxy\").",
+          "type": "string"
+        },
+        "service": {
+          "description": "Systemd unit name (e.g., pveproxy).",
+          "type": "string"
+        },
+        "state": {
+          "description": "Execution status of the service (systemd SubState).",
+          "enum": [
+            "dead",
+            "condition",
+            "start-pre",
+            "start",
+            "start-post",
+            "running",
+            "exited",
+            "reload",
+            "reload-signal",
+            "reload-notify",
+            "mounting",
+            "stop",
+            "stop-watchdog",
+            "stop-sigterm",
+            "stop-sigkill",
+            "stop-post",
+            "final-watchdog",
+            "final-sigterm",
+            "final-sigkill",
+            "failed",
+            "dead-before-auto-restart",
+            "failed-before-auto-restart",
+            "dead-resources-pinned",
+            "auto-restart",
+            "auto-restart-queued",
+            "cleaning",
+            "unknown"
+          ],
+          "type": "string"
+        },
+        "unit-state": {
+          "description": "Whether the service is enabled (systemd UnitFileState).",
+          "enum": [
+            "enabled",
+            "enabled-runtime",
+            "linked",
+            "linked-runtime",
+            "alias",
+            "masked",
+            "masked-runtime",
+            "static",
+            "disabled",
+            "indirect",
+            "generated",
+            "transient",
+            "bad",
+            "not-found",
+            "unknown"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{service}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/services'"
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_sdn_zones_zone",
+  "usageNotes": "Returns the available sub-resource directories for a specific SDN zone as seen from a given node — effectively a navigation index rather than zone configuration detail. Use this to discover what sub-endpoints (e.g. 'content') are available under a zone before drilling deeper. Requires SDN.Audit on the zone path; the target node must be online.",
+  "examples": [
+    {
+      "summary": "List sub-resource directories for SDN zone 'vlan10' on node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "zone": "vlan10"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Zone names are 2–8 characters, must start with a letter, and contain only alphanumerics — no hyphens or underscores.",
+    "The response is a directory index (array of subdir strings), not zone configuration; use the cluster-level SDN zone endpoints to read or modify zone settings.",
+    "Call this first to know which child endpoints exist before making follow-up requests against a zone on a specific node."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_zones",
+    "get_cluster_sdn_zones_zone",
+    "get_cluster_sdn_zones"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "operationId": "put_nodes_node_qemu_vmid_resize",
+  "usageNotes": "Use this to grow a QEMU VM disk; it returns a task UPID and executes asynchronously, so poll the task status before assuming completion. Only expansion is supported — shrinking is not allowed and will be rejected. The `size` field accepts an absolute value (e.g. `50G`) or a relative increment prefixed with `+` (e.g. `+10G`); after resizing the disk, the guest OS filesystem still needs to be extended from within the VM.",
+  "examples": [
+    {
+      "summary": "Add 20 GB to the primary virtio disk of VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "disk": "virtio0",
+        "size": "+20G"
+      }
+    }
+  ],
+  "tips": [
+    "Pass `digest` (from the current VM config) to guard against concurrent modifications overwriting each other.",
+    "After resizing, extend the partition and filesystem inside the guest — Proxmox only grows the virtual disk, not the in-guest filesystem.",
+    "Resizing an EFI disk (efidisk0) or TPM state disk (tpmstate0) is rarely needed and may cause boot issues; double-check before targeting those.",
+    "The VM does not need to be powered off for a resize, but live resize visibility inside the guest depends on the guest OS and disk bus type."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_config",
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_monitor",
+  "usageNotes": "Sends a raw QEMU monitor command to a running VM; the VM must be in a running state on the specified node or the command will fail. Read-only introspection commands (info, ?, help) require only Sys.Audit, while most state-changing commands require Sys.Modify, and a subset of device/migration/dump commands are root-only. The response is a plain string containing the monitor output, not a task UPID — execution is synchronous.",
+  "examples": [
+    {
+      "summary": "Query memory balloon target on VM 105",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105
+      },
+      "params": {
+        "command": "info balloon"
+      }
+    }
+  ],
+  "tips": [
+    "Send 'info status' to quickly check whether a VM is running, paused, or shutdown without fetching the full VM config.",
+    "Use 'system_powerdown' (requires Sys.Modify) to trigger a graceful ACPI shutdown; prefer this over a hard stop when the guest OS responds to ACPI events.",
+    "Root-only commands (device_add, migrate, screendump, etc.) will be rejected for API token users even with full privileges — they require a root@pam session.",
+    "Commands marked deprecated in the permissions description (stopcapture, wavcapture) may be removed in future QEMU versions; avoid relying on them.",
+    "The monitor interface is stateless per request; multi-step QEMU monitor workflows (e.g. savevm then loadvm) must be issued as separate API calls."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_status_start",
+    "post_nodes_node_qemu_vmid_status_stop",
+    "post_nodes_node_qemu_vmid_status_reset",
+    "post_nodes_node_qemu_vmid_status_suspend"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "operationId": "post_cluster_ha_status_arm_ha",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "arm-ha",
+  "method": "POST",
+  "path": "/cluster/ha/status/arm-ha",
+  "description": "Request re-arming the HA stack after it was disarmed.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Console"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/ha/status/arm-ha'"
+}

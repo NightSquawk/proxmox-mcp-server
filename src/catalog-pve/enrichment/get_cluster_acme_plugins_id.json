@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_acme_plugins_id",
+  "usageNotes": "Use this to inspect the full configuration of a specific ACME plugin instance by its config ID — useful before updating or troubleshooting certificate issuance. Requires Sys.Modify on the root path, so API tokens must carry that privilege. The 'data' field in the response is base64-encoded and contains the DNS provider credentials; decode before inspecting.",
+  "examples": [
+    {
+      "summary": "Retrieve the configuration of an ACME DNS plugin named 'cf-dns'",
+      "path_params": {
+        "id": "cf-dns"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'digest' value can be passed to update/delete operations to guard against concurrent modifications.",
+    "If 'disable' is true, the plugin will not be used for certificate renewals even if assigned to a domain.",
+    "The 'nodes' field restricts which cluster nodes can use this plugin — empty means all nodes are eligible.",
+    "validation-delay defaults to 30 seconds; increase this for DNS providers with long TTLs to avoid premature ACME validation failures."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_plugins",
+    "post_cluster_acme_plugins",
+    "put_cluster_acme_plugins_id",
+    "delete_cluster_acme_plugins_id"
+  ]
+}

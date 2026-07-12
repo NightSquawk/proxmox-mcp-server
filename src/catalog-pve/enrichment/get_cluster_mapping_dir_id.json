@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_mapping_dir_id",
+  "usageNotes": "Retrieves the full configuration of a single cluster-wide directory mapping by its config ID. The caller must hold at least one of Mapping.Use, Mapping.Modify, or Mapping.Audit on the specific mapping path — a token with only global admin may still fail if per-mapping ACLs are not set. Use this to inspect node-to-path overrides before attaching a directory mapping to a VM or container storage entry.",
+  "examples": [
+    {
+      "summary": "Fetch configuration for a directory mapping named 'local-backups'",
+      "path_params": {
+        "id": "local-backups"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The id must match a pve-configid — alphanumeric plus hyphens/underscores, no spaces.",
+    "Returns an object whose 'map' array contains per-node path overrides; check this when diagnosing why a mapping resolves differently on different nodes.",
+    "Listing available IDs first via get_cluster_mapping_dir (the directory index) avoids 404s from typos."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_dir",
+    "create_cluster_mapping_dir",
+    "update_cluster_mapping_dir_id",
+    "delete_cluster_mapping_dir_id"
+  ]
+}

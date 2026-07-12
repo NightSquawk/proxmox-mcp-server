@@ -1,0 +1,31 @@
+{
+  "operationId": "post_pve_remotes_remote_lxc_vmid_migrate",
+  "usageNotes": "Use to move an LXC container to a different node within the same PVE cluster managed by a PDM remote; the caller must hold Resource.Migrate on the guest. The operation is asynchronous — the response is a remote UPID that must be polled for completion. For a running container, set 'online' for live migration (lower downtime) or 'restart' for a stop-start migration (broader storage compatibility); leaving both false will fail if the container is running.",
+  "examples": [
+    {
+      "summary": "Online-migrate a running LXC (VMID 201) from pve-remote to node pve-node-02",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 201
+      },
+      "params": {
+        "target": "pve-node-02",
+        "online": true,
+        "bwlimit": 102400
+      }
+    }
+  ],
+  "destructiveReason": "The container is moved off its current node; if the migration fails mid-transfer the container may be left in a stopped or inconsistent state on the source or target node.",
+  "tips": [
+    "Poll the returned UPID via the PDM task-status endpoint to detect completion or failure before assuming success.",
+    "Use 'target-storage' when source and target nodes do not share the same storage pool names — omitting it may cause the migration to fail if storage IDs differ.",
+    "restart-migration (restart: true) is the safer fallback for containers with local storage that cannot be live-migrated.",
+    "Set bwlimit to avoid saturating cluster links during business hours; 0 means unlimited.",
+    "The 'node' body parameter specifies the current node if PDM cannot infer it; 'target' is the destination and is always required."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc_vmid_status_current",
+    "get_pve_remotes_remote_tasks_upid_status",
+    "get_pve_remotes_remote_lxc"
+  ]
+}

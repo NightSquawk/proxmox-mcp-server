@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_ceph_osd",
+  "usageNotes": "Use this endpoint to retrieve the full CRUSH tree of OSDs on a Ceph cluster as seen from the specified node. Requires either Sys.Audit or Datastore.Audit on the root path. The queried node must be online and have Ceph configured; the response reflects cluster-wide OSD state, not just local disks.",
+  "examples": [
+    {
+      "summary": "List all OSDs and their CRUSH tree from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'root' object is a recursive CRUSH bucket tree; walk 'children' arrays to enumerate individual OSDs (type == 'osd') vs. host/rack buckets.",
+    "The 'flags' field is absent entirely when no cluster-level OSD flags (e.g. 'noout', 'norebalance') are set — treat its absence as an empty flag set.",
+    "OSD health properties such as 'status', 'in', 'weight', and latency fields appear at the leaf level but are not statically typed — expect additionalProperties.",
+    "Can be called against any online Ceph mon node in the cluster; you do not have to target the node that owns a specific OSD."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph_mon",
+    "get_nodes_node_ceph_pools",
+    "post_nodes_node_ceph_osd",
+    "delete_nodes_node_ceph_osd_osdid"
+  ]
+}

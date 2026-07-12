@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_ipset",
+  "usageNotes": "Use this to enumerate all named IP sets defined in a container's firewall configuration. Each returned object includes the set name, an optional human-readable comment, and a digest you can pass to write operations to prevent concurrent modification conflicts. Requires VM.Audit permission on /vms/{vmid}; the container does not need to be running.",
+  "examples": [
+    {
+      "summary": "List all firewall IP sets for LXC container 200 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 200
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "IP set names follow the pattern [A-Za-z][A-Za-z0-9\\-\\_]+ and are referenced by name in firewall rules — use this listing to confirm exact names before building rules.",
+    "The digest field in each returned item reflects the current state of the firewall config; supply it in subsequent write calls to guard against race conditions.",
+    "IP sets defined at the cluster level are separate from container-level sets — this endpoint only returns sets scoped to this specific LXC."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_ipset_name",
+    "post_nodes_node_lxc_vmid_firewall_ipset",
+    "get_nodes_node_lxc_vmid_firewall_rules",
+    "get_cluster_firewall_ipset"
+  ]
+}

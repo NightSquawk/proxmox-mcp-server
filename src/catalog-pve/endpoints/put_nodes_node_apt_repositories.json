@@ -1,0 +1,55 @@
+{
+  "operationId": "put_nodes_node_apt_repositories",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "add_repository",
+  "method": "PUT",
+  "path": "/nodes/{node}/apt/repositories",
+  "description": "Add a standard repository to the configuration",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Digest to detect modifications.",
+      "maxLength": 80,
+      "typetext": "<string>"
+    },
+    {
+      "name": "handle",
+      "type": "string",
+      "required": true,
+      "description": "Handle that identifies a repository.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"handle\":\"<handle>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/apt/repositories'"
+}

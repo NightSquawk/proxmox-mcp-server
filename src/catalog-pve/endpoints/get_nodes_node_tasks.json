@@ -1,0 +1,173 @@
+{
+  "operationId": "get_nodes_node_tasks",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "node_tasks",
+  "method": "GET",
+  "path": "/nodes/{node}/tasks",
+  "description": "Read task list for one node (finished tasks).",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "errors",
+      "type": "boolean",
+      "required": false,
+      "description": "Only list tasks with a status of ERROR.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "limit",
+      "type": "integer",
+      "required": false,
+      "description": "Only list this number of tasks.",
+      "default": 50,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "since",
+      "type": "integer",
+      "required": false,
+      "description": "Only list tasks since this UNIX epoch.",
+      "typetext": "<integer>"
+    },
+    {
+      "name": "source",
+      "type": "string",
+      "required": false,
+      "description": "List archived, active or all tasks.",
+      "enum": [
+        "archive",
+        "active",
+        "all"
+      ],
+      "default": "archive"
+    },
+    {
+      "name": "start",
+      "type": "integer",
+      "required": false,
+      "description": "List tasks beginning from this offset.",
+      "default": 0,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "statusfilter",
+      "type": "string",
+      "required": false,
+      "description": "List of Task States that should be returned.",
+      "format": "pve-task-status-type-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "typefilter",
+      "type": "string",
+      "required": false,
+      "description": "Only list tasks of this type (e.g., vzstart, vzdump).",
+      "typetext": "<string>"
+    },
+    {
+      "name": "until",
+      "type": "integer",
+      "required": false,
+      "description": "Only list tasks until this UNIX epoch.",
+      "typetext": "<integer>"
+    },
+    {
+      "name": "userfilter",
+      "type": "string",
+      "required": false,
+      "description": "Only list tasks from this user.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": false,
+      "description": "Only list tasks for this VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "endtime": {
+          "optional": 1,
+          "renderer": "timestamp",
+          "title": "Endtime",
+          "type": "integer"
+        },
+        "id": {
+          "title": "ID",
+          "type": "string"
+        },
+        "node": {
+          "title": "Node",
+          "type": "string"
+        },
+        "pid": {
+          "title": "PID",
+          "type": "integer"
+        },
+        "pstart": {
+          "type": "integer"
+        },
+        "starttime": {
+          "renderer": "timestamp",
+          "title": "Starttime",
+          "type": "integer"
+        },
+        "status": {
+          "optional": 1,
+          "title": "Status",
+          "type": "string"
+        },
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "upid": {
+          "title": "UPID",
+          "type": "string"
+        },
+        "user": {
+          "title": "User",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{upid}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "List task associated with the current user, or all task the user has 'Sys.Audit' permissions on /nodes/<node> (the <node> the task runs on).",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/tasks'"
+}

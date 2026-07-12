@@ -1,0 +1,35 @@
+{
+  "operationId": "put_pve_remotes_remote_qemu_vmid_firewall_options",
+  "usageNotes": "Use this to enable or adjust the per-VM firewall and its behavior on a PVE remote managed by PDM. The firewall must first be enabled via `enable: true` before any rules take effect; toggling options on a disabled firewall has no live impact. Pass `digest` (retrieved from the corresponding GET) to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Enable the VM firewall with DROP default policies, info-level inbound logging, and IP filters on",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 101
+      },
+      "params": {
+        "enable": true,
+        "policy_in": "DROP",
+        "policy_out": "ACCEPT",
+        "log_level_in": "info",
+        "ipfilter": true,
+        "dhcp": false,
+        "macfilter": true,
+        "ndp": true
+      }
+    }
+  ],
+  "tips": [
+    "Enabling `ipfilter` without adding explicit IP addresses to the corresponding ipfilter-net ipset will still apply sane default restrictions (MAC-derived IPv6 link-local), but no custom allow rules — verify behavior before applying to production VMs.",
+    "The `delete` array accepts field names (e.g. `[\"policy_in\", \"log_level_out\"]`) to reset individual options back to their defaults without sending a full config payload.",
+    "Returns null on success; any non-2xx response indicates failure — check PDM logs for detail since no error body is guaranteed.",
+    "The `node` param is optional; omit it to let PDM resolve the VM's current node automatically via the remote cluster state."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_firewall_options",
+    "get_pve_remotes_remote_qemu_vmid_firewall_rules",
+    "post_pve_remotes_remote_qemu_vmid_firewall_rules",
+    "get_pve_remotes_remote_qemu_vmid_firewall_ipsets"
+  ]
+}

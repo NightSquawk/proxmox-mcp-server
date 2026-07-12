@@ -1,0 +1,30 @@
+{
+  "operationId": "put_cluster_firewall_ipset_name_cidr",
+  "usageNotes": "Use this to update the comment or nomatch flag on an existing IP/CIDR entry within a cluster-level firewall IPset. The caller must hold the Sys.Modify privilege at the root path (/). Pass the current config digest to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Set the nomatch flag on a CIDR entry to exclude it from the IPset match",
+      "path_params": {
+        "name": "trusted-offices",
+        "cidr": "10.20.30.0/24"
+      },
+      "params": {
+        "nomatch": true,
+        "comment": "Exclude branch office subnet from trusted-offices set",
+        "digest": "a3f1c2e4b5d6789012345678abcdef01234567890abcdef1234567890abcdef12"
+      }
+    }
+  ],
+  "tips": [
+    "The nomatch flag inverts the entry's match within the IPset — useful for punching exceptions into a broad CIDR without removing the surrounding range.",
+    "Fetch the current digest via get_cluster_firewall_ipset_name before calling this endpoint to avoid overwriting concurrent changes.",
+    "The cidr path param accepts plain IPs, CIDR notation, or IPset aliases — match exactly how the entry was originally created.",
+    "Returns null on success; any error is signalled via HTTP status code, not a response body."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_ipset_name",
+    "post_cluster_firewall_ipset_name",
+    "delete_cluster_firewall_ipset_name_cidr",
+    "get_cluster_firewall_ipset"
+  ]
+}

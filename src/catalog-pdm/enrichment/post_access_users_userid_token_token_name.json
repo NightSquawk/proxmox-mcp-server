@@ -1,0 +1,32 @@
+{
+  "operationId": "post_access_users_userid_token_token_name",
+  "usageNotes": "Use this to create a new API token for a PDM user, either for automation accounts or to generate scoped tokens for your own account. The response includes the plaintext token secret exactly once — it cannot be retrieved again, so capture it immediately. Users can create tokens for themselves without elevated privileges; creating tokens for other users requires Access.Modify on /access/users.",
+  "examples": [
+    {
+      "summary": "Create a read-only automation token for the local admin user, expiring in ~1 year",
+      "path_params": {
+        "userid": "admin@pve",
+        "token-name": "mcp-readonly"
+      },
+      "params": {
+        "comment": "MCP server read-only automation token",
+        "enable": true,
+        "expire": 1782000000
+      }
+    }
+  ],
+  "tips": [
+    "The full authentication ID (Authid) is formatted as userid!token-name (e.g. admin@pve!mcp-readonly) — this is what you pass in the Authorization header.",
+    "Token names must match /^[A-Za-z0-9_][A-Za-z0-9._-]*$/ — no spaces or special chars.",
+    "Set expire to a future Unix timestamp to enforce rotation; leave at 0 (default) for no expiration.",
+    "Use the digest param when updating tokens concurrently to prevent race conditions — not needed for a fresh create.",
+    "Tokens inherit the privileges of their parent user; they cannot exceed user-level permissions."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid_token_token_name",
+    "put_access_users_userid_token_token_name",
+    "delete_access_users_userid_token_token_name",
+    "get_access_users_userid_token",
+    "post_access_users"
+  ]
+}

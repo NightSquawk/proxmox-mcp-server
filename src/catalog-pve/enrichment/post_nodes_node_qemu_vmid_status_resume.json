@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_status_resume",
+  "usageNotes": "Resumes a suspended (paused) QEMU VM on the specified node; the VM must already be in a paused state — calling this on a running or stopped VM has no effect. Requires VM.PowerMgmt on the VM's ACL path and returns a task UPID string representing the async resume job. The node must be online and the VM must reside on that node; resuming a VM that holds a cluster-level lock will fail unless skiplock is set (root only).",
+  "examples": [
+    {
+      "summary": "Resume a paused VM (VMID 105) on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned UPID can be polled via GET /nodes/{node}/tasks/{upid}/status to confirm the VM has fully resumed.",
+    "If the VM was suspended to disk (hibernate) rather than paused in memory, use the start endpoint instead — this endpoint only handles in-memory (SIGCONT) pauses.",
+    "nocheck bypasses some internal state validation and is intended for recovery scenarios; prefer omitting it under normal operations.",
+    "skiplock is a root-only escape hatch; use it only when a stuck lock is preventing a legitimate resume after confirming no conflicting operation is actually running."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_status_suspend",
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_status_start",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_notifications_endpoints_sendmail",
+  "usageNotes": "Returns all sendmail notification endpoints configured at the cluster level, including both user-created and built-in entries. Requires either Mapping.Modify or Mapping.Audit on /mapping/notifications — read-only audit access is sufficient. Use this to inventory available sendmail targets before creating or updating notification matchers.",
+  "examples": [
+    {
+      "summary": "List all sendmail endpoints to find active recipient targets",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'origin' field distinguishes user-created endpoints from Proxmox built-ins (builtin) and user-modified built-ins (modified-builtin) — only user-created entries can be freely deleted.",
+    "An endpoint with 'disable: true' will silently drop notifications; check this field when troubleshooting missing alerts.",
+    "Recipients can be specified as raw email addresses (mailto) or PVE user IDs (mailto-user); both fields may be populated simultaneously on a single endpoint.",
+    "This endpoint covers only sendmail-type endpoints; use the sibling gotify, smtp, or webhook list endpoints for other notification channels."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_sendmail_name",
+    "create_cluster_notifications_endpoints_sendmail",
+    "update_cluster_notifications_endpoints_sendmail_name",
+    "delete_cluster_notifications_endpoints_sendmail_name",
+    "get_cluster_notifications_matchers"
+  ]
+}

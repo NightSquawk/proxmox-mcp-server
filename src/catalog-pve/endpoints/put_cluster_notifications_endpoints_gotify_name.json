@@ -1,0 +1,105 @@
+{
+  "operationId": "put_cluster_notifications_endpoints_gotify_name",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "update_gotify_endpoint",
+  "method": "PUT",
+  "path": "/cluster/notifications/endpoints/gotify/{name}",
+  "description": "Update existing gotify endpoint",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "The name of the endpoint.",
+      "format": "pve-configid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Comment",
+      "typetext": "<string>"
+    },
+    {
+      "name": "delete",
+      "type": "array",
+      "required": false,
+      "description": "A list of settings you want to delete.",
+      "typetext": "<array>"
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "disable",
+      "type": "boolean",
+      "required": false,
+      "description": "Disable this target",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "server",
+      "type": "string",
+      "required": false,
+      "description": "Server URL",
+      "typetext": "<string>"
+    },
+    {
+      "name": "token",
+      "type": "string",
+      "required": false,
+      "description": "Secret token",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "and",
+      [
+        "perm",
+        "/mapping/notifications",
+        [
+          "Mapping.Modify"
+        ]
+      ],
+      [
+        "or",
+        [
+          "perm",
+          "/",
+          [
+            "Sys.Audit",
+            "Sys.Modify"
+          ]
+        ],
+        [
+          "perm",
+          "/",
+          [
+            "Sys.AccessNetwork"
+          ]
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/notifications/endpoints/gotify/<name>'"
+}

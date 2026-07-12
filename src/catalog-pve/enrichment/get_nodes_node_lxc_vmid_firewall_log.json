@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_log",
+  "usageNotes": "Retrieves firewall log entries for a specific LXC container; useful for auditing traffic, diagnosing dropped packets, or confirming that firewall rules are matching as expected. The caller must have VM.Console permission on the container's /vms/{vmid} path. Use `since`/`until` (UNIX epoch integers) to narrow results to a time window, and `start`/`limit` for pagination through large logs.",
+  "examples": [
+    {
+      "summary": "Fetch the 50 most recent firewall log lines for container 110, filtered to the last hour",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {
+        "since": 1751158800,
+        "limit": 50
+      }
+    }
+  ],
+  "tips": [
+    "Each returned object has 'n' (line number) and 't' (raw log text); parse 't' to extract action, interface, source/destination IP and port.",
+    "Firewall logging must be enabled on the container's firewall rules (log level != nolog) — this endpoint returns nothing if no rules are set to log.",
+    "For high-traffic containers, always supply `limit` to avoid pulling thousands of lines in a single call; paginate with `start` offsets.",
+    "Log entries reflect the host-level nftables/iptables kernel log, so timestamps are in local node time — correlate against node timezone when comparing across cluster nodes."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_rules",
+    "get_nodes_node_lxc_vmid_firewall_options",
+    "get_nodes_node_firewall_log",
+    "get_cluster_firewall_log"
+  ]
+}

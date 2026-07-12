@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_storage_storage",
+  "usageNotes": "Returns the directory index for a specific storage on a remote PVE node — useful for discovering what sub-resources or actions are available under that storage path before drilling into content or status calls. The remote must be reachable from PDM and the node must be online; if either is unavailable the call will fail. The response schema is null in the spec, meaning this is a navigation/index endpoint and not a data-bearing call.",
+  "examples": [
+    {
+      "summary": "List the index for the 'local-zfs' storage on node 'pve1' of remote 'hetzner-prod'",
+      "path_params": {
+        "remote": "hetzner-prod",
+        "node": "pve1",
+        "storage": "local-zfs"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Use this endpoint to confirm a storage name is valid on a given node before issuing storage-content or status calls.",
+    "The 'remote' value must match a remote name registered in PDM, not a hostname or IP.",
+    "Because permissions are 'user: all', any authenticated PDM user can call this — no special privilege required."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_storage",
+    "get_pve_remotes_remote_nodes_node_storage_storage_content",
+    "get_pve_remotes_remote_nodes_node_storage_storage_status"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "put_nodes_node_lxc_vmid_snapshot_snapname_config",
+  "usageNotes": "Use this to update the human-readable description on an existing LXC snapshot — the only editable metadata after a snapshot is taken. The call is synchronous and returns null on success; no task UPID is issued. Requires VM.Snapshot privilege on /vms/{vmid}; the snapshot must already exist (use get_nodes_node_lxc_vmid_snapshot_snapname_config to verify before calling).",
+  "examples": [
+    {
+      "summary": "Add a description to an existing snapshot before a planned upgrade",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 112,
+        "snapname": "pre-upgrade-2024"
+      },
+      "params": {
+        "description": "Taken before Debian 12 dist-upgrade on 2024-09-15. Safe rollback point."
+      }
+    }
+  ],
+  "tips": [
+    "This endpoint only accepts 'description' — snapshot name and creation time cannot be changed after creation.",
+    "Omitting 'description' or sending an empty string clears the existing description.",
+    "Snapshot names follow the pve-configid format (alphanumeric + underscore/hyphen, max 40 chars); verify the name with the list endpoint before updating.",
+    "Returns HTTP 200 with a null body on success — treat any non-200 as an error."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_snapshot_snapname_config",
+    "get_nodes_node_lxc_vmid_snapshot",
+    "post_nodes_node_lxc_vmid_snapshot",
+    "delete_nodes_node_lxc_vmid_snapshot_snapname"
+  ]
+}

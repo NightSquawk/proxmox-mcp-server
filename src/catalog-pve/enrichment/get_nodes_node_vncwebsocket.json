@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_vncwebsocket",
+  "usageNotes": "Use this as the second step in the node shell VNC flow: first call the node's 'vncshell' endpoint to obtain a port (5900–5999) and a short-lived vncticket, then use those values here to upgrade the HTTP connection to a WebSocket carrying VNC traffic. The vncticket expires quickly, so the WebSocket upgrade must happen promptly after the vncshell call. The caller must hold Sys.Console on /nodes/{node}.",
+  "examples": [
+    {
+      "summary": "Open VNC WebSocket to node shell using port and ticket from a prior vncshell call",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "port": 5900,
+        "vncticket": "PVEVNC:6501234A::abcdef1234567890abcdef1234567890"
+      }
+    }
+  ],
+  "tips": [
+    "This endpoint is intended to be called as an HTTP Upgrade (WebSocket handshake), not a plain REST GET — standard REST clients will not establish a useful connection.",
+    "The port value must exactly match what was returned by the preceding vncshell call; ports are single-use and bound to the ticket.",
+    "vnctickets are time-limited (typically ~2 minutes); do not cache them for later reuse.",
+    "API tokens are allowed (allowtoken: true), but the vncticket itself is the second authentication factor required by the permission check."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_vncshell",
+    "post_nodes_node_termproxy"
+  ]
+}

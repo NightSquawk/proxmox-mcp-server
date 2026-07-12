@@ -1,0 +1,21 @@
+{
+  "operationId": "get_config_acme_directories",
+  "usageNotes": "Call this before creating or updating an ACME account to discover the available directory endpoints (e.g., Let's Encrypt production and staging). No parameters or special privileges are required — any authenticated user or API token can call it. Use the returned 'name' and 'url' fields when referencing a directory in account or plugin configuration.",
+  "examples": [
+    {
+      "summary": "List all known ACME directory endpoints",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The list is built into PDM and reflects well-known public ACME directories (e.g., Let's Encrypt v2 production and staging); it is not user-configurable.",
+    "Use the staging directory (if listed) for testing certificate workflows before switching to production to avoid Let's Encrypt rate limits.",
+    "The 'url' value from this response is the canonical endpoint to supply when referencing an ACME directory in plugin or account configurations."
+  ],
+  "relatedOperations": [
+    "get_config_acme_accounts",
+    "get_config_acme_plugins",
+    "post_config_acme_account"
+  ]
+}

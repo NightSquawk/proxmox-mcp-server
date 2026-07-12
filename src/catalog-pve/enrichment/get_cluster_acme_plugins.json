@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_acme_plugins",
+  "usageNotes": "Use this to list all ACME challenge plugins configured at the cluster level — call it before creating or assigning a plugin to a domain in an ACME account. Requires the Sys.Modify privilege at the root path (/). Filter by type='dns' or type='standalone' to narrow results; omit the parameter to return all plugins regardless of type.",
+  "examples": [
+    {
+      "summary": "List only DNS challenge plugins",
+      "path_params": {},
+      "params": {
+        "type": "dns"
+      }
+    }
+  ],
+  "tips": [
+    "The 'standalone' plugin type is built-in and requires no additional API credentials; DNS plugins each reference a specific provider API (e.g., 'cf' for Cloudflare, 'hetzner' for Hetzner DNS).",
+    "The 'disable' flag on a returned plugin means it will not be used for certificate issuance even if assigned — check this field when troubleshooting ACME certificate failures.",
+    "The 'validation-delay' field (default 30 s) is critical for DNS plugins with high TTLs; if cert issuance fails with DNS propagation errors, increase this value on the plugin.",
+    "The 'nodes' field restricts which cluster nodes may use the plugin; an empty/absent value means all nodes are allowed."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_plugins_id",
+    "create_cluster_acme_plugins",
+    "update_cluster_acme_plugins_id",
+    "delete_cluster_acme_plugins_id",
+    "get_cluster_acme_accounts"
+  ]
+}

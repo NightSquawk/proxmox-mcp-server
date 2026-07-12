@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_query_oci_repo_tags",
+  "usageNotes": "Use this to discover available tags for an OCI container image repository before pulling or deploying a container (e.g., when creating an LXC from an OCI image). The `reference` must be a valid OCI repository path without a tag or digest (e.g., `docker.io/library/debian` or a private registry path); the node performs the remote registry query outbound, so it must have network access to the registry. Requires `Sys.AccessNetwork` on the node — API tokens are supported.",
+  "examples": [
+    {
+      "summary": "List all available tags for the official Debian image on Docker Hub",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "reference": "docker.io/library/debian"
+      }
+    }
+  ],
+  "tips": [
+    "The reference pattern does not allow a tag suffix (no `:latest`) — pass only the repository path.",
+    "If the registry requires authentication, configure registry credentials on the node before calling this endpoint.",
+    "Large public registries (Docker Hub) may rate-limit unauthenticated tag-list requests; use a pull-through cache or authenticated token to avoid 429 errors.",
+    "The response is a flat string array of tag names; sort or filter client-side as needed."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc"
+  ]
+}

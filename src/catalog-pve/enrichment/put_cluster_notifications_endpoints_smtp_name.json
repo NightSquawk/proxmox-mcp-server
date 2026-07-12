@@ -1,0 +1,36 @@
+{
+  "operationId": "put_cluster_notifications_endpoints_smtp_name",
+  "usageNotes": "Use this to update an existing cluster-level SMTP notification endpoint — for example to rotate credentials, change the relay server, or update the recipient list. The endpoint must already exist (create it first with the POST equivalent). The caller needs `Mapping.Modify` on `/mapping/notifications` plus either `Sys.Modify`/`Sys.Audit` or `Sys.AccessNetwork` on `/`; pass the current config `digest` to guard against concurrent edits. Returns null synchronously — there is no async UPID.",
+  "examples": [
+    {
+      "summary": "Update SMTP relay credentials and recipient list for an existing 'alerts-smtp' endpoint",
+      "path_params": {
+        "name": "alerts-smtp"
+      },
+      "params": {
+        "server": "smtp.mailgun.org",
+        "mode": "starttls",
+        "port": 587,
+        "username": "postmaster@mg.nightsquawk.tech",
+        "password": "s3cr3tAppPassword!",
+        "from-address": "noreply@nightsquawk.tech",
+        "author": "NightSquawk Tech Alerts",
+        "mailto": ["hello@nightsquawk.tech"],
+        "comment": "Updated relay credentials 2026-06-28"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting a field leaves its current value unchanged; use the `delete` array to explicitly clear optional fields (e.g., `\"delete\": [\"comment\"]`).",
+    "Default port depends on mode: 465 for tls, 587 for starttls, 25 for insecure — omit `port` to let Proxmox pick the correct default when changing `mode`.",
+    "Fetch the current digest via GET /cluster/notifications/endpoints/smtp/{name} and pass it to prevent a lost-update race between concurrent operators.",
+    "Passwords are write-only in the API response; you cannot retrieve the stored password — store credentials in a secrets manager separately.",
+    "Setting `disable: true` silences alerts from this endpoint without deleting it, useful during maintenance windows."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_smtp_name",
+    "post_cluster_notifications_endpoints_smtp",
+    "delete_cluster_notifications_endpoints_smtp_name",
+    "get_cluster_notifications_endpoints_smtp"
+  ]
+}

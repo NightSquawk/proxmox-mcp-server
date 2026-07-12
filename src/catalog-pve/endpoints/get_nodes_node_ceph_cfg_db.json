@@ -1,0 +1,77 @@
+{
+  "operationId": "get_nodes_node_ceph_cfg_db",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "db",
+  "method": "GET",
+  "path": "/nodes/{node}/ceph/cfg/db",
+  "description": "Get the Ceph configuration database.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "additionalProperties": 1,
+      "properties": {
+        "can_update_at_runtime": {
+          "description": "Set if the value can be changed at runtime without restarting the affected daemons. Emitted as the integer 1/0 to match the existing PVE wire convention.",
+          "type": "boolean"
+        },
+        "level": {
+          "description": "Config level the entry is exposed at: 'basic' for operator-visible settings, 'advanced' for tuning parameters, 'dev' for developer-only knobs.",
+          "enum": [
+            "basic",
+            "advanced",
+            "dev"
+          ],
+          "type": "string"
+        },
+        "mask": {
+          "description": "Match expression restricting the entry's scope; empty when the entry has no mask. Examples: 'host:foo', 'class:ssd'.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Config key name.",
+          "type": "string"
+        },
+        "section": {
+          "description": "Ceph config section the entry applies to: 'global', a daemon type ('mon', 'osd', 'mgr', 'mds', 'client'), or a specific daemon (e.g. 'osd.0', 'mon.<name>').",
+          "type": "string"
+        },
+        "value": {
+          "description": "Configured value for the key (always serialised as a string by Ceph, regardless of the option's underlying type).",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit",
+        "Datastore.Audit"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/cfg/db'"
+}

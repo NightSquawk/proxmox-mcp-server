@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_backup",
+  "usageNotes": "Use this to list all scheduled vzdump backup jobs defined at the cluster level, including their schedule, target storage, scope (all VMs, specific VMIDs, or pool), retention policy, and compression settings. Requires the Sys.Audit privilege on the root path ('/'). This is a read-only index — it returns job configuration objects, not backup file listings; use the storage content endpoints to enumerate actual backup archives.",
+  "examples": [
+    {
+      "summary": "List all cluster backup schedules",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'next-run' field is a UNIX timestamp — convert it to a human-readable date to quickly see when each job will fire next.",
+    "Jobs with 'enabled: false' are returned in the list but will not execute; check this field when troubleshooting missed backups.",
+    "The 'node' field, when set, restricts execution to a specific node — jobs without it run on whichever node the scheduler picks, which may vary in a cluster.",
+    "mailto and mailnotification fields are deprecated; rely on notification-mode and the PVE notification system for alerting instead.",
+    "Backup fleecing (fleecing.enabled) is VM-only and requires a separate local storage that supports thin provisioning or sparse files."
+  ],
+  "relatedOperations": [
+    "get_cluster_backup_id",
+    "create_cluster_backup",
+    "update_cluster_backup",
+    "delete_cluster_backup",
+    "get_nodes_node_storage_storage_content"
+  ]
+}

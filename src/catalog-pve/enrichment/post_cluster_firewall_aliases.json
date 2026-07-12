@@ -1,0 +1,28 @@
+{
+  "operationId": "post_cluster_firewall_aliases",
+  "usageNotes": "Use this to define a reusable named alias for an IP address or CIDR range that can then be referenced by name in cluster-level firewall rules. The alias name must start with a letter and can only contain letters, digits, hyphens, and underscores (2–64 characters). Requires the Sys.Modify privilege on the root path '/'.",
+  "examples": [
+    {
+      "summary": "Create an alias for a trusted management network",
+      "path_params": {},
+      "params": {
+        "name": "mgmt-network",
+        "cidr": "10.10.0.0/24",
+        "comment": "Internal management VLAN"
+      }
+    }
+  ],
+  "tips": [
+    "Aliases are cluster-wide; once created they are available in both cluster-level and node/VM-level firewall rule editors.",
+    "The name pattern requires at least 2 characters and must begin with a letter — purely numeric names are rejected.",
+    "Returns null on success; check for a 4xx/5xx HTTP status to detect conflicts (e.g., duplicate alias name).",
+    "Alias names are case-sensitive in the API but may display differently in the UI — use consistent casing to avoid confusion."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_aliases",
+    "get_cluster_firewall_aliases_name",
+    "put_cluster_firewall_aliases_name",
+    "delete_cluster_firewall_aliases_name",
+    "post_cluster_firewall_rules"
+  ]
+}

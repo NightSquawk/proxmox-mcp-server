@@ -1,0 +1,24 @@
+{
+  "operationId": "get_ceph_clusters_cluster_mon",
+  "usageNotes": "Use this to list all Ceph monitors for a given cluster and verify quorum health — the `quorum` field on each entry indicates whether the monitor is currently participating in consensus. The `cluster` path param is the Ceph FSID (UUID-like string), not a human-readable name; retrieve it from the cluster list endpoint first. Monitors showing `state: 'stopped'` or `quorum: false` indicate a degraded mon that needs investigation before performing cluster operations.",
+  "examples": [
+    {
+      "summary": "List all monitors for a known Ceph cluster to verify quorum status",
+      "path_params": {
+        "cluster": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A healthy Ceph cluster requires an odd number of monitors (typically 3 or 5) with all members in quorum — if `quorum: false` appears on any entry, the cluster may reject writes.",
+    "The `direxists` field reflects whether the mon data directory is present on the hosting node; a missing directory with `service: true` suggests a misconfigured or partially removed monitor.",
+    "The `addr` field may use Ceph messenger-v2 vector format (e.g. `[v2:IP:3300,v1:IP:6789]`) on newer Ceph versions — parse accordingly if you need to extract the IP.",
+    "Monitors with `state: 'unknown'` indicate PDM could not reach the Ceph cluster via rados at query time — check PDM connectivity to the cluster, not just the mon host itself."
+  ],
+  "relatedOperations": [
+    "get_ceph_clusters",
+    "get_ceph_clusters_cluster",
+    "get_ceph_clusters_cluster_status"
+  ]
+}

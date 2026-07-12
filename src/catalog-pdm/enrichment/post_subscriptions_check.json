@@ -1,0 +1,24 @@
+{
+  "operationId": "post_subscriptions_check",
+  "usageNotes": "Use this to force an immediate re-validation of a remote node's subscription status against the Proxmox shop, bypassing the normal ~5-minute cache — useful when a subscription has just been purchased, renewed, or was incorrectly marked Invalid/Expired. The call makes an outbound HTTPS request from PDM to shop.proxmox.com, so the target node must be online and reachable. Requires `PRIV_RESOURCE_MODIFY` on the remote in addition to the top-level `System.Modify` privilege; API tokens are permitted.",
+  "examples": [
+    {
+      "summary": "Force a subscription re-check on a Proxmox VE node named 'pve01' registered under the remote 'hetzner-de'",
+      "path_params": {},
+      "params": {
+        "node": "pve01",
+        "remote": "hetzner-de"
+      }
+    }
+  ],
+  "tips": [
+    "The endpoint returns null on success — absence of an error is the success signal.",
+    "After calling this, read the node's subscription status (e.g. via get_nodes_node or equivalent) to confirm the fresh verdict; the cache is invalidated immediately but the UI may need a manual refresh.",
+    "Pass 'localhost' as the node value only when PDM itself is the target node.",
+    "The remote ID must match exactly as registered in PDM (2–32 chars, alphanumeric with dots/dashes/underscores, no leading dot or dash)."
+  ],
+  "relatedOperations": [
+    "get_subscriptions",
+    "get_remotes_remote_status"
+  ]
+}

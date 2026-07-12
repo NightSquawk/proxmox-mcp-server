@@ -1,0 +1,125 @@
+{
+  "operationId": "put_nodes_node_ceph_pool_name",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "setpool",
+  "method": "PUT",
+  "path": "/nodes/{node}/ceph/pool/{name}",
+  "description": "Change POOL settings",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "The name of the pool. It must be unique.",
+      "pattern": "(?^:^[^:/\\s]+$)"
+    }
+  ],
+  "params": [
+    {
+      "name": "application",
+      "type": "string",
+      "required": false,
+      "description": "The application of the pool.",
+      "enum": [
+        "rbd",
+        "cephfs",
+        "rgw"
+      ]
+    },
+    {
+      "name": "crush_rule",
+      "type": "string",
+      "required": false,
+      "description": "The rule to use for mapping object placement in the cluster.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "min_size",
+      "type": "integer",
+      "required": false,
+      "description": "Minimum number of replicas per object",
+      "minimum": 1,
+      "maximum": 7,
+      "typetext": "<integer> (1 - 7)"
+    },
+    {
+      "name": "pg_autoscale_mode",
+      "type": "string",
+      "required": false,
+      "description": "The automatic PG scaling mode of the pool.",
+      "enum": [
+        "on",
+        "off",
+        "warn"
+      ]
+    },
+    {
+      "name": "pg_num",
+      "type": "integer",
+      "required": false,
+      "description": "Number of placement groups.",
+      "minimum": 1,
+      "maximum": 32768,
+      "typetext": "<integer> (1 - 32768)"
+    },
+    {
+      "name": "pg_num_min",
+      "type": "integer",
+      "required": false,
+      "description": "Minimal number of placement groups.",
+      "maximum": 32768,
+      "typetext": "<integer> (-N - 32768)"
+    },
+    {
+      "name": "size",
+      "type": "integer",
+      "required": false,
+      "description": "Number of replicas per object",
+      "minimum": 1,
+      "maximum": 7,
+      "typetext": "<integer> (1 - 7)"
+    },
+    {
+      "name": "target_size",
+      "type": "string",
+      "required": false,
+      "description": "The estimated target size of the pool for the PG autoscaler.",
+      "pattern": "^(\\d+(\\.\\d+)?)([KMGT])?$"
+    },
+    {
+      "name": "target_size_ratio",
+      "type": "number",
+      "required": false,
+      "description": "The estimated target ratio of the pool for the PG autoscaler.",
+      "typetext": "<number>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/pool/<name>'"
+}

@@ -1,0 +1,132 @@
+{
+  "operationId": "put_auto_install_tokens_id",
+  "surface": "pdm",
+  "resource": "auto-install",
+  "category": "Auto Install",
+  "name": "{id}",
+  "method": "PUT",
+  "path": "/auto-install/tokens/{id}",
+  "description": "PUT /auto-install/tokens/{id}\n\nUpdates an existing access token.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "API Token name",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Comment.",
+      "maxLength": 128,
+      "pattern": "/^[[:^cntrl:]]*$/"
+    },
+    {
+      "name": "delete",
+      "type": "array",
+      "required": false,
+      "description": "List of properties to delete."
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    },
+    {
+      "name": "enabled",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether this token is enabled",
+      "default": true
+    },
+    {
+      "name": "expire-at",
+      "type": "integer",
+      "required": false,
+      "description": "Token expiration date (seconds since epoch). '0' means no expiration date.",
+      "minimum": 0
+    },
+    {
+      "name": "regenerate-secret",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether to regenerate the current secret, invalidating the old one.",
+      "default": false
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Result when updating a new token.",
+    "properties": {
+      "secret": {
+        "description": "The secret, if a new one was requested to be generated.",
+        "optional": 1,
+        "type": "string"
+      },
+      "token": {
+        "additionalProperties": false,
+        "description": "A token for authenticating requests from the automated installer.",
+        "properties": {
+          "comment": {
+            "description": "Comment.",
+            "maxLength": 128,
+            "optional": 1,
+            "pattern": "/^[[:^cntrl:]]*$/",
+            "type": "string"
+          },
+          "created-by": {
+            "description": "Name of the user that created it",
+            "type": "string"
+          },
+          "enabled": {
+            "default": true,
+            "description": "Whether this token is enabled",
+            "optional": 1,
+            "type": "boolean"
+          },
+          "expire-at": {
+            "description": "Token expiration date (seconds since epoch). '0' means no expiration date.",
+            "minimum": 0,
+            "optional": 1,
+            "type": "integer"
+          },
+          "id": {
+            "description": "API Token name",
+            "maxLength": 64,
+            "minLength": 3,
+            "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "auto-installation"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/auto-install/tokens/<id>'"
+}

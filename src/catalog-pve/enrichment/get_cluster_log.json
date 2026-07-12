@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_log",
+  "usageNotes": "Use this to retrieve recent cluster-wide log entries (tasks, node events, and system messages aggregated across all cluster members). The caller must have the 'Sys.Syslog' privilege on '/' to see all entries — unprivileged users receive a filtered or empty result. Omit 'max' to receive the API default limit; set it explicitly when you need a larger or bounded window of recent activity.",
+  "examples": [
+    {
+      "summary": "Fetch the 50 most recent cluster log entries",
+      "path_params": {},
+      "params": {
+        "max": 50
+      }
+    }
+  ],
+  "tips": [
+    "Without 'Sys.Syslog' on '/', results may be silently filtered — always verify the token/user privilege if the response is unexpectedly empty.",
+    "This endpoint aggregates logs from all cluster nodes; it is not a substitute for per-node syslog or journald output.",
+    "The 'max' minimum is 1; there is no documented upper cap, but very large values can produce slow responses on busy clusters."
+  ],
+  "relatedOperations": [
+    "get_cluster_tasks",
+    "get_nodes_node_syslog",
+    "get_cluster_status"
+  ]
+}

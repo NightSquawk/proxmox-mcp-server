@@ -1,0 +1,35 @@
+{
+  "operationId": "post_cluster_notifications_matchers",
+  "usageNotes": "Use this to create a named notification matcher that filters which events reach which notification targets (e.g. email, Gotify). The `name` field must follow the `pve-configid` format (alphanumeric plus hyphens, no spaces). Matchers are purely additive — no target receives notifications until a matcher explicitly references it via the `target` array.",
+  "examples": [
+    {
+      "summary": "Create a matcher that routes critical-severity backup-job failures to an email target, active only on business-hours calendar",
+      "path_params": {},
+      "params": {
+        "name": "backup-critical-alerts",
+        "comment": "Route critical backup failures to on-call email during business hours",
+        "match-severity": ["critical"],
+        "match-field": ["regex:type=vzdump"],
+        "match-calendar": ["mon..fri 08:00-18:00"],
+        "mode": "all",
+        "target": ["email-oncall"],
+        "disable": false
+      }
+    }
+  ],
+  "tips": [
+    "The `match-field` values must be prefixed with `exact:` or `regex:` followed by `<field>=<value>` — omitting the prefix causes a validation error.",
+    "Setting `mode` to `any` means the matcher fires if ANY condition matches; the default `all` requires every condition to match simultaneously.",
+    "Use `invert-match: true` to build exclusion rules (e.g., suppress low-severity noise during maintenance windows).",
+    "Matchers are evaluated cluster-wide; changes take effect immediately without a service restart.",
+    "After creation, retrieve the matcher with GET /cluster/notifications/matchers/{name} to confirm the stored configuration."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_matchers",
+    "get_cluster_notifications_matchers_name",
+    "put_cluster_notifications_matchers_name",
+    "delete_cluster_notifications_matchers_name",
+    "get_cluster_notifications_targets",
+    "post_cluster_notifications_targets_sendmail"
+  ]
+}

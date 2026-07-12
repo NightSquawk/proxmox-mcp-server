@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_disks_lvm_name",
+  "usageNotes": "Removes an LVM Volume Group from the specified node; the return value is a task UPID, so poll the task API to confirm completion before reusing the underlying disks. The caller must hold `Sys.Modify` on `/`; if `cleanup-config` is set, `Datastore.Allocate` on `/storage` is also required. Ensure no VMs or containers have active storage references to this VG before invoking, as removal is immediate and irreversible.",
+  "examples": [
+    {
+      "summary": "Remove VG 'pve-data' from node 'pve01', wiping disks and cleaning up storage config",
+      "path_params": {
+        "node": "pve01",
+        "name": "pve-data"
+      },
+      "params": {
+        "cleanup-config": true,
+        "cleanup-disks": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently destroys the LVM Volume Group and all logical volumes it contains; all data stored on those volumes is unrecoverable, and optionally wipes the underlying physical disks.",
+  "tips": [
+    "Run 'get_nodes_node_disks_lvm' first to confirm the VG name and which physical disks back it before deleting.",
+    "Set 'cleanup-config: true' when the storage is defined only on this node; omit it if the storage definition should remain for other nodes in the cluster.",
+    "Set 'cleanup-disks: true' only when you intend to reprovision the raw disks — it writes zeros to the disk headers, making recovery impossible.",
+    "Track the returned UPID via the task API (e.g., 'get_nodes_node_tasks_upid_status') to detect failures before assuming the VG is gone."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_lvm",
+    "post_nodes_node_disks_lvm",
+    "get_nodes_node_disks_list",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

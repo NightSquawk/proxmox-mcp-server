@@ -1,0 +1,122 @@
+{
+  "operationId": "get_nodes_node_hardware_pci",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "pci_scan",
+  "method": "GET",
+  "path": "/nodes/{node}/hardware/pci",
+  "description": "List local PCI devices.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "pci-class-blacklist",
+      "type": "string",
+      "required": false,
+      "description": "A list of blacklisted PCI classes, which will not be returned. Following are filtered by default: Memory Controller (05), Bridge (06) and Processor (0b).",
+      "format": "string-list",
+      "default": "05;06;0b",
+      "typetext": "<string>"
+    },
+    {
+      "name": "verbose",
+      "type": "boolean",
+      "required": false,
+      "description": "If disabled, does only print the PCI IDs. Otherwise, additional information like vendor and device will be returned.",
+      "default": 1,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "class": {
+          "description": "The PCI Class of the device.",
+          "type": "string"
+        },
+        "device": {
+          "description": "The Device ID.",
+          "type": "string"
+        },
+        "device_name": {
+          "optional": 1,
+          "type": "string"
+        },
+        "id": {
+          "description": "The PCI ID.",
+          "type": "string"
+        },
+        "iommugroup": {
+          "description": "The IOMMU group in which the device is in. If no IOMMU group is detected, it is set to -1.",
+          "type": "integer"
+        },
+        "mdev": {
+          "description": "If set, marks that the device is capable of creating mediated devices.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "subsystem_device": {
+          "description": "The Subsystem Device ID.",
+          "optional": 1,
+          "type": "string"
+        },
+        "subsystem_device_name": {
+          "optional": 1,
+          "type": "string"
+        },
+        "subsystem_vendor": {
+          "description": "The Subsystem Vendor ID.",
+          "optional": 1,
+          "type": "string"
+        },
+        "subsystem_vendor_name": {
+          "optional": 1,
+          "type": "string"
+        },
+        "vendor": {
+          "description": "The Vendor ID.",
+          "type": "string"
+        },
+        "vendor_name": {
+          "optional": 1,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{id}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit",
+        "Sys.Modify"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/hardware/pci'"
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_config_views_id",
+  "usageNotes": "Permanently deletes a named view from the Proxmox Datacenter Manager configuration. Requires the Resource.Modify privilege on the 'view' path. Pass the optional digest parameter (obtained from the read/list endpoint) to guard against concurrent modifications overwriting each other.",
+  "examples": [
+    {
+      "summary": "Delete a view named 'prod-cluster' using a digest for safe concurrent modification protection",
+      "path_params": {
+        "id": "prod-cluster"
+      },
+      "params": {
+        "digest": "a3f1c2e4b5d6789012345678901234567890abcdef1234567890abcdef123456"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the named view and all of its configuration from PDM; there is no undo and the view must be recreated manually if deleted in error.",
+  "tips": [
+    "Fetch the current digest via the corresponding GET/list endpoint and pass it to prevent race conditions when multiple operators may be modifying views simultaneously.",
+    "The id must be 2–32 characters, starting with an alphanumeric or underscore, followed by alphanumeric, dot, underscore, or hyphen characters.",
+    "Returns null on success — no confirmation payload is included; treat an HTTP 200 with null body as the success signal."
+  ],
+  "relatedOperations": [
+    "get_config_views",
+    "get_config_views_id",
+    "post_config_views",
+    "put_config_views_id"
+  ]
+}

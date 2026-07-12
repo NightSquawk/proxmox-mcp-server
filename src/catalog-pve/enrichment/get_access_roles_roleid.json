@@ -1,0 +1,25 @@
+{
+  "operationId": "get_access_roles_roleid",
+  "usageNotes": "Use this to inspect the exact privilege set granted by a specific role before assigning it to a user or token — useful for auditing custom roles or verifying built-in roles like PVEVMUser or PVEAdmin. The roleid must match an existing role exactly (case-sensitive); built-in roles use the PVE prefix convention (e.g., PVEAdmin, PVEVMUser). All authenticated users including API tokens can call this endpoint regardless of privilege level.",
+  "examples": [
+    {
+      "summary": "Inspect the built-in PVEVMUser role to see which VM privileges it grants",
+      "path_params": {
+        "roleid": "PVEVMUser"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Only privileges set to true are returned in the response; unset privileges are omitted entirely rather than returned as false.",
+    "Built-in roles (prefixed with PVE) cannot be modified; use list_access_roles (GET /access/roles) to enumerate all available roles before fetching a specific one.",
+    "API tokens with restricted privileges can still call this endpoint — permissions are 'user: all', meaning any authenticated session qualifies."
+  ],
+  "relatedOperations": [
+    "get_access_roles",
+    "post_access_roles",
+    "put_access_roles_roleid",
+    "delete_access_roles_roleid",
+    "get_access_acl"
+  ]
+}

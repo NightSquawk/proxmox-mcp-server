@@ -1,0 +1,26 @@
+{
+  "operationId": "post_cluster_bulk_action_guest_start",
+  "usageNotes": "Use this to start or resume all (or a filtered subset of) guests cluster-wide in a single call — useful after a planned maintenance window or cluster reboot. The caller must hold VM.PowerMgmt on '/' for a blanket start or on each individual '/vms/<ID>' when scoping via the 'vms' parameter. The operation is asynchronous: the response is a UPID that can be polled for completion.",
+  "examples": [
+    {
+      "summary": "Bulk-start a specific set of VMs with increased parallelism and a 120-second timeout",
+      "path_params": {},
+      "params": {
+        "vms": [100, 101, 105],
+        "max-workers": 8,
+        "timeout": 120
+      }
+    }
+  ],
+  "tips": [
+    "Omit 'vms' to target every guest in the cluster — ensure you have VM.PowerMgmt on '/' before doing so.",
+    "Use 'max-workers' (not the deprecated 'maxworkers') to tune parallelism; the default of 4 is conservative and safe for most clusters.",
+    "The 'timeout' parameter applies only to VMs, not to LXC containers.",
+    "Poll the returned UPID via the tasks API (GET /nodes/{node}/tasks/{upid}/status) to confirm all guests reached the running state."
+  ],
+  "relatedOperations": [
+    "post_cluster_bulk_action_guest_stop",
+    "post_cluster_bulk_action_guest_migrate",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_storage_storage_content_volume",
+  "usageNotes": "Use this to inspect metadata for a specific volume on a storage backend — format, on-disk path, allocated size, and protection status for backups. The `volume` path param accepts the full volume identifier (e.g. `local:100/vm-100-disk-0.qcow2`) or a bare volume name; the `storage` path param is technically marked optional in the spec but should be included when the volume ID is ambiguous. The calling user or API token only needs read access to the volume, so this is safe for auditing or pre-flight checks before clone/move operations.",
+  "examples": [
+    {
+      "summary": "Inspect a VM disk image on local-lvm storage",
+      "path_params": {
+        "node": "pve01",
+        "storage": "local-lvm",
+        "volume": "vm-100-disk-0"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `used` field is often 0 or unreliable — most storage plugins do not report actual used space; rely on `size` instead.",
+    "The `protected` field is only populated for backup volumes (vzdump/PBS); it will be absent for disk images.",
+    "Volume identifiers in Proxmox typically follow the pattern `<storage>:<vmid>/<filename>` or `<storage>:vm-<vmid>-<name>` depending on the storage type; pass the full volid if you obtained it from the content list endpoint.",
+    "This endpoint targets a specific node — if the storage is shared (e.g. Ceph, NFS), any node that has the storage mounted can serve the request, but the node must be online."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_content",
+    "post_nodes_node_storage_storage_content",
+    "delete_nodes_node_storage_storage_content_volume",
+    "post_nodes_node_storage_storage_content_volume"
+  ]
+}

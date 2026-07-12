@@ -1,0 +1,61 @@
+{
+  "operationId": "get_nodes_node_scan_nfs",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "nfsscan",
+  "method": "GET",
+  "path": "/nodes/{node}/scan/nfs",
+  "description": "Scan remote NFS server.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "server",
+      "type": "string",
+      "required": true,
+      "description": "The server address (name or IP).",
+      "format": "pve-storage-server",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "options": {
+          "description": "NFS export options.",
+          "type": "string"
+        },
+        "path": {
+          "description": "The exported path.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage",
+      [
+        "Datastore.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/scan/nfs?server=<server>'"
+}

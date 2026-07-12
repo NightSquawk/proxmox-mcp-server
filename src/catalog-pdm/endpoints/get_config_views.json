@@ -1,0 +1,70 @@
+{
+  "operationId": "get_config_views",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "views",
+  "method": "GET",
+  "path": "/config/views",
+  "description": "List views.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of views.",
+    "items": {
+      "additionalProperties": false,
+      "description": "View definition",
+      "properties": {
+        "exclude": {
+          "description": "List of filter rules.",
+          "items": {
+            "description": "Filter rule for resources.",
+            "type": "string",
+            "typetext": "[exact:]resource-type=<storage|qemu|lxc|sdn-zone|datastore|node>|[exact:]resource-pool=<pool-name>|[exact:]tag=<tag-name>|[exact:]remote=<remote-name>|[exact:]resource=id:<resource-id>"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "id": {
+          "description": "View name.",
+          "maxLength": 32,
+          "minLength": 2,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "include": {
+          "description": "List of filter rules.",
+          "items": {
+            "description": "Filter rule for resources.",
+            "type": "string",
+            "typetext": "[exact:]resource-type=<storage|qemu|lxc|sdn-zone|datastore|node>|[exact:]resource-pool=<pool-name>|[exact:]tag=<tag-name>|[exact:]remote=<remote-name>|[exact:]resource=id:<resource-id>"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "include-all": {
+          "description": "Include all resources by default.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "layout": {
+          "description": "The configured layout, encoded as json",
+          "optional": 1,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Returns the views the user has access to.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/views'"
+}

@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_acme_directories",
+  "usageNotes": "Call this before creating or updating an ACME account to discover the canonical directory URLs that Proxmox knows about (e.g. Let's Encrypt production and staging). No parameters are required and no special privilege is needed — any authenticated user or API token can call it. Use the returned 'name' values when referencing a directory in ACME account configuration.",
+  "examples": [
+    {
+      "summary": "List all known ACME directory endpoints",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned list is built into Proxmox and is not cluster-configuration-dependent — it reflects directories compiled into the pve-manager package.",
+    "Use the 'url' field directly when registering an ACME account via POST /cluster/acme/account if you need a non-default directory.",
+    "Let's Encrypt staging URL is useful for testing certificate issuance without hitting rate limits."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_accounts",
+    "create_cluster_acme_account",
+    "get_cluster_acme_plugins"
+  ]
+}

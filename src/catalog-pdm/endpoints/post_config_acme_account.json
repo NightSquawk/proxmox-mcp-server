@@ -1,0 +1,86 @@
+{
+  "operationId": "post_config_acme_account",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "account",
+  "method": "POST",
+  "path": "/config/acme/account",
+  "description": "Register an ACME account.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "contact",
+      "type": "string",
+      "required": true,
+      "description": "List of email addresses, comma separated.",
+      "format": {
+        "description": "Contact list.",
+        "items": {
+          "description": "E-Mail Address.",
+          "maxLength": 64,
+          "minLength": 2,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "typetext": "[<string>, ...]"
+    },
+    {
+      "name": "directory",
+      "type": "string",
+      "required": false,
+      "description": "The ACME Directory."
+    },
+    {
+      "name": "eab_hmac_key",
+      "type": "string",
+      "required": false,
+      "description": "HMAC key for External Account Binding."
+    },
+    {
+      "name": "eab_kid",
+      "type": "string",
+      "required": false,
+      "description": "Key Identifier for External Account Binding."
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "description": "ACME account name.",
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "tos_url",
+      "type": "string",
+      "required": false,
+      "description": "URL of CA TermsOfService - setting this indicates agreement."
+    }
+  ],
+  "returns": {
+    "description": "Unique Process/Task Identifier",
+    "minLength": 36,
+    "pattern": "/^UPID:(?P<node>[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?):(?P<pid>[0-9A-Fa-f]{8}):(?P<pstart>[0-9A-Fa-f]{8,9}):(?P<task_id>[0-9A-Fa-f]{8,16}):(?P<starttime>[0-9A-Fa-f]{8}):(?P<wtype>[^:\\s]+):(?P<wid>[^:\\s]*):(?P<authid>[^:\\s]+):$/",
+    "type": "string"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "certificates"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"contact\":\"<contact>\"}' 'https://PDM_HOST:8443/api2/json/config/acme/account'"
+}

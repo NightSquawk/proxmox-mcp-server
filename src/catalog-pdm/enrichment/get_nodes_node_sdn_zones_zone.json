@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_sdn_zones_zone",
+  "usageNotes": "Returns the sub-resource directory index for a specific SDN zone scoped to a PDM node — useful for discovering what child endpoints are available under a given zone. No query parameters are accepted; supply the node name and zone ID as path parameters. Accessible to all authenticated users, including API token-based access.",
+  "examples": [
+    {
+      "summary": "Fetch the directory index for SDN zone 'vlan10' on node 'pdm-node1'",
+      "path_params": {
+        "node": "pdm-node1",
+        "zone": "vlan10"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response type is null in the schema, meaning this is a directory-listing endpoint — use it to navigate available sub-resources rather than retrieve zone configuration details.",
+    "To get actual zone configuration data (type, MTU, peers, etc.), query the PDM SDN zones list endpoint at the cluster level instead of the per-node path.",
+    "Zone IDs in Proxmox SDN follow the naming constraint of alphanumeric characters with hyphens; ensure the zone value matches exactly as defined in the SDN configuration."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_zones",
+    "get_nodes_node_sdn"
+  ]
+}

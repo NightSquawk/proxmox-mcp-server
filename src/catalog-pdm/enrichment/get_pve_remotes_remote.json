@@ -1,0 +1,21 @@
+{
+  "operationId": "get_pve_remotes_remote",
+  "usageNotes": "Use this endpoint to retrieve the directory index for a specific PVE remote registered in Proxmox Datacenter Manager. It serves as a discovery endpoint — confirming the remote exists and is accessible before calling more specific sub-resources under it. No special privilege beyond basic authenticated access is required (permissions: user=all), but the remote name must already be configured in PDM.",
+  "examples": [
+    {
+      "summary": "Fetch the directory index for a PVE remote named 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response type is null per the spec — this is a directory index endpoint; its primary value is confirming the remote path is valid and reachable.",
+    "Use list_pve_remotes first to discover valid remote names before calling this endpoint.",
+    "API tokens are allowed (allowtoken: true), so service accounts with limited scopes can call this safely."
+  ],
+  "relatedOperations": [
+    "list_pve_remotes"
+  ]
+}

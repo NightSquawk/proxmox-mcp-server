@@ -1,0 +1,32 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_file_read",
+  "usageNotes": "Reads a file from inside a running VM via the QEMU Guest Agent (qemu-guest-agent must be installed and running in the guest). The response is capped at 16 MiB; check the `truncated` field in the response — if true, use the `offset` param to page through the remainder. The caller must hold `VM.GuestAgent.FileRead` or `VM.GuestAgent.Unrestricted` on `/vms/{vmid}`.",
+  "examples": [
+    {
+      "summary": "Read /etc/hostname from a Linux VM (decoded, first 1 KB)",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101
+      },
+      "params": {
+        "file": "/etc/hostname",
+        "count": 1024,
+        "offset": 0,
+        "decode": true
+      }
+    }
+  ],
+  "tips": [
+    "Set decode=false if you need to forward the raw base64 payload (e.g., for binary files or when the caller handles decoding itself).",
+    "Use offset + count together to paginate large files; always check `truncated: true` before assuming you have the full content.",
+    "The 16 MiB hard cap is enforced server-side regardless of the count value supplied.",
+    "Guest agent must be running — if the VM is powered off or the agent service is stopped, the call will fail with a timeout or connection error.",
+    "On Windows guests, use Windows-style paths (e.g., C:\\\\Windows\\\\System32\\\\drivers\\\\etc\\\\hosts)."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_agent_exec",
+    "get_nodes_node_qemu_vmid_agent_exec_status",
+    "post_nodes_node_qemu_vmid_agent_file_write",
+    "get_nodes_node_qemu_vmid_agent"
+  ]
+}

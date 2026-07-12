@@ -1,0 +1,30 @@
+{
+  "operationId": "get_nodes_node_disks_list",
+  "usageNotes": "Use this to inventory physical and virtual block devices visible to a specific node — useful before adding disks to Ceph, ZFS, or LVM storage. SMART health data is queried per disk by default, which can slow the response on nodes with many drives; pass skipsmart=true for faster enumeration when health status is not needed. Requires Sys.Audit on / or on /nodes/{node}.",
+  "examples": [
+    {
+      "summary": "List all unused disks on node pve1, skipping SMART checks for speed",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "type": "unused",
+        "skipsmart": true
+      }
+    }
+  ],
+  "tips": [
+    "Set type=unused to quickly find unpartitioned disks eligible for new storage pools or Ceph OSDs.",
+    "Set type=journal_disks to find disks designated as Ceph journal/WAL/DB devices.",
+    "include-partitions=true is needed to see individual partitions alongside whole disks; partition entries include a 'parent' field pointing to the containing disk.",
+    "The 'osdid' and 'osdid-list' fields identify Ceph OSDs residing on that disk — a non-negative osdid means the disk is already claimed by Ceph.",
+    "SMART health is returned in the 'health' field (e.g. PASSED, FAILED); absent or empty health usually means the disk type does not support SMART."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_smart",
+    "get_nodes_node_disks_zfs",
+    "post_nodes_node_disks_zfs",
+    "get_nodes_node_disks_lvmthin",
+    "get_nodes_node_ceph_osd"
+  ]
+}

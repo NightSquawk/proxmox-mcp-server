@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_ipset_name_cidr",
+  "usageNotes": "Retrieves the settings for a single IP or CIDR entry within a named IPSet on a QEMU VM's firewall. Use this to inspect a specific entry (including any attached comment) when you already know the exact CIDR value; if you need to enumerate all entries in the set, list the IPSet instead. Requires VM.Audit on the target VM; the hosting node must be online.",
+  "examples": [
+    {
+      "summary": "Read a specific CIDR entry from a VM's firewall IPSet",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 200,
+        "name": "trusted-mgmt",
+        "cidr": "10.10.5.0/24"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'cidr' path param accepts bare IPs (e.g. 192.168.1.50), CIDR ranges, or IPSet aliases — match exactly what was used when the entry was created.",
+    "The IPSet name must match the pattern [A-Za-z][A-Za-z0-9\\-\\_]+ (2–64 chars); names starting with a digit are invalid.",
+    "A 'nomatch' flag on the entry (negation prefix '!') is returned in the response object — check for it when building firewall logic."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_ipset_name",
+    "get_nodes_node_qemu_vmid_firewall_ipset",
+    "post_nodes_node_qemu_vmid_firewall_ipset_name",
+    "put_nodes_node_qemu_vmid_firewall_ipset_name_cidr",
+    "delete_nodes_node_qemu_vmid_firewall_ipset_name_cidr"
+  ]
+}

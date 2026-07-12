@@ -1,0 +1,38 @@
+{
+  "operationId": "put_nodes_node_qemu_vmid_firewall_rules_pos",
+  "usageNotes": "Use this to modify an existing firewall rule on a specific VM by its zero-based position index; the caller must hold VM.Config.Network on the VM's path. To reorder a rule without changing its properties, supply only `moveto` — all other body params are ignored in that case. Pass the `digest` from a prior GET to guard against concurrent modifications overwriting each other.",
+  "examples": [
+    {
+      "summary": "Change rule at position 2 to DROP inbound TCP traffic on port 22 from a specific source and add a comment",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110,
+        "pos": 2
+      },
+      "params": {
+        "type": "in",
+        "action": "DROP",
+        "proto": "tcp",
+        "source": "203.0.113.0/24",
+        "dport": "22",
+        "comment": "Block SSH from untrusted range",
+        "enable": 1,
+        "log": "warning"
+      }
+    }
+  ],
+  "tips": [
+    "Rules are zero-indexed; use get_nodes_node_qemu_vmid_firewall_rules to confirm the current position before editing.",
+    "When using `moveto`, the API ignores all other body fields — issue a second PUT if you also need to change rule properties.",
+    "The `delete` param accepts a comma-separated list of field names (e.g. 'comment,log') to clear optional fields back to their defaults.",
+    "VM firewall rules are only evaluated when the VM-level firewall is enabled; check the VM firewall options if rule changes appear to have no effect.",
+    "Do not mix IPv4 and IPv6 addresses in `source` or `dest` fields — Proxmox will reject the rule."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "get_nodes_node_qemu_vmid_firewall_rules_pos",
+    "post_nodes_node_qemu_vmid_firewall_rules",
+    "delete_nodes_node_qemu_vmid_firewall_rules_pos",
+    "get_nodes_node_qemu_vmid_firewall_options"
+  ]
+}

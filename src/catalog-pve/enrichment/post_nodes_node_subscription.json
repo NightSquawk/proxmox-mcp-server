@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_subscription",
+  "usageNotes": "Triggers an on-demand refresh of the Proxmox VE subscription status for the specified node by contacting the Proxmox licensing server; the result is cached locally so normal reads use GET instead. Use the `force` flag when a subscription key was just activated or renewed and the cached status is stale. Requires `Sys.Modify` on `/nodes/{node}` and the node must be reachable by the PVE host to contact the upstream server.",
+  "examples": [
+    {
+      "summary": "Force-refresh subscription status on node pve1 after renewing a license key",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "force": true
+      }
+    }
+  ],
+  "tips": [
+    "Without force=true, the call is a no-op when the local cache is still within its validity window — use force=true after any key change.",
+    "Returns null on success; treat an HTTP 2xx with null body as confirmation the refresh was queued.",
+    "If the node cannot reach shop.proxmox.com (e.g., air-gapped), the call will fail or leave the node in an 'offline' subscription state — whitelist the licensing endpoint in firewall rules first.",
+    "Use GET /nodes/{node}/subscription afterward to confirm the updated status and expiry date."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_subscription",
+    "put_nodes_node_subscription",
+    "delete_nodes_node_subscription"
+  ]
+}

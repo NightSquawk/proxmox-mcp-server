@@ -1,0 +1,30 @@
+{
+  "operationId": "post_cluster_mapping_usb",
+  "usageNotes": "Use this to define a named, cluster-wide USB device mapping so VMs can reference a logical ID rather than node-specific hardware paths. The caller must hold the Mapping.Modify privilege on /mapping/usb. Each entry in the map array ties a cluster node to the physical USB device identifiers (vendor/product ID or device path) on that node.",
+  "examples": [
+    {
+      "summary": "Create a USB mapping for a Yubikey hardware token available on two nodes",
+      "path_params": {},
+      "params": {
+        "id": "yubikey-auth",
+        "description": "Yubico YubiKey 5 NFC - shared auth token for privileged VMs",
+        "map": [
+          "node=pve01,vendorid=1050,productid=0407",
+          "node=pve02,vendorid=1050,productid=0407"
+        ]
+      }
+    }
+  ],
+  "tips": [
+    "The id field must be a valid pve-configid (alphanumeric and hyphens, no spaces); choose a name that reflects the device purpose rather than a hardware identifier.",
+    "Each map entry must name at least one cluster node; nodes not listed will not expose the mapping to VMs scheduled on them.",
+    "After creation, assign the mapping to a VM via the VM's hardware config (usb0: mapping=<id>); the mapping itself does not attach anything automatically.",
+    "Returns null on success — confirm creation by calling get_cluster_mapping_usb_id or listing mappings with get_cluster_mapping_usb."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_usb",
+    "get_cluster_mapping_usb_id",
+    "put_cluster_mapping_usb_id",
+    "delete_cluster_mapping_usb_id"
+  ]
+}

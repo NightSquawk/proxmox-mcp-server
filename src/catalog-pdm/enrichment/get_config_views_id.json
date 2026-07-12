@@ -1,0 +1,25 @@
+{
+  "operationId": "get_config_views_id",
+  "usageNotes": "Use this to inspect the full configuration of a named PDM view, including its include/exclude filter rules and layout. The caller must hold Resource.Audit on the view path; views are created and managed separately via the config/views collection endpoints. The 'id' must match the stored view name exactly — there is no fuzzy or prefix matching.",
+  "examples": [
+    {
+      "summary": "Fetch the configuration of a view named 'production-vms'",
+      "path_params": {
+        "id": "production-vms"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "View IDs follow the pattern /^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/ — hyphens and dots are allowed but the first character must be alphanumeric or underscore.",
+    "The 'include-all' flag in the response means the view shows every resource unless explicitly excluded; when false, only resources matching 'include' rules appear.",
+    "Filter rules support an optional 'exact:' prefix to force literal matching rather than prefix/pattern matching on pool, tag, and remote names.",
+    "The 'layout' field is an opaque JSON-encoded string used by the PDM UI; it is safe to ignore in API consumers."
+  ],
+  "relatedOperations": [
+    "get_config_views",
+    "post_config_views",
+    "put_config_views_id",
+    "delete_config_views_id"
+  ]
+}

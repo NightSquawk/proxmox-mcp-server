@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_version",
+  "usageNotes": "Use this endpoint to confirm the exact PVE release and pve-manager package version running on a specific node — useful before applying updates, validating cluster homogeneity, or troubleshooting API compatibility. The node must be online and reachable; calling it against an offline node will return a connection error. Any authenticated user or API token is permitted ('user: all'), so no elevated privilege is required.",
+  "examples": [
+    {
+      "summary": "Fetch version info from a node named 'pve01'",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Compare the 'version' field across all cluster nodes to detect version drift after a rolling upgrade.",
+    "The 'repoid' (short git commit hash) pinpoints the exact build when reporting bugs to the Proxmox community.",
+    "This endpoint is available even when the node is in maintenance mode, making it a lightweight liveness probe."
+  ],
+  "relatedOperations": [
+    "get_version",
+    "get_nodes_node_status",
+    "get_cluster_status"
+  ]
+}

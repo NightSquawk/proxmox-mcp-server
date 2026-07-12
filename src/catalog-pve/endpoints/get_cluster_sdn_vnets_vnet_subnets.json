@@ -1,0 +1,60 @@
+{
+  "operationId": "get_cluster_sdn_vnets_vnet_subnets",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "index",
+  "method": "GET",
+  "path": "/cluster/sdn/vnets/{vnet}/subnets",
+  "description": "SDN subnets index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "vnet",
+      "type": "string",
+      "required": true,
+      "description": "The SDN vnet object identifier.",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    }
+  ],
+  "params": [
+    {
+      "name": "pending",
+      "type": "boolean",
+      "required": false,
+      "description": "Display pending config.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "running",
+      "type": "boolean",
+      "required": false,
+      "description": "Display running config.",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {},
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{subnet}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Only list entries where you have 'SDN.Audit' or 'SDN.Allocate' permissions on '/sdn/zones/<zone>/<vnet>'",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/vnets/<vnet>/subnets'"
+}

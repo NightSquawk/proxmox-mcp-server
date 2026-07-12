@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_firewall_rules_pos",
+  "usageNotes": "Retrieves a single cluster-level firewall rule by its zero-based position index. Use this after listing rules (get_cluster_firewall_rules) to inspect a specific rule's full details before editing or deleting it. Requires Sys.Audit on the root path ('/'); the pos parameter is optional — omitting it returns rule at position 0.",
+  "examples": [
+    {
+      "summary": "Fetch the third cluster firewall rule (index 2)",
+      "path_params": {
+        "pos": 2
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Rule positions are zero-based and shift when rules are inserted or deleted — always re-list before referencing a position in a subsequent write operation.",
+    "The 'action' field may be an ACCEPT/DROP/REJECT keyword or the name of a security group when the rule type is 'group'.",
+    "The 'enable' field is an integer (1 = enabled, 0 = disabled), not a boolean.",
+    "ipversion is derived automatically from source/dest addresses and is informational; you cannot set it directly."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_rules",
+    "put_cluster_firewall_rules_pos",
+    "delete_cluster_firewall_rules_pos",
+    "post_cluster_firewall_rules"
+  ]
+}

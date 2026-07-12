@@ -1,0 +1,44 @@
+{
+  "operationId": "post_pools",
+  "surface": "pve",
+  "resource": "pools",
+  "category": "Pools",
+  "name": "create_pool",
+  "method": "POST",
+  "path": "/pools",
+  "description": "Create new pool.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "typetext": "<string>"
+    },
+    {
+      "name": "poolid",
+      "type": "string",
+      "required": true,
+      "format": "pve-poolid",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/pool/{poolid}",
+      [
+        "Pool.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"poolid\":\"<poolid>\"}' 'https://PVE_HOST:8006/api2/json/pools'"
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "put_cluster_ceph_flags",
+  "usageNotes": "Use this to atomically set or unset one or more Ceph cluster-wide feature flags (e.g. suspending backfill, scrubbing, or rebalancing) in a single call; omitted flags are left unchanged. Requires Sys.Modify on / (root). The operation runs as a worker task and returns a UPID — poll the task status if you need to confirm completion before proceeding.",
+  "examples": [
+    {
+      "summary": "Suspend backfill and rebalancing during a planned OSD maintenance window, then re-enable them after",
+      "path_params": {},
+      "params": {
+        "nobackfill": true,
+        "norebalance": true
+      }
+    }
+  ],
+  "tips": [
+    "Flags like 'noout' and 'norebalance' are commonly paired during OSD replacement to prevent premature data movement.",
+    "Setting 'pause' halts all Ceph reads and writes cluster-wide — use only in a controlled, coordinated maintenance window.",
+    "After maintenance, call this endpoint again with the same flags set to false to restore normal cluster behavior; do not rely on Proxmox to auto-clear them.",
+    "Check current flag state with get_cluster_ceph_flags before writing to avoid accidentally clearing flags set by another operator."
+  ],
+  "relatedOperations": [
+    "get_cluster_ceph_flags",
+    "get_cluster_ceph_status",
+    "get_nodes_node_ceph_osd"
+  ]
+}

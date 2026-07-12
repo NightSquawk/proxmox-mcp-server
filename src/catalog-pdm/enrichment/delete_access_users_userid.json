@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_access_users_userid",
+  "usageNotes": "Use this to permanently remove a user account from the PDM configuration. Requires the `Access.Modify` privilege on `/access/users`, or the user may self-delete. Pass the `digest` parameter (obtained from the corresponding GET) to guard against concurrent modifications overwriting an unseen change.",
+  "examples": [
+    {
+      "summary": "Delete a local PDM user account",
+      "path_params": {
+        "userid": "jsmith@pdc"
+      },
+      "params": {
+        "digest": "a3f1c2e4b5d6a7f8e9c0b1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the user account from the PDM configuration; all associated tokens and permissions granted to that user are also lost.",
+  "tips": [
+    "The userid format must match `<name>@<realm>` (e.g., `admin@pdc`); the pattern enforces this.",
+    "Supplying `digest` prevents silent overwrites when another operator modifies the user list concurrently — always fetch it from a prior GET /access/users/{userid} call.",
+    "This operation returns null on success; any non-2xx response indicates failure."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid",
+    "post_access_users",
+    "put_access_users_userid",
+    "get_access_users"
+  ]
+}

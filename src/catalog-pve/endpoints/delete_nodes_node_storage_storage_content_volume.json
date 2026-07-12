@@ -1,0 +1,60 @@
+{
+  "operationId": "delete_nodes_node_storage_storage_content_volume",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "delete",
+  "method": "DELETE",
+  "path": "/nodes/{node}/storage/{storage}/content/{volume}",
+  "description": "Delete volume",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": false,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    },
+    {
+      "name": "volume",
+      "type": "string",
+      "required": true,
+      "description": "Volume identifier",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "delay",
+      "type": "integer",
+      "required": false,
+      "description": "Time to wait for the task to finish. We return 'null' if the task finish within that time.",
+      "minimum": 1,
+      "maximum": 30,
+      "typetext": "<integer> (1 - 30)"
+    }
+  ],
+  "returns": {
+    "optional": 1,
+    "type": "string"
+  },
+  "permissions": {
+    "description": "You need 'Datastore.Allocate' privilege on the storage (or 'Datastore.AllocateSpace' for backup volumes if you have VM.Backup privilege on the VM).",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/content/<volume>'"
+}

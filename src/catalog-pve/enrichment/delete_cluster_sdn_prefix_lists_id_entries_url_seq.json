@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_cluster_sdn_prefix_lists_id_entries_url_seq",
+  "usageNotes": "Removes a single entry (identified by its sequence number) from an SDN prefix list. Requires the SDN.Allocate privilege on the specific prefix list path and changes do not take effect until the SDN configuration is applied via the apply endpoint. If the global SDN configuration is locked, supply the matching lock-token to proceed.",
+  "examples": [
+    {
+      "summary": "Delete sequence entry 10 from the 'rfc1918-private' prefix list",
+      "path_params": {
+        "id": "rfc1918-private",
+        "url_seq": "10"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the specified prefix-list entry; any SDN routing policy or firewall rule relying on that prefix match will stop matching after the next SDN apply.",
+  "tips": [
+    "Run the SDN apply operation after deletion to push the change to cluster nodes — deletion alone does not activate the change.",
+    "Use the corresponding GET on /cluster/sdn/prefix-lists/{id}/entries to list sequence numbers before deleting so you target the correct entry.",
+    "The lock-token parameter is only needed when another process holds the global SDN config lock; omit it for normal single-operator workflows."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_prefix_lists_id_entries",
+    "create_cluster_sdn_prefix_lists_id_entries",
+    "get_cluster_sdn_prefix_lists_id_entries_url_seq",
+    "get_cluster_sdn_prefix_lists",
+    "apply_cluster_sdn"
+  ]
+}

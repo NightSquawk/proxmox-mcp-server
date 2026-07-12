@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_firewall_refs",
+  "usageNotes": "Use this endpoint to discover the valid IPSet and Alias names that can be placed in the source/dest fields of cluster firewall rules. Call it before constructing or validating a firewall rule to confirm a reference name exists at cluster scope. Requires Sys.Audit on the root path; filter by the optional `type` param to narrow results to either aliases or IPSets.",
+  "examples": [
+    {
+      "summary": "List only IPSet references available for use in cluster firewall rules",
+      "path_params": {},
+      "params": {
+        "type": "ipset"
+      }
+    }
+  ],
+  "tips": [
+    "Omit the `type` param to return both aliases and IPSets in a single call.",
+    "The `ref` field in each result is the exact token to use in a firewall rule's source or dest property (e.g., `+ipset-name` or `dc/alias-name`).",
+    "This endpoint only surfaces cluster-scope references; node- or VM-level aliases/IPSets defined elsewhere will not appear here."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_aliases",
+    "get_cluster_firewall_ipsets",
+    "get_cluster_firewall_rules"
+  ]
+}

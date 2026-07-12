@@ -1,0 +1,151 @@
+{
+  "operationId": "get_pbs_remotes_remote_datastore_datastore_snapshots",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "snapshots",
+  "method": "GET",
+  "path": "/pbs/remotes/{remote}/datastore/{datastore}/snapshots",
+  "description": "List the PBS remote's datastores.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "datastore",
+      "type": "string",
+      "required": true,
+      "description": "Datastore name.",
+      "minLength": 3,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "ns",
+      "type": "string",
+      "required": false,
+      "description": "Namespace.",
+      "maxLength": 256,
+      "pattern": "/^(?:(?:(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)/){0,7}(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))?$/"
+    }
+  ],
+  "returns": {
+    "description": "Returns the list of snapshots.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Basic information about backup snapshot.",
+      "properties": {
+        "backup-id": {
+          "description": "Backup ID.",
+          "pattern": "/^[A-Za-z0-9_][A-Za-z0-9._\\-]*$/",
+          "type": "string"
+        },
+        "backup-time": {
+          "description": "Backup time (Unix epoch.)",
+          "minimum": 1,
+          "type": "integer"
+        },
+        "backup-type": {
+          "description": "Backup types.",
+          "enum": [
+            "vm",
+            "ct",
+            "host"
+          ],
+          "type": "string"
+        },
+        "comment": {
+          "description": "Comment.",
+          "maxLength": 128,
+          "optional": 1,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "files": {
+          "description": "List of contained archive files.",
+          "items": {
+            "description": "Backup archive name.",
+            "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "fingerprint": {
+          "description": "Fingerprint of encryption key",
+          "optional": 1,
+          "type": "string"
+        },
+        "owner": {
+          "description": "Authentication ID",
+          "maxLength": 64,
+          "minLength": 3,
+          "optional": 1,
+          "pattern": "/^(?:(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)|(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)!(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))$/",
+          "type": "string"
+        },
+        "protected": {
+          "description": "Protection from prunes",
+          "type": "boolean"
+        },
+        "size": {
+          "description": "Overall snapshot size (sum of all archive sizes).",
+          "minimum": 0,
+          "optional": 1,
+          "type": "integer"
+        },
+        "verification": {
+          "additionalProperties": false,
+          "description": "Task properties.",
+          "optional": 1,
+          "properties": {
+            "state": {
+              "description": "Result of a verify operation.",
+              "enum": [
+                "ok",
+                "failed"
+              ],
+              "type": "string"
+            },
+            "upid": {
+              "description": "Unique Process/Task Identifier",
+              "minLength": 36,
+              "pattern": "/^UPID:(?P<node>[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?):(?P<pid>[0-9A-Fa-f]{8}):(?P<pstart>[0-9A-Fa-f]{8,9}):(?P<task_id>[0-9A-Fa-f]{8,16}):(?P<starttime>[0-9A-Fa-f]{8}):(?P<wtype>[^:\\s]+):(?P<wid>[^:\\s]*):(?P<authid>[^:\\s]+):$/",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "datastore",
+        "{datastore}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/datastore/<datastore>/snapshots'"
+}

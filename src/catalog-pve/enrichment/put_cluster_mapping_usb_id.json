@@ -1,0 +1,33 @@
+{
+  "operationId": "put_cluster_mapping_usb_id",
+  "usageNotes": "Use this to modify an existing cluster-level USB hardware mapping — update which physical USB device each node maps to, change the description, or remove specific fields via 'delete'. Requires 'Mapping.Modify' on '/mapping/usb/{id}'. Pass the 'digest' from the current mapping to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Remap a USB dongle to a different bus/port on node pve2 while clearing the old description",
+      "path_params": {
+        "id": "yubi-key-prod"
+      },
+      "params": {
+        "map": [
+          "node=pve1,path=/dev/bus/usb/001/003",
+          "node=pve2,path=/dev/bus/usb/002/005"
+        ],
+        "description": "YubiKey 5 NFC - production auth dongle",
+        "delete": "description",
+        "digest": "a3f1c29b7e0d4512"
+      }
+    }
+  ],
+  "tips": [
+    "The 'map' array must include an entry for every cluster node that should expose the device; nodes omitted from the list lose access to the mapping.",
+    "Use 'delete' (comma-separated config key names) to remove optional fields such as 'description' rather than setting them to empty strings.",
+    "Read the current mapping first (get_cluster_mapping_usb_id) to obtain the 'digest' value before updating — prevents silent overwrites in multi-admin environments.",
+    "USB mappings are referenced by VMs using the mapped ID; updating path values takes effect on the next VM start, not live."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_usb_id",
+    "post_cluster_mapping_usb",
+    "delete_cluster_mapping_usb_id",
+    "get_cluster_mapping_usb"
+  ]
+}

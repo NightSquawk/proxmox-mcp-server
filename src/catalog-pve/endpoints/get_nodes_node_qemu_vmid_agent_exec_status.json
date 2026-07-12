@@ -1,0 +1,93 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_exec_status",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "exec-status",
+  "method": "GET",
+  "path": "/nodes/{node}/qemu/{vmid}/agent/exec-status",
+  "description": "Gets the status of the given pid started by the guest-agent",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "pid",
+      "type": "integer",
+      "required": true,
+      "description": "The PID to query",
+      "typetext": "<integer>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "err-data": {
+        "description": "stderr of the process",
+        "optional": 1,
+        "type": "string"
+      },
+      "err-truncated": {
+        "description": "true if stderr was not fully captured",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "exitcode": {
+        "description": "process exit code if it was normally terminated.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "exited": {
+        "description": "Tells if the given command has exited yet.",
+        "type": "boolean"
+      },
+      "out-data": {
+        "description": "stdout of the process",
+        "optional": 1,
+        "type": "string"
+      },
+      "out-truncated": {
+        "description": "true if stdout was not fully captured",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "signal": {
+        "description": "signal number or exception code if the process was abnormally terminated.",
+        "optional": 1,
+        "type": "integer"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.GuestAgent.Unrestricted"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/agent/exec-status?pid=0'"
+}

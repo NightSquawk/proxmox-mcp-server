@@ -1,0 +1,44 @@
+{
+  "operationId": "post_subscriptions_bulk_assign",
+  "usageNotes": "Commits the assignment plan produced by `get_subscriptions_auto_assign` — always call that endpoint first and pass its full response as `proposal`. The handler validates two digests (pool-config and live node-status) embedded in the proposal and rejects with HTTP 409 if either has changed since the plan was computed, so callers must re-fetch the proposal and retry after any topology or key-pool change. The caller must hold `PRIV_RESOURCE_MODIFY` on each remote referenced in the proposal in addition to the top-level `System.Modify` privilege; an audit-only caller cannot commit a plan even if they rendered the preview.",
+  "examples": [
+    {
+      "summary": "Commit an auto-assign plan to distribute three subscription keys across two remotes",
+      "path_params": {},
+      "params": {
+        "proposal": {
+          "assignments": [
+            {
+              "key": "pve-enterprise-abc123",
+              "node": "pve-node-01",
+              "remote": "hetzner-pve"
+            },
+            {
+              "key": "pve-enterprise-def456",
+              "node": "pve-node-02",
+              "remote": "hetzner-pve"
+            },
+            {
+              "key": "pdm-enterprise-ghi789",
+              "node": "pdm-host",
+              "remote": "ovh-pdm"
+            }
+          ],
+          "keys_digest": "a3f8c2e1d94b7056",
+          "node_status_digest": "b7e1d0c3a4f29518"
+        }
+      }
+    }
+  ],
+  "tips": [
+    "Always use Content-Type: application/json — the nested proposal object cannot be encoded as form-urlencoded.",
+    "A 409 response means the pool or node topology changed between plan generation and commit; re-call get_subscriptions_auto_assign and resubmit.",
+    "The returned array lists only the assignments actually persisted — compare against your proposal to detect any partial application.",
+    "API tokens are supported (allowtoken: true); scope the token to System.Modify plus per-remote PRIV_RESOURCE_MODIFY."
+  ],
+  "relatedOperations": [
+    "get_subscriptions_auto_assign",
+    "get_subscriptions",
+    "get_nodes"
+  ]
+}

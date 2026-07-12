@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_access_domains_realm",
+  "usageNotes": "Permanently removes an authentication realm (e.g. LDAP, AD, OpenID Connect) from Proxmox VE. The built-in 'pve' and 'pam' realms cannot be deleted. Existing users assigned to the deleted realm will lose the ability to authenticate — consider reassigning or removing those users first.",
+  "examples": [
+    {
+      "summary": "Delete an LDAP authentication domain named 'corp-ldap'",
+      "path_params": {
+        "realm": "corp-ldap"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the authentication realm configuration; any users bound to this realm will immediately be unable to log in.",
+  "tips": [
+    "List current realms with get_access_domains before deleting to confirm the target realm ID.",
+    "Built-in realms 'pve' and 'pam' are protected and cannot be deleted via this endpoint.",
+    "Audit users assigned to the realm (get_access_users) and reassign or disable them before deletion to avoid orphaned accounts.",
+    "The operation returns null synchronously — no UPID is issued; the realm is removed immediately."
+  ],
+  "relatedOperations": [
+    "get_access_domains",
+    "get_access_domains_realm",
+    "create_access_domains",
+    "update_access_domains_realm",
+    "get_access_users"
+  ]
+}

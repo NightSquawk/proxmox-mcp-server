@@ -1,0 +1,25 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_termproxy",
+  "usageNotes": "Use this to open a terminal proxy session to a running QEMU VM from the web UI or a terminal client; the caller must hold VM.Console on the target VM. Returns a ticket, port, and UPID — pass the ticket to the noVNC/xterm.js WebSocket handshake to authenticate the session. If the VM has a configured serial device and you need a serial console rather than the QEMU display, supply the 'serial' parameter (e.g. 'serial0').",
+  "examples": [
+    {
+      "summary": "Open a standard terminal proxy session to VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'ticket' is short-lived; use it immediately to establish the WebSocket connection.",
+    "Omit 'serial' to connect to the QEMU display console (default); specify 'serial0'–'serial3' only when the VM uses a serial-based console (e.g. headless Linux with console=ttyS0).",
+    "The 'upid' in the response can be polled via GET /nodes/{node}/tasks/{upid}/status if you need to confirm the proxy process started successfully.",
+    "This endpoint requires the VM to be running; calling it against a stopped VM will return an error."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_vncproxy",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

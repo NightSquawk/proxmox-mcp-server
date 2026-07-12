@@ -1,0 +1,24 @@
+{
+  "operationId": "get_access_groups_groupid",
+  "usageNotes": "Use this to retrieve the member list and optional comment for a specific Proxmox access group. The caller must hold either Sys.Audit or Group.Allocate on /access/groups. The group must already exist; a non-existent groupid returns an error, not an empty result.",
+  "examples": [
+    {
+      "summary": "Fetch membership of the 'admins' group",
+      "path_params": {
+        "groupid": "admins"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The members array contains full user IDs in name@realm format (e.g. jdoe@pve); iterate it to build audit reports or compare expected vs. actual group membership.",
+    "API tokens are allowed (allowtoken: true), so automation scripts can read group data without interactive credentials.",
+    "Group IDs are case-sensitive and follow the pve-groupid format; use list_access_groups first if unsure of exact casing."
+  ],
+  "relatedOperations": [
+    "get_access_groups",
+    "post_access_groups",
+    "put_access_groups_groupid",
+    "delete_access_groups_groupid"
+  ]
+}

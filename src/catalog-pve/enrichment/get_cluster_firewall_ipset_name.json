@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_firewall_ipset_name",
+  "usageNotes": "Use this to inspect the CIDR entries inside a specific cluster-level firewall IPSet by name. Requires Sys.Audit on the root path (/). Each entry includes a cidr, optional comment, a digest (useful for passing to update/delete calls to guard against concurrent edits), and an optional nomatch flag that negates the entry (i.e., excludes that CIDR from the set).",
+  "examples": [
+    {
+      "summary": "List all CIDRs in an IPSet named 'trusted-mgmt'",
+      "path_params": {
+        "name": "trusted-mgmt"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The nomatch field, when true, means the CIDR is excluded from the set rather than included — useful for carving exceptions out of a broader range.",
+    "Capture the digest from each entry before calling an update or delete; passing it back prevents overwriting concurrent changes.",
+    "IPSet names must start with a letter and contain only letters, digits, hyphens, and underscores (2–64 chars)."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_ipsets",
+    "create_cluster_firewall_ipset_name",
+    "update_cluster_firewall_ipset_name_cidr",
+    "delete_cluster_firewall_ipset_name_cidr",
+    "delete_cluster_firewall_ipset_name"
+  ]
+}

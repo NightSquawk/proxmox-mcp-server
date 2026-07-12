@@ -1,0 +1,80 @@
+{
+  "operationId": "get_nodes_node_ceph_cmd_safety",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "cmd_safety",
+  "method": "GET",
+  "path": "/nodes/{node}/ceph/cmd-safety",
+  "description": "Heuristical check if it is safe to perform an action.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "action",
+      "type": "string",
+      "required": true,
+      "description": "Action to check",
+      "enum": [
+        "stop",
+        "destroy"
+      ]
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "ID of the service",
+      "typetext": "<string>"
+    },
+    {
+      "name": "service",
+      "type": "string",
+      "required": true,
+      "description": "Service type",
+      "enum": [
+        "osd",
+        "mon",
+        "mds"
+      ]
+    }
+  ],
+  "returns": {
+    "additionalProperties": 0,
+    "properties": {
+      "safe": {
+        "description": "True if Ceph reports the requested action is safe.",
+        "type": "boolean"
+      },
+      "status": {
+        "description": "Human-readable status message from Ceph (typically the reason an action is not safe); absent when Ceph returned no message.",
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/cmd-safety?action=stop&id=<id>&service=osd'"
+}

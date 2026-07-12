@@ -1,0 +1,33 @@
+{
+  "operationId": "post_cluster_acme_plugins",
+  "usageNotes": "Use this to register a new ACME DNS-01 or standalone challenge plugin at the cluster level before it can be assigned to a certificate order. Requires the `Sys.Modify` privilege on `/`. For DNS-type plugins, the `api` field (provider name) and `data` field (base64-encoded API credentials) are both required in practice even though they are technically optional in the schema; omitting them will cause subsequent certificate issuance to fail. Returns null on success — confirm the plugin was created by calling GET /cluster/acme/plugins/{id}.",
+  "examples": [
+    {
+      "summary": "Add a Cloudflare DNS-01 ACME plugin with API token credentials",
+      "path_params": {},
+      "params": {
+        "id": "cf-plugin",
+        "type": "dns",
+        "api": "cf",
+        "data": "Q0ZfVG9rZW49eW91cl9jbG91ZGZsYXJlX2FwaV90b2tlbg==",
+        "validation-delay": 60,
+        "nodes": "pve1,pve2"
+      }
+    }
+  ],
+  "tips": [
+    "The `data` param must be base64-encoded key=value pairs in the format expected by the acme.sh DNS plugin (e.g., `CF_Token=abc123` → base64 encoded).",
+    "`validation-delay` defaults to 30 seconds; increase it (e.g., 120+) for DNS providers with slow propagation or high TTLs to avoid premature validation failures.",
+    "The `id` field follows the `pve-configid` format: alphanumeric and hyphens only, no spaces. This ID is referenced when assigning the plugin to an ACME account or domain order.",
+    "Omit `nodes` to make the plugin available cluster-wide; specify a comma-separated node list to restrict which nodes can use it.",
+    "The `standalone` type uses the built-in HTTP-01 challenge listener and does not require `api` or `data`."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_plugins",
+    "get_cluster_acme_plugins_{id}",
+    "put_cluster_acme_plugins_{id}",
+    "delete_cluster_acme_plugins_{id}",
+    "get_cluster_acme_accounts",
+    "post_cluster_acme_accounts"
+  ]
+}

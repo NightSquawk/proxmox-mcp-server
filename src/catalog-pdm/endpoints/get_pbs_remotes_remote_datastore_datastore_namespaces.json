@@ -1,0 +1,86 @@
+{
+  "operationId": "get_pbs_remotes_remote_datastore_datastore_namespaces",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "namespaces",
+  "method": "GET",
+  "path": "/pbs/remotes/{remote}/datastore/{datastore}/namespaces",
+  "description": "List the namespaces of PBS remote's datastore.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "datastore",
+      "type": "string",
+      "required": true,
+      "description": "The datastore ID."
+    }
+  ],
+  "params": [
+    {
+      "name": "max-depth",
+      "type": "integer",
+      "required": false,
+      "description": "The maximum depth that namespaces should be (recursively) listed.",
+      "minimum": 0
+    },
+    {
+      "name": "parent",
+      "type": "string",
+      "required": false,
+      "description": "Namespace.",
+      "maxLength": 256,
+      "pattern": "/^(?:(?:(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)/){0,7}(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))?$/"
+    }
+  ],
+  "returns": {
+    "description": "A list of namespaces of a PBS remote's datastore.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Basic information about a backup namespace.",
+      "properties": {
+        "comment": {
+          "description": "The first line from the namespace's \"notes\"",
+          "optional": 1,
+          "type": "string"
+        },
+        "ns": {
+          "description": "Namespace.",
+          "maxLength": 256,
+          "pattern": "/^(?:(?:(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)/){0,7}(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))?$/",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "datastore",
+        "{datastore}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/datastore/<datastore>/namespaces'"
+}

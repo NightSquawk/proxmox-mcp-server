@@ -1,0 +1,7 @@
+node_modules/
+dist/
+.env
+
+# Regeneration inputs/intermediates (re-downloadable; see README).
+# The shippable source of truth is src/catalog-pve and src/catalog-pdm.
+_source/

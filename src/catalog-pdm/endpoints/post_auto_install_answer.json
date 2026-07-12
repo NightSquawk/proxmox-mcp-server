@@ -1,0 +1,527 @@
+{
+  "operationId": "post_auto_install_answer",
+  "surface": "pdm",
+  "resource": "auto-install",
+  "category": "Auto Install",
+  "name": "answer",
+  "method": "POST",
+  "path": "/auto-install/answer",
+  "description": "\\\n    Handles the system information of a new machine to install.\n\n    See also\n    <https://pve.proxmox.com/wiki/Automated_Installation#Answer_Fetched_via_HTTP>",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "$schema",
+      "type": "object",
+      "required": true,
+      "description": "Metadata of the HTTP POST payload, such as schema version of the document."
+    },
+    {
+      "name": "dmi",
+      "type": "object",
+      "required": true,
+      "description": "Collection of various DMI information categories."
+    },
+    {
+      "name": "iso",
+      "type": "object",
+      "required": true,
+      "description": "Information about the ISO itself."
+    },
+    {
+      "name": "network_interfaces",
+      "type": "array",
+      "required": true,
+      "description": "Network devices present on the system."
+    },
+    {
+      "name": "product",
+      "type": "object",
+      "required": true,
+      "description": "The per-product configuration of the installer."
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Top-level answer file structure, describing all possible options for an\nautomated installation.",
+    "properties": {
+      "disk-setup": {
+        "additionalProperties": false,
+        "description": "Disk configuration for the target installation.",
+        "properties": {
+          "btrfs": {
+            "additionalProperties": false,
+            "description": "Btrfs-specific filesystem options.",
+            "optional": 1,
+            "properties": {
+              "compress": {
+                "default": "off",
+                "description": "Possible compression algorithms usable with Btrfs. See the accompanying\nmount option in btrfs(5).",
+                "enum": [
+                  "on",
+                  "off",
+                  "zlib",
+                  "lzo",
+                  "zstd"
+                ],
+                "optional": 1,
+                "type": "string"
+              },
+              "hdsize": {
+                "description": "Size of the root partition. Optional, will be heuristically determined if\nunset.",
+                "minimum": 2,
+                "optional": 1,
+                "type": "number"
+              },
+              "raid": {
+                "default": "RAID0",
+                "description": "Available Btrfs RAID levels.",
+                "enum": [
+                  "RAID0",
+                  "RAID1",
+                  "RAID10"
+                ],
+                "optional": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "disk-list": {
+            "description": "Disk name list.",
+            "items": {
+              "description": "Block device name (/sys/block/<name>).",
+              "maxLength": 64,
+              "minLength": 3,
+              "pattern": "/^(?:(?:h|s|x?v)d[a-z]+)|(?:nvme\\d+n\\d+)$/",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "filesystem": {
+            "description": "Available filesystem during installation.",
+            "enum": [
+              "ext4",
+              "xfs",
+              "zfs",
+              "btrfs"
+            ],
+            "type": "string"
+          },
+          "filter": {
+            "additionalProperties": true,
+            "description": "Filter against udev properties to select the disks for the installation,\nto allow dynamic selection of disks.",
+            "properties": {},
+            "type": "object"
+          },
+          "filter-match": {
+            "default": "any",
+            "description": "Whether the associated filters must all match for a device or if any one\nis enough.",
+            "enum": [
+              "any",
+              "all"
+            ],
+            "optional": 1,
+            "type": "string"
+          },
+          "lvm": {
+            "additionalProperties": false,
+            "description": "LVM-specific filesystem options, when using ext4 or xfs as filesystem.",
+            "optional": 1,
+            "properties": {
+              "hdsize": {
+                "description": "Size of the root disk to use, can be used to reserve free space on the\nhard disk for further partitioning after the installation. Optional,\nwill be heuristically determined if unset.",
+                "minimum": 2,
+                "optional": 1,
+                "type": "number"
+              },
+              "maxroot": {
+                "description": "Maximum size the `root` volume. Optional, will be heuristically determined\nif unset.",
+                "minimum": 2,
+                "optional": 1,
+                "type": "number"
+              },
+              "maxvz": {
+                "description": "Maximum size the `data` volume. Optional, will be heuristically determined\nif unset.",
+                "minimum": 0,
+                "optional": 1,
+                "type": "number"
+              },
+              "minfree": {
+                "description": "Minimum amount of free space that should be left in the LVM volume group.\nOptional, will be heuristically determined if unset.",
+                "minimum": 0,
+                "optional": 1,
+                "type": "number"
+              },
+              "swapsize": {
+                "description": "Size of the swap volume. Optional, will be heuristically determined if\nunset.",
+                "minimum": 0,
+                "optional": 1,
+                "type": "number"
+              }
+            },
+            "type": "object"
+          },
+          "zfs": {
+            "additionalProperties": false,
+            "description": "ZFS-specific filesystem options.",
+            "optional": 1,
+            "properties": {
+              "arc-max": {
+                "description": "Maximum ARC size that ZFS should use, in MiB.",
+                "minimum": 64,
+                "optional": 1,
+                "type": "integer"
+              },
+              "ashift": {
+                "default": 12,
+                "description": "`ashift` value to create the zpool with.",
+                "maximum": 16,
+                "minimum": 9,
+                "optional": 1,
+                "type": "integer"
+              },
+              "checksum": {
+                "default": "on",
+                "description": "Possible checksum algorithms usable with ZFS.",
+                "enum": [
+                  "on",
+                  "fletcher4",
+                  "sha256"
+                ],
+                "optional": 1,
+                "type": "string"
+              },
+              "compress": {
+                "default": "on",
+                "description": "Possible checksum algorithms usable with ZFS.",
+                "enum": [
+                  "on",
+                  "fletcher4",
+                  "sha256"
+                ],
+                "optional": 1,
+                "type": "string"
+              },
+              "copies": {
+                "description": "`copies` value to create the zpool with.",
+                "maximum": 3,
+                "minimum": 1,
+                "optional": 1,
+                "type": "integer"
+              },
+              "hdsize": {
+                "description": "Size of the root disk to use, can be used to reserve free space on the\nhard disk for further partitioning after the installation. Optional,\nwill be heuristically determined if unset.",
+                "minimum": 2,
+                "optional": 1,
+                "type": "number"
+              },
+              "raid": {
+                "default": "RAID0",
+                "description": "Available ZFS RAID levels.",
+                "enum": [
+                  "RAID0",
+                  "RAID1",
+                  "RAID10",
+                  "RAIDZ-1",
+                  "RAIDZ-2",
+                  "RAIDZ-3"
+                ],
+                "optional": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "first-boot": {
+        "additionalProperties": false,
+        "description": "Describes from where to fetch the first-boot hook script, either being baked into the ISO or\nfrom a URL.",
+        "optional": 1,
+        "properties": {
+          "cert-fingerprint": {
+            "description": "SHA256 cert fingerprint if certificate pinning should be used, if source == \"from-url\".",
+            "optional": 1,
+            "type": "string"
+          },
+          "ordering": {
+            "default": "fully-up",
+            "description": "Possible orderings for the `proxmox-first-boot` systemd service.\n\nDetermines the final value of `Unit.Before` and `Unit.Wants` in the service\nfile.",
+            "enum": [
+              "before-network",
+              "network-online",
+              "fully-up"
+            ],
+            "type": "string"
+          },
+          "source": {
+            "description": "Possible sources for the optional first-boot hook script/executable file.",
+            "enum": [
+              "from-url",
+              "from-iso"
+            ],
+            "type": "string"
+          },
+          "url": {
+            "description": "Retrieve the post-install script from a URL, if source == \"from-url\".",
+            "optional": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "global": {
+        "additionalProperties": false,
+        "description": "General target system options for setting up the system in an automated\ninstallation.",
+        "properties": {
+          "country": {
+            "description": "Country to use for apt mirrors.",
+            "type": "string"
+          },
+          "fqdn": {
+            "description": "Either a FQDN as string or an object describing the retrieval method.",
+            "oneOf": [
+              {
+                "additionalProperties": false,
+                "description": "Extended configuration for retrieving the FQDN from external sources.",
+                "properties": {
+                  "domain": {
+                    "description": "Domain to use if none is received via DHCP.",
+                    "optional": 1,
+                    "type": "string"
+                  },
+                  "source": {
+                    "default": "from-dhcp",
+                    "description": "Describes the source to retrieve the FQDN of the installation.",
+                    "enum": [
+                      "from-dhcp"
+                    ],
+                    "type": "string"
+                  }
+                },
+                "title": "from-dhcp",
+                "type": "object"
+              },
+              {
+                "description": "Plain FQDN",
+                "title": "simple",
+                "type": "string"
+              }
+            ],
+            "type": "object",
+            "typeProperty": "type",
+            "typeSchema": {
+              "description": "A string or an object",
+              "type": "string"
+            }
+          },
+          "keyboard": {
+            "default": "en-us",
+            "description": "Keyboard layout of the system.",
+            "enum": [
+              "de",
+              "de-ch",
+              "dk",
+              "en-gb",
+              "en-us",
+              "es",
+              "fi",
+              "fr",
+              "fr-be",
+              "fr-ca",
+              "fr-ch",
+              "hu",
+              "is",
+              "it",
+              "jp",
+              "lt",
+              "mk",
+              "nl",
+              "no",
+              "pl",
+              "pt",
+              "pt-br",
+              "se",
+              "si",
+              "tr"
+            ],
+            "type": "string"
+          },
+          "mailto": {
+            "description": "Mail address for `root@pam`.",
+            "type": "string"
+          },
+          "reboot-mode": {
+            "default": "reboot",
+            "description": "Action to take after the installation completed successfully.",
+            "enum": [
+              "reboot",
+              "power-off"
+            ],
+            "type": "string"
+          },
+          "reboot-on-error": {
+            "description": "Whether to reboot the machine if an error occurred during the\ninstallation.",
+            "type": "boolean"
+          },
+          "root-password": {
+            "description": "Password to set for the `root` PAM account in plain text. Mutual\nexclusive with the `root-password-hashed` option.",
+            "optional": 1,
+            "type": "string"
+          },
+          "root-password-hashed": {
+            "description": "Password to set for the `root` PAM account as hash, created using e.g.\nmkpasswd(8). Mutual exclusive with the `root-password` option.",
+            "optional": 1,
+            "type": "string"
+          },
+          "root-ssh-keys": {
+            "description": "Public SSH keys to set up for the `root` PAM account.",
+            "items": {
+              "description": "Public SSH key.",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "subscription-key": {
+            "description": "A Proxmox subscription key for the installed product.",
+            "maxLength": 32,
+            "minLength": 11,
+            "optional": 1,
+            "pattern": "/^(?:pve[0-9]+|pbs|pmg)[cbsp]-[0-9a-f]{10}$/",
+            "type": "string"
+          },
+          "timezone": {
+            "description": "Timezone to set on the new system.",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "network": {
+        "description": "Network configuration to set up inside the target installation.\nIt can either be given statically or taken from the DHCP lease.",
+        "oneOf": [
+          {
+            "additionalProperties": false,
+            "description": "Static network configuration given by the user.",
+            "properties": {
+              "cidr": {
+                "description": "IP address (IPv4 or IPv6) with netmask (CIDR notation).",
+                "maxLength": 43,
+                "pattern": "/^(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))/\\d{1,2})$|(?:(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){6})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:::(?:(?:[0-9a-fA-F]{1,4}):){5})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){4})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,1}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){3})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,2}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){2})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,3}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){1})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,4}(?:[0-9a-fA-F]{1,4}))?::)(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,5}(?:[0-9a-fA-F]{1,4}))?::)(?:[0-9a-fA-F]{1,4}))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,6}(?:[0-9a-fA-F]{1,4}))?::)))/\\d{1,3})$)$/",
+                "type": "string"
+              },
+              "dns": {
+                "description": "IP (IPv4 or IPv6) address.",
+                "maxLength": 39,
+                "pattern": "/^(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){6})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:::(?:(?:[0-9a-fA-F]{1,4}):){5})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){4})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,1}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){3})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,2}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){2})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,3}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){1})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,4}(?:[0-9a-fA-F]{1,4}))?::)(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,5}(?:[0-9a-fA-F]{1,4}))?::)(?:[0-9a-fA-F]{1,4}))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,6}(?:[0-9a-fA-F]{1,4}))?::))))$/",
+                "type": "string"
+              },
+              "filter": {
+                "additionalProperties": true,
+                "description": "Filter for network devices, to select a specific management interface.",
+                "properties": {},
+                "type": "object"
+              },
+              "gateway": {
+                "description": "IP (IPv4 or IPv6) address.",
+                "maxLength": 39,
+                "pattern": "/^(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){6})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:::(?:(?:[0-9a-fA-F]{1,4}):){5})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){4})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,1}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){3})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,2}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){2})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,3}(?:[0-9a-fA-F]{1,4}))?::(?:(?:[0-9a-fA-F]{1,4}):){1})(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,4}(?:[0-9a-fA-F]{1,4}))?::)(?:(?:(?:(?:(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9])\\.){3}(?:25[0-5]|(?:2[0-4]|1[0-9]|[1-9])?[0-9]))|(?:[0-9a-fA-F]{1,4}):(?:[0-9a-fA-F]{1,4}))))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,5}(?:[0-9a-fA-F]{1,4}))?::)(?:[0-9a-fA-F]{1,4}))|(?:(?:(?:(?:(?:[0-9a-fA-F]{1,4}):){0,6}(?:[0-9a-fA-F]{1,4}))?::))))$/",
+                "type": "string"
+              },
+              "interface-name-pinning": {
+                "additionalProperties": false,
+                "description": "Options controlling the behaviour of the network interface pinning (by\ncreating appropriate systemd.link files) during the installation.",
+                "optional": 1,
+                "properties": {
+                  "enabled": {
+                    "description": "Whether interfaces should be pinned during the installation.",
+                    "type": "boolean"
+                  },
+                  "mapping": {
+                    "additionalProperties": true,
+                    "description": "Maps MAC address to custom name",
+                    "properties": {},
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "title": "from-answer",
+            "type": "object"
+          },
+          {
+            "additionalProperties": false,
+            "description": "Use the network configuration received from the DHCP server.",
+            "properties": {
+              "interface-name-pinning": {
+                "additionalProperties": false,
+                "description": "Options controlling the behaviour of the network interface pinning (by\ncreating appropriate systemd.link files) during the installation.",
+                "optional": 1,
+                "properties": {
+                  "enabled": {
+                    "description": "Whether interfaces should be pinned during the installation.",
+                    "type": "boolean"
+                  },
+                  "mapping": {
+                    "additionalProperties": true,
+                    "description": "Maps MAC address to custom name",
+                    "properties": {},
+                    "type": "object"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "title": "from-dhcp",
+            "type": "object"
+          }
+        ],
+        "type": "object",
+        "typeProperty": "source",
+        "typeSchema": {
+          "description": "Type of the object.",
+          "enum": [
+            "from-dhcp",
+            "from-answer"
+          ],
+          "type": "string"
+        }
+      },
+      "post-installation-webhook": {
+        "additionalProperties": false,
+        "description": "Configuration for the post-installation hook, which runs after an\ninstallation has completed successfully.",
+        "optional": 1,
+        "properties": {
+          "auth-token": {
+            "description": "Optional opaque authentication token. The post-hook executor sends\nthis back to the configured URL as a top-level \"token\" field so the\nreceiving side can authenticate the callback.",
+            "optional": 1,
+            "type": "string"
+          },
+          "cert-fingerprint": {
+            "description": "SHA256 cert fingerprint if certificate pinning should be used.",
+            "optional": 1,
+            "type": "string"
+          },
+          "url": {
+            "description": "URL to send a POST request to",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "description": "Implemented through specialized bearer tokens.",
+    "user": "world"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"$schema\":\"<$schema>\",\"dmi\":\"<dmi>\",\"iso\":\"<iso>\",\"network_interfaces\":\"<network_interfaces>\",\"product\":\"<product>\"}' 'https://PDM_HOST:8443/api2/json/auto-install/answer'"
+}

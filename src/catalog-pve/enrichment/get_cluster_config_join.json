@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_config_join",
+  "usageNotes": "Use this before adding a new node to an existing Proxmox VE cluster — it returns the corosync link addresses, certificate fingerprints, and totem configuration that the joining node needs. Requires Sys.Audit on the root path; run it against an already-clustered node, not the node being joined. The returned `pve_fp` values must be passed verbatim to the join request to establish mutual trust.",
+  "examples": [
+    {
+      "summary": "Fetch join info from the default (connected) node",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Omit the `node` param to get info for whichever node you are connected to — the most common usage.",
+    "Use `pve_fp` from each entry in `nodelist` to verify TLS fingerprints before trusting cluster traffic.",
+    "The `totem` object reflects the live corosync totem settings; compare it against your target node's corosync.conf to catch link-count mismatches before attempting a join.",
+    "This endpoint is read-only and safe to call repeatedly — use it to audit cluster membership or confirm a node came back after maintenance."
+  ],
+  "relatedOperations": [
+    "post_cluster_config_join",
+    "get_cluster_config_nodes",
+    "get_cluster_status"
+  ]
+}

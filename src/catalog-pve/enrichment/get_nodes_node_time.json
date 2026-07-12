@@ -1,0 +1,21 @@
+{
+  "operationId": "get_nodes_node_time",
+  "usageNotes": "Use this to verify a node's system clock and configured timezone — useful before scheduling time-sensitive operations or diagnosing certificate/authentication failures caused by clock skew. Requires Sys.Audit on /nodes/{node}; the node must be online and reachable by the API. Returns both UTC epoch (time) and local-time epoch (localtime), so compare them to confirm the timezone offset is correct.",
+  "examples": [
+    {
+      "summary": "Read the current time and timezone from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'time' field is UTC epoch and 'localtime' is the same instant expressed in the node's configured timezone — subtract them to derive the UTC offset in seconds.",
+    "Clock drift beyond a few seconds will cause TLS certificate validation errors and Proxmox cluster quorum issues; if time looks wrong, check NTP status with post_nodes_node_time or inspect chrony/timesyncd on the node directly.",
+    "This endpoint is read-only and safe to poll frequently for monitoring purposes."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_time"
+  ]
+}

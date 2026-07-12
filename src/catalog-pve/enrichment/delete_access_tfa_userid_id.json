@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_access_tfa_userid_id",
+  "usageNotes": "Use this to permanently remove a specific TFA entry (TOTP, WebAuthn, recovery codes, etc.) from a user account. A user can delete their own TFA entries; an admin with User.Modify permission can delete entries for any user. Note that API tokens cannot perform this operation — it requires a full user session (allowtoken: false), and the optional password field is required in some realm configurations as a confirmation safeguard.",
+  "examples": [
+    {
+      "summary": "Remove a TOTP entry from a local PVE user",
+      "path_params": {
+        "userid": "jsmith@pve",
+        "id": "totp-7a3c1b2e"
+      },
+      "params": {
+        "password": "CurrentP@ss1"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently deletes the specified TFA entry; the user will no longer be challenged by that factor, and the entry cannot be recovered.",
+  "tips": [
+    "This endpoint cannot be called with an API token — authenticate as a full user session.",
+    "If the target user has only one TFA entry and the realm enforces MFA, removing it may lock the user out or force re-enrollment on next login.",
+    "Obtain the TFA entry id first via the corresponding GET /access/tfa/{userid} listing endpoint.",
+    "Admins with User.Modify can act on any user; non-admins are limited to their own account (self)."
+  ],
+  "relatedOperations": [
+    "get_access_tfa_userid",
+    "post_access_tfa_userid",
+    "put_access_tfa_userid_id"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pve_remotes_remote_tasks_upid_status",
+  "usageNotes": "Poll this endpoint after any async PVE operation returns a UPID to determine whether the task is still running or has completed. The caller must hold Resource.Audit on the remote; the remote PVE node must be reachable from PDM at call time. Set wait=true to block until the task finishes instead of polling in a loop, but note that long-running tasks (migrations, backups) may cause the request to time out.",
+  "examples": [
+    {
+      "summary": "Check status of a VM migration task on the pve-prod remote",
+      "path_params": {
+        "remote": "pve-prod",
+        "upid": "UPID:pve1:001A2B3C:00ABCDEF:67890ABC:qmmove:101:root@pam:"
+      },
+      "params": {
+        "wait": false
+      }
+    }
+  ],
+  "tips": [
+    "exitstatus is only present in the response when status='stopped'; check for its presence before reading it.",
+    "exitstatus='OK' indicates success; any other value (e.g. 'ERROR: ...') indicates failure.",
+    "Use wait=true for short-lived tasks (snapshot, config change) to avoid a polling round-trip; avoid it for migrations or backups where the PDM request may time out.",
+    "The UPID minimum length of 42 chars includes the node name and timestamps — pass it verbatim from the originating operation response."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_tasks",
+    "get_pve_remotes_remote_tasks_upid_log"
+  ]
+}

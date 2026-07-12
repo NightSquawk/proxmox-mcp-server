@@ -1,0 +1,28 @@
+{
+  "operationId": "put_cluster_options",
+  "usageNotes": "Use this to update cluster-wide datacenter settings such as migration policy, HA behavior, bandwidth limits, console type, and WebAuthn/U2F configuration. Requires `Sys.Modify` on `/` (root path), so only cluster administrators can call it. The operation returns null synchronously — changes take effect immediately with no task UPID to poll; use `delete` param to unset individual settings rather than omitting them.",
+  "examples": [
+    {
+      "summary": "Set migration to insecure on a private network, cap migration bandwidth to 500 MiB/s, and switch console to xtermjs",
+      "path_params": {},
+      "params": {
+        "migration": "insecure,network=10.10.0.0/24",
+        "bwlimit": "migration=512000",
+        "console": "xtermjs"
+      }
+    }
+  ],
+  "tips": [
+    "Use the `delete` param (comma-separated config key names) to remove a setting back to its default rather than setting it to an empty string.",
+    "`migration_unsecure` is deprecated — set `migration` type=insecure instead.",
+    "Changing `webauthn` id or origin will invalidate existing hardware key registrations for all users.",
+    "`mac_prefix` only affects auto-generated MACs for new guests; existing VMs keep their current MAC.",
+    "The `notify` field sub-keys are largely deprecated in favor of the datacenter notification targets UI — check PVE release notes before relying on them.",
+    "`fencing` modes `hardware` and `both` are marked EXPERIMENTAL — only use `watchdog` in production unless you have tested fence devices configured."
+  ],
+  "relatedOperations": [
+    "get_cluster_options",
+    "get_cluster_ha_status",
+    "put_cluster_ha_groups_group"
+  ]
+}

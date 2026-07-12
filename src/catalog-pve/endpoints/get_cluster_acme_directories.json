@@ -1,0 +1,38 @@
+{
+  "operationId": "get_cluster_acme_directories",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_directories",
+  "method": "GET",
+  "path": "/cluster/acme/directories",
+  "description": "Get named known ACME directory endpoints.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "additionalProperties": 0,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "url": {
+          "description": "URL of ACME CA directory endpoint.",
+          "pattern": "^https?://.*",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/acme/directories'"
+}

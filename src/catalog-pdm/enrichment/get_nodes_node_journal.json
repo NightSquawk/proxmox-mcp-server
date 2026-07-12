@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_journal",
+  "usageNotes": "Use this to pull systemd journal (syslog) entries from a PDM node for diagnostics, auditing, or log review. The caller must hold the System.Audit privilege on the system/log ACL path. Pagination is cursor-based — use startcursor/endcursor from a prior response to page forward/backward; do not mix cursor and epoch parameters as they conflict.",
+  "examples": [
+    {
+      "summary": "Retrieve the last 100 journal lines from a node",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {
+        "lastentries": 100
+      }
+    }
+  ],
+  "tips": [
+    "startcursor and since are mutually exclusive — use one or the other, not both.",
+    "endcursor and until are mutually exclusive — same constraint applies.",
+    "Omitting all params returns the full journal, which can be very large on busy nodes; always scope with lastentries or a since/until epoch window.",
+    "Use 'localhost' as the node value when the API request is already targeting the local node's address.",
+    "Entries are returned as raw syslog-formatted strings; parse with standard journal tools if structured fields are needed."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_syslog",
+    "get_nodes_node_status"
+  ]
+}

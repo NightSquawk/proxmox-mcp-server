@@ -1,0 +1,27 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_config",
+  "usageNotes": "Use this to retrieve the full QEMU VM configuration from a remote PVE node managed by PDM. The `state` parameter controls whether you get the pending (unapplied) or active (currently running) config — `pending` is the default and reflects the next-boot config. If you omit `node`, PDM resolves it automatically; supply it only when you know the VM's node to avoid an extra lookup. Requires `Resource.Audit` on the remote/vmid resource path.",
+  "examples": [
+    {
+      "summary": "Fetch the active running config of VM 101 on remote 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 101
+      },
+      "params": {
+        "state": "active"
+      }
+    }
+  ],
+  "tips": [
+    "Use state=active when you need to inspect what the VM is currently running (e.g., after a live config change that hasn't been persisted).",
+    "Use state=pending (default) to see what config will be applied on next reboot — useful before migrating or snapshotting.",
+    "Pass `snapshot` to inspect the config frozen at a specific snapshot point rather than the current config.",
+    "Node auto-detection works well for healthy clusters; supply `node` explicitly if the cluster is partially degraded or you need deterministic routing."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_status_current",
+    "get_pve_remotes_remote_qemu_vmid_snapshot",
+    "get_pve_remotes_remote_qemu"
+  ]
+}

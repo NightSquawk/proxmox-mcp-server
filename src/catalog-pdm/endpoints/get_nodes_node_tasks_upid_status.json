@@ -1,0 +1,99 @@
+{
+  "operationId": "get_nodes_node_tasks_upid_status",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "status",
+  "method": "GET",
+  "path": "/nodes/{node}/tasks/{upid}/status",
+  "description": "Get task status.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "upid",
+      "type": "string",
+      "required": true,
+      "description": "Unique Process/Task Identifier",
+      "minLength": 36,
+      "pattern": "/^UPID:(?P<node>[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?):(?P<pid>[0-9A-Fa-f]{8}):(?P<pstart>[0-9A-Fa-f]{8,9}):(?P<task_id>[0-9A-Fa-f]{8,16}):(?P<starttime>[0-9A-Fa-f]{8}):(?P<wtype>[^:\\s]+):(?P<wid>[^:\\s]*):(?P<authid>[^:\\s]+):$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Task status information.",
+    "properties": {
+      "exitstatus": {
+        "description": "'OK', 'Error: <msg>', or 'unknown'.",
+        "optional": 1,
+        "type": "string"
+      },
+      "id": {
+        "description": "Worker ID (arbitrary ASCII string)",
+        "optional": 1,
+        "type": "string"
+      },
+      "node": {
+        "description": "Node name (or 'localhost')",
+        "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/",
+        "type": "string"
+      },
+      "pid": {
+        "description": "The Unix PID.",
+        "type": "integer"
+      },
+      "pstart": {
+        "description": "The Unix process start time from `/proc/pid/stat`",
+        "type": "integer"
+      },
+      "starttime": {
+        "description": "The task start time (Epoch)",
+        "type": "integer"
+      },
+      "status": {
+        "description": "'running' or 'stopped'",
+        "type": "string"
+      },
+      "tokenid": {
+        "description": "The token ID part of an API token authentication id.\n\nThis alone does NOT uniquely identify the API token - use a full `Authid` for such use cases.",
+        "optional": 1,
+        "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      },
+      "type": {
+        "description": "Worker type (arbitrary ASCII string)",
+        "type": "string"
+      },
+      "upid": {
+        "description": "Unique Process/Task Identifier",
+        "minLength": 36,
+        "pattern": "/^UPID:(?P<node>[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?):(?P<pid>[0-9A-Fa-f]{8}):(?P<pstart>[0-9A-Fa-f]{8,9}):(?P<task_id>[0-9A-Fa-f]{8,16}):(?P<starttime>[0-9A-Fa-f]{8}):(?P<wtype>[^:\\s]+):(?P<wid>[^:\\s]*):(?P<authid>[^:\\s]+):$/",
+        "type": "string"
+      },
+      "user": {
+        "description": "User ID",
+        "maxLength": 64,
+        "minLength": 3,
+        "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "description": "Users can access their own tasks, or need Sys.Audit on /system/tasks.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/tasks/<upid>/status'"
+}

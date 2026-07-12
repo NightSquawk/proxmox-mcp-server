@@ -1,0 +1,30 @@
+{
+  "operationId": "get_nodes_node_tasks",
+  "usageNotes": "Use this endpoint to list finished (archived) or currently active tasks on a specific node — useful for auditing recent operations, confirming async task completion, or troubleshooting failures. By default it returns up to 50 archived tasks; set `source` to `active` to poll running tasks, or `all` to see both. Without `Sys.Audit` on `/nodes/{node}`, the response is silently scoped to only the authenticated user's own tasks.",
+  "examples": [
+    {
+      "summary": "List the last 20 failed tasks on node pve1 in the past 24 hours",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "errors": true,
+        "limit": 20,
+        "since": 1751155200,
+        "source": "archive"
+      }
+    }
+  ],
+  "tips": [
+    "Use `typefilter` with values like `vzdump`, `qmstart`, `qmstop`, or `vzmigrate` to narrow results to a specific operation class.",
+    "The `upid` field in each result is the Proxmox Unique Process ID — pass it to `get_nodes_node_tasks_upid_status` to fetch the final exit status of a specific task.",
+    "Pagination is offset-based: use `start` + `limit` together to page through large task histories.",
+    "Active tasks (`source=active`) may not yet have an `endtime` or `status` in the response — check those fields for null before assuming completion.",
+    "The `since`/`until` params accept Unix epoch integers; compute them from wall-clock time before calling this endpoint."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log",
+    "delete_nodes_node_tasks_upid"
+  ]
+}

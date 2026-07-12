@@ -1,0 +1,30 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_storage",
+  "usageNotes": "Use this to inspect storage availability, capacity, and enabled content types on a specific node of a PVE remote — useful before provisioning VMs, containers, or backups to confirm a target storage is active and has sufficient space. Requires Resource.Audit on the remote node path; if 'target' is also specified, that privilege is additionally required on the target node path. Storages where 'active' is false are configured but currently unreachable from the node.",
+  "examples": [
+    {
+      "summary": "List all enabled backup-capable storages on a node, including format details",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "node": "pve1"
+      },
+      "params": {
+        "enabled": true,
+        "content": ["backup"],
+        "format": true
+      }
+    }
+  ],
+  "tips": [
+    "Check 'active' (not just 'enabled') — a storage can be enabled in config but unreachable at runtime.",
+    "Pass 'format: true' only when you need disk-image format support details; it adds response weight.",
+    "Use the 'target' param when planning a live migration: it filters to only storages accessible by both the source node and the target node.",
+    "avail, used, and total are in bytes — divide by 1073741824 for GiB.",
+    "The 'storage' query param narrows the response to a single named datastore, which is faster than fetching all and filtering client-side."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node",
+    "get_pve_remotes_remote_nodes_node_storage_storage_content",
+    "get_pve_remotes"
+  ]
+}

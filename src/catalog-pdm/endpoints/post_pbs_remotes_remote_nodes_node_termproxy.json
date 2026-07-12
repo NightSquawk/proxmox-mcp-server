@@ -1,0 +1,69 @@
+{
+  "operationId": "post_pbs_remotes_remote_nodes_node_termproxy",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "termproxy",
+  "method": "POST",
+  "path": "/pbs/remotes/{remote}/nodes/{node}/termproxy",
+  "description": "Call termproxy and return shell ticket",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object with the user and ticket",
+    "properties": {
+      "port": {
+        "description": "Always '0'.",
+        "type": "integer"
+      },
+      "ticket": {
+        "description": "VNC ticket used to authenticate websocket upgrade.",
+        "type": "string"
+      },
+      "user": {
+        "description": "User that obtained the VNC ticket.",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "node",
+        "{node}"
+      ],
+      "privs": [
+        "Sys.Console"
+      ]
+    },
+    "description": "Restricted to users"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/nodes/<node>/termproxy'"
+}

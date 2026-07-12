@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_fsfreeze_thaw",
+  "usageNotes": "Call this immediately after a backup, snapshot, or any operation that required a filesystem freeze to resume normal guest I/O; leaving filesystems frozen will cause the guest OS to hang on any write. Requires QEMU Guest Agent to be running inside the VM and the caller to hold either VM.GuestAgent.FileSystemMgmt or VM.GuestAgent.Unrestricted on /vms/{vmid}. This call returns synchronously with a result object — there is no UPID/task to poll.",
+  "examples": [
+    {
+      "summary": "Thaw filesystems on VM 201 after a backup snapshot on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 201
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Always pair with post_nodes_node_qemu_vmid_agent_fsfreeze_freeze — never leave a VM frozen; a hung guest will accumulate I/O errors and may require a hard reset.",
+    "The result object returned by the guest agent typically contains the number of filesystems that were thawed; check this value to confirm all filesystems were unfrozen.",
+    "If the guest agent is not running or the freeze/thaw plugin is missing (common on minimal Linux installs), this call will return an error rather than silently succeeding.",
+    "On Windows guests, VSS is used under the hood; ensure the QEMU Guest Agent VSS provider is installed for reliable freeze/thaw behavior."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_agent_fsfreeze_freeze",
+    "post_nodes_node_qemu_vmid_agent_fsfreeze_status",
+    "post_nodes_node_qemu_vmid_snapshot",
+    "get_nodes_node_qemu_vmid_agent"
+  ]
+}

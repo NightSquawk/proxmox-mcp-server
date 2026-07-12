@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_cluster_notifications_endpoints_webhook_name",
+  "usageNotes": "Permanently removes a webhook notification endpoint from the cluster by its config ID. The endpoint must not be referenced by any active notification matchers or rules — removing a webhook that is still in use by a matcher will leave those matchers in a broken state. Requires the Mapping.Modify privilege on /mapping/notifications.",
+  "examples": [
+    {
+      "summary": "Delete a webhook endpoint named 'alerts-webhook'",
+      "path_params": {
+        "name": "alerts-webhook"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the webhook endpoint configuration; any notification matchers still referencing this endpoint will silently fail to deliver alerts.",
+  "tips": [
+    "Check active notification matchers with GET /cluster/notifications/matchers before deleting to avoid silent alert delivery failures.",
+    "The name must match a pve-configid — alphanumeric with hyphens/underscores, no spaces.",
+    "Returns null on success; a 4xx error indicates the endpoint does not exist or a permission failure."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_webhook_name",
+    "create_cluster_notifications_endpoints_webhook",
+    "update_cluster_notifications_endpoints_webhook_name",
+    "get_cluster_notifications_matchers"
+  ]
+}

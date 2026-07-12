@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_config_acme_plugins_id",
+  "usageNotes": "Use this to permanently remove an ACME challenge plugin configuration from Proxmox Datacenter Manager. The caller must hold the System.Modify privilege on the system/certificates ACL path. Before deleting, ensure no ACME accounts or domains are still referencing this plugin, as removal is immediate and returns null (synchronous, no UPID).",
+  "examples": [
+    {
+      "summary": "Delete a DNS challenge plugin named 'cloudflare-dns'",
+      "path_params": {
+        "id": "cloudflare-dns"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the named ACME plugin configuration; any ACME account or certificate order that references this plugin will fail to renew until a replacement plugin is configured.",
+  "tips": [
+    "The plugin ID must match the pattern ^(?:[A-Za-z0-9_][A-Za-z0-9.\\-_]*)$ and is case-sensitive.",
+    "This call returns null on success — a 200 with no body is the expected success response.",
+    "List existing plugins first with get_config_acme_plugins to confirm the exact ID before deleting."
+  ],
+  "relatedOperations": [
+    "get_config_acme_plugins",
+    "get_config_acme_plugins_id",
+    "post_config_acme_plugins",
+    "put_config_acme_plugins_id"
+  ]
+}

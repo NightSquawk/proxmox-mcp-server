@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_mapping_usb",
+  "usageNotes": "Use this to list all cluster-level USB hardware mappings that the caller has permission to see (Mapping.Modify, Mapping.Use, or Mapping.Audit on each entry). Pass check-node with a specific node name to validate that each mapping's physical USB device actually exists and is reachable on that node — errors are returned inline per mapping rather than as a top-level failure. Results are filtered by per-mapping permissions, so callers with restricted roles may see a partial list.",
+  "examples": [
+    {
+      "summary": "List all USB mappings and validate them against node pve1",
+      "path_params": {},
+      "params": {
+        "check-node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting check-node returns mappings quickly with no node-side validation; include it before attaching a mapping to a VM to confirm the USB device is present.",
+    "The 'error' array on each mapping item is only populated when check-node is supplied; an empty or absent error array means the mapping passed validation on that node.",
+    "USB mappings are cluster-wide logical names — the 'map' array entries bind each node to its physical USB vendor:product or path."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_usb_id",
+    "post_cluster_mapping_usb",
+    "put_cluster_mapping_usb_id",
+    "delete_cluster_mapping_usb_id",
+    "get_cluster_mapping_pci"
+  ]
+}

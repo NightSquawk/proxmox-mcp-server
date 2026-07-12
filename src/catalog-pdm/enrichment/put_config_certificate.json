@@ -1,0 +1,30 @@
+{
+  "operationId": "put_config_certificate",
+  "usageNotes": "Use this to configure which ACME account and domain(s) the PDM node should use for automatic TLS certificate issuance. Requires System.Modify privilege. The `digest` param should be supplied (read from GET /config first) to prevent a lost-update race if multiple admins could modify config concurrently; omitting it is safe in single-admin environments.",
+  "examples": [
+    {
+      "summary": "Configure ACME with a primary domain using HTTP validation and a secondary domain via DNS plugin",
+      "path_params": {},
+      "params": {
+        "acme": "account=letsencrypt-prod",
+        "acmedomain0": "domain=pdm.example.com",
+        "acmedomain1": "domain=pdm-alt.example.com,plugin=cloudflare-dns"
+      }
+    }
+  ],
+  "tips": [
+    "acmedomain0 through acmedomain4 allow up to five SANs on a single certificate; acmedomain0 typically becomes the CN.",
+    "Omitting the plugin sub-key on a domain entry defaults to standalone HTTP validation — ensure port 80 is reachable from the ACME CA for that challenge to succeed.",
+    "Use the alias sub-key when _acme-challenge DNS records are delegated to a separate zone via CNAME, so the plugin writes the TXT record to the aliased domain instead.",
+    "After updating this config, trigger actual certificate issuance or renewal via the certificate order/renew endpoint; this PUT only saves the configuration, it does not immediately contact the CA.",
+    "Pass the `delete` array to remove individual properties (e.g., remove a previously set acmedomain1) without having to resend all values."
+  ],
+  "relatedOperations": [
+    "get_config",
+    "get_config_acme",
+    "get_config_acme_account",
+    "post_config_acme_account",
+    "get_config_acme_plugins",
+    "get_config_acme_challenge_schema"
+  ]
+}

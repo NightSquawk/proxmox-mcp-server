@@ -1,0 +1,111 @@
+{
+  "operationId": "get_nodes_node_storage_storage_prunebackups",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "dryrun",
+  "method": "GET",
+  "path": "/nodes/{node}/storage/{storage}/prunebackups",
+  "description": "Get prune information for backups. NOTE: this is only a preview and might not be what a subsequent prune call does if backups are removed/added in the meantime.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [
+    {
+      "name": "prune-backups",
+      "type": "string",
+      "required": false,
+      "description": "Use these retention options instead of those from the storage configuration.",
+      "format": "prune-backups",
+      "typetext": "[keep-all=<1|0>] [,keep-daily=<N>] [,keep-hourly=<N>] [,keep-last=<N>] [,keep-monthly=<N>] [,keep-weekly=<N>] [,keep-yearly=<N>]"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "description": "Either 'qemu' or 'lxc'. Only consider backups for guests of this type.",
+      "enum": [
+        "qemu",
+        "lxc"
+      ]
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": false,
+      "description": "Only consider backups for this guest.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "ctime": {
+          "description": "Creation time of the backup (seconds since the UNIX epoch).",
+          "type": "integer"
+        },
+        "mark": {
+          "description": "Whether the backup would be kept or removed. Backups that are protected or don't use the standard naming scheme are not removed.",
+          "enum": [
+            "keep",
+            "remove",
+            "protected",
+            "renamed"
+          ],
+          "type": "string"
+        },
+        "type": {
+          "description": "One of 'qemu', 'lxc', 'openvz' or 'unknown'.",
+          "type": "string"
+        },
+        "vmid": {
+          "description": "The VM the backup belongs to.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "volid": {
+          "description": "Backup volume ID.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage/{storage}",
+      [
+        "Datastore.Audit",
+        "Datastore.AllocateSpace"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/prunebackups'"
+}

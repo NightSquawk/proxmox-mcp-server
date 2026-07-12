@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_disks_lvmthin",
+  "usageNotes": "Use this to inventory all LVM thin pools on a specific node before creating or resizing a thin-provisioned storage pool in Proxmox. Requires the Sys.Audit privilege at the root path (/). The node must be online; the call targets the local LVM subsystem of that node and will fail if the node is unreachable.",
+  "examples": [
+    {
+      "summary": "List all LVM thin pools on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Each result includes both lv (thin pool LV name) and vg (volume group), which together form the storage identifier used when adding LVM-thin storage via the datacenter storage config (e.g. vg/lv).",
+    "Monitor metadata_used vs metadata_size — if metadata fills up, the thin pool will stop accepting writes even if data space remains.",
+    "lv_size and used are in bytes; divide by 1073741824 for GiB display."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_lvm",
+    "get_nodes_node_disks_list",
+    "get_storage",
+    "post_nodes_node_disks_lvmthin"
+  ]
+}

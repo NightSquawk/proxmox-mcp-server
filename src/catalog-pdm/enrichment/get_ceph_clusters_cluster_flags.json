@@ -1,0 +1,24 @@
+{
+  "operationId": "get_ceph_clusters_cluster_flags",
+  "usageNotes": "Use this to read the current state of all cluster-wide Ceph OSD flags (e.g. noout, pause, noscrub) before performing maintenance or troubleshooting recovery stalls. The cluster identifier is the Ceph FSID, not a human-friendly name. All authenticated users can call this endpoint — no elevated privilege is required.",
+  "examples": [
+    {
+      "summary": "List all OSD flags for a known Ceph cluster",
+      "path_params": {
+        "cluster": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'noout' flag is commonly set during host reboots or disk replacements to prevent Ceph from rebalancing prematurely — check it is cleared after maintenance.",
+    "A 'pause' flag halts all client I/O cluster-wide; seeing it set unexpectedly indicates a blocked maintenance operation.",
+    "Use the returned 'description' field for human-readable context on each flag before deciding whether to set or clear it.",
+    "The cluster FSID can be retrieved from list_ceph_clusters and is stable for the lifetime of the cluster."
+  ],
+  "relatedOperations": [
+    "list_ceph_clusters",
+    "get_ceph_clusters_cluster_status",
+    "put_ceph_clusters_cluster_flags"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_firewall_rules",
+  "usageNotes": "Use this to audit or display the ordered host-level firewall ruleset for a specific node on a registered PDM remote. The node must be reachable by PDM and the caller requires Resource.Audit on the remote resource path. Rules are returned in positional order (pos field), which determines evaluation sequence — position matters for ACCEPT/DROP/REJECT precedence.",
+  "examples": [
+    {
+      "summary": "List all firewall rules on node pve1 of the prod-cluster remote",
+      "path_params": {
+        "remote": "prod-cluster",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'pos' field is the rule's zero-based position in the chain; rules are evaluated top-down, so a DROP at pos 0 will block traffic before any ACCEPT lower in the list.",
+    "Disabled rules (enable=0) are listed but not evaluated by the firewall — check this field when troubleshooting unexpected traffic behavior.",
+    "The 'action' field may hold a security group name instead of ACCEPT/DROP/REJECT, indicating a group reference rather than a terminal rule.",
+    "Use 'localhost' as the node value to target the PDM host itself if it is also a PVE node."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_firewall_options",
+    "get_pve_remotes_remote_nodes_node_firewall_log",
+    "get_pve_remotes_remote_firewall_rules"
+  ]
+}

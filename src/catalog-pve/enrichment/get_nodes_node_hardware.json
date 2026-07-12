@@ -1,0 +1,22 @@
+{
+  "operationId": "get_nodes_node_hardware",
+  "usageNotes": "Returns a list of hardware category types (e.g. 'pci', 'usb') available for inspection on the specified node — use this as a discovery step before querying a specific hardware subcategory. The node must be online and reachable by the cluster; the endpoint is accessible to all authenticated users with no privilege restrictions. No query parameters exist; the only input is the node name.",
+  "examples": [
+    {
+      "summary": "List available hardware categories on node 'pve1'",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a navigation index — each returned 'type' value corresponds to a child endpoint under /nodes/{node}/hardware/{type} (e.g. /nodes/pve1/hardware/pci).",
+    "Typical types include 'pci' and 'usb'; the exact list depends on what the Proxmox version exposes for the node.",
+    "This endpoint is safe to poll frequently; it is read-only and carries no performance impact."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_hardware_pci",
+    "get_nodes_node_hardware_usb"
+  ]
+}

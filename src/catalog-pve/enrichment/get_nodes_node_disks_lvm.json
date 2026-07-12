@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_disks_lvm",
+  "usageNotes": "Use this to inventory LVM Volume Groups on a specific node, including each VG's underlying physical volumes and their free/total byte counts. Requires `Sys.Audit` on `/` — API tokens must carry that privilege. The node must be online; the call fails if the node is unreachable from the API host.",
+  "examples": [
+    {
+      "summary": "List all LVM Volume Groups on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a tree: top-level `children` are VGs, and each VG optionally has its own `children` array of PVs with per-PV free/size bytes.",
+    "Sizes are in bytes — divide by 1073741824 for GiB.",
+    "A VG named `pve` is the default Proxmox VG created by the installer; avoid modifying it unless you know the LV layout.",
+    "Use the free/size values here to determine whether a VG has enough headroom before creating a new LV-backed storage via `post_nodes_node_disks_lvmthin`."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_lvmthin",
+    "post_nodes_node_disks_lvm",
+    "get_nodes_node_disks_list",
+    "get_nodes_node_storage"
+  ]
+}

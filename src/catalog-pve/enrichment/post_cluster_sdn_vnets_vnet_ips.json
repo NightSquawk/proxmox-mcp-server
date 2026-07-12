@@ -1,0 +1,31 @@
+{
+  "operationId": "post_cluster_sdn_vnets_vnet_ips",
+  "usageNotes": "Use this to register a static IP-to-MAC mapping within a specific VNet, enabling IPAM-managed address assignment for VMs or containers in SDN zones. The caller must have SDN.Allocate on the zone/vnet path before any mapping is accepted. The `zone` param must match the SDN zone that owns the target VNet, and `vnet` must already exist; creating either on the fly is not supported here.",
+  "examples": [
+    {
+      "summary": "Bind a VM's MAC address to a static IP in vnet 'tenant1' under zone 'sdnzone1'",
+      "path_params": {
+        "vnet": "tenant1"
+      },
+      "params": {
+        "ip": "10.10.20.50",
+        "mac": "BC:24:11:AB:CD:EF",
+        "zone": "sdnzone1"
+      }
+    }
+  ],
+  "tips": [
+    "The vnet identifier must be 2–8 alphanumeric characters, starting and ending with a letter or digit (pattern: [a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]).",
+    "MAC address is optional — omitting it creates an IP-only reservation useful for reserving addresses before a VM is provisioned.",
+    "Changes to SDN IP mappings typically require an SDN apply step (PUT /cluster/sdn) to propagate to nodes.",
+    "Returns null on success; any error (duplicate IP, wrong zone/vnet pairing) surfaces as an HTTP error response.",
+    "Both `ip` and `zone` are required; `mac` is the only optional field."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_ips",
+    "put_cluster_sdn_vnets_vnet_ips",
+    "delete_cluster_sdn_vnets_vnet_ips",
+    "put_cluster_sdn",
+    "get_cluster_sdn_vnets_vnet"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_tasks_upid_log",
+  "usageNotes": "Use this endpoint to inspect the output of any async Proxmox task identified by its UPID — useful after operations like migrations, backups, or snapshot creation that return a UPID instead of a direct result. Non-owners of the task require 'Sys.Audit' on '/nodes/<node>'; task owners can read their own logs without that privilege. The log is paginated via 'start' and 'limit'; use 'download: true' to retrieve the full raw log file in one request, but note that 'download' cannot be combined with 'start' or 'limit'.",
+  "examples": [
+    {
+      "summary": "Read the first 100 lines of a backup task log on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "upid": "UPID:pve1:00001A2B:0A1B2C3D:67890ABC:vzdump:101:root@pam:"
+      },
+      "params": {
+        "start": 0,
+        "limit": 100
+      }
+    }
+  ],
+  "tips": [
+    "The default 'limit' is 50 lines — always pass an explicit 'limit' when you expect verbose output (e.g., migrations or backup runs) to avoid truncated results.",
+    "Use 'start' + 'limit' together to page through large logs: increment 'start' by 'limit' on each request until fewer lines than 'limit' are returned.",
+    "The 'download' flag returns the raw log file (useful for archival or offline analysis) but is mutually exclusive with 'start' and 'limit'.",
+    "UPIDs are node-scoped — always query the same node that issued the task; cross-node UPID lookups will fail.",
+    "The last log line typically contains 'TASK OK' or 'TASK ERROR', making it a quick way to confirm task success without parsing the full output."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks",
+    "get_nodes_node_tasks_upid_status",
+    "delete_nodes_node_tasks_upid"
+  ]
+}

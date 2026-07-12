@@ -1,0 +1,28 @@
+{
+  "operationId": "post_nodes_node_apt_repositories",
+  "usageNotes": "Use this endpoint to toggle a specific APT repository entry on or off within an existing sources file on a PDM node. The `index` is 0-based and refers to the repository's position within the file at `path`; retrieve these values first via the corresponding GET endpoint. Pass the `digest` returned by the GET call to guard against concurrent modifications — the request will be rejected if the file has changed since you read it.",
+  "examples": [
+    {
+      "summary": "Disable the second repository entry in /etc/apt/sources.list",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {
+        "path": "/etc/apt/sources.list",
+        "index": 1,
+        "enabled": false,
+        "digest": "a3c1e2f4b5d6789012345678901234567890abcdef1234567890abcdef123456"
+      }
+    }
+  ],
+  "tips": [
+    "Call GET /nodes/{node}/apt/repositories first to get the current list of repositories, their indices, paths, and the file digest.",
+    "The digest is strongly recommended in production — omitting it risks clobbering a concurrent change made by another admin or automation.",
+    "This endpoint modifies only the enabled/disabled state of an existing repository entry; it cannot add or remove repository lines.",
+    "Returns null on success (HTTP 200 with no body); treat any non-2xx response as a failure requiring investigation."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_repositories",
+    "put_nodes_node_apt_repositories"
+  ]
+}

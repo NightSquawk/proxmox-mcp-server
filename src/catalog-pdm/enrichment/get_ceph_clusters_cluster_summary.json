@@ -1,0 +1,29 @@
+{
+  "operationId": "get_ceph_clusters_cluster_summary",
+  "usageNotes": "Use this to get a typed, dashboard-ready snapshot of a Ceph cluster's health, capacity, OSD/MON/MGR/PG counts, and client I/O rates — the cluster must already be registered in PDM and at least one member must be reachable for the enriched fields (fullest-pool, version) to be populated. Most data is served from PDM's cache; pass `max-age` to control staleness tolerance, and expect `fullest-pool` / `version` to be absent if no live member read succeeds.",
+  "examples": [
+    {
+      "summary": "Fetch a fresh Ceph cluster summary, accepting cache up to 30 seconds old",
+      "path_params": {
+        "cluster": "b3e2a1f0-4c5d-4e6f-8a7b-9c0d1e2f3a4b"
+      },
+      "params": {
+        "max-age": 30
+      }
+    }
+  ],
+  "tips": [
+    "The `cluster` path param is the Ceph fsid (UUID format) — find it via the cluster list endpoint, not the cluster's display name.",
+    "Check `version-mixed: true` during rolling upgrades; a mixed-version cluster may show degraded performance or unexpected warnings.",
+    "If `checks` is non-empty, inspect each entry's `code` (e.g. OSD_DOWN, POOL_NEAR_FULL) to triage alerts without shelling into a Ceph node.",
+    "Use `fullest-pool` + `fullest-pool-used` together — cluster-wide `bytes-avail` can look healthy while a single pool is near capacity and blocking writes.",
+    "A missing `version` field means no live member read succeeded; the cached health/capacity figures are still returned from PDM's internal cache."
+  ],
+  "relatedOperations": [
+    "get_ceph_clusters",
+    "get_ceph_clusters_cluster",
+    "get_ceph_clusters_cluster_osds",
+    "get_ceph_clusters_cluster_pools",
+    "get_ceph_clusters_cluster_health"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "operationId": "get_config_notes",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "notes",
+  "method": "GET",
+  "path": "/config/notes",
+  "description": "Get notes.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "Notes, utf8 encoded markdown file.",
+    "type": "string"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/notes'"
+}

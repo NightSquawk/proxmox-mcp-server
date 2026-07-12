@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_rules",
+  "usageNotes": "Returns the ordered list of firewall rules applied to a specific QEMU VM, including rule position, action, protocol filters, and enabled/disabled state. Requires VM.Audit permission on the VM path; the node must be online and the VM does not need to be running. Rules are returned in position order (pos field) — this order matters because Proxmox evaluates them top-down.",
+  "examples": [
+    {
+      "summary": "List all firewall rules for VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The pos field is the authoritative rule order — use it as the index when referencing a specific rule for updates or deletions.",
+    "Rules with enable=0 are defined but inactive; check this field to understand why traffic may be passing through unexpectedly.",
+    "An action value that doesn't match ACCEPT/DROP/REJECT is a security group reference — the rule delegates to that group's ruleset.",
+    "VM-level rules are evaluated after the datacenter and node-level rules; a DROP at the datacenter level will never reach these rules."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_rules_pos",
+    "post_nodes_node_qemu_vmid_firewall_rules",
+    "put_nodes_node_qemu_vmid_firewall_rules_pos",
+    "delete_nodes_node_qemu_vmid_firewall_rules_pos",
+    "get_nodes_node_qemu_vmid_firewall_options",
+    "get_nodes_node_firewall_rules"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_scan",
+  "usageNotes": "Use this to discover which storage/network scan methods are available on a given node before calling a specific scan sub-endpoint (e.g., scan/nfs, scan/iscsi, scan/zfs). The node must be online and reachable by the cluster; calling against an offline node returns an error. No special privilege is required — any authenticated user can list scan methods.",
+  "examples": [
+    {
+      "summary": "List available scan methods on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'method' values map directly to child paths under /nodes/{node}/scan/ — use them to enumerate which subsequent scan calls are valid.",
+    "This is a discovery/index endpoint; it returns method names only, not scan results. Follow up with the appropriate scan sub-endpoint (e.g., get_nodes_node_scan_nfs) to retrieve actual data."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_scan_nfs",
+    "get_nodes_node_scan_iscsi",
+    "get_nodes_node_scan_zfs",
+    "get_nodes_node_scan_glusterfs",
+    "get_nodes_node_scan_cifs",
+    "get_nodes_node_scan_pbs"
+  ]
+}

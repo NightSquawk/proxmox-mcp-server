@@ -1,0 +1,37 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_firewall_rules",
+  "usageNotes": "Appends a new firewall rule to the VM-level ruleset; the VM's firewall must be enabled (via the VM firewall options) and the cluster/node firewall must also be active for rules to take effect. Requires VM.Config.Network on /vms/{vmid}. The rule is appended to the end of the list unless 'pos' is specified; use 'pos' carefully — rules are evaluated in order and an incorrect position can silently shadow or be shadowed by existing rules.",
+  "examples": [
+    {
+      "summary": "Block all inbound traffic on port 3389 (RDP) from the internet to a Windows VM",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 201
+      },
+      "params": {
+        "type": "in",
+        "action": "DROP",
+        "proto": "tcp",
+        "dport": "3389",
+        "comment": "Block inbound RDP from all sources",
+        "enable": 1,
+        "log": "warning"
+      }
+    }
+  ],
+  "tips": [
+    "Use 'macro' (e.g., 'SSH', 'HTTP', 'HTTPS') instead of manually specifying proto+dport when a standard macro exists — it reduces errors and improves readability.",
+    "Pass 'digest' from a prior GET of the ruleset to guard against concurrent modifications overwriting each other.",
+    "Rules apply per-VM and are independent of node-level or cluster-level firewall rules; all three layers stack.",
+    "The 'iface' param for VMs must match a VM network key like 'net0', 'net1', etc. — not a host interface name.",
+    "A rule with 'enable': 0 is saved but inactive; useful for staging rules before activating them."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "get_nodes_node_qemu_vmid_firewall_rules_pos",
+    "put_nodes_node_qemu_vmid_firewall_rules_pos",
+    "delete_nodes_node_qemu_vmid_firewall_rules_pos",
+    "get_nodes_node_qemu_vmid_firewall_options",
+    "put_nodes_node_qemu_vmid_firewall_options"
+  ]
+}

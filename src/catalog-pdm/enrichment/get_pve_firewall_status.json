@@ -1,0 +1,22 @@
+{
+  "operationId": "get_pve_firewall_status",
+  "usageNotes": "Use this to get a fleet-wide snapshot of firewall enablement across all PVE remotes registered in PDM — covering cluster-level, per-node, and per-guest (QEMU/LXC) status in a single call. The `status` field is optional on each object, meaning it may be absent if PDM cannot reach the remote or node at query time; always null-check before acting on enabled/active/all counts. Requires `Resource.Audit` privilege on each remote being queried.",
+  "examples": [
+    {
+      "summary": "Get firewall status across all PVE remotes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A missing `status` field on a remote, node, or guest indicates PDM could not retrieve firewall data for that object — treat it as unknown, not disabled.",
+    "The `active` count reflects rules currently enforced by the kernel; `all` includes disabled rules. A gap between the two means some rules exist but are toggled off.",
+    "Cross-reference guests with `kind` (lxc vs qemu) to distinguish container vs VM firewall posture — they use different iptables chains in Proxmox.",
+    "This endpoint covers the PDM-managed PVE firewall layer only; standalone pfSense/OPNsense perimeter firewalls are out of scope."
+  ],
+  "relatedOperations": [
+    "list_pve_remotes",
+    "get_pve_cluster_status",
+    "list_pve_nodes"
+  ]
+}

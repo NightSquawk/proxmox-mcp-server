@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_mapping_dir",
+  "usageNotes": "Use this endpoint to list all cluster-wide directory mappings, which abstract node-local directory paths behind logical IDs for use in VM/container configurations. The caller only sees entries where they hold Mapping.Modify, Mapping.Use, or Mapping.Audit on '/mapping/dir/<id>', so results are permission-filtered. Pass 'check-node' to validate that the mapping configuration is actually correct and usable on a specific node — any mismatches appear as severity-tagged diagnostics in the response.",
+  "examples": [
+    {
+      "summary": "List all directory mappings and validate them against node 'pve1'",
+      "path_params": {},
+      "params": {
+        "check-node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "The 'checks' field is absent from each item unless 'check-node' is supplied — always include it when troubleshooting VM startup failures related to directory mounts.",
+    "Results are permission-filtered per mapping ID, so an empty list may mean no mappings exist or the caller lacks any Mapping.* privilege.",
+    "Use the returned 'id' values as the identifier when calling per-mapping GET/PUT/DELETE endpoints under /cluster/mapping/dir/{id}."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_dir_id",
+    "post_cluster_mapping_dir",
+    "put_cluster_mapping_dir_id",
+    "delete_cluster_mapping_dir_id"
+  ]
+}

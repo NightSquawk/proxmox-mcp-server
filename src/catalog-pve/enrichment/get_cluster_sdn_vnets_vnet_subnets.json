@@ -1,0 +1,29 @@
+{
+  "operationId": "get_cluster_sdn_vnets_vnet_subnets",
+  "usageNotes": "Lists all subnets defined under a specific SDN VNet. Use this to inspect the IP ranges and IPAM configuration attached to a VNet before allocating IPs or adding new subnets. Requires 'SDN.Audit' or 'SDN.Allocate' on the VNet's zone path; pass 'pending=true' to preview unapplied changes before running 'apply_cluster_sdn'.",
+  "examples": [
+    {
+      "summary": "List all subnets for the VNet 'vmbr10', including any pending (unapplied) changes",
+      "path_params": {
+        "vnet": "vmbr10"
+      },
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "VNet identifiers are 2–8 alphanumeric characters and must start with a letter — validate before calling.",
+    "Use 'pending=true' after editing subnets to confirm your changes are queued before applying the SDN config cluster-wide.",
+    "Use 'running=true' to see what is currently active in the kernel/data-plane, which may differ from saved config if 'apply' has not been run.",
+    "Each item in the returned array includes a 'subnet' child link (CIDR-style key); follow it with get_cluster_sdn_vnets_vnet_subnets_subnet to inspect a single subnet's details."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet",
+    "create_cluster_sdn_vnets_vnet_subnets",
+    "get_cluster_sdn_vnets_vnet_subnets_subnet",
+    "update_cluster_sdn_vnets_vnet_subnets_subnet",
+    "delete_cluster_sdn_vnets_vnet_subnets_subnet",
+    "apply_cluster_sdn"
+  ]
+}

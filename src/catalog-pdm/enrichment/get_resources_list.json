@@ -1,0 +1,24 @@
+{
+  "operationId": "get_resources_list",
+  "usageNotes": "Use this as the primary inventory sweep across all PDM-managed remotes — it returns nodes, VMs, containers, storage, datastores, and networks in one call grouped by remote. Results are served from a cache; lower `max-age` (e.g. 0) forces a live fetch at the cost of higher latency, while the 30-second default is appropriate for dashboards. If a remote is unreachable, its entry will contain an `error` field alongside an empty or partial `resources` array rather than failing the entire response.",
+  "examples": [
+    {
+      "summary": "Fetch only running QEMU VMs across all remotes with a fresh cache",
+      "path_params": {},
+      "params": {
+        "resource-type": "qemu",
+        "max-age": 0
+      }
+    }
+  ],
+  "tips": [
+    "Each top-level array item maps to one remote; always check the `error` field on each item before processing its `resources` — a reachable remote returns null/omitted error, an unreachable one may still appear with an error string.",
+    "The `type` discriminator property on each resource entry (e.g. pve-qemu, pbs-datastore) is the reliable way to branch parsing logic — do not rely on which fields are present.",
+    "Omitting `resource-type` returns all resource kinds in one pass, which is more efficient than making separate filtered requests when you need a full inventory.",
+    "The `view` parameter (2-32 chars, alphanumeric/dot/dash/underscore) selects a saved PDM view; omit it to get the unfiltered resource list.",
+    "The `search` parameter syntax is not yet documented (spec contains a TODO); treat it as experimental and prefer `resource-type` for reliable filtering."
+  ],
+  "relatedOperations": [
+    "get_remotes_list"
+  ]
+}

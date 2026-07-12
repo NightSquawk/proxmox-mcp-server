@@ -1,0 +1,91 @@
+{
+  "operationId": "get_nodes_node_certificates_info",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "info",
+  "method": "GET",
+  "path": "/nodes/{node}/certificates/info",
+  "description": "Get certificate info.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "List of certificate infos.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Certificate information.",
+      "properties": {
+        "filename": {
+          "description": "Certificate file name.",
+          "type": "string"
+        },
+        "fingerprint": {
+          "description": "The SSL Fingerprint.",
+          "optional": 1,
+          "type": "string"
+        },
+        "issuer": {
+          "description": "Certificate issuer name.",
+          "type": "string"
+        },
+        "notafter": {
+          "description": "Certificate's notAfter timestamp (UNIX epoch).",
+          "optional": 1,
+          "type": "integer"
+        },
+        "notbefore": {
+          "description": "Certificate's notBefore timestamp (UNIX epoch).",
+          "optional": 1,
+          "type": "integer"
+        },
+        "pem": {
+          "description": "Certificate in PEM format.",
+          "optional": 1,
+          "type": "string"
+        },
+        "public-key-bits": {
+          "description": "Certificate's public key size if available.",
+          "maximum": 4294967295,
+          "minimum": 0,
+          "optional": 1,
+          "type": "integer"
+        },
+        "public-key-type": {
+          "description": "Certificate's public key algorithm.",
+          "type": "string"
+        },
+        "san": {
+          "description": "List of certificate's SubjectAlternativeName entries.",
+          "items": {
+            "description": "A SubjectAlternateName entry.",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "subject": {
+          "description": "Certificate subject name.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/certificates/info'"
+}

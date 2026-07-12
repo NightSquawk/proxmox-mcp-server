@@ -1,0 +1,29 @@
+{
+  "operationId": "put_cluster_firewall_options",
+  "usageNotes": "Use this to enable/disable the cluster-wide firewall or change its default policies and logging behavior. Changes take effect immediately across all nodes without a task UPID — the response is null on success. Pass the `digest` from `get_cluster_firewall_options` to guard against concurrent modifications; omit it only when you are certain no concurrent edits are possible.",
+  "examples": [
+    {
+      "summary": "Enable the cluster firewall with DROP default input policy and rate-limited logging",
+      "path_params": {},
+      "params": {
+        "enable": 1,
+        "policy_in": "DROP",
+        "policy_out": "ACCEPT",
+        "ebtables": true,
+        "log_ratelimit": "enable=1,burst=5,rate=1/second"
+      }
+    }
+  ],
+  "tips": [
+    "The firewall is disabled by default (enable=0); enabling it cluster-wide will enforce policy_in/policy_out on all nodes immediately — verify your rules before setting policy_in to DROP or REJECT to avoid locking yourself out.",
+    "Use the `delete` param (comma-separated config key names) to revert specific settings back to their defaults rather than overwriting with explicit values.",
+    "ebtables controls layer-2 (Ethernet bridge) filtering; leave it enabled (default) unless you have a specific reason to disable it, as disabling it removes bridge-level MAC/ARP filtering across the cluster.",
+    "Fetch the current digest via GET /cluster/firewall/options and echo it back to prevent a lost-update race condition in automation scripts."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_options",
+    "get_cluster_firewall_rules",
+    "post_cluster_firewall_rules",
+    "get_nodes_node_firewall_options"
+  ]
+}

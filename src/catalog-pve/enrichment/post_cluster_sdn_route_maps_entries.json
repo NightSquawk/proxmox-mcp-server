@@ -1,0 +1,33 @@
+{
+  "operationId": "post_cluster_sdn_route_maps_entries",
+  "usageNotes": "Use this to add a numbered entry (sequence) to an existing SDN route map, which controls BGP/EVPN prefix filtering and attribute modification in Proxmox SDN. The parent route map must already exist (create it first via the route-maps endpoint), and the caller requires the SDN.Allocate privilege on /sdn/route-maps. After creating entries, apply the pending SDN configuration with the cluster SDN apply endpoint for changes to take effect.",
+  "examples": [
+    {
+      "summary": "Add a permit entry at order 10 to the 'mgmt-filter' route map, jumping to the next entry on match",
+      "path_params": {},
+      "params": {
+        "route-map-id": "mgmt-filter",
+        "order": 10,
+        "action": "permit",
+        "exit-action": "on-match-next",
+        "match": ["prefix 10.10.0.0/16 le 24"],
+        "set": ["local-preference 150"]
+      }
+    }
+  ],
+  "tips": [
+    "The 'order' field determines evaluation sequence; lower values are evaluated first. Leave gaps (e.g. 10, 20, 30) to allow future insertions without renumbering.",
+    "Use 'call' to invoke a secondary route map as a subroutine before the current entry's action is applied.",
+    "Use 'exit-action' with 'on-match-goto' and a target order index to implement non-sequential route map logic (policy-based jumps).",
+    "The 'digest' parameter should be passed from a prior GET of the route map to prevent overwriting concurrent edits.",
+    "The 'lock-token' is required when the global SDN configuration is locked for staged editing; omit it for direct single-operation writes.",
+    "Changes are pending until you POST to /cluster/sdn to apply the SDN configuration cluster-wide."
+  ],
+  "relatedOperations": [
+    "post_cluster_sdn_route_maps",
+    "get_cluster_sdn_route_maps_entries",
+    "put_cluster_sdn_route_maps_entries_entry",
+    "delete_cluster_sdn_route_maps_entries_entry",
+    "put_cluster_sdn"
+  ]
+}

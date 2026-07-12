@@ -1,0 +1,24 @@
+{
+  "operationId": "get_config_access_ldap",
+  "usageNotes": "Use this to enumerate all LDAP authentication realms configured in Proxmox Datacenter Manager — useful before syncing users, auditing realm settings, or verifying that a specific realm (and its bind-dn, server, and mode) is present. Requires the Realm.Allocate privilege on /access/domains; API tokens are supported. The response exposes bind-dn and CA paths in plain text but never the bind password.",
+  "examples": [
+    {
+      "summary": "List all LDAP realms to verify Active Directory realm is configured with ldaps mode",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A realm with 'default: true' is pre-selected on the PDM login screen — check this when users report being sent to the wrong login provider.",
+    "The 'mode' field determines TLS behavior: prefer 'ldaps' or 'ldap+starttls' over plain 'ldap' for production. Plain text mode is the default and will appear in responses if TLS was never configured.",
+    "sync-attributes maps LDAP fields to PDM user properties (email, firstname, lastname); if these are missing, user sync will create accounts with no display name or contact info.",
+    "server2 is an optional fallback; if it is absent and server1 is unreachable, authentication will fail for all users in that realm."
+  ],
+  "relatedOperations": [
+    "get_config_access_ldap_realm",
+    "post_config_access_ldap",
+    "put_config_access_ldap_realm",
+    "delete_config_access_ldap_realm",
+    "post_config_access_ldap_realm_sync"
+  ]
+}

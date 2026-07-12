@@ -1,0 +1,46 @@
+{
+  "operationId": "delete_access_users_userid",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "delete_user",
+  "method": "DELETE",
+  "path": "/access/users/{userid}",
+  "description": "Delete user.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "Full User ID, in the `name@realm` format.",
+      "format": "pve-userid",
+      "maxLength": 64,
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "and",
+      [
+        "userid-param",
+        "Realm.AllocateUser"
+      ],
+      [
+        "userid-group",
+        [
+          "User.Modify"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/users/<userid>'"
+}

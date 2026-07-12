@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_ceph_mgr",
+  "usageNotes": "Use this to list all Ceph Manager (MGR) daemons known to the queried node, including their state (active/standby/stopped/unknown), version, and whether a local systemd unit is present. Requires Sys.Audit or Datastore.Audit on the root path. Query any node in the cluster — results reflect the full MGR roster, not just daemons local to that node.",
+  "examples": [
+    {
+      "summary": "List all Ceph MGR daemons as seen from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'state' field distinguishes active vs standby vs stopped/unknown — use it to verify quorum health before making Ceph changes.",
+    "A daemon may appear in the list with 'direxists: true' and 'service: true' but state 'stopped' if the systemd unit is enabled but not running.",
+    "Cross-reference 'host' against the node you queried: if they differ, that MGR is hosted on a different cluster member.",
+    "Use this before creating or destroying a MGR (post_nodes_node_ceph_mgr / delete_nodes_node_ceph_mgr_id) to confirm current daemon count and avoid dropping below the recommended minimum of two."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_ceph_mgr",
+    "delete_nodes_node_ceph_mgr_id",
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph_mon"
+  ]
+}

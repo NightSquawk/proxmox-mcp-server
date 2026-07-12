@@ -1,0 +1,26 @@
+{
+  "operationId": "post_cluster_firewall_ipset",
+  "usageNotes": "Creates a new cluster-level firewall IPSet, which is a named group of IP addresses or CIDRs that can be referenced by alias in firewall rules. Requires the `Sys.Modify` privilege on the root path. To rename an existing IPSet or update its comment without deleting it, pass the current name in `rename` and the new name (or same name) in `name`.",
+  "examples": [
+    {
+      "summary": "Create a new IPSet for trusted management hosts",
+      "path_params": {},
+      "params": {
+        "name": "mgmt-hosts",
+        "comment": "Trusted management workstations and jump hosts"
+      }
+    }
+  ],
+  "tips": [
+    "IPSet names must start with a letter and may only contain letters, digits, hyphens, and underscores (pattern: [A-Za-z][A-Za-z0-9\\-\\_]+).",
+    "Creating the IPSet is just the container — add individual IP/CIDR entries afterward using the POST /cluster/firewall/ipset/{name} endpoint.",
+    "Use the `digest` param to guard against concurrent modifications when scripting bulk changes.",
+    "The `rename` field doubles as an in-place update: set rename=<oldName> and name=<newName> to rename, or rename=name=<sameName> to update only the comment."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_ipset",
+    "post_cluster_firewall_ipset_name",
+    "get_cluster_firewall_ipset_name",
+    "delete_cluster_firewall_ipset_name"
+  ]
+}

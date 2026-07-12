@@ -1,0 +1,24 @@
+{
+  "operationId": "put_nodes_node_subscription",
+  "usageNotes": "Use this to register or replace the Proxmox VE subscription key on a specific node — typically after purchasing or renewing a license, or when provisioning a new node that requires enterprise repository access. The key must match the pattern pve[1248][cbsp]-<10 hex chars> and is validated server-side against the Proxmox subscription portal. The caller requires Sys.Modify on /nodes/{node}; this operation returns null on success, so check for an HTTP 200 status rather than a response body.",
+  "examples": [
+    {
+      "summary": "Apply a Proxmox VE Basic (8-socket) subscription key to node pve01",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "key": "pve8b-a1b2c3d4e5"
+      }
+    }
+  ],
+  "tips": [
+    "The key pattern encodes socket count (1, 2, 4, or 8) and tier (c=Community, b=Basic, s=Standard, p=Premium); verify you are applying the correct tier key for the node's licensed socket count.",
+    "After updating the key, call GET /nodes/{node}/subscription to confirm the status transitions to 'active' and that the key's server ID matches the node.",
+    "Each subscription key is node-locked; applying the same key to multiple nodes will result in a 'wrong server ID' status on subsequent nodes."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_subscription",
+    "delete_nodes_node_subscription"
+  ]
+}

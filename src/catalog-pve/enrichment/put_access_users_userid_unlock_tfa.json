@@ -1,0 +1,25 @@
+{
+  "operationId": "put_access_users_userid_unlock_tfa",
+  "usageNotes": "Use this to clear a TFA lockout for a user who has been locked out after too many failed two-factor authentication attempts. The caller must hold the `User.Modify` privilege on the user's realm or group. Returns `true` on success; the user can then attempt TFA login again immediately.",
+  "examples": [
+    {
+      "summary": "Unlock TFA for a local Proxmox user who is locked out",
+      "path_params": {
+        "userid": "jsmith@pve"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The userid must use the full `name@realm` format (e.g., `admin@pam`, `jsmith@pve`).",
+    "This only clears the TFA lockout state — it does not remove or modify the user's configured TFA methods.",
+    "If the user is completely locked out of TFA (lost device/keys), remove or reset their TFA via the TFA endpoints after unlocking.",
+    "API tokens are permitted (`allowtoken: true`), so this can be scripted in automated helpdesk workflows."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid_tfa",
+    "put_access_users_userid_tfa",
+    "delete_access_users_userid_tfa_typeid",
+    "get_access_users_userid"
+  ]
+}

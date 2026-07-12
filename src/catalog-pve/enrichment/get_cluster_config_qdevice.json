@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_config_qdevice",
+  "usageNotes": "Returns the current status of the cluster QDevice (quorum device), which is a lightweight tie-breaker service used to provide quorum in two-node Proxmox clusters. Call this to verify whether the QDevice is reachable and vote-contributing before maintenance or node reboots. Requires the QDevice to have been previously configured via corosync; the response will be minimal or error-like if no QDevice is configured.",
+  "examples": [
+    {
+      "summary": "Check QDevice status on a two-node cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A two-node cluster without a QDevice has no quorum majority — losing one node brings the whole cluster down. This endpoint lets you confirm the QDevice is actively contributing a vote before taking a node offline.",
+    "If the cluster was never configured with a QDevice, this endpoint typically returns an empty object or a state indicating 'not configured' rather than an error.",
+    "The QDevice process runs on an external lightweight host (e.g., a small VPS or Pi); confirm that host is reachable at the network level if this call returns a degraded state."
+  ],
+  "relatedOperations": [
+    "get_cluster_config_nodes",
+    "get_cluster_status",
+    "get_nodes_node_status"
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "operationId": "get_access_domains",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "domains",
+  "method": "GET",
+  "path": "/access/domains",
+  "description": "Authentication domain/realm index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of realms with basic info.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Basic Information about a realm",
+      "properties": {
+        "comment": {
+          "description": "Comment.",
+          "maxLength": 128,
+          "optional": 1,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "default": {
+          "description": "True if it is the default realm",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "realm": {
+          "description": "Realm name.",
+          "maxLength": 32,
+          "minLength": 2,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "type": {
+          "description": "type of the realm",
+          "enum": [
+            "pam",
+            "pdm",
+            "openid",
+            "ad",
+            "ldap"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Anyone can access this, because we need that list for the login box (before the user is authenticated).",
+    "user": "world"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/domains'"
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_storage_storage",
+  "usageNotes": "Returns the list of sub-resource directories available under a specific storage pool on a given node — this is a directory index, not a content listing. Use it to discover which child endpoints (e.g. 'content', 'status', 'rrd') are reachable for the storage before drilling deeper. Requires either Datastore.Audit or Datastore.AllocateSpace on /storage/{storage}; the node must be online and the storage must be configured and accessible on that node.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for the 'local-zfs' storage on node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "storage": "local-zfs"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'subdir' values are the child path segments — append them to this path to reach endpoints like /nodes/{node}/storage/{storage}/content or /nodes/{node}/storage/{storage}/status.",
+    "If the storage is disabled or not mounted on the target node, the API will return an error even if the storage ID is valid in the cluster config.",
+    "Shared storages (e.g. NFS, Ceph) may return the same subdirs from any node that has them mounted, but per-node storages (e.g. local, local-lvm) only exist on their own node."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage",
+    "get_nodes_node_storage_storage_content",
+    "get_nodes_node_storage_storage_status",
+    "get_nodes_node_storage_storage_rrd",
+    "get_nodes_node_storage_storage_rrddata"
+  ]
+}

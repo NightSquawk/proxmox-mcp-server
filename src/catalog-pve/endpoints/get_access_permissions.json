@@ -1,0 +1,41 @@
+{
+  "operationId": "get_access_permissions",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "permissions",
+  "method": "GET",
+  "path": "/access/permissions",
+  "description": "Retrieve effective permissions of given user/token.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "path",
+      "type": "string",
+      "required": false,
+      "description": "Only dump this specific path, not the whole tree.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "userid",
+      "type": "string",
+      "required": false,
+      "description": "User ID or full API token ID",
+      "pattern": "(?^:^(?^:[^\\s:/]+)\\@(?^:[A-Za-z][A-Za-z0-9\\.\\-_]+)(?:!(?^:[A-Za-z][A-Za-z0-9\\.\\-_]+))?$)"
+    }
+  ],
+  "returns": {
+    "description": "Map of \"path\" => (Map of \"privilege\" => \"propagate boolean\").",
+    "type": "object"
+  },
+  "permissions": {
+    "description": "Each user/token is allowed to dump their own permissions (or that of owned tokens). A user can dump the permissions of another user or their tokens if they have 'Sys.Audit' permission on /access.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/permissions'"
+}

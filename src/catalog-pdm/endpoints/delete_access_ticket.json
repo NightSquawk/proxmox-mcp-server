@@ -1,0 +1,24 @@
+{
+  "operationId": "delete_access_ticket",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "ticket",
+  "method": "DELETE",
+  "path": "/access/ticket",
+  "description": "",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "user": "world"
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/ticket'"
+}

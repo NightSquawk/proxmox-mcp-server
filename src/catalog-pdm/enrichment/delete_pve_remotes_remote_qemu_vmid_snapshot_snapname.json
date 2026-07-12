@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_pve_remotes_remote_qemu_vmid_snapshot_snapname",
+  "usageNotes": "Permanently deletes a named snapshot from a remote QEMU VM managed through PDM. The operation is asynchronous — it returns a remote UPID that must be polled for completion before assuming the snapshot is gone. Requires Resource.Manage on the remote guest; if the target node is not specified, PDM selects it automatically, but passing 'node' is recommended when the remote cluster has multiple nodes to avoid routing ambiguity.",
+  "examples": [
+    {
+      "summary": "Delete a pre-upgrade snapshot from a remote VM",
+      "path_params": {
+        "remote": "hetzner-pve01",
+        "vmid": 104,
+        "snapname": "before_upgrade_2026"
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the named snapshot and all associated memory/disk state; this cannot be undone.",
+  "tips": [
+    "Poll the returned UPID via the PDM task API to confirm deletion completed before proceeding with dependent operations.",
+    "Snapshots with child snapshots (created after this one) may need to be deleted in reverse chronological order depending on the storage backend.",
+    "snapname must begin with a letter or digit and match the pattern [A-Za-z0-9_][A-Za-z0-9._-]* (max 40 chars) — verify the exact name with a list-snapshots call first."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_snapshot",
+    "post_pve_remotes_remote_qemu_vmid_snapshot",
+    "post_pve_remotes_remote_qemu_vmid_snapshot_snapname_rollback"
+  ]
+}

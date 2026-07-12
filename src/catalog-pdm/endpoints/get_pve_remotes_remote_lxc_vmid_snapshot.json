@@ -1,0 +1,86 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid_snapshot",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "snapshot",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/lxc/{vmid}/snapshot",
+  "description": "List the snapshots of a remote lxc container.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "A guest ID",
+      "minimum": 1
+    }
+  ],
+  "params": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": false,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "returns": {
+    "description": "The list of snapshots, including the current state as 'current'.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Object.",
+      "properties": {
+        "description": {
+          "description": "Snapshot description.",
+          "type": "string"
+        },
+        "name": {
+          "description": "Snapshot identifier. Value 'current' identifies the current VM.",
+          "type": "string"
+        },
+        "parent": {
+          "description": "Parent snapshot identifier.",
+          "optional": 1,
+          "type": "string"
+        },
+        "snaptime": {
+          "description": "Snapshot creation time",
+          "optional": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "guest",
+        "{vmid}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/lxc/0/snapshot'"
+}

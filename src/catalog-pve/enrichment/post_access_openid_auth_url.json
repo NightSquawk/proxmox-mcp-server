@@ -1,0 +1,24 @@
+{
+  "operationId": "post_access_openid_auth_url",
+  "usageNotes": "Use this to initiate an OpenID Connect login flow for a configured OpenID realm — it returns the provider's authorization URL to which the browser should be redirected. The realm must already be configured in Proxmox as an OpenID Connect authentication domain. This is a public endpoint (no auth token required) and is typically the first step before exchanging the callback code via the login endpoint.",
+  "examples": [
+    {
+      "summary": "Get the OpenID authorization URL for the 'sso' realm",
+      "path_params": {},
+      "params": {
+        "realm": "sso",
+        "redirect-url": "https://pve.nightsquawk.tech:8006"
+      }
+    }
+  ],
+  "tips": [
+    "The redirect-url must exactly match the allowed redirect URI configured in your OpenID provider (e.g., Keycloak, Google, Authentik) — a mismatch will cause the provider to reject the flow.",
+    "The returned URL is ephemeral and includes a state/nonce parameter; do not cache or reuse it across login attempts.",
+    "After the user authenticates at the returned URL, the provider redirects back to redirect-url with a code and state — pass these to the OpenID login endpoint to complete the flow."
+  ],
+  "relatedOperations": [
+    "post_access_openid_login",
+    "get_access_domains",
+    "post_access_ticket"
+  ]
+}

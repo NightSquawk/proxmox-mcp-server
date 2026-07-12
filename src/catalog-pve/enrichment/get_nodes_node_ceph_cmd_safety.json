@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_ceph_cmd_safety",
+  "usageNotes": "Call this before stopping or destroying a Ceph OSD, MON, or MDS to let Ceph heuristically verify the cluster can safely absorb the action without losing redundancy or quorum. Check the returned `safe` boolean and read `status` when it is false — Ceph populates that field with the specific reason (e.g. insufficient PGs, quorum at minimum). Requires `Sys.Audit` on `/`; the node must be reachable and Ceph must be running.",
+  "examples": [
+    {
+      "summary": "Check whether OSD.2 can be safely stopped before maintenance",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "service": "osd",
+        "id": "2",
+        "action": "stop"
+      }
+    }
+  ],
+  "tips": [
+    "A `safe: false` result does not block you from proceeding — it is advisory only. Review the `status` message before overriding.",
+    "For OSD removals, also check PG health and replication factor; this endpoint checks Ceph's heuristic, not the full CRUSH map.",
+    "MON safety checks are especially important in small clusters (3-node): destroying a MON when one is already down will break quorum.",
+    "This endpoint is read-only and has no side effects; it is safe to call repeatedly during a maintenance window."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_ceph_osd_osdid_out",
+    "delete_nodes_node_ceph_osd_osdid",
+    "post_nodes_node_ceph_mon_monid",
+    "get_nodes_node_ceph_status"
+  ]
+}

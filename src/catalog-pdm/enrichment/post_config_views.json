@@ -1,0 +1,27 @@
+{
+  "operationId": "post_config_views",
+  "usageNotes": "Use this to create a named view in PDM, which acts as a filtered subset of resources visible in the dashboard. The 'id' must be unique across all views; creating a view with a duplicate id will fail. If neither 'include' nor 'exclude' rules are provided, set 'include-all' to true to make the view capture all resources by default.",
+  "examples": [
+    {
+      "summary": "Create a view that includes all resources and scopes it to a named group",
+      "path_params": {},
+      "params": {
+        "id": "prod-nodes",
+        "include-all": true,
+        "layout": "{\"groupBy\":\"node\"}"
+      }
+    }
+  ],
+  "tips": [
+    "Use the 'digest' param (SHA256 of the current config) to guard against concurrent modifications when multiple operators may be updating views simultaneously.",
+    "'include' and 'exclude' take filter rule arrays — fetch an existing view first to understand the expected rule format before constructing them.",
+    "The 'id' field follows a restricted character set (alphanumeric, dots, hyphens, underscores; 2–32 chars); names like 'my view' with spaces will be rejected.",
+    "Returns null on success — verify the view was created by calling GET /config/views/{id} afterward."
+  ],
+  "relatedOperations": [
+    "get_config_views",
+    "get_config_views_id",
+    "put_config_views_id",
+    "delete_config_views_id"
+  ]
+}

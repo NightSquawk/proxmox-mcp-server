@@ -1,0 +1,24 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_ping",
+  "usageNotes": "Use this to verify that the QEMU Guest Agent (qemu-guest-agent) is running and responsive inside a VM without disrupting the guest or its workloads. The VM must be powered on and the guest agent service must be installed and started — the call will fail with an error if the agent is not available. Returns immediately with an object containing a `result` property; there is no async UPID.",
+  "examples": [
+    {
+      "summary": "Ping the guest agent on VM 101 running on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A successful response (non-error) confirms the guest agent channel is open; use it as a health-check before issuing agent write commands.",
+    "If the call returns an error such as 'No QEMU guest agent configured', the agent package is missing or the service is stopped inside the guest.",
+    "Requires VM.GuestAgent.Audit OR VM.GuestAgent.Unrestricted on /vms/{vmid} — read-only audit privilege is sufficient."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent",
+    "post_nodes_node_qemu_vmid_agent_get_osinfo",
+    "post_nodes_node_qemu_vmid_agent_get_vcpus"
+  ]
+}

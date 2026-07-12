@@ -1,0 +1,16 @@
+{
+  "operationId": "get_pbs",
+  "usageNotes": "Use this endpoint to discover the top-level PBS (Proxmox Backup Server) remotes resource index on a PDM instance. It is a directory listing only and requires no parameters; any authenticated user or API token can call it. The actual list of configured PBS remotes is retrieved via child endpoints under /pbs.",
+  "examples": [
+    {
+      "summary": "Retrieve the PBS remotes directory index",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This endpoint returns null per the spec — it functions as a navigational index entry point, not a data payload; follow up with /pbs child endpoints to get actionable PBS remote data.",
+    "No privilege elevation is needed; a read-only API token scoped to any realm is sufficient."
+  ],
+  "relatedOperations": []
+}

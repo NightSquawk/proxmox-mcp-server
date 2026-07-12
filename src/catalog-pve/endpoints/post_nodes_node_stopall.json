@@ -1,0 +1,70 @@
+{
+  "operationId": "post_nodes_node_stopall",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "stopall",
+  "method": "POST",
+  "path": "/nodes/{node}/stopall",
+  "description": "Stop all VMs and Containers.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "force-stop",
+      "type": "boolean",
+      "required": false,
+      "description": "Force a hard-stop after the timeout.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "max-workers",
+      "type": "integer",
+      "required": false,
+      "description": "Defines the maximum number of tasks running concurrently. If  not set, uses 'max_workers' from datacenter.cfg, and if that's not set, the available CPU threads, clamped to a maximum of 8, are used.",
+      "minimum": 1,
+      "maximum": 64,
+      "typetext": "<integer> (1 - 64)"
+    },
+    {
+      "name": "timeout",
+      "type": "integer",
+      "required": false,
+      "description": "Timeout for each guest shutdown task. Depending on `force-stop`, the shutdown gets then simply aborted or a hard-stop is forced.",
+      "default": 180,
+      "minimum": 0,
+      "maximum": 7200,
+      "typetext": "<integer> (0 - 7200)"
+    },
+    {
+      "name": "vms",
+      "type": "string",
+      "required": false,
+      "description": "Only consider Guests with these IDs.",
+      "format": "pve-vmid-list",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "description": "The 'VM.PowerMgmt' permission is required on '/' or on '/vms/<ID>' for each ID passed via the 'vms' parameter.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/stopall'"
+}

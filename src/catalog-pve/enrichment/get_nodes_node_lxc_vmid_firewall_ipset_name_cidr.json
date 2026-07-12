@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+  "usageNotes": "Use this to retrieve the details (comment, nomatch flag, etc.) for a specific IP or CIDR entry within a named IPSet on an LXC container's firewall. The `cidr` path param accepts a plain IP address, a CIDR prefix, or an alias — it must exactly match the value used when the entry was created. Requires VM.Audit on the container; the target node must be online and the container's firewall configuration accessible.",
+  "examples": [
+    {
+      "summary": "Read a specific CIDR entry from the 'trusted-mgmt' IPSet on LXC 110",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110,
+        "name": "trusted-mgmt",
+        "cidr": "10.10.10.0/24"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `cidr` field accepts aliases (e.g. `dc/myalias`) in addition to raw IPs and CIDR blocks — the format is IPorCIDRorAlias.",
+    "A successful response returns an object that may include a `comment` field and a `nomatch` boolean; check for `nomatch: true` to identify negation entries that block a specific address within the set.",
+    "IPSet names must start with a letter and be 2–64 characters; use list_ipset first to confirm the exact name before calling this endpoint."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_ipset_name",
+    "post_nodes_node_lxc_vmid_firewall_ipset_name",
+    "put_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+    "delete_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+    "get_nodes_node_lxc_vmid_firewall_ipset"
+  ]
+}

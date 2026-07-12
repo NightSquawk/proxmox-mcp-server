@@ -1,0 +1,23 @@
+{
+  "operationId": "post_pve_probe_tls",
+  "usageNotes": "Use this before adding a new PVE remote to PDM: it probes the target host's TLS certificate and returns certificate details only when the certificate is untrusted under the supplied parameters, letting you inspect and capture the fingerprint. Requires System.Modify at the root path. If you already have the expected fingerprint, pass it to perform a pinned-trust check instead of relying on the CA chain.",
+  "examples": [
+    {
+      "summary": "Probe a PVE node at a non-default port to retrieve its self-signed certificate fingerprint",
+      "path_params": {},
+      "params": {
+        "hostname": "pve1.example.com:8006"
+      }
+    }
+  ],
+  "tips": [
+    "The hostname field accepts an optional port suffix (e.g. 'host:8006'); omit the port to use the default HTTPS port.",
+    "If the certificate is trusted (valid CA chain and matching fingerprint), the response body is null — a null return is a success indicator, not an error.",
+    "Capture the returned fingerprint from an untrusted cert and supply it as the 'fingerprint' param when subsequently registering the remote, so PDM can pin it instead of relying on CA trust."
+  ],
+  "relatedOperations": [
+    "post_pbs_probe_tls",
+    "get_pve_remotes",
+    "get_pve_remotes_remote"
+  ]
+}

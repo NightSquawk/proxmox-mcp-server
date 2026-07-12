@@ -1,0 +1,118 @@
+{
+  "operationId": "post_pve_remotes_remote_qemu_vmid_remote_migrate",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "remote-migrate",
+  "method": "POST",
+  "path": "/pve/remotes/{remote}/qemu/{vmid}/remote-migrate",
+  "description": "Perform a remote migration of a VM.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "A guest ID",
+      "minimum": 1
+    }
+  ],
+  "params": [
+    {
+      "name": "bwlimit",
+      "type": "integer",
+      "required": false,
+      "description": "Override I/O bandwidth limit (in KiB/s).",
+      "minimum": 0
+    },
+    {
+      "name": "delete",
+      "type": "boolean",
+      "required": false,
+      "description": "Delete the original VM and related data after successful migration.",
+      "default": false
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": false,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "online",
+      "type": "boolean",
+      "required": false,
+      "description": "Perform an online migration if the vm is running.",
+      "default": false
+    },
+    {
+      "name": "target",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "target-bridge",
+      "type": "array",
+      "required": true,
+      "description": "List of bridge mappings"
+    },
+    {
+      "name": "target-endpoint",
+      "type": "string",
+      "required": false,
+      "description": "The target endpoint to use for the connection."
+    },
+    {
+      "name": "target-storage",
+      "type": "array",
+      "required": true,
+      "description": "List of storage mappings"
+    },
+    {
+      "name": "target-vmid",
+      "type": "integer",
+      "required": false,
+      "description": "A guest ID",
+      "minimum": 1
+    }
+  ],
+  "returns": {
+    "description": "A remote UPID",
+    "minLength": 42,
+    "type": "string"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "guest",
+        "{vmid}"
+      ],
+      "privs": [
+        "Resource.Migrate"
+      ]
+    },
+    "description": "requires PRIV_RESOURCE_MIGRATE on /resource/{remote}/guest/{vmid} for source and target remove and vmid"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"target\":\"<target>\",\"target-bridge\":\"<target-bridge>\",\"target-storage\":\"<target-storage>\"}' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/qemu/0/remote-migrate'"
+}

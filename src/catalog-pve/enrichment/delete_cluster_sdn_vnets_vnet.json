@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_sdn_vnets_vnet",
+  "usageNotes": "Removes an SDN VNet object from the cluster SDN configuration; the deletion is staged and does not take effect until the SDN configuration is applied via the apply endpoint. Requires 'SDN.Allocate' on the zone path that owns the VNet. The VNet must not have any active subnets or dependent objects — remove those first, or the call will be rejected.",
+  "examples": [
+    {
+      "summary": "Delete the VNet 'vnet01' from the cluster SDN configuration",
+      "path_params": {
+        "vnet": "vnet01"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the VNet object configuration, which will tear down the corresponding VXLAN/VLAN overlay network and disconnect all VMs or containers mapped to that VNet once the SDN config is applied.",
+  "tips": [
+    "After deleting, call the SDN apply endpoint (PUT /cluster/sdn) to propagate the removal to all nodes.",
+    "Use the lock-token parameter if you are coordinating concurrent SDN configuration changes to avoid conflicts.",
+    "VNet identifiers are 2–8 alphanumeric characters starting with a letter — double-check the name before deleting, as the API returns null on success with no confirmation payload."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet",
+    "update_cluster_sdn_vnets_vnet",
+    "get_cluster_sdn_vnets",
+    "create_cluster_sdn_vnets",
+    "apply_cluster_sdn"
+  ]
+}

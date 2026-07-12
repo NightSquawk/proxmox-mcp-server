@@ -1,0 +1,29 @@
+{
+  "operationId": "put_cluster_notifications_endpoints_sendmail_name",
+  "usageNotes": "Use this to update an existing sendmail notification endpoint — changing recipients, the from-address, display author, or enabling/disabling the target. Requires `Mapping.Modify` on `/mapping/notifications` combined with either `Sys.Modify`/`Sys.Audit` or `Sys.AccessNetwork` on `/`. Pass the `digest` from the current GET response to guard against concurrent edits; omit fields you do not intend to change, and list any fields to remove in the `delete` array rather than blanking them.",
+  "examples": [
+    {
+      "summary": "Update the 'ops-alerts' sendmail endpoint to add a second recipient and disable it temporarily",
+      "path_params": {
+        "name": "ops-alerts"
+      },
+      "params": {
+        "mailto": ["admin@example.com", "oncall@example.com"],
+        "disable": true,
+        "comment": "Temporarily disabled during mail server maintenance"
+      }
+    }
+  ],
+  "tips": [
+    "Use the `delete` array (e.g. [\"from-address\", \"author\"]) to revert optional fields to their defaults rather than setting them to empty strings.",
+    "The `name` path param must match the pve-configid format (alphanumeric plus hyphens, no spaces).",
+    "Fetch the current endpoint with GET /cluster/notifications/endpoints/sendmail/{name} first to capture the digest for safe concurrent-edit protection.",
+    "`mailto-user` accepts Proxmox user IDs (e.g. 'root@pam'); those users must have a valid email set in their profile for delivery to work."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_sendmail_name",
+    "post_cluster_notifications_endpoints_sendmail",
+    "delete_cluster_notifications_endpoints_sendmail_name",
+    "get_cluster_notifications_endpoints_sendmail"
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "operationId": "get_pbs_remotes_remote_tasks_upid_status",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "status",
+  "method": "GET",
+  "path": "/pbs/remotes/{remote}/tasks/{upid}/status",
+  "description": "Get the status of a task from a Proxmox VE instance.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "upid",
+      "type": "string",
+      "required": true,
+      "description": "A remote UPID",
+      "minLength": 42
+    }
+  ],
+  "params": [
+    {
+      "name": "wait",
+      "type": "boolean",
+      "required": false,
+      "description": "wait for the task to finish before returning its result",
+      "default": false
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Status if a task.",
+    "properties": {
+      "exitstatus": {
+        "description": "Exit status, if available.",
+        "optional": 1,
+        "type": "string"
+      },
+      "id": {
+        "description": "Task id.",
+        "optional": 1,
+        "type": "string"
+      },
+      "node": {
+        "description": "Node the task is running on.",
+        "type": "string"
+      },
+      "pid": {
+        "description": "The Unix PID",
+        "type": "integer"
+      },
+      "pstart": {
+        "description": "The task start time (Epoch)",
+        "type": "integer"
+      },
+      "starttime": {
+        "description": "The task's start time.",
+        "type": "integer"
+      },
+      "status": {
+        "description": "Whether a task is still running.",
+        "enum": [
+          "running",
+          "stopped"
+        ],
+        "type": "string"
+      },
+      "type": {
+        "description": "The task type.",
+        "type": "string"
+      },
+      "upid": {
+        "description": "The task's UPID.",
+        "type": "string"
+      },
+      "user": {
+        "description": "The authenticated entity who started the task.",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/tasks/<upid>/status'"
+}

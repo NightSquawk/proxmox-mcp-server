@@ -1,0 +1,42 @@
+{
+  "operationId": "delete_auto_install_prepared_id",
+  "surface": "pdm",
+  "resource": "auto-install",
+  "category": "Auto Install",
+  "name": "{id}",
+  "method": "DELETE",
+  "path": "/auto-install/prepared/{id}",
+  "description": "DELETE /auto-install/prepared/{id}\n\nDeletes a prepared auto-installer answer configuration.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "ID of prepared configuration for automated installations.",
+      "minLength": 3,
+      "maxLength": 64
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "auto-installation"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/auto-install/prepared/<id>'"
+}

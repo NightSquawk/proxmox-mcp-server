@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_status",
+  "usageNotes": "Use this to get a combined view of the cluster and all its nodes in one call — each array item has a 'type' field ('cluster' or 'node') that determines which fields are populated. Requires Sys.Audit on / (root path). On a standalone (non-clustered) PVE host this endpoint still returns results but the cluster-type entry will reflect a single-node quorum.",
+  "examples": [
+    {
+      "summary": "Fetch cluster and node health for a three-node cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Check 'quorate: false' on the cluster-type entry first — if quorum is lost, no write operations will succeed cluster-wide.",
+    "The 'local: true' node entry identifies which node is serving the API response; useful when the PVE_HOST is a load-balanced VIP.",
+    "The 'level' field on node entries reflects the Proxmox subscription tier (e.g. 'c' = community, 'b' = basic, 's' = standard, 'p' = premium) — an empty string means no active subscription.",
+    "Use 'version' on the cluster-type entry to detect corosync config drift; version should be identical across all online nodes."
+  ],
+  "relatedOperations": [
+    "get_cluster_resources",
+    "get_nodes",
+    "get_cluster_ha_status_current",
+    "get_cluster_log"
+  ]
+}

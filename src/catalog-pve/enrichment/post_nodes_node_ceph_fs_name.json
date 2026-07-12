@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_ceph_fs_name",
+  "usageNotes": "Use this to provision a new CephFS filesystem on an existing Ceph cluster; the target node must be a Ceph monitor/MDS-capable member and the cluster must already be initialized (OSDs and monitors up). The `name` path param defaults to `cephfs`, so only supply it when creating a second filesystem. Returns a task UPID string — poll the task API to confirm completion before mounting or using the filesystem.",
+  "examples": [
+    {
+      "summary": "Create the default CephFS and automatically register it as a PVE storage entry",
+      "path_params": {
+        "node": "pve1",
+        "name": "cephfs"
+      },
+      "params": {
+        "add-storage": true,
+        "pg_num": 64
+      }
+    }
+  ],
+  "tips": [
+    "pg_num should be sized to your OSD count: a common formula is (OSDs × 100) / replicas, rounded to the nearest power of two — the metadata pool is created automatically at pg_num / 4.",
+    "Setting add-storage=true saves a manual step; it creates a `cephfs` storage entry in /etc/pve/storage.cfg pointing to the new filesystem.",
+    "A Ceph MDS daemon must be running before the filesystem becomes accessible — deploy one via the MDS endpoints if not already present.",
+    "You can only create one CephFS per cluster with the default name; use a distinct name for additional filesystems and ensure your Ceph version supports multiple active filesystems."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_fs",
+    "post_nodes_node_ceph_mds_name",
+    "get_nodes_node_ceph_status",
+    "post_nodes_node_ceph_osd"
+  ]
+}

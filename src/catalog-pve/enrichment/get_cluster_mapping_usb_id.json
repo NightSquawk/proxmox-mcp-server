@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_mapping_usb_id",
+  "usageNotes": "Use this to retrieve the full definition of a named USB hardware mapping, including the list of nodes and their matched USB device entries. The caller must hold at least one of Mapping.Audit, Mapping.Use, or Mapping.Modify on the specific mapping path — cluster-level Sys.Audit does not substitute. The 'id' must be an exact pve-configid match; use list_cluster_mapping_usb to discover valid IDs if you do not already know the name.",
+  "examples": [
+    {
+      "summary": "Fetch the USB mapping definition for a YubiKey shared across cluster nodes",
+      "path_params": {
+        "id": "yubikey-shared"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "USB mappings bind a logical name to vendor/product (and optionally serial) filters per node; the returned object includes the per-node map entries, not a flat device list.",
+    "If a mapping is only partially configured (some nodes missing), the response will still succeed — check that each expected node appears in the returned map array.",
+    "API tokens may be used (allowtoken: true), making this safe to call from automation without a full user ticket."
+  ],
+  "relatedOperations": [
+    "list_cluster_mapping_usb",
+    "create_cluster_mapping_usb",
+    "update_cluster_mapping_usb",
+    "delete_cluster_mapping_usb"
+  ]
+}

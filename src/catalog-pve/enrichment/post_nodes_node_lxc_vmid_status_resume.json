@@ -1,0 +1,25 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_status_resume",
+  "usageNotes": "Use this to resume a suspended LXC container; the container must already be in a suspended state (not stopped or running). The call returns a task UPID string that can be polled via the tasks API to confirm completion. The caller must hold the VM.PowerMgmt privilege on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Resume a suspended LXC container (vmid 201) on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 201
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Check container status first with GET /nodes/{node}/lxc/{vmid}/status/current — resuming a non-suspended container will fail.",
+    "The returned string is a UPID; poll GET /nodes/{node}/tasks/{upid}/status to confirm the resume completed successfully.",
+    "LXC resume is near-instant; if the task lingers, check whether the container's rootfs storage is accessible on the node."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_status_suspend",
+    "post_nodes_node_lxc_vmid_status_start",
+    "post_nodes_node_lxc_vmid_status_stop",
+    "get_nodes_node_lxc_vmid_status_current"
+  ]
+}

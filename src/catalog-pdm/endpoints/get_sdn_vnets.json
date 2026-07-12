@@ -1,0 +1,153 @@
+{
+  "operationId": "get_sdn_vnets",
+  "surface": "pdm",
+  "resource": "sdn",
+  "category": "SDN",
+  "name": "vnets",
+  "method": "GET",
+  "path": "/sdn/vnets",
+  "description": "Query VNets of PVE remotes with optional filtering options",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "pending",
+      "type": "boolean",
+      "required": false,
+      "description": "Include a list of attributes whose changes are currently pending."
+    },
+    {
+      "name": "remotes",
+      "type": "array",
+      "required": false,
+      "description": "Only return controllers from the specified remotes."
+    },
+    {
+      "name": "running",
+      "type": "boolean",
+      "required": false,
+      "description": "If true shows the running configuration, otherwise the pending configuration."
+    }
+  ],
+  "returns": {
+    "description": "Get a list of controllers fitting the filtering criteria.",
+    "items": {
+      "additionalProperties": false,
+      "description": "SDN controller with additional information about which remote it belongs to",
+      "properties": {
+        "alias": {
+          "description": "Alias name of the VNet.",
+          "maxLength": 256,
+          "optional": 1,
+          "type": "string"
+        },
+        "digest": {
+          "description": "Digest of the VNet section.",
+          "optional": 1,
+          "type": "string"
+        },
+        "isolate-ports": {
+          "default": false,
+          "description": "If true, sets the isolated property for all interfaces on the bridge of\nthis VNet.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "pending": {
+          "additionalProperties": false,
+          "description": "Changes that have not yet been applied to the running configuration.",
+          "optional": 1,
+          "properties": {
+            "alias": {
+              "description": "Alias name of the VNet.",
+              "maxLength": 256,
+              "optional": 1,
+              "type": "string"
+            },
+            "isolate-ports": {
+              "default": false,
+              "description": "If true, sets the isolated property for all interfaces on the bridge of\nthis VNet.",
+              "optional": 1,
+              "type": "boolean"
+            },
+            "tag": {
+              "description": "VLAN Tag (for VLAN or QinQ zones) or VXLAN VNI (for VXLAN or EVPN\nzones).",
+              "maximum": 16777215,
+              "minimum": 1,
+              "optional": 1,
+              "type": "integer"
+            },
+            "vlanaware": {
+              "default": false,
+              "description": "Allow VLANs to pass through this VNet.",
+              "optional": 1,
+              "type": "boolean"
+            },
+            "zone": {
+              "description": "Name of the zone this VNet belongs to.",
+              "optional": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "remote": {
+          "description": "Remote ID.",
+          "maxLength": 32,
+          "minLength": 2,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "state": {
+          "description": "The state of an SDN object.",
+          "enum": [
+            "new",
+            "deleted",
+            "changed"
+          ],
+          "optional": 1,
+          "type": "string"
+        },
+        "tag": {
+          "description": "VLAN Tag (for VLAN or QinQ zones) or VXLAN VNI (for VXLAN or EVPN\nzones).",
+          "maximum": 16777215,
+          "minimum": 1,
+          "optional": 1,
+          "type": "integer"
+        },
+        "type": {
+          "description": "Type of the VNet.",
+          "enum": [
+            "vnet"
+          ],
+          "type": "string"
+        },
+        "vlanaware": {
+          "default": false,
+          "description": "Allow VLANs to pass through this VNet.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "vnet": {
+          "description": "Name of the VNet.",
+          "type": "string"
+        },
+        "zone": {
+          "description": "Name of the zone this VNet belongs to.",
+          "optional": 1,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "The user needs to have at least the `Resource.Audit` privilege under `/resource`.\n        Only vnets from remotes for which the user has `Resource.Audit` on `/resource/{remote_name}`\n        will be included in the returned list.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/sdn/vnets'"
+}

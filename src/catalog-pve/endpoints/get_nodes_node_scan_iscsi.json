@@ -1,0 +1,61 @@
+{
+  "operationId": "get_nodes_node_scan_iscsi",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "iscsiscan",
+  "method": "GET",
+  "path": "/nodes/{node}/scan/iscsi",
+  "description": "Scan remote iSCSI server.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "portal",
+      "type": "string",
+      "required": true,
+      "description": "The iSCSI portal (IP or DNS name with optional port).",
+      "format": "pve-storage-portal-dns",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "portal": {
+          "description": "The iSCSI portal name.",
+          "type": "string"
+        },
+        "target": {
+          "description": "The iSCSI target name.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage",
+      [
+        "Datastore.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/scan/iscsi?portal=<portal>'"
+}

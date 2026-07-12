@@ -1,0 +1,43 @@
+{
+  "operationId": "post_access_openid_auth_url",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "auth_url",
+  "method": "POST",
+  "path": "/access/openid/auth-url",
+  "description": "Get the OpenId Authorization Url for the specified realm.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "realm",
+      "type": "string",
+      "required": true,
+      "description": "Authentication domain ID",
+      "format": "pve-realm",
+      "maxLength": 32,
+      "typetext": "<string>"
+    },
+    {
+      "name": "redirect-url",
+      "type": "string",
+      "required": true,
+      "description": "Redirection Url. The client should set this to the used server url (location.origin).",
+      "maxLength": 255,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "description": "Redirection URL.",
+    "type": "string"
+  },
+  "permissions": {
+    "user": "world"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"realm\":\"<realm>\",\"redirect-url\":\"<redirect-url>\"}' 'https://PVE_HOST:8006/api2/json/access/openid/auth-url'"
+}

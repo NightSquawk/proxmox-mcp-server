@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_subscriptions_keys_key_assignment",
+  "usageNotes": "Removes the remote-node binding for a pool key, making the key available for reassignment to a different node. This call will be rejected if the key is currently synced (i.e., it is the active live key on its assigned remote node) — you must first clear the key on the node via the Node Subscription Status panel before unassigning. Requires System.Modify on the PDM instance.",
+  "examples": [
+    {
+      "summary": "Unassign a Proxmox VE subscription key from its current node binding",
+      "path_params": {
+        "key": "pve1c-a1b2c3d4e5"
+      },
+      "params": {
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "destructiveReason": "Drops the remote-node binding for the key; if performed while the key is still active on the remote node, the subscription is orphaned and the node loses its covered subscription state until the key is reassigned and re-synced.",
+  "tips": [
+    "Always run 'Clear Key' on the node's Subscription Status panel before calling this endpoint — PDM will return an error if the key is still in the synced state.",
+    "Pass the current config digest to prevent a race condition if multiple operators are managing subscriptions concurrently.",
+    "After unassigning, reassign the key with PUT /subscriptions/keys/{key}/assignment before syncing to a new node."
+  ],
+  "relatedOperations": [
+    "get_subscriptions_keys_key_assignment",
+    "put_subscriptions_keys_key_assignment",
+    "get_subscriptions_keys",
+    "post_subscriptions_keys_key_sync"
+  ]
+}

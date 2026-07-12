@@ -1,0 +1,94 @@
+{
+  "operationId": "get_pools",
+  "surface": "pve",
+  "resource": "pools",
+  "category": "Pools",
+  "name": "index",
+  "method": "GET",
+  "path": "/pools",
+  "description": "List pools or get pool configuration.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "poolid",
+      "type": "string",
+      "required": false,
+      "format": "pve-poolid",
+      "typetext": "<string>"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "enum": [
+        "qemu",
+        "lxc",
+        "storage"
+      ]
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "comment": {
+          "optional": 1,
+          "type": "string"
+        },
+        "members": {
+          "items": {
+            "additionalProperties": 1,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "node": {
+                "type": "string"
+              },
+              "storage": {
+                "optional": 1,
+                "type": "string"
+              },
+              "type": {
+                "enum": [
+                  "qemu",
+                  "lxc",
+                  "openvz",
+                  "storage"
+                ],
+                "type": "string"
+              },
+              "vmid": {
+                "optional": 1,
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "poolid": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{poolid}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "List all pools where you have Pool.Audit permissions on /pool/<pool>, or the pool specific with {poolid}",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/pools'"
+}

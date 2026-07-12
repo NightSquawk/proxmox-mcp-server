@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_rrddata",
+  "usageNotes": "Use this endpoint to retrieve historical performance metrics (CPU, memory, disk, network, swap, and pressure stall information) for a specific PDM node over a chosen timeframe. Both `cf` and `timeframe` are required — choose `AVERAGE` for trend analysis and `MAX` to catch spike behavior. Data points may have null/missing fields for metrics the node does not expose; always check for optional field presence before graphing.",
+  "examples": [
+    {
+      "summary": "Fetch hourly average CPU and memory metrics for the local PDM node",
+      "path_params": {
+        "node": "localhost"
+      },
+      "params": {
+        "cf": "AVERAGE",
+        "timeframe": "hour"
+      }
+    }
+  ],
+  "tips": [
+    "Use 'localhost' as the node name when querying the PDM node you are directly connected to — it is always valid regardless of the configured hostname.",
+    "AVERAGE smooths over collection intervals and is best for capacity planning; MAX reveals peak bursts that AVERAGE would hide.",
+    "The 'decade' timeframe produces very coarse data points — use it only for long-horizon trend views, not operational alerting.",
+    "metric-collection-total-time reflects PDM's own collection overhead; a rising value can indicate the node is under load or a metric source is slow.",
+    "All rate fields (disk-read, disk-write, net-in, net-out) are in bytes per second; convert before displaying as MB/s."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_status",
+    "get_nodes"
+  ]
+}

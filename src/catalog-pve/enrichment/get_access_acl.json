@@ -1,0 +1,23 @@
+{
+  "operationId": "get_access_acl",
+  "usageNotes": "Use this endpoint to audit which users, groups, and API tokens have been granted roles across the Proxmox resource tree (nodes, VMs, storage, pools, etc.). The returned list is automatically filtered to paths where the caller has permission to modify permissions, so a restricted token may see a partial view. No parameters are required; the full ACL is returned in one call.",
+  "examples": [
+    {
+      "summary": "Retrieve all ACL entries visible to the authenticated caller",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Each entry includes a 'path' (e.g. '/', '/nodes/pve1', '/vms/100'), 'type' (user/group/token), 'ugid' (the subject identifier), 'roleid', and optional 'propagate' flag.",
+    "propagate=true (the default) means the role cascades to child paths; set it to false on a parent path to grant access only at that exact level.",
+    "API tokens are listed with type='token' and ugid in 'USER@REALM!TOKENID' format — useful for auditing which tokens have cluster-wide roles.",
+    "To see the full ACL regardless of your own privileges, you must authenticate as a Proxmox admin (root@pam or a user with Sys.Modify on '/')."
+  ],
+  "relatedOperations": [
+    "update_access_acl",
+    "get_access_users",
+    "get_access_groups",
+    "get_access_roles"
+  ]
+}

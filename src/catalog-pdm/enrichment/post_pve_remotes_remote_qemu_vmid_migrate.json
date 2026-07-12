@@ -1,0 +1,35 @@
+{
+  "operationId": "post_pve_remotes_remote_qemu_vmid_migrate",
+  "usageNotes": "Triggers an in-cluster live or offline migration of a QEMU VM on the specified PDM-managed remote; the only required body param is `target` (destination node name). Returns a remote UPID string representing the async task — poll that UPID via the task-status endpoint to detect completion or failure. Use `online: true` to migrate a running VM with minimal downtime, and set `with-local-disks: true` plus `target-storage` mappings when the VM has disks on node-local storage that must follow the VM to the target node.",
+  "examples": [
+    {
+      "summary": "Online migrate a running VM (VMID 105) to node pve-node2 on remote prod-cluster, carrying its local disk to the target's local-lvm storage",
+      "path_params": {
+        "remote": "prod-cluster",
+        "vmid": 105
+      },
+      "params": {
+        "target": "pve-node2",
+        "online": true,
+        "with-local-disks": true,
+        "target-storage": ["local-lvm"],
+        "migration-type": "secure",
+        "bwlimit": 102400
+      }
+    }
+  ],
+  "destructiveReason": "Migration moves the VM's runtime state and disk data off the source node; if it fails mid-transfer the VM may be left in a degraded or locked state requiring manual recovery.",
+  "tips": [
+    "The return value is a remote UPID (min 42 chars) — treat it as an opaque task handle and poll task status; do not assume the migration is done when the POST returns.",
+    "Omitting `online` (or setting it false) requires the VM to be stopped before migration; the call will fail on a running VM unless `online: true` is passed.",
+    "Setting `migration-type: insecure` disables SSH tunnel encryption and can significantly increase throughput on isolated internal networks where latency matters.",
+    "`force: true` is needed when the VM has passthrough/local devices (e.g. PCI passthrough); without it the API will reject the request outright.",
+    "Specify `migration-network` as a CIDR (e.g. 10.0.10.0/24) to force migration traffic onto a dedicated storage/migration VLAN instead of the management interface.",
+    "The `node` param identifies the *source* node when the remote is a cluster and the VM's current node is ambiguous; omit it if PDM can infer the source automatically."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_migrate",
+    "get_pve_remotes_remote_qemu",
+    "get_pve_remotes_remote_tasks_upid_status"
+  ]
+}

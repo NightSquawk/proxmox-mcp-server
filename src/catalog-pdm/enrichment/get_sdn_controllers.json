@@ -1,0 +1,26 @@
+{
+  "operationId": "get_sdn_controllers",
+  "usageNotes": "Use this to enumerate SDN controllers (BGP, EVPN, IS-IS, Faucet) across all remotes managed by PDM, or narrow results to specific remotes and/or a controller type via query params. By default the response reflects the pending (not yet applied) configuration; pass `running: true` to see what is actually active on nodes. Results are scoped to remotes for which the caller holds `Resource.Audit` on `/resource/{remote_name}`, so a filtered response does not necessarily mean no controllers exist.",
+  "examples": [
+    {
+      "summary": "List all BGP controllers across all remotes, showing running config and any pending changes",
+      "path_params": {},
+      "params": {
+        "ty": "bgp",
+        "running": true,
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "Omitting `ty` returns all controller types in one call — useful for a full SDN inventory.",
+    "The `pending` field on each returned object (when `pending: true` is passed) shows only the attributes that differ from the running config, not the full object.",
+    "A controller with `state: 'deleted'` has been marked for removal but `pvesh apply` (or equivalent) has not run yet — it is still active.",
+    "The `remote` field on each item identifies which PDM remote the controller belongs to, which maps to `Resource.Audit` privilege scope."
+  ],
+  "relatedOperations": [
+    "get_sdn_vnets",
+    "get_sdn_zones",
+    "get_remotes"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "operationId": "get_cluster_config_qdevice",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "status",
+  "method": "GET",
+  "path": "/cluster/config/qdevice",
+  "description": "Get QDevice status",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/config/qdevice'"
+}

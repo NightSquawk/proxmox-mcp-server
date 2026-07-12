@@ -1,0 +1,59 @@
+{
+  "operationId": "delete_cluster_sdn_fabrics_node_fabric_id_node_id",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete_node",
+  "method": "DELETE",
+  "path": "/cluster/sdn/fabrics/node/{fabric_id}/{node_id}",
+  "description": "Add a node",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "fabric_id",
+      "type": "string",
+      "required": true,
+      "description": "Identifier for SDN fabrics",
+      "format": "pve-sdn-fabric-id",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]"
+    },
+    {
+      "name": "node_id",
+      "type": "string",
+      "required": true,
+      "description": "Identifier for nodes in an SDN fabric",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "and",
+      [
+        "perm",
+        "/sdn/fabrics/{fabric_id}",
+        [
+          "SDN.Allocate"
+        ]
+      ],
+      [
+        "perm",
+        "/nodes/{node_id}",
+        [
+          "Sys.Modify"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/fabrics/node/<fabric_id>/<node_id>'"
+}

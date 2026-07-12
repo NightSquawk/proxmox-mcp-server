@@ -1,0 +1,55 @@
+{
+  "operationId": "get_cluster_mapping_usb_id",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get",
+  "method": "GET",
+  "path": "/cluster/mapping/usb/{id}",
+  "description": "Get USB Mapping.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "format": "pve-configid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "perm",
+        "/mapping/usb/{id}",
+        [
+          "Mapping.Audit"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/usb/{id}",
+        [
+          "Mapping.Use"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/usb/{id}",
+        [
+          "Mapping.Modify"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/mapping/usb/<id>'"
+}

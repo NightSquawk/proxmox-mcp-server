@@ -1,0 +1,23 @@
+{
+  "operationId": "post_pbs_probe_tls",
+  "usageNotes": "Use this before adding or updating a PBS remote to verify its TLS certificate. If the host's certificate is not already trusted (e.g., it is self-signed), the API returns the certificate details so you can capture the fingerprint for use in subsequent remote-add or remote-update calls. Requires the System.Modify privilege at the root path.",
+  "examples": [
+    {
+      "summary": "Probe a self-signed PBS remote to retrieve its certificate fingerprint",
+      "path_params": {},
+      "params": {
+        "hostname": "pbs-offsite.example.com:8007"
+      }
+    }
+  ],
+  "tips": [
+    "If the certificate is already trusted by the system's CA bundle, the response body is null — a non-error empty response is the success case for trusted certs.",
+    "When the cert is untrusted, the returned fingerprint should be copied and passed as the 'fingerprint' field when registering the remote, completing the trust-on-first-use (TOFU) flow.",
+    "The hostname field accepts an optional port (e.g., host:8007); omit the port to default to PBS's standard 8007.",
+    "API tokens are supported (allowtoken: true), so a scoped token with System.Modify is sufficient — no interactive session required."
+  ],
+  "relatedOperations": [
+    "post_pbs_remotes",
+    "put_pbs_remotes_id"
+  ]
+}

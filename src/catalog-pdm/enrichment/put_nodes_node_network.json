@@ -1,0 +1,27 @@
+{
+  "operationId": "put_nodes_node_network",
+  "usageNotes": "Reloads the network configuration on a PDM-managed node by applying any pending interface changes without a full reboot; requires ifupdown2 to be installed on the target node. Returns a UPID (async task identifier) — poll the task status to confirm the reload completed successfully. The caller must hold System.Modify on /system/network/interfaces.",
+  "examples": [
+    {
+      "summary": "Reload network config on node 'pdm1' after editing an interface",
+      "path_params": {
+        "node": "pdm1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "ifupdown2 must be installed on the node; without it the call will fail with an error even though the API accepts the request.",
+    "The returned UPID can be polled via the tasks endpoint to verify the reload finished without errors before assuming connectivity is restored.",
+    "Briefly interrupts active network interfaces during the reload — avoid during maintenance windows that require uninterrupted connectivity.",
+    "Use 'localhost' as the node name only when the API call originates directly on that node."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network",
+    "get_nodes_node_network_iface",
+    "put_nodes_node_network_iface",
+    "post_nodes_node_network",
+    "delete_nodes_node_network_iface",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

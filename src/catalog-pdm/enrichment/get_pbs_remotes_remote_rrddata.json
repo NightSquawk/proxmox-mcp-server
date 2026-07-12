@@ -1,0 +1,27 @@
+{
+  "operationId": "get_pbs_remotes_remote_rrddata",
+  "usageNotes": "Use this to retrieve historical performance metrics (CPU, memory, disk, network, swap) for a PBS remote registered in PDM. The remote must already exist and be reachable; if PDM cannot contact the remote the returned array may be empty or contain gaps. Choose `cf=AVERAGE` for trend analysis and `cf=MAX` for peak/capacity planning.",
+  "examples": [
+    {
+      "summary": "Fetch last 24 hours of average stats for a remote named 'hetzner-pbs'",
+      "path_params": {
+        "remote": "hetzner-pbs"
+      },
+      "params": {
+        "cf": "AVERAGE",
+        "timeframe": "day"
+      }
+    }
+  ],
+  "tips": [
+    "All metric fields except `time` are optional — gaps appear when PDM could not poll the remote at that interval.",
+    "Disk values (disk-available, disk-total, disk-used) reflect the PBS datastore aggregate, not individual datastores.",
+    "Use `timeframe=hour` for recent incident triage; `timeframe=week` or longer for capacity planning.",
+    "The `cpu-avg1/5/15` load-average fields are raw load numbers, not percentages — divide by CPU core count to normalize."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes",
+    "get_pbs_remotes_remote",
+    "get_pbs_remotes_remote_datastores"
+  ]
+}

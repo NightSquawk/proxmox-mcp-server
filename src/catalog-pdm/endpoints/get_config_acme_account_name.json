@@ -1,0 +1,117 @@
+{
+  "operationId": "get_config_acme_account_name",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "{name}",
+  "method": "GET",
+  "path": "/config/acme/account/{name}",
+  "description": "Return existing ACME account information.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "ACME account name.",
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "ACME Account information.\n\nThis is what we return via the API.",
+    "properties": {
+      "account": {
+        "additionalProperties": true,
+        "description": "ACME Account data. This is the part of the account returned from and possibly sent to the ACME\nprovider. Some fields may be uptdated by the user via a request to the account location, others\nmay not be changed.",
+        "properties": {
+          "contact": {
+            "description": "The account's contact info.\n\nThis usually contains a `\"mailto:<email address>\"` entry but may also contain some other\ndata if the server accepts it.",
+            "items": {
+              "description": "Contact Info.",
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "externalAccountBinding": {
+            "additionalProperties": false,
+            "description": "External Account Bindings",
+            "optional": 1,
+            "properties": {
+              "payload": {
+                "description": "Payload",
+                "type": "string"
+              },
+              "protected": {
+                "description": "JOSE Header (see RFC 7515)",
+                "type": "string"
+              },
+              "signature": {
+                "description": "HMAC signature",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "onlyReturnExisting": {
+            "description": "This is only used by the client when querying an account.",
+            "type": "boolean"
+          },
+          "orders": {
+            "description": "URLs to currently pending orders.",
+            "optional": 1,
+            "type": "string"
+          },
+          "status": {
+            "description": "Status of an ACME account.",
+            "enum": [
+              "<invalid>",
+              "valid",
+              "deactivated",
+              "revoked"
+            ],
+            "type": "string"
+          },
+          "termsOfServiceAgreed": {
+            "description": "Indicated whether the user agreed to the ACME provider's terms of service.",
+            "optional": 1,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "directory": {
+        "description": "The ACME directory URL the account was created at.",
+        "type": "string"
+      },
+      "location": {
+        "description": "The account's own URL within the ACME directory.",
+        "type": "string"
+      },
+      "tos": {
+        "description": "The ToS URL, if the user agreed to one.",
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "certificates"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/acme/account/<name>'"
+}

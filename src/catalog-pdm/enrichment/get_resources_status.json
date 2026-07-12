@@ -1,0 +1,26 @@
+{
+  "operationId": "get_resources_status",
+  "usageNotes": "Use this endpoint to get a cross-remote inventory snapshot of all resource types (VMs, containers, nodes, storages, PBS datastores, SDN networks) registered in PDM. Results are served from a per-remote cache with a default max-age of 30 seconds, so resource states may lag real-time by up to that window; lower max-age for fresher data at the cost of more remote round-trips. The optional 'view' parameter filters results to a named PDM view, which must already exist under /config/views.",
+  "examples": [
+    {
+      "summary": "Fetch all resources with a tighter 10-second cache window",
+      "path_params": {},
+      "params": {
+        "max-age": 10
+      }
+    }
+  ],
+  "tips": [
+    "Each object in the 'resources' array carries a 'type' discriminator field (pve-qemu, pve-lxc, pve-node, pve-storage, pve-network, pbs-node, pbs-datastore) — filter on this to process only the resource class you need.",
+    "If a remote is unreachable, PDM returns the last cached data and populates the top-level 'error' field with a description; always check for 'error' before trusting stale resource states.",
+    "Setting max-age=0 forces a live fetch from every remote on every call — use sparingly in polling loops to avoid hammering remote APIs.",
+    "The 'view' parameter must match the pattern /^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/ — use get_config_views to enumerate valid view names before passing one here."
+  ],
+  "relatedOperations": [
+    "get_resources",
+    "get_config_views",
+    "get_config_views_id",
+    "get_pve_remotes_remote_resources",
+    "get_remotes_metric_collection_status"
+  ]
+}

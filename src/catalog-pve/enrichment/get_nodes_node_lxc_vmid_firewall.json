@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall",
+  "usageNotes": "Returns the directory index of firewall sub-resources available for a specific LXC container, useful for discovering which firewall endpoints (rules, aliases, ipsets, options, log, refs) are accessible before making targeted calls. No special privileges are required — all authenticated users can query this index. Use this as a starting point when building firewall management workflows to confirm available sub-paths before operating on them.",
+  "examples": [
+    {
+      "summary": "List firewall sub-resources for LXC container 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a navigation index only — it returns sub-resource names (e.g. 'rules', 'options', 'log', 'aliases', 'ipset', 'refs'), not actual firewall configuration data.",
+    "To retrieve or modify the container's actual firewall rules, follow up with the specific child endpoint such as get_nodes_node_lxc_vmid_firewall_rules or get_nodes_node_lxc_vmid_firewall_options.",
+    "This endpoint accepts API tokens (allowtoken: true), making it safe to use in automated scripts that discover firewall structure before reading or writing firewall config."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_rules",
+    "get_nodes_node_lxc_vmid_firewall_options",
+    "get_nodes_node_lxc_vmid_firewall_log",
+    "get_nodes_node_lxc_vmid_firewall_aliases",
+    "get_nodes_node_lxc_vmid_firewall_ipset",
+    "get_nodes_node_lxc_vmid_firewall_refs"
+  ]
+}

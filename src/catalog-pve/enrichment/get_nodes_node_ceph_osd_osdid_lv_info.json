@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_ceph_osd_osdid_lv_info",
+  "usageNotes": "Use this endpoint to inspect the LVM logical volume backing a specific Ceph OSD on a given node — useful when diagnosing OSD placement, verifying block/db/wal device layout, or auditing LV sizes after disk replacements. The `type` parameter selects which device component to inspect (block data device by default; use `db` or `wal` when those are on separate LVs). The node must be online and the OSD must exist on that node; querying a node that does not host the specified OSD will return an error.",
+  "examples": [
+    {
+      "summary": "Get block device LV info for OSD 3 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "osdid": 3
+      },
+      "params": {
+        "type": "block"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting `type` defaults to `block`, which is the primary data device — always specify `db` or `wal` explicitly if you have bluestore metadata on separate LVs.",
+    "The returned `lv_size` is in bytes; divide by 1073741824 for GiB.",
+    "Cross-reference `vg_name` and `lv_path` against `pvs`/`vgs` output on the node to confirm the underlying physical disk for the OSD.",
+    "Requires `Sys.Audit` at the root path — API tokens scoped below root will be denied."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_osd",
+    "get_nodes_node_ceph_osd_osdid_metadata",
+    "get_nodes_node_ceph_status"
+  ]
+}

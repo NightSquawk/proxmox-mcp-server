@@ -1,0 +1,177 @@
+{
+  "operationId": "get_nodes_node_lxc",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "vmlist",
+  "method": "GET",
+  "path": "/nodes/{node}/lxc",
+  "description": "LXC container index (per node).",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "cpu": {
+          "description": "Current CPU usage.",
+          "optional": 1,
+          "type": "number"
+        },
+        "cpus": {
+          "description": "Maximum usable CPUs.",
+          "optional": 1,
+          "type": "number"
+        },
+        "disk": {
+          "description": "Root disk image space-usage in bytes.",
+          "minimum": 0,
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "diskread": {
+          "description": "The amount of bytes the guest read from it's block devices since the guest was started. (Note: This info is not available for all storage types.)",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "diskwrite": {
+          "description": "The amount of bytes the guest wrote from it's block devices since the guest was started. (Note: This info is not available for all storage types.)",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "lock": {
+          "description": "The current config lock, if any.",
+          "optional": 1,
+          "type": "string"
+        },
+        "maxdisk": {
+          "description": "Root disk image size in bytes.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "maxmem": {
+          "description": "Maximum memory in bytes.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "maxswap": {
+          "description": "Maximum SWAP memory in bytes.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "mem": {
+          "description": "Currently used memory in bytes.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "name": {
+          "description": "Container name.",
+          "optional": 1,
+          "type": "string"
+        },
+        "netin": {
+          "description": "The amount of traffic in bytes that was sent to the guest over the network since it was started.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "netout": {
+          "description": "The amount of traffic in bytes that was sent from the guest over the network since it was started.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "pressurecpusome": {
+          "description": "CPU Some pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "pressureiofull": {
+          "description": "IO Full pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "pressureiosome": {
+          "description": "IO Some pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "pressurememoryfull": {
+          "description": "Memory Full pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "pressurememorysome": {
+          "description": "Memory Some pressure stall average over the last 10 seconds.",
+          "optional": 1,
+          "type": "number"
+        },
+        "status": {
+          "description": "LXC Container status.",
+          "enum": [
+            "stopped",
+            "running"
+          ],
+          "type": "string"
+        },
+        "tags": {
+          "description": "The current configured tags, if any.",
+          "optional": 1,
+          "type": "string"
+        },
+        "template": {
+          "default": 0,
+          "description": "Determines if the guest is a template.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "uptime": {
+          "description": "Uptime in seconds.",
+          "optional": 1,
+          "renderer": "duration",
+          "type": "integer"
+        },
+        "vmid": {
+          "description": "The (unique) ID of the VM.",
+          "format": "pve-vmid",
+          "maximum": 999999999,
+          "minimum": 100,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{vmid}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Only list CTs where you have VM.Audit permission on /vms/<vmid>.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc'"
+}

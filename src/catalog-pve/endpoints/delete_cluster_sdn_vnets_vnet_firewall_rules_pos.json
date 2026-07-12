@@ -1,0 +1,52 @@
+{
+  "operationId": "delete_cluster_sdn_vnets_vnet_firewall_rules_pos",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete_rule",
+  "method": "DELETE",
+  "path": "/cluster/sdn/vnets/{vnet}/firewall/rules/{pos}",
+  "description": "Delete rule.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "vnet",
+      "type": "string",
+      "required": true,
+      "description": "The SDN vnet object identifier.",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    },
+    {
+      "name": "pos",
+      "type": "integer",
+      "required": false,
+      "description": "Update rule at position <pos>.",
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    }
+  ],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "description": "Needs SDN.Allocate permissions on '/sdn/zones/<zone>/<vnet>'",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/vnets/<vnet>/firewall/rules/0'"
+}

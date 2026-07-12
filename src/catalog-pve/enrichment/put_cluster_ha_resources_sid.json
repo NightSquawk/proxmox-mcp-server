@@ -1,0 +1,34 @@
+{
+  "operationId": "put_cluster_ha_resources_sid",
+  "usageNotes": "Use this to modify an existing HA resource's configuration — changing its target state, HA group membership, restart/relocate retry limits, or failback behavior — without removing and re-adding it. Requires `Sys.Console` on `/` (root), so only cluster administrators can call it. The operation returns null synchronously; state changes (e.g. started → stopped) are enacted by the HA manager asynchronously, so poll the resource's actual state via GET after updating.",
+  "examples": [
+    {
+      "summary": "Move VM 105 into an HA group and cap restart retries, then request it start",
+      "path_params": {
+        "sid": "vm:105"
+      },
+      "params": {
+        "group": "prod-ha-group",
+        "state": "started",
+        "max_restart": 2,
+        "max_relocate": 2,
+        "failback": true,
+        "comment": "Critical web VM - high availability group with failback"
+      }
+    }
+  ],
+  "tips": [
+    "Use the `digest` parameter when scripting to guard against concurrent edits — fetch the current digest via GET first, then pass it on PUT.",
+    "Setting `state` to `ignored` tells the HA manager to leave the resource alone entirely; useful for planned maintenance without removing the resource from HA.",
+    "The `delete` param accepts a comma-separated list of config keys (e.g. `comment,group`) to revert individual fields to their defaults without touching the rest.",
+    "Changing `group` does not immediately migrate the resource; the HA manager will relocate it when it next evaluates the resource placement.",
+    "The shorthand `sid` format (e.g. `100`) resolves to `vm:100` or `ct:100` automatically; use the explicit form when the type matters for clarity."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_resources_sid",
+    "post_cluster_ha_resources",
+    "delete_cluster_ha_resources_sid",
+    "get_cluster_ha_resources",
+    "get_cluster_ha_groups"
+  ]
+}

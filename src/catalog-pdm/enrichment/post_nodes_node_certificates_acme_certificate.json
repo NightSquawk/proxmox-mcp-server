@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_certificates_acme_certificate",
+  "usageNotes": "Orders a new ACME (Let's Encrypt) certificate for the specified PDM node; the node must have an ACME account and at least one domain configured before calling this endpoint. Returns a UPID — poll the task log to confirm issuance success before assuming the certificate is live. Use the `force` flag only when you need to replace an unexpired certificate, as it will overwrite the existing cert and key immediately.",
+  "examples": [
+    {
+      "summary": "Order a new ACME certificate for a PDM node (standard, non-forced)",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {
+        "force": false
+      }
+    }
+  ],
+  "tips": [
+    "ACME account and domain(s) must be configured on the node via the PDM web UI or API before ordering.",
+    "The returned UPID is asynchronous — use a task-status endpoint to wait for completion before testing the certificate.",
+    "Let's Encrypt rate-limits failed issuance attempts per domain; avoid repeated forced renewals in a short window.",
+    "If the node hostname does not resolve publicly, HTTP-01 challenge will fail; ensure DNS or an appropriate challenge plugin is set up."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_certificates_acme_certificate",
+    "delete_nodes_node_certificates_acme_certificate",
+    "get_nodes_node_certificates_info",
+    "get_nodes_node_tasks"
+  ]
+}

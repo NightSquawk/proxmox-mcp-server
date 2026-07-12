@@ -1,0 +1,40 @@
+{
+  "operationId": "delete_cluster_firewall_groups_group",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete_security_group",
+  "method": "DELETE",
+  "path": "/cluster/firewall/groups/{group}",
+  "description": "Delete security group.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "group",
+      "type": "string",
+      "required": true,
+      "description": "Security Group name.",
+      "minLength": 2,
+      "maxLength": 18,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/firewall/groups/<group>'"
+}

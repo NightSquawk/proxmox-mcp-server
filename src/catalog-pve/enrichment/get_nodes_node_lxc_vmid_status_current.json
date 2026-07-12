@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_status_current",
+  "usageNotes": "Use this to poll the live runtime state of an LXC container, including CPU/memory usage, uptime, disk I/O counters, and network traffic since last start. Requires VM.Audit on /vms/{vmid} and the target node must be online; calling against a node that is down or fenced will return an error rather than cached data. Check the 'lock' field before issuing any lifecycle operations — a non-null lock (e.g. 'backup', 'migrate') means another operation is in progress and start/stop calls will be rejected.",
+  "examples": [
+    {
+      "summary": "Get current status of LXC container 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "CPU usage is returned as a fraction (e.g. 0.025 = 2.5%) — multiply by 100 to display as a percentage.",
+    "diskread/diskwrite are cumulative byte counters since the container last started, not rates; compute delta between two polls for throughput.",
+    "pressurecpu/pressureio/pressuremem fields (Linux PSI) are only present on kernels that support cgroup2 pressure stall information.",
+    "A 'template' value of true means the container is a template clone source and cannot be started directly.",
+    "The 'ha' object is always present but may be empty ({}) if the container is not managed by the HA manager."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_status_start",
+    "post_nodes_node_lxc_vmid_status_stop",
+    "post_nodes_node_lxc_vmid_status_shutdown",
+    "get_nodes_node_lxc_vmid_config",
+    "get_nodes_node_lxc"
+  ]
+}

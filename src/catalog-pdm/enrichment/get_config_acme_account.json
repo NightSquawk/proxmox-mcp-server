@@ -1,0 +1,23 @@
+{
+  "operationId": "get_config_acme_account",
+  "usageNotes": "Lists all ACME accounts registered on the Proxmox Datacenter Manager instance. Use this before creating or assigning an ACME account to a certificate order to confirm which named accounts are available. Requires the System.Modify privilege on the system/certificates path.",
+  "examples": [
+    {
+      "summary": "List all registered ACME accounts",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response only returns account names — fetch individual account details via the account-specific endpoint if you need contact email or directory URL.",
+    "A fresh PDM install returns an empty array until at least one ACME account is registered.",
+    "Account names follow the pattern [A-Za-z0-9_][A-Za-z0-9._-]* — useful to know when scripting lookups by name."
+  ],
+  "relatedOperations": [
+    "post_config_acme_account",
+    "get_config_acme_account_name",
+    "put_config_acme_account_name",
+    "delete_config_acme_account_name",
+    "get_config_acme_directories"
+  ]
+}

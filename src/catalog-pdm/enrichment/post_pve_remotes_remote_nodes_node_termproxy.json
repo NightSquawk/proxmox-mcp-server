@@ -1,0 +1,23 @@
+{
+  "operationId": "post_pve_remotes_remote_nodes_node_termproxy",
+  "usageNotes": "Use this to open a terminal (shell) session to a PVE node managed by PDM. The call returns a short-lived VNC/WebSocket ticket that must be used immediately to upgrade an HTTP connection to a terminal websocket — it is not an async job and returns no UPID. Requires the Sys.Console privilege on the target remote+node combination, so API tokens must be scoped accordingly.",
+  "examples": [
+    {
+      "summary": "Open a terminal session to node 'pve1' on remote 'hetzner-de'",
+      "path_params": {
+        "remote": "hetzner-de",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned port is always 0 — use the ticket value directly for the WebSocket handshake; no separate port binding is needed.",
+    "Tickets are single-use and short-lived; consume the ticket immediately after receiving it.",
+    "The node value accepts 'localhost' to target the PDM host's local PVE instance."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node",
+    "get_pve_remotes_remote_nodes"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "delete_nodes_node_qemu_vmid_firewall_rules_pos",
+  "usageNotes": "Permanently removes a single firewall rule from a VM's rule list by its zero-based position index; all rules below the deleted position shift up by one. Requires VM.Config.Network on the VM. Always read the current rule list first to confirm the correct position, and pass the digest returned by the GET to guard against concurrent edits.",
+  "examples": [
+    {
+      "summary": "Delete the second firewall rule (index 1) from VM 101 on node pve01, using a digest to prevent race conditions",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101,
+        "pos": 1
+      },
+      "params": {
+        "digest": "a3f2c1d0e9b84765"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently deletes the firewall rule at the specified position; the deletion is immediate and irreversible, and any traffic previously matched by that rule will no longer be filtered.",
+  "tips": [
+    "Position (pos) is zero-based and shifts after every deletion — re-query the rule list if deleting multiple rules in sequence.",
+    "Omitting digest is allowed but risky in multi-admin environments; fetch the current list's digest first to use optimistic locking.",
+    "The API returns null on success; a non-null error body or HTTP 4xx/5xx indicates the rule was not deleted."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "get_nodes_node_qemu_vmid_firewall_rules_pos",
+    "post_nodes_node_qemu_vmid_firewall_rules",
+    "put_nodes_node_qemu_vmid_firewall_rules_pos"
+  ]
+}

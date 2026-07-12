@@ -1,0 +1,30 @@
+{
+  "operationId": "put_config_views_id",
+  "usageNotes": "Use this to update the filter rules, layout, or include-all flag of an existing PDM view. The caller must hold Resource.Modify on the view's ACL path. Pass `digest` (obtained from a prior GET) to guard against concurrent edits overwriting each other — omit it only in non-contested automation.",
+  "examples": [
+    {
+      "summary": "Narrow a view to only include specific cluster nodes and persist a saved layout",
+      "path_params": {
+        "id": "prod-cluster"
+      },
+      "params": {
+        "include": ["type=node,remote=pve-prod"],
+        "include-all": false,
+        "layout": "{\"columns\":[\"name\",\"status\",\"cpu\",\"mem\"]}",
+        "digest": "a3f1c2d4e5b6a7f8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2"
+      }
+    }
+  ],
+  "tips": [
+    "Use the `delete` array to remove individual properties (e.g., `\"delete\": [\"exclude\"]`) rather than overwriting them with empty values.",
+    "The `layout` field is an opaque JSON string as stored by the PDM UI — capture it from a GET response to avoid format mismatches.",
+    "Setting `include-all: true` makes `include` rules additive exceptions rather than the sole whitelist; combine with `exclude` to blacklist noisy resource types.",
+    "View names are immutable after creation; to rename, create a new view and delete the old one."
+  ],
+  "relatedOperations": [
+    "get_config_views_id",
+    "post_config_views",
+    "delete_config_views_id",
+    "get_config_views"
+  ]
+}

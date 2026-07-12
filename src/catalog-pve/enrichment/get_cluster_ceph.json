@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_ceph",
+  "usageNotes": "Returns the cluster-level Ceph API index — a list of child resource names (e.g. 'config', 'status', 'osd', 'pools') available under /cluster/ceph. Use this as a discovery call to confirm which Ceph sub-resources are exposed before drilling into them. No Ceph cluster needs to be configured for this call to succeed; it returns the static index regardless.",
+  "examples": [
+    {
+      "summary": "List available Ceph cluster sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'name' values in each item correspond to child endpoints under /cluster/ceph/{name} — use them to discover valid follow-up calls.",
+    "This endpoint requires only the 'all' permission (any authenticated user or API token can call it), making it safe for read-only monitoring tokens.",
+    "Prefer node-level /nodes/{node}/ceph/* endpoints for operational Ceph management (OSD add/remove, pool create, etc.); this cluster-level index is navigation only."
+  ],
+  "relatedOperations": [
+    "get_cluster_ceph_status",
+    "get_cluster_ceph_config",
+    "get_cluster_ceph_osd",
+    "get_cluster_ceph_pools"
+  ]
+}

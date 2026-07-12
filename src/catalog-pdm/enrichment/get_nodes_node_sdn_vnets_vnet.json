@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_sdn_vnets_vnet",
+  "usageNotes": "Returns the directory index for a specific SDN VNet scoped to a given PDM node — useful as a discoverability call to confirm the VNet exists and to enumerate sub-resources available beneath it. The response type is null (an empty or minimal index object), so this endpoint is primarily a navigation/existence check rather than a data-fetch. SDN must be configured on the node and the VNet name must exactly match an existing VNet identifier.",
+  "examples": [
+    {
+      "summary": "Confirm existence and enumerate sub-resources for VNet 'vnet10' on node 'pdm01'",
+      "path_params": {
+        "node": "pdm01",
+        "vnet": "vnet10"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "VNet names in Proxmox SDN are typically short lowercase identifiers (e.g. 'vnet10', 'dmz'); use list-vnets first to get exact names.",
+    "A 404 or empty response indicates the VNet does not exist on that node or SDN is not applied — check SDN zone/subnet configuration.",
+    "This endpoint requires no special privilege beyond 'user: all', so API tokens with minimal scope can call it safely."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_vnets",
+    "get_nodes_node_sdn"
+  ]
+}

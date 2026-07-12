@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_rrddata",
+  "usageNotes": "Use this endpoint to retrieve time-series performance metrics (CPU, memory, network, disk I/O) for a specific node over a chosen timeframe. The node must be online and reachable; requests against offline nodes may return empty or stale data. The `cf` parameter controls whether data points are averaged (`AVERAGE`) or show peak values (`MAX`) — omitting it lets Proxmox choose a default.",
+  "examples": [
+    {
+      "summary": "Fetch the last hour of averaged node metrics for pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "timeframe": "hour",
+        "cf": "AVERAGE"
+      }
+    }
+  ],
+  "tips": [
+    "Use `MAX` consolidation function to surface peak spikes that would be smoothed away by AVERAGE — useful for capacity planning.",
+    "Longer timeframes (month, year, decade) return fewer data points due to RRD downsampling; granularity decreases as timeframe increases.",
+    "Requires `Sys.Audit` on `/nodes/{node}` — a read-only audit token is sufficient; no admin privilege needed.",
+    "Returns an array of objects where each object is a timestamp bucket; individual metric keys (cpu, mem, netin, netout, etc.) may be absent if not recorded for that interval."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_rrd",
+    "get_nodes_node_status",
+    "get_cluster_metrics"
+  ]
+}

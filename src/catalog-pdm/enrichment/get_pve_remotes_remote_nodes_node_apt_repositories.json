@@ -1,0 +1,23 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_apt_repositories",
+  "usageNotes": "Use this endpoint to inspect the APT repository configuration on a specific node of a PVE remote — useful for verifying that enterprise/community repos are correctly configured and no-subscription repos are present before running updates. The caller must hold Resource.Audit privilege on the remote's node system path; the target node must be online and reachable by PDM. Note that the spec declares returns as null, so consumers should treat any meaningful payload as implementation-defined.",
+  "examples": [
+    {
+      "summary": "List APT repositories on node 'pve01' of the 'hetzner-pve' remote",
+      "path_params": {
+        "remote": "hetzner-pve",
+        "node": "pve01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'node' path param accepts 'localhost' as a special value when PDM itself is a PVE node.",
+    "Cross-reference results with update-related endpoints to confirm repo hygiene before scheduling apt upgrades.",
+    "No query parameters are accepted; all inputs are path-only."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_apt_update",
+    "get_pve_remotes_remote_nodes_node_apt_changelog"
+  ]
+}

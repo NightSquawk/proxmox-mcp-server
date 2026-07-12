@@ -1,0 +1,36 @@
+{
+  "operationId": "put_pve_remotes_remote_nodes_node_firewall_options",
+  "usageNotes": "Use this to update host-level firewall settings (enable/disable, log levels, conntrack tuning, synflood protection) on a specific PVE node managed through PDM. The caller must hold Resource.Modify on the remote; supply the digest returned by the corresponding GET to prevent overwriting concurrent changes. Returns null synchronously — there is no UPID; the change takes effect immediately on the target node.",
+  "examples": [
+    {
+      "summary": "Enable the node firewall with synflood protection and warning-level inbound logging",
+      "path_params": {
+        "remote": "prod-pve01",
+        "node": "pve-htz-01"
+      },
+      "params": {
+        "enable": true,
+        "protection_synflood": true,
+        "protection_synflood_rate": 200,
+        "protection_synflood_burst": 1000,
+        "log_level_in": "warning",
+        "log_level_out": "nolog",
+        "log_level_forward": "nolog"
+      }
+    }
+  ],
+  "tips": [
+    "Always fetch the current options first (GET firewall/options) and pass the returned digest to guard against concurrent edits.",
+    "Setting enable=false disables ALL host firewall rules on that node — existing VM/CT rules are unaffected but the node itself becomes unprotected.",
+    "nftables is a tech-preview feature; do not enable it on production nodes unless you have tested compatibility with your PVE version.",
+    "Use the delete array to revert individual settings to their defaults rather than explicitly setting them — this avoids stale values persisting in the config file.",
+    "nf_conntrack_max default (262144) can be exhausted on busy hypervisors with many VMs; raise it before seeing 'table full' kernel warnings.",
+    "nf_conntrack_helpers should only list protocols actually in use; enabling unnecessary helpers (e.g., sip, pptp) widens the attack surface."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_firewall_options",
+    "get_pve_remotes_remote_nodes_node_firewall_rules",
+    "post_pve_remotes_remote_nodes_node_firewall_rules",
+    "put_pve_remotes_remote_nodes_node_firewall_rules_pos"
+  ]
+}

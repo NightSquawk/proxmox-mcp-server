@@ -1,0 +1,27 @@
+{
+  "operationId": "put_nodes_node_certificates_acme_certificate",
+  "usageNotes": "Renews the ACME (Let's Encrypt) TLS certificate on the specified node by re-running the ACME challenge against the already-configured CA and domain account. An ACME account and at least one domain must be configured on the node before calling this endpoint. By default Proxmox will refuse renewal if the certificate is more than 30 days from expiry; pass force=true to override that guard.",
+  "examples": [
+    {
+      "summary": "Force-renew the ACME certificate on node pve1 regardless of expiry window",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "force": true
+      }
+    }
+  ],
+  "tips": [
+    "The return value is a task UPID string — poll GET /nodes/{node}/tasks/{upid}/status to track completion.",
+    "Normal (non-forced) renewal is blocked when the certificate still has more than 30 days remaining; use force=true for testing or emergency re-issuance.",
+    "ACME renewal triggers an outbound HTTP/DNS challenge; ensure the node's configured challenge plugin (HTTP or DNS) is reachable before calling this endpoint.",
+    "After a successful renewal the new certificate is live immediately — the Proxmox web UI and API will use it without a service restart."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_certificates_acme_certificate",
+    "delete_nodes_node_certificates_acme_certificate",
+    "get_nodes_node_certificates_acme_account",
+    "get_nodes_node_certificates_info"
+  ]
+}

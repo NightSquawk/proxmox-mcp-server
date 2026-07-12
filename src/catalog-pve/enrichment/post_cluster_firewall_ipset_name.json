@@ -1,0 +1,29 @@
+{
+  "operationId": "post_cluster_firewall_ipset_name",
+  "usageNotes": "Adds a single IP address, CIDR block, or alias to an existing cluster-level IPSet; the IPSet must already exist (create it first with POST /cluster/firewall/ipset). Requires the Sys.Modify privilege on '/'. Set nomatch=true to invert the entry, causing firewall rules that reference this IPSet to treat matching traffic as NOT belonging to the set.",
+  "examples": [
+    {
+      "summary": "Add a private subnet to the 'trusted-mgmt' IPSet with a descriptive comment",
+      "path_params": {
+        "name": "trusted-mgmt"
+      },
+      "params": {
+        "cidr": "10.10.20.0/24",
+        "comment": "Management VLAN - internal only"
+      }
+    }
+  ],
+  "tips": [
+    "The 'cidr' field accepts plain IPs (e.g. 192.168.1.5), CIDR ranges (e.g. 10.0.0.0/8), or an IPSet alias prefixed with '+' (e.g. +dc-hosts) if the alias is already defined.",
+    "nomatch entries are displayed with '!' in the Proxmox UI and flip the match logic for that entry — useful for blacklisting a subnet inside a broader allowed range.",
+    "This endpoint returns null on success; verify the entry was added with GET /cluster/firewall/ipset/{name}.",
+    "IPSet names must start with a letter and contain only letters, digits, hyphens, and underscores (2–64 chars); validate before calling."
+  ],
+  "relatedOperations": [
+    "post_cluster_firewall_ipset",
+    "get_cluster_firewall_ipset_name",
+    "put_cluster_firewall_ipset_name_cidr",
+    "delete_cluster_firewall_ipset_name_cidr",
+    "get_cluster_firewall_ipset"
+  ]
+}

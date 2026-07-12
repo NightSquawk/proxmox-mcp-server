@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_status_start",
+  "usageNotes": "Starts a stopped or suspended LXC container on the specified node. Returns a task UPID string — poll the task status endpoint to confirm the container reached the running state before issuing dependent operations. The caller must hold VM.PowerMgmt on /vms/{vmid} and the target node must be online and have the container's rootfs storage accessible.",
+  "examples": [
+    {
+      "summary": "Start container 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned UPID can be tracked via GET /nodes/{node}/tasks/{upid}/status to detect startup errors (e.g. missing network bridge, storage offline).",
+    "Use debug: true only for troubleshooting startup failures — it floods the container log and should not be left enabled in production.",
+    "skiplock bypasses any administrative lock set on the container (e.g. backup lock); only root may use it, and doing so during an active backup can corrupt the snapshot."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_status_stop",
+    "post_nodes_node_lxc_vmid_status_shutdown",
+    "post_nodes_node_lxc_vmid_status_reboot",
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

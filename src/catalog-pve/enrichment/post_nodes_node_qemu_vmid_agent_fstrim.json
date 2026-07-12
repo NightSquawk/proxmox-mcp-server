@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_fstrim",
+  "usageNotes": "Sends an fstrim command to a running VM via the QEMU Guest Agent, which discards unused blocks on the guest's filesystems — useful after deleting large amounts of data to reclaim thin-provisioned storage on the host. The QEMU Guest Agent must be installed and running inside the VM, and the VM must be powered on. The call returns synchronously with an object wrapping the guest agent's result; there is no UPID/task to poll.",
+  "examples": [
+    {
+      "summary": "Run fstrim on a running Linux VM (VMID 201) hosted on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 201
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Guest agent must be installed (qemu-guest-agent package) and the agent service must be running before this call will succeed.",
+    "Effective only on thin-provisioned storage backends (e.g., LVM-thin, ZFS zvols, Ceph RBD); has no meaningful effect on thick-provisioned or raw disk images.",
+    "On Windows guests, ensure the VirtIO driver and guest agent are both installed; fstrim maps to the TRIM/UNMAP path.",
+    "Caller needs VM.GuestAgent.FileSystemMgmt or VM.GuestAgent.Unrestricted on /vms/{vmid} — neither of these is included in the default 'PVEVMUser' role."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent",
+    "post_nodes_node_qemu_vmid_agent_fsfreeze",
+    "post_nodes_node_qemu_vmid_agent_fsthaw",
+    "get_nodes_node_qemu_vmid_agent_fsinfo"
+  ]
+}

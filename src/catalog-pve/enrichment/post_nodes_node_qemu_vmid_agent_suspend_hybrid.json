@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_suspend_hybrid",
+  "usageNotes": "Instructs the QEMU Guest Agent to perform a hybrid suspend (suspend-to-both: writes memory state to disk as in suspend-to-disk, then suspends to RAM), combining fast resume with crash resilience. Requires the QEMU Guest Agent to be installed, running, and responsive inside the VM — the call will fail if the agent is not reachable. The caller needs either VM.PowerMgmt or VM.GuestAgent.Unrestricted on /vms/{vmid}; the response wraps the agent's raw result in a result property and is synchronous (no UPID is returned).",
+  "examples": [
+    {
+      "summary": "Hybrid-suspend VM 201 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 201
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The VM must have the QEMU Guest Agent installed and enabled in the VM hardware config (qemu-guest-agent package + agent: 1 in VM options); otherwise this call returns an error.",
+    "Hybrid suspend requires the guest OS to support it (Windows supports it natively via hybrid shutdown; Linux requires configured swap for the memory image).",
+    "This is a guest-side operation — it tells the OS to suspend itself. For hypervisor-level suspension without guest cooperation, use the node's ACPI or power management endpoints instead.",
+    "Unlike suspend-ram, power is not lost on a hybrid suspend, but the memory image on disk means the guest can recover even if power is cut after the call returns."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_agent_suspend_ram",
+    "post_nodes_node_qemu_vmid_agent_suspend_disk",
+    "post_nodes_node_qemu_vmid_agent_ping",
+    "post_nodes_node_qemu_vmid_agent_get_osinfo",
+    "post_nodes_node_qemu_vmid_status_resume"
+  ]
+}

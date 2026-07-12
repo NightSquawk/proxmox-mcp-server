@@ -1,0 +1,23 @@
+{
+  "operationId": "put_nodes_node_time",
+  "usageNotes": "Use this to set or correct the system timezone on a specific PDM node. The timezone value must be a valid IANA timezone name as listed in '/usr/share/zoneinfo/zone.tab' on the node (e.g., 'America/Los_Angeles', 'UTC'). Requires the System.Modify privilege on the node; the change is applied immediately and synchronously (returns null, not a UPID).",
+  "examples": [
+    {
+      "summary": "Set a PDM node's timezone to US Pacific time",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {
+        "timezone": "America/Los_Angeles"
+      }
+    }
+  ],
+  "tips": [
+    "Valid timezone names come from the IANA tz database; check '/usr/share/zoneinfo/zone.tab' on the node if unsure of the exact string.",
+    "This endpoint applies the change immediately — no reboot required — but services that cache the system clock offset may need a restart to pick up the new zone.",
+    "Use 'localhost' as the node value when calling this endpoint directly on the node that is running the API."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_time"
+  ]
+}

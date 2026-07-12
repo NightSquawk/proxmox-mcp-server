@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_mapping",
+  "usageNotes": "Use this as a discovery call to list the available resource-mapping types (e.g., 'dir', 'pci', 'usb') supported by the cluster. No parameters are required and no special privileges are needed — any authenticated user or API token can call it. The returned array of objects each contain a 'name' field that corresponds to a child endpoint under /cluster/mapping/{name}.",
+  "examples": [
+    {
+      "summary": "List all cluster mapping resource types",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response acts as an index — each returned 'name' value is a valid path segment for deeper mapping endpoints like /cluster/mapping/dir or /cluster/mapping/pci.",
+    "This endpoint is safe to poll repeatedly; it is read-only and has no side effects.",
+    "API tokens are accepted (allowtoken: true), making this suitable for automation scripts that enumerate available resource types before querying specific mappings."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_dir",
+    "get_cluster_mapping_pci",
+    "get_cluster_mapping_usb"
+  ]
+}

@@ -1,0 +1,33 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_firewall_ipset_name",
+  "usageNotes": "Use this to add an IP address, CIDR block, or IP alias to an existing IPSet on a VM's firewall; the IPSet must already exist before entries can be added. The `nomatch` flag inverts the entry's match logic, useful for carving out exceptions within a broader CIDR. Requires `VM.Config.Network` permission on the target VM.",
+  "examples": [
+    {
+      "summary": "Add a trusted management CIDR to an IPSet named 'mgmt-allow' on VM 105",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105,
+        "name": "mgmt-allow"
+      },
+      "params": {
+        "cidr": "10.10.1.0/24",
+        "comment": "Internal management subnet",
+        "nomatch": false
+      }
+    }
+  ],
+  "tips": [
+    "The IPSet `name` must match pattern [A-Za-z][A-Za-z0-9\\-\\_]+ — it must start with a letter and be 2–64 characters.",
+    "The `cidr` field accepts a plain IP (e.g. 192.168.1.5), a CIDR (e.g. 10.0.0.0/8), or a named alias defined in the firewall alias list.",
+    "Set `nomatch: true` to add a negation entry — useful to exclude a sub-range from a broader CIDR already in the set.",
+    "This call returns null on success; use get_nodes_node_qemu_vmid_firewall_ipset_name to verify the entry was added.",
+    "VM-level IPSets are local to that VM; cluster-level IPSets live under /cluster/firewall/ipset and must be managed separately."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_firewall_ipset",
+    "get_nodes_node_qemu_vmid_firewall_ipset",
+    "get_nodes_node_qemu_vmid_firewall_ipset_name",
+    "put_nodes_node_qemu_vmid_firewall_ipset_name_cidr",
+    "delete_nodes_node_qemu_vmid_firewall_ipset_name_cidr"
+  ]
+}

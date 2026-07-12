@@ -1,0 +1,70 @@
+{
+  "operationId": "post_cluster_bulk_action_guest_suspend",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "suspend",
+  "method": "POST",
+  "path": "/cluster/bulk-action/guest/suspend",
+  "description": "Bulk suspend all guests on the cluster.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "max-workers",
+      "type": "integer",
+      "required": false,
+      "description": "Defines the maximum number of tasks running concurrently.",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 64,
+      "typetext": "<integer> (1 - 64)"
+    },
+    {
+      "name": "maxworkers",
+      "type": "integer",
+      "required": false,
+      "description": "Defines the maximum number of tasks running concurrently. Deprecated, use 'max-workers' instead.",
+      "default": 4,
+      "minimum": 1,
+      "maximum": 64,
+      "typetext": "<integer> (1 - 64)"
+    },
+    {
+      "name": "statestorage",
+      "type": "string",
+      "required": false,
+      "description": "The storage for the VM state.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    },
+    {
+      "name": "to-disk",
+      "type": "boolean",
+      "required": false,
+      "description": "If set, suspends the guests to disk. Will be resumed on next start.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "vms",
+      "type": "array",
+      "required": false,
+      "description": "Only consider guests from this list of VMIDs.",
+      "typetext": "<array>"
+    }
+  ],
+  "returns": {
+    "description": "UPID of the worker",
+    "type": "string"
+  },
+  "permissions": {
+    "description": "The 'VM.PowerMgmt' permission is required on '/' or on '/vms/<ID>' for each ID passed via the 'vms' parameter. Additionally, you need 'VM.Config.Disk' on the '/vms/{vmid}' path and 'Datastore.AllocateSpace' for the configured state-storage(s)",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/bulk-action/guest/suspend'"
+}

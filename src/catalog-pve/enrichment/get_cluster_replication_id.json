@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_replication_id",
+  "usageNotes": "Use this to inspect the configuration of a specific replication job by its composite ID (e.g. '100-0' for VM 100, job number 0). Requires VM.Audit on the guest's /vms/<vmid> path — API tokens are supported. The response includes the digest field, which should be passed to any subsequent update call to prevent concurrent modification conflicts.",
+  "examples": [
+    {
+      "summary": "Read the configuration of replication job 0 for VM 100",
+      "path_params": {
+        "id": "100-0"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'digest' in the response is a configuration fingerprint — pass it to update/delete calls to guard against race conditions.",
+    "If 'remove_job' is set ('local' or 'full'), the job is already queued for self-deletion and may disappear after the next replication run.",
+    "A 'disable': true flag means the job exists but is not running; it will not replicate until re-enabled.",
+    "The 'source' field is internal bookkeeping used by Proxmox to detect guest migrations; do not rely on it for topology decisions."
+  ],
+  "relatedOperations": [
+    "get_cluster_replication",
+    "put_cluster_replication_id",
+    "delete_cluster_replication_id",
+    "get_nodes_node_replication_id_status"
+  ]
+}

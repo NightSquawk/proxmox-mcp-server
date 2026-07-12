@@ -1,0 +1,28 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_spiceproxy",
+  "usageNotes": "Use this to obtain a SPICE connection ticket for a running QEMU VM; the returned object (host, password, tls-port, type, proxy) is passed directly to a SPICE client such as `remote-viewer`. The VM must be in a running state on the target node, and the caller needs `VM.Console` on `/vms/{vmid}`. Optionally pass the `proxy` field to override which cluster node the SPICE client should tunnel through — defaulting to the VM's current host is usually correct for direct access, but specifying the API node address improves reliability behind NAT.",
+  "examples": [
+    {
+      "summary": "Get SPICE config for VM 105 on node pve1, using the API node as the proxy",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {
+        "proxy": "192.168.1.10"
+      }
+    }
+  ],
+  "tips": [
+    "The returned `password` is a one-time ticket valid for a short window — launch the SPICE client immediately after receiving it.",
+    "Pass the entire response object to `remote-viewer` via a .vv file or stdin; all required fields (host, tls-port, type, proxy, password) are included in the response.",
+    "Every Proxmox node runs `spiceproxy`, so any node in the cluster can serve as the proxy — pick the one closest to your client or the one you're already using for API calls.",
+    "SPICE requires the VM to have a SPICE display device configured (type: spice in the display options); VMs using VNC will not respond here.",
+    "API tokens are supported (`allowtoken: true`), so this call can be made from automation without a full user session."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_vncproxy",
+    "post_nodes_node_qemu_vmid_termproxy"
+  ]
+}

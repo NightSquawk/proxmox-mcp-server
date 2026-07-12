@@ -1,0 +1,26 @@
+{
+  "operationId": "post_subscriptions_apply_pending",
+  "usageNotes": "Use this to push all subscription pool keys that have not yet reached their assigned nodes — for example after a bulk pool edit, a new node join, or recovery from a previously failed apply. Returns a UPID when there is pending work (poll the task for completion) or null when everything is already in sync, which you can use to show an informational 'nothing to do' message instead of opening a progress dialog. Pass the current pool digest to guard against a stale browser tab submitting an apply based on a plan the operator has since changed.",
+  "examples": [
+    {
+      "summary": "Apply all pending subscription key pushes, guarded by a known pool digest",
+      "path_params": {},
+      "params": {
+        "digest": "a3f1c8e2b47d905f6e3a1c8b2d7e4f09a3f1c8e2b47d905f6e3a1c8b2d7e4f0"
+      }
+    }
+  ],
+  "tips": [
+    "When the return value is null, there is nothing pending — no task is created and no progress dialog is needed.",
+    "Failed pushes do not abort the worker; the worker attempts every pending entry and reports all failures at the end. A subsequent call retries only the entries that remain pending.",
+    "Subscription health states (Invalid, Expired) are never considered pending — re-pushing an already-delivered key will not change the vendor's validity verdict, so the operation skips those entries.",
+    "The digest parameter is optional but recommended in UI workflows: it pins the plan at the moment the user clicked Apply, so a concurrent admin edit does not silently change what gets pushed.",
+    "The worker re-reads the pool when it actually fires, so a legitimate parallel edit made between the API return and worker execution is honoured — the digest only validates the at-call-time plan."
+  ],
+  "relatedOperations": [
+    "get_subscriptions",
+    "post_subscriptions",
+    "put_subscriptions",
+    "delete_subscriptions"
+  ]
+}

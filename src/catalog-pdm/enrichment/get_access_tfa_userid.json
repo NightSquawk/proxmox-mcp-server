@@ -1,0 +1,25 @@
+{
+  "operationId": "get_access_tfa_userid",
+  "usageNotes": "Use this to list all TFA entries (TOTP, WebAuthn, YubiKey, recovery codes, U2F) registered for a specific user. Callers must either hold Access.Modify on /access/users or be the user themselves (self-lookup is permitted). Returns an empty array if the user has no TFA configured — not an error.",
+  "examples": [
+    {
+      "summary": "List all TFA entries for admin@pam",
+      "path_params": {
+        "userid": "admin@pam"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The userid must match the PDM realm format: localname@realm (e.g. kevin@pve, service-account@pam). The pattern enforces no whitespace, colons, or control characters before the @.",
+    "A disabled TFA entry (enable: false) is still returned in the list — check the enable field to determine which entries are actively enforced.",
+    "Recovery-type entries are one-time-use codes; their presence in this list does not mean any codes remain unused.",
+    "API tokens (allowtoken: true) may call this endpoint, making it suitable for automated auditing scripts."
+  ],
+  "relatedOperations": [
+    "post_access_tfa_userid",
+    "put_access_tfa_userid_id",
+    "delete_access_tfa_userid_id",
+    "get_access_users"
+  ]
+}

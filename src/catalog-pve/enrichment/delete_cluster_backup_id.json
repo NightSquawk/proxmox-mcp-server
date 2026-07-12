@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_backup_id",
+  "usageNotes": "Permanently removes a scheduled vzdump backup job definition from the cluster configuration. Requires the `Sys.Modify` privilege at the root path (`/`). This operation is synchronous and returns null — the job entry is removed immediately with no undo; any VMs or CTs that were covered by this schedule will no longer be backed up automatically.",
+  "examples": [
+    {
+      "summary": "Delete a daily backup job by its job ID",
+      "path_params": {
+        "id": "backup-695d3c8f-ab12"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the backup job definition; scheduled backups for all covered guests will cease immediately and the configuration cannot be recovered.",
+  "tips": [
+    "Retrieve the job ID first via GET /cluster/backup (list_cluster_backup) — the ID is not human-assigned and looks like a UUID-style token.",
+    "Deleting the job does NOT delete any existing backup archives already written to storage; those must be removed separately.",
+    "This call returns null on success with no confirmation step — verify the correct ID before issuing the request.",
+    "API tokens must have the `Sys.Modify` privilege granted at `/`; a token scoped only to a guest path will be denied."
+  ],
+  "relatedOperations": [
+    "list_cluster_backup",
+    "get_cluster_backup_id",
+    "create_cluster_backup",
+    "update_cluster_backup_id"
+  ]
+}

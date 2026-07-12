@@ -1,0 +1,35 @@
+{
+  "operationId": "get_cluster_acme_tos",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_tos",
+  "method": "GET",
+  "path": "/cluster/acme/tos",
+  "description": "Retrieve ACME TermsOfService URL from CA. Deprecated, please use /cluster/acme/meta.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "directory",
+      "type": "string",
+      "required": false,
+      "description": "URL of ACME CA directory endpoint.",
+      "default": "https://acme-v02.api.letsencrypt.org/directory",
+      "pattern": "^https?://.*"
+    }
+  ],
+  "returns": {
+    "description": "ACME TermsOfService URL.",
+    "optional": 1,
+    "type": "string"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/acme/tos'"
+}

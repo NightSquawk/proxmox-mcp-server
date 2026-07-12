@@ -1,0 +1,71 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_exec",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "exec",
+  "method": "POST",
+  "path": "/nodes/{node}/qemu/{vmid}/agent/exec",
+  "description": "Executes the given command in the vm via the guest-agent and returns an object with the pid.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "command",
+      "type": "array",
+      "required": true,
+      "description": "The command as a list of program + arguments.",
+      "typetext": "<array>"
+    },
+    {
+      "name": "input-data",
+      "type": "string",
+      "required": false,
+      "description": "Data to pass as 'input-data' to the guest. Usually treated as STDIN to 'command'.",
+      "maxLength": 65536,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "pid": {
+        "description": "The PID of the process started by the guest-agent.",
+        "type": "integer"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.GuestAgent.Unrestricted"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"command\":\"<command>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/agent/exec'"
+}

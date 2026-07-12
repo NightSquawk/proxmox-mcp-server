@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_sdn_vnets",
+  "usageNotes": "Use this to enumerate all SDN VNets defined in the cluster's Software-Defined Networking configuration. SDN must be enabled on the cluster and at least one zone must exist before any VNets will appear. Pass `pending=true` to inspect unapplied changes (e.g., after creating a VNet but before running `pvesh create /cluster/sdn` to apply), or `running=true` to see only what is currently active on the data plane.",
+  "examples": [
+    {
+      "summary": "List all VNets with pending changes visible",
+      "path_params": {},
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "A VNet with `state: new` or `state: changed` has been configured but not yet applied — call the SDN apply endpoint to push it to nodes.",
+    "The `tag` field means a VLAN tag for VLAN/QinQ zones and a VXLAN VNI for VXLAN/EVPN zones — the semantics differ by zone type.",
+    "Results are filtered by the caller's permissions: only VNets under zones where the token has `SDN.Audit` or `SDN.Allocate` on `/sdn/zones/<zone>/<vnet>` are returned.",
+    "Use `digest` from each returned VNet as an optimistic-lock token when submitting updates to prevent overwriting concurrent changes."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_zones",
+    "get_cluster_sdn_vnets_vnet",
+    "get_cluster_sdn_controllers",
+    "post_cluster_sdn_vnets",
+    "put_cluster_sdn"
+  ]
+}

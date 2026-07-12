@@ -1,0 +1,35 @@
+{
+  "operationId": "post_cluster_sdn_fabrics_node_fabric_id",
+  "usageNotes": "Adds a Proxmox node (or an external peer) to an existing SDN fabric. The fabric must already exist and the caller needs SDN.Allocate on /sdn/fabrics/{fabric_id} plus Sys.Modify on /nodes/{node_id}. Protocol-specific fields apply: 'wireguard' uses allowed_ips, endpoint, public_key, and role; routing protocols (ospf, openfabric, bgp) primarily use interfaces and ip/ip6. After adding nodes, apply the pending SDN configuration via PUT /cluster/sdn to push changes cluster-wide.",
+  "examples": [
+    {
+      "summary": "Add a WireGuard peer node to fabric 'wgfab1'",
+      "path_params": {
+        "fabric_id": "wgfab1"
+      },
+      "params": {
+        "node_id": "pve2",
+        "protocol": "wireguard",
+        "interfaces": ["wg0"],
+        "ip": "10.10.10.2",
+        "allowed_ips": ["10.20.0.0/24"],
+        "endpoint": "203.0.113.55:51820",
+        "role": "internal"
+      }
+    }
+  ],
+  "tips": [
+    "fabric_id must be 2–8 alphanumeric characters with optional interior hyphens; it cannot start or end with a hyphen.",
+    "For WireGuard external nodes, supply public_key — it is required for peers outside the Proxmox cluster.",
+    "Use the digest param (obtained from GET /cluster/sdn/fabrics/{fabric_id}) to guard against concurrent SDN config edits.",
+    "Returns null on success — confirm the node was added by fetching GET /cluster/sdn/fabrics/node/{fabric_id}.",
+    "Changes are staged; run PUT /cluster/sdn afterward to apply and propagate the updated configuration across all nodes."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics_node_fabric_id",
+    "put_cluster_sdn_fabrics_node_fabric_id",
+    "delete_cluster_sdn_fabrics_node_fabric_id",
+    "get_cluster_sdn_fabrics_fabric_id",
+    "put_cluster_sdn"
+  ]
+}

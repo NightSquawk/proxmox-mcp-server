@@ -1,0 +1,29 @@
+{
+  "operationId": "put_access_tfa_userid_id",
+  "usageNotes": "Use this to modify an existing TFA entry for a user — typically to toggle it enabled/disabled or update its description. A user can edit their own entries; editing another user's entries requires the User.Modify privilege. Note that `allowtoken` is false, so this call must be authenticated with a real user session or ticket, not an API token.",
+  "examples": [
+    {
+      "summary": "Disable a TOTP entry for a user (e.g. during account recovery)",
+      "path_params": {
+        "userid": "jsmith@pve",
+        "id": "totp-7f3a2b1c"
+      },
+      "params": {
+        "enable": false,
+        "description": "Authenticator app (disabled for recovery)",
+        "password": "currentpassword123"
+      }
+    }
+  ],
+  "tips": [
+    "The `password` field is the current password of the user making the request, not the target user — required when a non-admin user modifies their own TFA entry.",
+    "To find a valid TFA entry `id`, first call GET /access/tfa/{userid} to list all entries for the user.",
+    "API tokens cannot call this endpoint (`allowtoken: false`); use a user ticket obtained via POST /access/ticket."
+  ],
+  "relatedOperations": [
+    "get_access_tfa_userid",
+    "post_access_tfa_userid",
+    "delete_access_tfa_userid_id",
+    "get_access_tfa_userid_id"
+  ]
+}

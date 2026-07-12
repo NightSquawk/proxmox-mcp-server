@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_sdn_prefix_lists_id_entries_url_seq",
+  "usageNotes": "Retrieves a single entry from an SDN prefix list by its sequence number. Use this to inspect a specific IP prefix/network rule within a named prefix list before modifying or deleting it. Requires SDN.Audit privilege on the prefix list object; SDN must be configured and the prefix list must exist.",
+  "examples": [
+    {
+      "summary": "Fetch entry at sequence 10 from prefix list 'rfc1918'",
+      "path_params": {
+        "id": "rfc1918",
+        "url_seq": "10"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The url_seq value corresponds to the sequence number assigned when the prefix list entry was created — list all entries first if the sequence number is unknown.",
+    "SDN prefix lists are cluster-wide; this endpoint reads from the SDN controller configuration, not per-node state.",
+    "API tokens are supported (allowtoken: true), making this safe for read-only automation without interactive credentials."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_prefix_lists_id_entries",
+    "get_cluster_sdn_prefix_lists_id",
+    "get_cluster_sdn_prefix_lists"
+  ]
+}

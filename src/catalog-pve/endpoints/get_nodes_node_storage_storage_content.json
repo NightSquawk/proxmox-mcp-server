@@ -1,0 +1,152 @@
+{
+  "operationId": "get_nodes_node_storage_storage_content",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "index",
+  "method": "GET",
+  "path": "/nodes/{node}/storage/{storage}/content",
+  "description": "List storage content.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [
+    {
+      "name": "content",
+      "type": "string",
+      "required": false,
+      "description": "Only list content of this type.",
+      "format": "pve-storage-content",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": false,
+      "description": "Only list images for this VM",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "approximate-size": {
+          "description": "Approximate volume size in bytes. Present instead of 'size' for storages where determining the exact size has technical limitations. Will typically be an upper bound on the actual size, but the exact semantics depend on the storage plugin.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "ctime": {
+          "description": "Creation time (seconds since the UNIX Epoch).",
+          "minimum": 0,
+          "optional": 1,
+          "type": "integer"
+        },
+        "encrypted": {
+          "description": "If whole backup is encrypted, value is the fingerprint or '1'  if encrypted. Only useful for the Proxmox Backup Server storage type.",
+          "optional": 1,
+          "type": "string"
+        },
+        "format": {
+          "description": "Format identifier ('raw', 'qcow2', 'subvol', 'iso', 'tgz' ...)",
+          "type": "string"
+        },
+        "notes": {
+          "description": "Optional notes. If they contain multiple lines, only the first one is returned here.",
+          "optional": 1,
+          "type": "string"
+        },
+        "parent": {
+          "description": "Volume identifier of parent (for linked cloned).",
+          "optional": 1,
+          "type": "string"
+        },
+        "protected": {
+          "description": "Protection status. Currently only supported for backups.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "size": {
+          "description": "Volume size in bytes.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "used": {
+          "description": "Used space. Please note that most storage plugins do not report anything useful here.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "verification": {
+          "description": "Last backup verification result, only useful for PBS storages.",
+          "optional": 1,
+          "properties": {
+            "state": {
+              "description": "Last backup verification state.",
+              "type": "string"
+            },
+            "upid": {
+              "description": "Last backup verification UPID.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "vmid": {
+          "description": "Associated Owner VMID.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "volid": {
+          "description": "Volume identifier.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{volid}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage/{storage}",
+      [
+        "Datastore.Audit",
+        "Datastore.AllocateSpace"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/content'"
+}

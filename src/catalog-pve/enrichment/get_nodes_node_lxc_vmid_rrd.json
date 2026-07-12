@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_rrd",
+  "usageNotes": "Use this endpoint to fetch a prerendered RRD performance graph (returned as a PNG filename path) for a specific LXC container. The caller must specify at least one datasource (e.g., `cpu`, `mem`, `netin`, `netout`, `diskread`, `diskwrite`) and a timeframe; the node must be online and the container must exist. The response returns a `filename` pointing to the generated PNG on the Proxmox host, not the raw image bytes — use the file path to retrieve the image separately if needed.",
+  "examples": [
+    {
+      "summary": "Get a 24-hour CPU and memory usage graph for LXC container 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "ds": "cpu,mem",
+        "timeframe": "day",
+        "cf": "AVERAGE"
+      }
+    }
+  ],
+  "tips": [
+    "Common datasource names for LXC containers: cpu, mem, netin, netout, diskread, diskwrite — these match the names shown in the Proxmox web UI graphs.",
+    "The `cf` parameter defaults to AVERAGE when omitted; use MAX to see peak spikes rather than averaged values.",
+    "The returned `filename` is a server-side path to the PNG; you cannot download it directly from this endpoint — pair it with a file fetch or use rrddata endpoint if you need raw data points instead of an image.",
+    "Use `get_nodes_node_lxc_vmid_rrddata` instead if you need numeric time-series data rather than a rendered graph."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_rrddata",
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_nodes_node_qemu_vmid_rrd"
+  ]
+}

@@ -1,0 +1,143 @@
+{
+  "operationId": "post_cluster_notifications_endpoints_smtp",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "create_smtp_endpoint",
+  "method": "POST",
+  "path": "/cluster/notifications/endpoints/smtp",
+  "description": "Create a new smtp endpoint",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "author",
+      "type": "string",
+      "required": false,
+      "description": "Author of the mail. Defaults to 'Proxmox VE'.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Comment",
+      "typetext": "<string>"
+    },
+    {
+      "name": "disable",
+      "type": "boolean",
+      "required": false,
+      "description": "Disable this target",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "from-address",
+      "type": "string",
+      "required": true,
+      "description": "`From` address for the mail",
+      "typetext": "<string>"
+    },
+    {
+      "name": "mailto",
+      "type": "array",
+      "required": false,
+      "description": "List of email recipients",
+      "typetext": "<array>"
+    },
+    {
+      "name": "mailto-user",
+      "type": "array",
+      "required": false,
+      "description": "List of users",
+      "typetext": "<array>"
+    },
+    {
+      "name": "mode",
+      "type": "string",
+      "required": false,
+      "description": "Determine which encryption method shall be used for the connection.",
+      "enum": [
+        "insecure",
+        "starttls",
+        "tls"
+      ],
+      "default": "tls"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "The name of the endpoint.",
+      "format": "pve-configid",
+      "typetext": "<string>"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": false,
+      "description": "Password for SMTP authentication",
+      "typetext": "<string>"
+    },
+    {
+      "name": "port",
+      "type": "integer",
+      "required": false,
+      "description": "The port to be used. Defaults to 465 for TLS based connections, 587 for STARTTLS based connections and port 25 for insecure plain-text connections.",
+      "typetext": "<integer>"
+    },
+    {
+      "name": "server",
+      "type": "string",
+      "required": true,
+      "description": "The address of the SMTP server.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "username",
+      "type": "string",
+      "required": false,
+      "description": "Username for SMTP authentication",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "and",
+      [
+        "perm",
+        "/mapping/notifications",
+        [
+          "Mapping.Modify"
+        ]
+      ],
+      [
+        "or",
+        [
+          "perm",
+          "/",
+          [
+            "Sys.Audit",
+            "Sys.Modify"
+          ]
+        ],
+        [
+          "perm",
+          "/",
+          [
+            "Sys.AccessNetwork"
+          ]
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"from-address\":\"<from-address>\",\"name\":\"<name>\",\"server\":\"<server>\"}' 'https://PVE_HOST:8006/api2/json/cluster/notifications/endpoints/smtp'"
+}

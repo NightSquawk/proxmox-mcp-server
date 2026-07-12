@@ -1,0 +1,28 @@
+{
+  "operationId": "get_cluster_sdn_fabrics_node_fabric_id",
+  "usageNotes": "Returns the list of nodes configured within a specific SDN fabric, including per-node IP addresses, protocol-specific interface definitions, and WireGuard peer/key details. Requires SDN.Audit permission on /sdn/fabrics/{fabric_id}; nodes where you lack Sys.Audit or Sys.Modify are silently omitted. Use the 'pending' flag to inspect staged changes before an SDN apply, or 'running' to compare the active kernel/daemon state against stored config.",
+  "examples": [
+    {
+      "summary": "List all nodes in the 'wg-core' WireGuard fabric, showing only pending (unapplied) config",
+      "path_params": {
+        "fabric_id": "wg-core"
+      },
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "fabric_id must be 2–8 alphanumeric characters (hyphens allowed in the middle); leading/trailing hyphens are rejected.",
+    "The response shape varies by protocol: WireGuard nodes include 'allowed_ips', 'endpoint', 'peers', 'public_key', and 'role'; OSPF/OpenFabric nodes expose 'interfaces'; BGP nodes expose 'interfaces' with interface names only.",
+    "The 'digest' field in each node entry can be passed back on write operations to guard against concurrent modifications.",
+    "Omitting both 'pending' and 'running' returns the stored/committed configuration — the baseline before any unapplied edits."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics",
+    "get_cluster_sdn_fabrics_fabric_id",
+    "get_cluster_sdn_fabrics_node_fabric_id_node_id",
+    "put_cluster_sdn_fabrics_node_fabric_id_node_id",
+    "post_cluster_sdn"
+  ]
+}

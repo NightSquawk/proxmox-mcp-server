@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_access_users_userid_token_token_name",
+  "usageNotes": "Use this to permanently revoke an API token for a PDM user — for example, during offboarding, after a credential exposure, or when rotating tokens. The caller must either hold `Access.Modify` on `/access/users` or be the token's own user. Deletion is immediate and irreversible; any service or script using the deleted token will begin receiving 401 responses right away.",
+  "examples": [
+    {
+      "summary": "Revoke the 'automation' API token for a local admin user",
+      "path_params": {
+        "userid": "admin@pam",
+        "token-name": "automation"
+      },
+      "params": {
+        "digest": "a3f1c2e4b5d6789012345678901234567890abcdef1234567890abcdef123456"
+      }
+    }
+  ],
+  "destructiveReason": "The API token is permanently deleted; any credentials issued for it stop working immediately and cannot be restored.",
+  "tips": [
+    "Supply the optional `digest` parameter (SHA256 of the current config file) to guard against a race condition where another admin modifies the user's token list concurrently.",
+    "The `token-name` path segment is the short ID only (e.g. `automation`), not the full auth-id (`admin@pam!automation`) — do not include the `user@realm!` prefix here.",
+    "Returns null on success; a non-null HTTP error body indicates the token did not exist or the caller lacked permission."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid_token_token_name",
+    "post_access_users_userid_token_token_name",
+    "put_access_users_userid_token_token_name",
+    "get_access_users_userid"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_subscription",
+  "usageNotes": "Use this to check the Proxmox Datacenter Manager subscription status on a specific node — useful for confirming whether enterprise repository access is valid before applying updates. Accessible by all authenticated users (no elevated privilege required). The `status` field is the primary signal: `active` means the key is valid; `expired`, `invalid`, or `notfound` indicate the node will fall back to the no-subscription or community repository.",
+  "examples": [
+    {
+      "summary": "Retrieve subscription status for a PDM node named 'pdm1'",
+      "path_params": {
+        "node": "pdm1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `checktime` field is a Unix timestamp; if stale (>24h), the cached status may not reflect a recently applied key.",
+    "The `key` and `serverid` fields are only returned if the caller has permission to view them — their absence does not mean no key is set.",
+    "A status of 'notfound' is the default when no subscription key has been applied; this is expected on community installations.",
+    "Use 'localhost' as the node value when querying the node you are directly connected to."
+  ],
+  "relatedOperations": [
+    "put_nodes_node_subscription",
+    "delete_nodes_node_subscription",
+    "get_nodes_node_status"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "put_nodes_node_config",
+  "usageNotes": "Use this endpoint to update node-level settings such as the API server's TLS cipher suites, the UI default language, a notification email address, or an outbound HTTP proxy. All parameters are optional and only the fields you supply are changed; omit a field to leave it unchanged or pass it in 'delete' to revert it to the system default. Requires the System.Modify privilege on /system.",
+  "examples": [
+    {
+      "summary": "Set an outbound HTTP proxy and notification email for a node",
+      "path_params": {
+        "node": "pdm01"
+      },
+      "params": {
+        "http-proxy": "http://proxy.nightsquawk.tech:3128",
+        "email-from": "alerts@nightsquawk.tech"
+      }
+    }
+  ],
+  "tips": [
+    "Pass the 'digest' field (SHA256 of the current config) to guard against concurrent modifications — the call fails if another process modified the config between your read and write.",
+    "To revert a setting to its default, include the property name in the 'delete' array rather than leaving it blank.",
+    "TLS cipher changes take effect after the PDM API service restarts; they do not apply to already-established connections.",
+    "Use 'localhost' as the node name when calling from the node itself, but always use the actual node name when calling from a remote client to avoid ambiguity."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_config"
+  ]
+}

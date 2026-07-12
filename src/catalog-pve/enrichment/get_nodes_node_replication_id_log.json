@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_replication_id_log",
+  "usageNotes": "Use this to inspect the output of a specific replication job run on a given node — useful for diagnosing sync failures, verifying successful snapshot transfer, or auditing replication history. The caller must have VM.Audit on the replicated VM's /vms/<vmid> or Sys.Audit on /nodes/<node>. Paginate large logs with 'start' and 'limit'; each item returns line number ('n') and text ('t').",
+  "examples": [
+    {
+      "summary": "Fetch the first 50 lines of the replication log for job 101-0 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "id": "101-0"
+      },
+      "params": {
+        "start": 0,
+        "limit": 50
+      }
+    }
+  ],
+  "tips": [
+    "The job ID format is '<VMID>-<JOBNUM>' (e.g. '101-0'). VMID must be 3–9 digits starting with 1-9; JOBNUM is 1–9 digits.",
+    "If the log is empty, the job may not have run yet or the node may not be the replication source for that job.",
+    "Omit 'limit' to retrieve all available log lines in a single response; use pagination for very verbose jobs.",
+    "Replication logs are ephemeral per-run; only the most recent job execution log is available via this endpoint."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_replication",
+    "get_nodes_node_replication_id_status",
+    "post_nodes_node_replication_id_schedule_now"
+  ]
+}

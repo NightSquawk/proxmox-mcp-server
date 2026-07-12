@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_subscription",
+  "usageNotes": "Use this to retrieve the Proxmox subscription status and node health details (CPU, memory, rootfs, kernel, PVE version) for a specific node on a managed PVE remote. The caller must have Resource.Audit privilege on the target remote/node path. Note: despite the endpoint name referencing 'subscription', the response schema returns node system status fields rather than a subscription key or tier — treat the response as a combined node-status object and check additionalProperties for any subscription-specific fields.",
+  "examples": [
+    {
+      "summary": "Get subscription/status details for node 'pve1' on remote 'hetzner-prod'",
+      "path_params": {
+        "remote": "hetzner-prod",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The remote name must match the exact ID registered in PDM (2–32 chars, alphanumeric/dash/dot/underscore).",
+    "Use 'localhost' as the node value only when PDM itself is the target node.",
+    "The returns schema includes additionalProperties:true — subscription-tier fields (e.g., status, level, key) may appear beyond what is documented in the spec.",
+    "Cross-reference with the node status endpoint if you need real-time metrics; this endpoint's primary intent is the subscription record."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node",
+    "get_pve_remotes_remote_nodes",
+    "get_pve_remotes_remote"
+  ]
+}

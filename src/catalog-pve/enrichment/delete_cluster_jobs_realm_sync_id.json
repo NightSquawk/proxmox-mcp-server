@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_cluster_jobs_realm_sync_id",
+  "usageNotes": "Permanently deletes a scheduled realm-sync job by its config ID, stopping any future automatic user/group synchronization from the associated authentication realm. The operation returns null synchronously — no UPID is issued, so deletion is immediate upon a successful response. Requires Sys.Modify at the root path; this privilege is typically held only by administrators.",
+  "examples": [
+    {
+      "summary": "Delete a realm-sync job for an LDAP realm",
+      "path_params": {
+        "id": "ldap-daily-sync"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the realm-sync job definition; scheduled synchronization of users and groups from the associated realm will no longer run.",
+  "tips": [
+    "List existing realm-sync jobs first via GET /cluster/jobs/realm-sync to confirm the correct job ID before deleting.",
+    "Deleting the job does not remove users already synchronized into Proxmox — it only stops future sync runs.",
+    "The id must match the pve-configid format (alphanumeric, hyphens allowed, no spaces); an invalid id returns a 500 error, not a 404."
+  ],
+  "relatedOperations": [
+    "get_cluster_jobs_realm_sync",
+    "get_cluster_jobs_realm_sync_id",
+    "post_cluster_jobs_realm_sync",
+    "put_cluster_jobs_realm_sync_id"
+  ]
+}

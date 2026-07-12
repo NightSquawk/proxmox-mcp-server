@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_nodes_node_ceph_mgr_id",
+  "usageNotes": "Use this to permanently remove a Ceph Manager (MGR) daemon from a cluster node. The target node must be online and reachable, and the caller requires the Sys.Modify privilege at the root path. Ceph requires at least one active MGR for monitoring and orchestration — do not destroy the only running MGR unless another is already active on a different node.",
+  "examples": [
+    {
+      "summary": "Remove a Ceph MGR daemon named 'mgr0' from node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "id": "mgr0"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently destroys the specified Ceph Manager daemon; if it is the active MGR, Ceph monitoring and dashboard services will be disrupted until a standby MGR takes over or a new one is deployed.",
+  "tips": [
+    "Run 'ceph mgr stat' or check the Ceph dashboard before destroying to confirm at least one other MGR is active or in standby.",
+    "The MGR id typically matches the hostname of the node it runs on (e.g., 'pve1'), but custom ids are possible — verify with 'ceph mgr dump' before calling.",
+    "Returns a string response (not a UPID); the operation runs synchronously from the API perspective, but Ceph cluster rebalancing may take additional time to stabilize."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_ceph_mgr",
+    "get_nodes_node_ceph_mgr",
+    "get_nodes_node_ceph_status"
+  ]
+}

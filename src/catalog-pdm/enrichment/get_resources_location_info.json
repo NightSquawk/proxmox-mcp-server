@@ -1,0 +1,24 @@
+{
+  "operationId": "get_resources_location_info",
+  "usageNotes": "Use this endpoint to retrieve geographic or datacenter location metadata for resources across all remotes, or scoped to a named view. No special privileges are required — any authenticated user can call it. If a remote is temporarily unreachable, PDM will fall back to cached data up to `max-age` seconds old (default 86400 = 24 hours), so results may be stale for offline remotes.",
+  "examples": [
+    {
+      "summary": "Get location info scoped to a specific view, with a 1-hour cache tolerance",
+      "path_params": {},
+      "params": {
+        "view": "eu-cluster",
+        "max-age": 3600
+      }
+    }
+  ],
+  "tips": [
+    "Omitting `view` returns location info across all remotes known to PDM — useful for a global inventory sweep.",
+    "Set `max-age=0` to force a live fetch from all remotes instead of accepting any cached data; expect higher latency.",
+    "Cached data is always returned when a remote is unreachable, regardless of `max-age` — the param only controls staleness tolerance for reachable remotes."
+  ],
+  "relatedOperations": [
+    "get_resources",
+    "get_remotes",
+    "get_resources_remote"
+  ]
+}

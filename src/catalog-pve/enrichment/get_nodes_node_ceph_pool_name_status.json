@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_ceph_pool_name_status",
+  "usageNotes": "Use this to inspect the current configuration and health of a named Ceph pool on a specific cluster node; the queried node must be online and running Ceph services. Pass verbose=true to include live usage and I/O statistics in the response — omitting it returns configuration fields only. Requires either Sys.Audit or Datastore.Audit at the root path.",
+  "examples": [
+    {
+      "summary": "Get full status with statistics for the 'vm-storage' pool",
+      "path_params": {
+        "node": "pve1",
+        "name": "vm-storage"
+      },
+      "params": {
+        "verbose": true
+      }
+    }
+  ],
+  "tips": [
+    "The 'statistics' object in the response is only present when verbose=1 is requested; omitting verbose saves response size when you only need pool configuration.",
+    "Check 'nodelete', 'nopgchange', and 'nosizechange' flags before attempting pool modification operations — they indicate Ceph-level locks that will cause write operations to fail.",
+    "The 'autoscale_status' object shape varies across Ceph releases; treat it as opaque unless you know the exact cluster version.",
+    "Any cluster node running Ceph MON can serve this request; you do not need to query the node that owns the pool's primary OSDs."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_pools",
+    "get_nodes_node_ceph_status",
+    "put_nodes_node_ceph_pool_name",
+    "delete_nodes_node_ceph_pool_name"
+  ]
+}

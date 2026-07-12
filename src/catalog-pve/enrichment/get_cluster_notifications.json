@@ -1,0 +1,20 @@
+{
+  "operationId": "get_cluster_notifications",
+  "usageNotes": "This is a directory-index endpoint that returns the list of child API resources under /cluster/notifications (e.g., endpoints, matchers, targets). Call it to discover which notification sub-resources are available before navigating to a specific child endpoint. No parameters are required and no special privileges are needed — any authenticated user or API token can call it.",
+  "examples": [
+    {
+      "summary": "List all notification sub-resource endpoints on the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned objects contain a 'name' property that maps to the child endpoint path segment (e.g., 'endpoints', 'matchers', 'targets').",
+    "Use this as an entry point to traverse the notifications API tree — follow child links to manage notification targets or matchers."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints",
+    "get_cluster_notifications_matchers",
+    "get_cluster_notifications_targets"
+  ]
+}

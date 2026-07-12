@@ -1,0 +1,29 @@
+{
+  "operationId": "delete_nodes_node_lxc_vmid_firewall_rules_pos",
+  "usageNotes": "Permanently deletes a single firewall rule from an LXC container's rule list by its zero-based position index; remaining rules shift up to fill the gap, so always verify current positions with the list endpoint before deleting. Requires VM.Config.Network on the container. Pass the current config digest to guard against concurrent modifications overwriting each other.",
+  "examples": [
+    {
+      "summary": "Delete the second firewall rule (index 1) on container 112 hosted on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 112,
+        "pos": 1
+      },
+      "params": {
+        "digest": "a3f1c2b4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the firewall rule at the specified position; the deletion is immediate with no undo, and remaining rules shift index positions.",
+  "tips": [
+    "Rule positions are zero-based and shift after any deletion — always re-fetch the rule list before deleting to confirm the correct pos value.",
+    "The digest parameter is strongly recommended in automated or concurrent environments to prevent race conditions with other clients modifying the ruleset simultaneously.",
+    "Returns null on success; a non-null error response indicates the rule was not deleted."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_rules",
+    "get_nodes_node_lxc_vmid_firewall_rules_pos",
+    "put_nodes_node_lxc_vmid_firewall_rules_pos",
+    "post_nodes_node_lxc_vmid_firewall_rules"
+  ]
+}

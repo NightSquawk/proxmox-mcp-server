@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_ceph_cfg",
+  "usageNotes": "Returns the directory index of Ceph configuration sub-resources available under a given node (e.g., raw config, database, keyring). Use this as a discovery step before calling specific Ceph cfg child endpoints. The node must be reachable and have the Ceph packages installed; the endpoint is accessible to all authenticated users with no additional privilege required.",
+  "examples": [
+    {
+      "summary": "List available Ceph config sub-resources on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a link list — each object's 'name' field corresponds to a child path segment (e.g., 'raw', 'db', 'keyring') that can be appended to this path for further queries.",
+    "If the node does not have Ceph installed, this endpoint may return an empty array or an error; verify Ceph is initialized on the node first.",
+    "This is a read-only directory index — use it to enumerate what Ceph cfg sub-endpoints exist before constructing downstream calls."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_cfg_raw",
+    "get_nodes_node_ceph_cfg_db",
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph"
+  ]
+}

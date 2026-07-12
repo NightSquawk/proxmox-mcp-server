@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_sdn_vnets_vnet_firewall_rules_pos",
+  "usageNotes": "Retrieves a single firewall rule for an SDN vnet by its zero-based position in the ruleset. Requires SDN.Audit or SDN.Allocate on the vnet's zone path; SDN must be enabled and the vnet must exist. Use this to inspect or verify a specific rule before modifying or deleting it — rule position is order-sensitive, so always confirm the pos index with the list endpoint first.",
+  "examples": [
+    {
+      "summary": "Fetch rule at position 0 for vnet 'prodvn1'",
+      "path_params": {
+        "vnet": "prodvn1",
+        "pos": 0
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Rule positions are zero-based and shift when rules are inserted or deleted above them — re-query the list after any mutation to confirm current positions.",
+    "The 'enable' field is an integer (1 = enabled, 0 = disabled), not a boolean.",
+    "If 'ipversion' is absent in the response, it was auto-derived from source/dest and may not have been explicitly set."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_firewall_rules",
+    "put_cluster_sdn_vnets_vnet_firewall_rules_pos",
+    "delete_cluster_sdn_vnets_vnet_firewall_rules_pos",
+    "post_cluster_sdn_vnets_vnet_firewall_rules"
+  ]
+}

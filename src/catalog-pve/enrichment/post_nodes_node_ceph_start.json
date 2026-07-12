@@ -1,0 +1,25 @@
+{
+  "operationId": "post_nodes_node_ceph_start",
+  "usageNotes": "Use this endpoint to start Ceph services on a specific cluster node — either all services at once (default `ceph.target`) or a single named service such as a monitor, OSD, MDS, or manager. The calling principal requires `Sys.Modify` on `/`. Returns a task UPID string; poll the task endpoint to confirm the service reaches a running state before proceeding with dependent operations.",
+  "examples": [
+    {
+      "summary": "Start all Ceph services on node pve1 (default target)",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Omitting the `service` parameter starts the `ceph.target` systemd unit, which brings up all Ceph daemons on the node in dependency order — safest for a full node restart.",
+    "To start only a specific OSD (e.g., osd.2), set service to `osd.2`; use `mon.<id>`, `mds.<id>`, or `mgr.<id>` for other daemon types.",
+    "The returned string is a UPID; use get_nodes_node_tasks_upid_status to confirm the service started successfully before running workloads.",
+    "The node must be online and reachable by the Proxmox API; if the node is unreachable, the call will fail before a task is even queued."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_ceph_stop",
+    "post_nodes_node_ceph_restart",
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

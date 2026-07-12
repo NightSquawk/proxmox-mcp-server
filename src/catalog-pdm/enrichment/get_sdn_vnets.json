@@ -1,0 +1,26 @@
+{
+  "operationId": "get_sdn_vnets",
+  "usageNotes": "Use this to inventory all SDN VNets across one or more PVE remotes managed by PDM. By default the response reflects the running configuration; pass `running: false` (or omit it) to see the pending/saved configuration, or `pending: true` to surface attributes that have been changed but not yet applied. Results are silently scoped to remotes where the caller holds `Resource.Audit` on `/resource/{remote_name}`, so a partial list is normal when the token lacks broad permissions.",
+  "examples": [
+    {
+      "summary": "List all VNets across two specific remotes, showing any unapplied pending changes",
+      "path_params": {},
+      "params": {
+        "remotes": ["pve-hetzner", "pve-ovh"],
+        "pending": true,
+        "running": false
+      }
+    }
+  ],
+  "tips": [
+    "A VNet whose `state` field is `new` or `changed` has been saved to the SDN configuration but not yet applied — run `apply_sdn_config` on the relevant remote to push it to the dataplane.",
+    "The `tag` field carries a VLAN tag (1–4094 range typical) for VLAN/QinQ zones but a VXLAN VNI (up to 16777215) for VXLAN/EVPN zones — interpret it relative to the parent zone type.",
+    "When `isolate-ports` is true, VMs on the same VNet cannot talk to each other at L2; useful for tenant isolation without separate zones.",
+    "The `remotes` filter accepts an array of remote IDs; omit it to query all remotes the caller can see."
+  ],
+  "relatedOperations": [
+    "get_sdn_zones",
+    "get_sdn_controllers",
+    "get_sdn_subnets"
+  ]
+}

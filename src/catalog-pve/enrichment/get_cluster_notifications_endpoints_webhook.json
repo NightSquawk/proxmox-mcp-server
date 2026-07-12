@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_notifications_endpoints_webhook",
+  "usageNotes": "Returns all webhook notification endpoints configured cluster-wide. Use this to audit outbound HTTP targets before creating or modifying notification matchers. Requires 'Mapping.Audit' on '/mapping/notifications'; header and secret values are base64-encoded in the response, so decode before display.",
+  "examples": [
+    {
+      "summary": "List all webhook endpoints to audit configured targets",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'secret' field values are returned base64-encoded; decode with atob() or base64 -d before comparing.",
+    "Check the 'disable' field — disabled endpoints silently drop notifications even when referenced by an active matcher.",
+    "The 'origin' field distinguishes user-created endpoints from built-in or modified-builtin ones; built-in endpoints cannot be deleted.",
+    "Use the 'name' field values here as references when calling get/update/delete operations on individual webhook endpoints."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_webhook_name",
+    "create_cluster_notifications_endpoints_webhook",
+    "update_cluster_notifications_endpoints_webhook_name",
+    "delete_cluster_notifications_endpoints_webhook_name",
+    "get_cluster_notifications_matchers"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "operationId": "get_cluster_firewall_macros",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_macros",
+  "method": "GET",
+  "path": "/cluster/firewall/macros",
+  "description": "List available macros",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "descr": {
+          "description": "More verbose description (if available).",
+          "type": "string"
+        },
+        "macro": {
+          "description": "Macro name.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/firewall/macros'"
+}

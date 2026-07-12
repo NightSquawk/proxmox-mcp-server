@@ -1,0 +1,291 @@
+{
+  "operationId": "post_nodes_node_network",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "create_network",
+  "method": "POST",
+  "path": "/nodes/{node}/network",
+  "description": "Create network device configuration",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "address",
+      "type": "string",
+      "required": false,
+      "description": "IP address.",
+      "format": "ipv4",
+      "typetext": "<string>"
+    },
+    {
+      "name": "address6",
+      "type": "string",
+      "required": false,
+      "description": "IP address.",
+      "format": "ipv6",
+      "typetext": "<string>"
+    },
+    {
+      "name": "autostart",
+      "type": "boolean",
+      "required": false,
+      "description": "Automatically start interface on boot.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "bond-primary",
+      "type": "string",
+      "required": false,
+      "description": "Specify the primary interface for active-backup bond.",
+      "format": "pve-iface",
+      "typetext": "<string>"
+    },
+    {
+      "name": "bond_mode",
+      "type": "string",
+      "required": false,
+      "description": "Bonding mode.",
+      "enum": [
+        "balance-rr",
+        "active-backup",
+        "balance-xor",
+        "broadcast",
+        "802.3ad",
+        "balance-tlb",
+        "balance-alb",
+        "balance-slb",
+        "lacp-balance-slb",
+        "lacp-balance-tcp"
+      ]
+    },
+    {
+      "name": "bond_xmit_hash_policy",
+      "type": "string",
+      "required": false,
+      "description": "Selects the transmit hash policy to use for slave selection in balance-xor and 802.3ad modes.",
+      "enum": [
+        "layer2",
+        "layer2+3",
+        "layer3+4"
+      ]
+    },
+    {
+      "name": "bridge_ports",
+      "type": "string",
+      "required": false,
+      "description": "Specify the interfaces you want to add to your bridge.",
+      "format": "pve-iface-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "bridge_vids",
+      "type": "string",
+      "required": false,
+      "description": "Specify the allowed VLANs. For example: '2 4 100-200'. Only used if the bridge is VLAN aware.",
+      "format": "pve-vlan-id-or-range-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "bridge_vlan_aware",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable bridge vlan support.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "cidr",
+      "type": "string",
+      "required": false,
+      "description": "IPv4 CIDR.",
+      "format": "CIDRv4",
+      "typetext": "<string>"
+    },
+    {
+      "name": "cidr6",
+      "type": "string",
+      "required": false,
+      "description": "IPv6 CIDR.",
+      "format": "CIDRv6",
+      "typetext": "<string>"
+    },
+    {
+      "name": "comments",
+      "type": "string",
+      "required": false,
+      "description": "Comments",
+      "typetext": "<string>"
+    },
+    {
+      "name": "comments6",
+      "type": "string",
+      "required": false,
+      "description": "Comments",
+      "typetext": "<string>"
+    },
+    {
+      "name": "gateway",
+      "type": "string",
+      "required": false,
+      "description": "Default gateway address.",
+      "format": "ipv4",
+      "typetext": "<string>"
+    },
+    {
+      "name": "gateway6",
+      "type": "string",
+      "required": false,
+      "description": "Default ipv6 gateway address.",
+      "format": "ipv6",
+      "typetext": "<string>"
+    },
+    {
+      "name": "iface",
+      "type": "string",
+      "required": true,
+      "description": "Network interface name.",
+      "format": "pve-iface",
+      "minLength": 2,
+      "maxLength": 20,
+      "typetext": "<string>"
+    },
+    {
+      "name": "mtu",
+      "type": "integer",
+      "required": false,
+      "description": "MTU.",
+      "minimum": 1280,
+      "maximum": 65520,
+      "typetext": "<integer> (1280 - 65520)"
+    },
+    {
+      "name": "netmask",
+      "type": "string",
+      "required": false,
+      "description": "Network mask.",
+      "format": "ipv4mask",
+      "typetext": "<string>"
+    },
+    {
+      "name": "netmask6",
+      "type": "integer",
+      "required": false,
+      "description": "Network mask.",
+      "minimum": 0,
+      "maximum": 128,
+      "typetext": "<integer> (0 - 128)"
+    },
+    {
+      "name": "ovs_bonds",
+      "type": "string",
+      "required": false,
+      "description": "Specify the interfaces used by the bonding device.",
+      "format": "pve-iface-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "ovs_bridge",
+      "type": "string",
+      "required": false,
+      "description": "The OVS bridge associated with a OVS port. This is required when you create an OVS port.",
+      "format": "pve-iface",
+      "typetext": "<string>"
+    },
+    {
+      "name": "ovs_options",
+      "type": "string",
+      "required": false,
+      "description": "OVS interface options.",
+      "maxLength": 1024,
+      "typetext": "<string>"
+    },
+    {
+      "name": "ovs_ports",
+      "type": "string",
+      "required": false,
+      "description": "Specify the interfaces you want to add to your bridge.",
+      "format": "pve-iface-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "ovs_tag",
+      "type": "integer",
+      "required": false,
+      "description": "Specify a VLan tag (used by OVSPort, OVSIntPort, OVSBond)",
+      "minimum": 1,
+      "maximum": 4094,
+      "typetext": "<integer> (1 - 4094)"
+    },
+    {
+      "name": "slaves",
+      "type": "string",
+      "required": false,
+      "description": "Specify the interfaces used by the bonding device.",
+      "format": "pve-iface-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "description": "Network interface type",
+      "enum": [
+        "bridge",
+        "bond",
+        "eth",
+        "alias",
+        "vlan",
+        "fabric",
+        "OVSBridge",
+        "OVSBond",
+        "OVSPort",
+        "OVSIntPort",
+        "vnet",
+        "unknown"
+      ]
+    },
+    {
+      "name": "vlan-id",
+      "type": "integer",
+      "required": false,
+      "description": "vlan-id for a custom named vlan interface (ifupdown2 only).",
+      "minimum": 1,
+      "maximum": 4094,
+      "typetext": "<integer> (1 - 4094)"
+    },
+    {
+      "name": "vlan-raw-device",
+      "type": "string",
+      "required": false,
+      "description": "Specify the raw interface for the vlan interface.",
+      "format": "pve-iface",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"iface\":\"<iface>\",\"type\":\"bridge\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/network'"
+}

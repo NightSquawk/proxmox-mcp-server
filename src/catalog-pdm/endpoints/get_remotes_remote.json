@@ -1,0 +1,73 @@
+{
+  "operationId": "get_remotes_remote",
+  "surface": "pdm",
+  "resource": "remotes",
+  "category": "Remotes",
+  "name": "remote",
+  "method": "GET",
+  "path": "/remotes/remote",
+  "description": "List all the remotes this instance is managing.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "The list of configured remotes.",
+    "items": {
+      "additionalProperties": false,
+      "description": "The information required to connect to a remote instance.",
+      "properties": {
+        "authid": {
+          "description": "Authentication ID",
+          "maxLength": 64,
+          "minLength": 3,
+          "pattern": "/^(?:(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)|(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)!(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))$/",
+          "type": "string"
+        },
+        "id": {
+          "description": "Remote ID.",
+          "maxLength": 32,
+          "minLength": 2,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "nodes": {
+          "description": "A list of cluster node addresses.",
+          "items": {
+            "description": "A cluster node IP or hostname.",
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "token": {
+          "description": "The access token's secret.",
+          "type": "string"
+        },
+        "type": {
+          "default": "pve",
+          "description": "The type of a remote entry.",
+          "enum": [
+            "pve",
+            "pbs"
+          ],
+          "type": "string"
+        },
+        "web-url": {
+          "description": "Configuration for the Web UI URL link generation.",
+          "optional": 1,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Returns the resources the user has access to.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/remotes/remote'"
+}

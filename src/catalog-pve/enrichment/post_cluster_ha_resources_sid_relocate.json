@@ -1,0 +1,27 @@
+{
+  "operationId": "post_cluster_ha_resources_sid_relocate",
+  "usageNotes": "Use this to manually force an HA-managed VM or container to run on a specific node — for example, before maintenance or to rebalance load. The resource is stopped on its current node and restarted on the target node via the HA manager, so the target node must be online and a member of the HA cluster. The response is synchronous and reports affinity side-effects (co-migrated or blocking resources) rather than a UPID; actual migration is driven by the HA manager daemon after the request is accepted.",
+  "examples": [
+    {
+      "summary": "Relocate VM 105 to node pve2",
+      "path_params": {
+        "sid": "vm:105"
+      },
+      "params": {
+        "node": "pve2"
+      }
+    }
+  ],
+  "tips": [
+    "If the response includes 'blocking-resources', the relocation will not proceed until those affinity conflicts are resolved — check node-affinity and resource-affinity rules on the blocking SIDs.",
+    "Resources listed in 'comigrated-resources' will be moved to the same target node automatically due to positive affinity rules — verify this is acceptable before issuing the request.",
+    "The HA manager must be in the 'enabled' state for relocation to take effect; if HA is in maintenance or frozen mode, the request is accepted but the move will be deferred.",
+    "The shorthand SID format (e.g. '105' instead of 'vm:105') is accepted for VMs and containers."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_resources_sid",
+    "post_cluster_ha_resources_sid_migrate",
+    "get_cluster_ha_status_current",
+    "get_nodes_node_status"
+  ]
+}

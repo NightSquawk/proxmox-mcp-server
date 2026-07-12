@@ -1,0 +1,32 @@
+{
+  "operationId": "post_access_tfa_userid",
+  "usageNotes": "Use this to enroll a new TFA credential (TOTP app, WebAuthn/FIDO2 key, Yubico OTP, U2F, or recovery codes) for a specific user. A user may manage their own TFA entries; an admin with User.Modify can manage entries for others. Note that this endpoint does not accept API tokens (allowtoken: false) — callers must authenticate with a full user session ticket. For WebAuthn and U2F types, registration is a two-step flow: the first call returns a challenge, and a second call must supply the signed challenge response in the 'value' field.",
+  "examples": [
+    {
+      "summary": "Enroll a TOTP authenticator app for a local user",
+      "path_params": {
+        "userid": "jsmith@pve"
+      },
+      "params": {
+        "type": "totp",
+        "totp": "otpauth://totp/Proxmox:jsmith@pve?secret=JBSWY3DPEHPK3PXP&issuer=Proxmox&algorithm=SHA1&digits=6&period=30",
+        "value": "847291",
+        "description": "Authy phone app",
+        "password": "currentUserPassword"
+      }
+    }
+  ],
+  "tips": [
+    "Recovery codes (type='recovery') are returned only once in the response 'recovery' array — display them to the user immediately and store them securely; they cannot be retrieved again.",
+    "The 'password' field is required when a non-admin user changes their own TFA, enforcing re-authentication before modifying security settings.",
+    "For TOTP enrollment, generate the URI with a library or authenticator app, then pass the current 6-digit code as 'value' to verify the secret is correct before saving.",
+    "WebAuthn must be configured at the datacenter level (datacenter.cfg) before webauthn entries can be added.",
+    "U2F support is deprecated in newer Proxmox versions; prefer webauthn for new hardware key enrollments."
+  ],
+  "relatedOperations": [
+    "get_access_tfa_userid",
+    "put_access_tfa_userid_id",
+    "delete_access_tfa_userid_id",
+    "get_access_tfa"
+  ]
+}

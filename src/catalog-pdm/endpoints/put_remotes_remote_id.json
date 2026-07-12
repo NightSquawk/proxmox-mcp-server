@@ -1,0 +1,84 @@
+{
+  "operationId": "put_remotes_remote_id",
+  "surface": "pdm",
+  "resource": "remotes",
+  "category": "Remotes",
+  "name": "{id}",
+  "method": "PUT",
+  "path": "/remotes/remote/{id}",
+  "description": "List all the remotes this instance is managing.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "authid",
+      "type": "string",
+      "required": false,
+      "description": "Authentication ID",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)|(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)!(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))$/"
+    },
+    {
+      "name": "delete",
+      "type": "array",
+      "required": false,
+      "description": "List of properties to delete."
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    },
+    {
+      "name": "nodes",
+      "type": "array",
+      "required": false,
+      "description": "A list of cluster node addresses."
+    },
+    {
+      "name": "token",
+      "type": "string",
+      "required": false,
+      "description": "The access token's secret."
+    },
+    {
+      "name": "web-url",
+      "type": "string",
+      "required": false,
+      "description": "Configuration for the Web UI URL link generation."
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{id}"
+      ],
+      "privs": [
+        "Resource.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/remotes/remote/<id>'"
+}

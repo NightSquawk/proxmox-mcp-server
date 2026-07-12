@@ -1,0 +1,173 @@
+{
+  "operationId": "put_pve_remotes_remote_lxc_vmid_firewall_options",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "options",
+  "method": "PUT",
+  "path": "/pve/remotes/{remote}/lxc/{vmid}/firewall/options",
+  "description": "Update LXC firewall options",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "A guest ID",
+      "minimum": 1
+    }
+  ],
+  "params": [
+    {
+      "name": "delete",
+      "type": "array",
+      "required": false,
+      "description": "A list of settings you want to delete."
+    },
+    {
+      "name": "dhcp",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable DHCP.",
+      "default": false
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest.\nThis can be used to prevent concurrent modifications.",
+      "maxLength": 64
+    },
+    {
+      "name": "enable",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable/disable firewall rules.",
+      "default": false
+    },
+    {
+      "name": "ipfilter",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable default IP filters. This is equivalent to adding an empty\nipfilter-net<id> ipset for every interface. Such ipsets implicitly\ncontain sane default restrictions such as restricting IPv6 link local\naddresses to the one derived from the interface's MAC address. For\ncontainers the configured IP addresses will be implicitly added.",
+      "default": false
+    },
+    {
+      "name": "log_level_in",
+      "type": "string",
+      "required": false,
+      "description": "Firewall log levels.",
+      "enum": [
+        "emerg",
+        "alert",
+        "crit",
+        "err",
+        "warning",
+        "notice",
+        "info",
+        "debug",
+        "nolog"
+      ],
+      "default": "nolog"
+    },
+    {
+      "name": "log_level_out",
+      "type": "string",
+      "required": false,
+      "description": "Firewall log levels.",
+      "enum": [
+        "emerg",
+        "alert",
+        "crit",
+        "err",
+        "warning",
+        "notice",
+        "info",
+        "debug",
+        "nolog"
+      ],
+      "default": "nolog"
+    },
+    {
+      "name": "macfilter",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable/disable MAC address filter.",
+      "default": true
+    },
+    {
+      "name": "ndp",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable NDP (Neighbor Discovery Protocol).",
+      "default": true
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": false,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "policy_in",
+      "type": "string",
+      "required": false,
+      "description": "Firewall IO policies.",
+      "enum": [
+        "ACCEPT",
+        "DROP",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "policy_out",
+      "type": "string",
+      "required": false,
+      "description": "Firewall IO policies.",
+      "enum": [
+        "ACCEPT",
+        "DROP",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "radv",
+      "type": "boolean",
+      "required": false,
+      "description": "Allow sending Router Advertisement.",
+      "default": false
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "guest",
+        "{vmid}"
+      ],
+      "privs": [
+        "Resource.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/lxc/0/firewall/options'"
+}

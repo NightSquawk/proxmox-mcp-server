@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_ceph_mds",
+  "usageNotes": "Use this to list all Ceph MDS (Metadata Server) daemons visible from a given PVE node, including their state, rank, CephFS binding, and whether a local systemd unit is configured. Requires Sys.Audit or Datastore.Audit on the root path. Only meaningful when Ceph is deployed on the cluster; nodes with no Ceph config will return an empty array.",
+  "examples": [
+    {
+      "summary": "List MDS daemons from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A rank of -1 and no fs_name indicates a standby MDS not currently serving any CephFS.",
+    "Check the 'service' field to confirm whether the MDS systemd unit is enabled locally on that node — absence means it exists only in Ceph's cluster map.",
+    "standby_replay: true is a hot-standby (mirrors active MDS journal) and enables faster failover.",
+    "state values like 'stopped' or 'unknown' mean the daemon is configured locally but the cluster does not see it as active — check the ceph-mds@<name> systemd unit on the host."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_ceph_mds_name",
+    "delete_nodes_node_ceph_mds_name",
+    "get_nodes_node_ceph_fs",
+    "get_nodes_node_ceph_status"
+  ]
+}

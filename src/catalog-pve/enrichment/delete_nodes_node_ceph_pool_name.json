@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_ceph_pool_name",
+  "usageNotes": "Permanently destroys a Ceph pool and all data it contains; requires `Sys.Modify` at the root level. By default the pool will not be deleted if it is still in use — pass `force: true` to override this guard. The call returns a task UPID string, so poll the task endpoint to confirm completion before assuming the pool is gone.",
+  "examples": [
+    {
+      "summary": "Remove an unused replicated pool and its associated Proxmox storage entry",
+      "path_params": {
+        "node": "pve1",
+        "name": "vm-data"
+      },
+      "params": {
+        "remove_storages": true,
+        "remove_ecprofile": false
+      }
+    }
+  ],
+  "destructiveReason": "All objects (VM disks, RBD images, etc.) stored in the pool are permanently erased from the Ceph cluster with no recovery path.",
+  "tips": [
+    "The return value is a UPID task string — follow up with get_nodes_node_tasks_upid_status to verify the pool was actually removed.",
+    "If `remove_storages` is false (the default), any pveceph-managed Proxmox storage entries pointing at this pool will become broken and must be removed manually from datacenter storage config.",
+    "For erasure-coded pools, `remove_ecprofile` defaults to true; set it to false only if the EC profile is shared with another pool.",
+    "Ensure no running VMs or containers have disks mapped to this pool before issuing the delete, even with `force: true`."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_pool",
+    "get_nodes_node_ceph_pool_name_status",
+    "post_nodes_node_ceph_pool",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

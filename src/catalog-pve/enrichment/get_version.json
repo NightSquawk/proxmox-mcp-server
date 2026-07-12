@@ -1,0 +1,22 @@
+{
+  "operationId": "get_version",
+  "usageNotes": "Use this as a lightweight connectivity and version check — it requires no privileges beyond being authenticated (permission 'user: all'), so it is safe to call at startup or in health checks. The response also includes the datacenter's default console viewer setting, which can inform how console links are presented. No node parameter is needed; this reflects the API node you are connected to.",
+  "examples": [
+    {
+      "summary": "Check PVE version on connection startup",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'version' field is the full pve-manager Debian package version (e.g. '8.2.2'), while 'release' is just the x.y point release (e.g. '8.2') — use 'version' for precise build comparisons.",
+    "repoid is the short git SHA of the pve-manager build; useful for confirming a specific patch is present or filing bug reports.",
+    "This endpoint works with API tokens (allowtoken: true) and requires no specific privilege, making it ideal for token-based health checks without granting elevated access.",
+    "The 'console' field reflects the datacenter-wide default and is optional in the response — do not assume it is always present."
+  ],
+  "relatedOperations": [
+    "get_cluster_status",
+    "get_nodes",
+    "get_nodes_node_version"
+  ]
+}

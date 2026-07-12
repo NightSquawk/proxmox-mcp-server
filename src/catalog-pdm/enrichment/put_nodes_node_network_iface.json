@@ -1,0 +1,36 @@
+{
+  "operationId": "put_nodes_node_network_iface",
+  "usageNotes": "Use this endpoint to modify an existing network interface configuration on a PDM-managed node — for example, changing the IP address, gateway, MTU, or bridge ports of an already-created interface. Changes are written to the node's network config file but are not applied to the live system until the node is rebooted or the network is reloaded (use the apply endpoint afterward). Supply the `digest` param from a prior GET to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Set a static IPv4 address and gateway on a Linux bridge interface, with VLAN awareness enabled",
+      "path_params": {
+        "node": "pdm-node1",
+        "iface": "vmbr0"
+      },
+      "params": {
+        "type": "bridge",
+        "method": "static",
+        "cidr": "10.10.1.10/24",
+        "gateway": "10.10.1.1",
+        "bridge_ports": "eth0",
+        "bridge_vlan_aware": true,
+        "autostart": true,
+        "mtu": 1500
+      }
+    }
+  ],
+  "tips": [
+    "Changes are staged in the network config file; they do not take effect until the network is reloaded or the node reboots. Follow up with the network apply/reload endpoint if live activation is needed.",
+    "Fetch the current config first (GET /nodes/{node}/network/{iface}) and pass its `digest` value to detect and reject concurrent modifications.",
+    "The `delete` param accepts a list of property names to remove from the config (e.g., removing a gateway or MTU override), avoiding the need to null-out fields individually.",
+    "For bond interfaces, `bond_xmit_hash_policy` is only meaningful when `bond_mode` is `802.3ad` (LACP); setting it on other modes has no effect.",
+    "Interface names are capped at 15 characters — the same AD/hostname constraint that applies to server naming in this environment."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network_iface",
+    "post_nodes_node_network",
+    "delete_nodes_node_network_iface",
+    "put_nodes_node_network"
+  ]
+}

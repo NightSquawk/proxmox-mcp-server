@@ -1,0 +1,50 @@
+{
+  "operationId": "get_nodes_node_ceph_cfg_value",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "value",
+  "method": "GET",
+  "path": "/nodes/{node}/ceph/cfg/value",
+  "description": "Get configured values from either ceph.conf or the mon config DB. Underscores in section and key names are normalised to hyphens in the response, regardless of how they're written in the source.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "config-keys",
+      "type": "string",
+      "required": true,
+      "description": "List of <section>:<config key> items separated by semicolon, comma or space.",
+      "maxLength": 4096,
+      "typetext": "<section>:<config key>[;|,| <section>:<config key>]",
+      "pattern": "(?^:^(?:(?^i:[0-9a-z\\-_\\.]+:[0-9a-zA-Z\\-_]+))(?:[;, ](?^i:[0-9a-z\\-_\\.]+:[0-9a-zA-Z\\-_]+))*$)"
+    }
+  ],
+  "returns": {
+    "description": "Two-level map of {section} -> {key} -> value. Underscores in section and key names are normalised to hyphens.",
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/cfg/value?config-keys=<config-keys>'"
+}

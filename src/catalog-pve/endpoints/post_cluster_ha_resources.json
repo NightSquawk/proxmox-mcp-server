@@ -1,0 +1,113 @@
+{
+  "operationId": "post_cluster_ha_resources",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "create",
+  "method": "POST",
+  "path": "/cluster/ha/resources",
+  "description": "Create a new HA resource.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "auto-rebalance",
+      "type": "boolean",
+      "required": false,
+      "description": "HA resource may be migrated during automatic rebalancing",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Description.",
+      "maxLength": 4096,
+      "typetext": "<string>"
+    },
+    {
+      "name": "failback",
+      "type": "boolean",
+      "required": false,
+      "description": "Automatically migrate HA resource to the node with the highest priority according to their node affinity  rules, if a node with a higher priority than the current node comes online.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "group",
+      "type": "string",
+      "required": false,
+      "description": "The HA group identifier.",
+      "format": "pve-configid",
+      "typetext": "<string>"
+    },
+    {
+      "name": "max_relocate",
+      "type": "integer",
+      "required": false,
+      "description": "Maximal number of resource relocate tries when a resource fails to start.",
+      "default": 1,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "max_restart",
+      "type": "integer",
+      "required": false,
+      "description": "Maximal number of tries to restart the resource on a node after its start failed. When reached, the HA manager will try to relocate the resource to an eligible node.",
+      "default": 1,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "sid",
+      "type": "string",
+      "required": true,
+      "description": "HA resource ID. This consists of a resource type followed by a resource specific name, separated with colon (example: vm:100 / ct:100). For virtual machines and containers, you can simply use the VM or CT id as a shortcut (example: 100).",
+      "format": "pve-ha-resource-or-vm-id",
+      "typetext": "<type>:<name>"
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "required": false,
+      "description": "Requested resource state.",
+      "enum": [
+        "started",
+        "stopped",
+        "enabled",
+        "disabled",
+        "ignored"
+      ],
+      "default": "started"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "description": "Resource type.",
+      "enum": [
+        "ct",
+        "vm"
+      ]
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Console"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"sid\":\"<sid>\"}' 'https://PVE_HOST:8006/api2/json/cluster/ha/resources'"
+}

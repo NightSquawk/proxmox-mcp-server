@@ -1,0 +1,26 @@
+{
+  "operationId": "get_ceph_clusters_cluster_mds",
+  "usageNotes": "Use this endpoint to list all Ceph MDS (Metadata Server) daemons for a given cluster, including both active and standby daemons. The `cluster` path parameter is the Ceph cluster FSID, not a human-friendly name — retrieve it from the cluster list endpoint first. MDS daemons only appear in CephFS deployments; clusters without a CephFS filesystem will return an empty array.",
+  "examples": [
+    {
+      "summary": "List MDS daemons for a specific Ceph cluster",
+      "path_params": {
+        "cluster": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "An MDS with rank -1 and no fs_name is in standby mode and not serving any filesystem — this is normal in resilient deployments.",
+    "Check standby_replay: true to confirm hot-standby MDSes are tailing the active MDS journal for faster failover.",
+    "The direxists field reflects whether the MDS data directory is present on the hosting node; false may indicate a misconfigured or migrated daemon.",
+    "The service field indicates whether the systemd unit is enabled — an MDS can be known to the cluster (state = up:standby) yet have service: false if it was started manually.",
+    "State values 'stopped' or 'unknown' mean PDM is aware of the MDS configuration but the daemon is not currently visible to the Ceph cluster."
+  ],
+  "relatedOperations": [
+    "get_ceph_clusters",
+    "get_ceph_clusters_cluster",
+    "get_ceph_clusters_cluster_fs",
+    "get_ceph_clusters_cluster_status"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_rules_pos",
+  "usageNotes": "Use this to inspect a single firewall rule for a QEMU VM by its zero-based position index in the ruleset; call the rule-list endpoint first to discover valid positions. Requires VM.Audit on /vms/{vmid} — read-only, safe to call at any time regardless of VM power state. The pos path parameter is marked optional in the spec but must be supplied to target a specific rule.",
+  "examples": [
+    {
+      "summary": "Fetch rule at position 2 for VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101,
+        "pos": 2
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Rule positions are zero-indexed and shift when rules above them are inserted or deleted — always re-query the list before referencing a position by number.",
+    "The 'enable' field in the response is an integer (1 = enabled, 0 = disabled), not a boolean.",
+    "If the VM uses firewall security groups, the 'action' field will contain the group name rather than ACCEPT/DROP/REJECT."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "put_nodes_node_qemu_vmid_firewall_rules_pos",
+    "delete_nodes_node_qemu_vmid_firewall_rules_pos",
+    "post_nodes_node_qemu_vmid_firewall_rules"
+  ]
+}

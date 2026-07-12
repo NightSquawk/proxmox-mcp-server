@@ -1,0 +1,24 @@
+{
+  "operationId": "get_access_ticket",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "get_ticket",
+  "method": "GET",
+  "path": "/access/ticket",
+  "description": "Dummy. Useful for formatters which want to provide a login page.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "user": "world"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/ticket'"
+}

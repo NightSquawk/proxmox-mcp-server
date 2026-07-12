@@ -1,0 +1,29 @@
+{
+  "operationId": "delete_nodes_node_disks_directory_name",
+  "usageNotes": "Unmounts a directory-backed storage mount and removes its systemd mount unit from the specified node; requires `Sys.Modify` at the root level, and additionally `Datastore.Allocate` on `/storage/<name>` when using `cleanup-config`. Pass `cleanup-config: true` to also remove the storage from the cluster configuration (or mark it unavailable on this node); pass `cleanup-disks: true` to wipe the underlying disk so it can be repurposed. The operation returns a task UPID — poll the task status before treating the storage as fully removed.",
+  "examples": [
+    {
+      "summary": "Remove a directory storage named 'local-data' from node 'pve1', clean up its config entry, and wipe the disk for reuse",
+      "path_params": {
+        "node": "pve1",
+        "name": "local-data"
+      },
+      "params": {
+        "cleanup-config": true,
+        "cleanup-disks": true
+      }
+    }
+  ],
+  "destructiveReason": "Unmounts the directory and removes the mount unit; with cleanup-disks enabled, the underlying disk is wiped and all data on it is permanently destroyed.",
+  "tips": [
+    "Always verify no VMs or containers are actively using the storage before calling this — running guests with disks on the target storage will cause the unmount to fail.",
+    "The return value is a UPID string; use get_nodes_node_tasks_upid_status to poll completion before assuming the storage is fully gone.",
+    "cleanup-config only removes the storage from this node's config if it is configured exclusively for this node; otherwise it marks it unavailable here, leaving the entry for other nodes."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_disks_directory",
+    "get_nodes_node_disks_directory",
+    "get_nodes_node_tasks_upid_status",
+    "get_storage"
+  ]
+}

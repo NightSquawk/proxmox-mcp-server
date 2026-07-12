@@ -1,0 +1,26 @@
+{
+  "operationId": "put_access_groups_groupid",
+  "usageNotes": "Use this to update the comment/description on an existing Proxmox group. The only modifiable field is `comment`; group membership is managed separately via user operations. Requires the `Group.Allocate` privilege on `/access/groups` — the same privilege needed to create or delete groups.",
+  "examples": [
+    {
+      "summary": "Add a descriptive comment to the 'admins' group",
+      "path_params": {
+        "groupid": "admins"
+      },
+      "params": {
+        "comment": "Full cluster administrators - break-glass access only"
+      }
+    }
+  ],
+  "tips": [
+    "Returns null on success — no response body confirms the change; follow up with get_access_groups_groupid to verify.",
+    "To clear a comment, send an empty string for the comment field.",
+    "Group membership changes require separate user-update calls (put_access_users_userid), not this endpoint."
+  ],
+  "relatedOperations": [
+    "get_access_groups_groupid",
+    "post_access_groups",
+    "delete_access_groups_groupid",
+    "get_access_groups"
+  ]
+}

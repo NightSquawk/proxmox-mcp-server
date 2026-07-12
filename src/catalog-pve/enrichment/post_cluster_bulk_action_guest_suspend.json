@@ -1,0 +1,29 @@
+{
+  "operationId": "post_cluster_bulk_action_guest_suspend",
+  "usageNotes": "Suspends all (or a filtered subset of) VMs and containers across the entire cluster in parallel. Use 'to-disk' (hibernate) when you need guests to survive a host reboot or power outage; omit it for a RAM-only suspend that is faster but volatile. Returns a UPID immediately — poll the task API to confirm completion before proceeding with maintenance. Caller must hold 'VM.PowerMgmt' on '/' or individually on each targeted VMID; 'to-disk' additionally requires 'VM.Config.Disk' and 'Datastore.AllocateSpace' on the state storage.",
+  "examples": [
+    {
+      "summary": "Hibernate a specific set of VMs to disk using shared storage, limiting concurrency to 2 workers",
+      "path_params": {},
+      "params": {
+        "to-disk": true,
+        "statestorage": "ceph-vms",
+        "vms": [100, 101, 205],
+        "max-workers": 2
+      }
+    }
+  ],
+  "destructiveReason": "Suspends running guests cluster-wide, interrupting all active workloads; RAM-only suspend is lost if the host reboots before guests are resumed.",
+  "tips": [
+    "Omit 'vms' to target every running guest on the cluster — verify scope before calling in production.",
+    "Use 'to-disk' with a reliable shared storage (Ceph, NFS) so VMs survive unexpected node failures during maintenance.",
+    "Prefer 'max-workers' over the deprecated 'maxworkers' alias.",
+    "After calling, poll the returned UPID via GET /nodes/{node}/tasks/{upid}/status before triggering subsequent cluster operations."
+  ],
+  "relatedOperations": [
+    "post_cluster_bulk_action_guest_start",
+    "post_cluster_bulk_action_guest_stop",
+    "post_cluster_bulk_action_guest_shutdown",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

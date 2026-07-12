@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pbs_remotes_remote_nodes_node_vncwebsocket",
+  "usageNotes": "This endpoint upgrades an HTTP GET request to a VNC WebSocket connection for console access to a PBS remote node; it is not a data-returning API call but the actual WebSocket handshake. You must first obtain a valid vncticket and port from the corresponding VNC ticket creation endpoint before calling this — the ticket is short-lived and node-specific. The caller requires Sys.Console on /resource/{remote}/node/{node}; access tokens are supported.",
+  "examples": [
+    {
+      "summary": "Open a VNC WebSocket console session to node 'pbs-node1' on remote 'pbs-hetzner'",
+      "path_params": {
+        "remote": "pbs-hetzner",
+        "node": "pbs-node1"
+      },
+      "params": {
+        "port": 5900,
+        "vncticket": "PVEVNC:6b2f4a1e::abc123def456"
+      }
+    }
+  ],
+  "tips": [
+    "This is a WebSocket upgrade endpoint — standard REST clients will not receive a meaningful response body; use a WebSocket client (e.g. browser, wscat, or noVNC).",
+    "The vncticket expires quickly; call the ticket-creation endpoint immediately before initiating this WebSocket handshake.",
+    "Use 'localhost' as the node value when PDM itself is acting as the target node.",
+    "Port values are assigned dynamically by the ticket-creation call — do not hardcode a port number."
+  ],
+  "relatedOperations": [
+    "post_pbs_remotes_remote_nodes_node_vncproxy"
+  ]
+}

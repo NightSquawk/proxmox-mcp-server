@@ -1,0 +1,31 @@
+{
+  "operationId": "post_cluster_notifications_endpoints_gotify",
+  "usageNotes": "Use this to register a Gotify push-notification server as a cluster-level notification endpoint; the endpoint can then be referenced in notification matchers to route alerts. The caller must hold Mapping.Modify on /mapping/notifications and either Sys.Modify (or Sys.Audit) or Sys.AccessNetwork on /. The name field must be a valid pve-configid (alphanumeric plus hyphens, no spaces), and the token is the Gotify application token — store it securely as it is sent in plaintext to the API.",
+  "examples": [
+    {
+      "summary": "Register a self-hosted Gotify server for cluster alert delivery",
+      "path_params": {},
+      "params": {
+        "name": "gotify-alerts",
+        "server": "https://gotify.nightsquawk.tech",
+        "token": "AbCdEfGhIjKlMnOp1234",
+        "comment": "Primary Gotify endpoint for Proxmox cluster alerts",
+        "disable": false
+      }
+    }
+  ],
+  "tips": [
+    "The endpoint name must satisfy pve-configid format — use only lowercase letters, digits, and hyphens; no underscores or spaces.",
+    "After creation, verify delivery by triggering a test notification via the Proxmox web UI under Datacenter > Notifications.",
+    "Set disable: true if you want to pre-register the endpoint without activating it in any matcher yet.",
+    "The Gotify application token must be created in the Gotify UI under Applications before registering the endpoint here."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_gotify",
+    "get_cluster_notifications_endpoints_gotify_name",
+    "put_cluster_notifications_endpoints_gotify_name",
+    "delete_cluster_notifications_endpoints_gotify_name",
+    "post_cluster_notifications_matchers",
+    "get_cluster_notifications_matchers"
+  ]
+}

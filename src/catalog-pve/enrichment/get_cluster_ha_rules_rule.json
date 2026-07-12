@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_ha_rules_rule",
+  "usageNotes": "Use this to inspect a specific HA rule by its config ID — useful when verifying placement constraints before migrating VMs or modifying HA groups. Requires `Sys.Audit` on the root path (`/`), so API tokens must carry that privilege. The rule identifier must match the `pve-configid` format (alphanumeric, hyphens allowed, no spaces).",
+  "examples": [
+    {
+      "summary": "Read a node-affinity HA rule named 'prod-nodes'",
+      "path_params": {
+        "rule": "prod-nodes"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Rule identifiers are case-sensitive and must be valid pve-configid strings — check with list_cluster_ha_rules first if unsure of the exact name.",
+    "The response type field distinguishes node-affinity rules (restrict which nodes a resource can run on) from resource-affinity rules (co-locate or separate resources); use this to understand the rule's effect before modifying HA group membership.",
+    "This endpoint is read-only and safe to call frequently for audit or monitoring purposes."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_rules",
+    "get_cluster_ha_groups_group",
+    "get_cluster_ha_resources_sid"
+  ]
+}

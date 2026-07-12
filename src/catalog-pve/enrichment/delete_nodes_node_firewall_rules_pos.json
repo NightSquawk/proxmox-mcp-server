@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_nodes_node_firewall_rules_pos",
+  "usageNotes": "Deletes a single firewall rule from a node's host-level firewall by zero-based position index; all rules below the deleted position shift up by one, so capture the rule set first if you need to reference other rules by position afterward. Requires Sys.Modify on the target node. Pass the `digest` parameter (obtained from the GET rules list) to prevent accidentally overwriting concurrent edits.",
+  "examples": [
+    {
+      "summary": "Delete the second firewall rule (position 1) on node pve01, with digest guard",
+      "path_params": {
+        "node": "pve01",
+        "pos": 1
+      },
+      "params": {
+        "digest": "a3f5c2e1b4d6789012345678901234567890abcd"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the firewall rule at the specified position from the node's host firewall; the rule cannot be recovered and traffic previously matched by it will no longer be filtered.",
+  "tips": [
+    "List rules first with GET /nodes/{node}/firewall/rules to confirm the target position and capture the current digest before deleting.",
+    "Position indices are zero-based and compact — deleting pos 0 makes the former pos 1 the new pos 0.",
+    "This operates on the node's host firewall only; VM/container firewall rules are managed under /nodes/{node}/qemu/{vmid}/firewall/rules or /lxc/{vmid}/firewall/rules."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_firewall_rules",
+    "get_nodes_node_firewall_rules_pos",
+    "put_nodes_node_firewall_rules_pos",
+    "post_nodes_node_firewall_rules"
+  ]
+}

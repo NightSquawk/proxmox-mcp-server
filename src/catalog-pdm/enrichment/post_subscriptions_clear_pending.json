@@ -1,0 +1,24 @@
+{
+  "operationId": "post_subscriptions_clear_pending",
+  "usageNotes": "Use this endpoint to discard stuck or unwanted queued subscription changes in bulk without touching the remote nodes — useful when a target node is offline or gone and you want to unblock the pool without first bringing the remote back online. Only entries the caller has `System.Modify` on are affected; entries where the caller only has audit access are silently skipped. Pass the current config `digest` to guard against concurrent admin edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Clear all pending subscription changes with optimistic-lock protection",
+      "path_params": {},
+      "params": {
+        "digest": "a3f1c2e4b5d6789012345678abcdef1234567890abcdef1234567890abcdef12"
+      }
+    }
+  ],
+  "tips": [
+    "The response `cleared` count reflects how many pool entries were actually modified; a result of 0 means no pending changes matched your privilege scope.",
+    "Omit `digest` for a force-clear when you do not have the current config hash at hand, accepting the risk of overwriting a concurrent change.",
+    "This operation is the discard counterpart to `post_subscriptions_apply_pending` — prefer apply-pending when the remote is reachable and you want the changes pushed rather than dropped.",
+    "Entries where the remote is unreachable have their binding returned to the free pool; the live key on the remote is not modified by this call."
+  ],
+  "relatedOperations": [
+    "post_subscriptions_apply_pending",
+    "get_subscriptions",
+    "put_subscriptions_key"
+  ]
+}

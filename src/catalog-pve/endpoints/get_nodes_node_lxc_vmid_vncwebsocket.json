@@ -1,0 +1,73 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_vncwebsocket",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "vncwebsocket",
+  "method": "GET",
+  "path": "/nodes/{node}/lxc/{vmid}/vncwebsocket",
+  "description": "Opens a websocket for VNC traffic.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "port",
+      "type": "integer",
+      "required": true,
+      "description": "Port number returned by previous vncproxy call.",
+      "minimum": 5900,
+      "maximum": 5999,
+      "typetext": "<integer> (5900 - 5999)"
+    },
+    {
+      "name": "vncticket",
+      "type": "string",
+      "required": true,
+      "description": "Ticket from previous call to vncproxy.",
+      "maxLength": 512,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "port": {
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Console"
+      ]
+    ],
+    "description": "You also need to pass a valid ticket (vncticket)."
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100/vncwebsocket?port=0&vncticket=<vncticket>'"
+}

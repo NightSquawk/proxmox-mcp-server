@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_jobs_realm_sync",
+  "usageNotes": "Use this to audit all scheduled realm-sync jobs across the cluster — useful before adding a new job to avoid duplicates, or to confirm a job is enabled and scheduled correctly. Requires Sys.Audit on the root path ('/'); API tokens are supported. The response includes last-run and next-run timestamps (Unix epoch), so no additional calls are needed to determine job health at a glance.",
+  "examples": [
+    {
+      "summary": "List all configured realm-sync jobs",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "last-run and next-run are Unix timestamps — convert with 'date -d @<timestamp>' or equivalent to get human-readable times.",
+    "A job with enabled=false will not run on its schedule but remains configured; useful for temporarily suspending sync without deleting the job.",
+    "The remove-vanished field defaults to 'none' when not set, meaning stale users/groups are never pruned automatically — review this on each job if directory hygiene matters.",
+    "Use the returned 'id' values to target specific jobs via the per-job endpoints (read, update, delete, or run)."
+  ],
+  "relatedOperations": [
+    "get_cluster_jobs_realm_sync_{id}",
+    "post_cluster_jobs_realm_sync",
+    "post_cluster_jobs_realm_sync_{id}_run"
+  ]
+}

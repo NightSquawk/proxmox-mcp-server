@@ -1,0 +1,64 @@
+{
+  "operationId": "put_nodes_node_storage_storage_content_volume",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "updateattributes",
+  "method": "PUT",
+  "path": "/nodes/{node}/storage/{storage}/content/{volume}",
+  "description": "Update volume attributes",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": false,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    },
+    {
+      "name": "volume",
+      "type": "string",
+      "required": true,
+      "description": "Volume identifier",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "notes",
+      "type": "string",
+      "required": false,
+      "description": "The new notes.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "protected",
+      "type": "boolean",
+      "required": false,
+      "description": "Protection status. Currently only supported for backups.",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "description": "You need read access for the volume.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/content/<volume>'"
+}

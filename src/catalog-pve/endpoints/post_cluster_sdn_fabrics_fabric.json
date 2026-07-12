@@ -1,0 +1,132 @@
+{
+  "operationId": "post_cluster_sdn_fabrics_fabric",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "add_fabric",
+  "method": "POST",
+  "path": "/cluster/sdn/fabrics/fabric",
+  "description": "Add a fabric",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "area",
+      "type": "string",
+      "required": false,
+      "description": "OSPF area. Either a IPv4 address or a 32-bit number. Gets validated in rust.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "csnp_interval",
+      "type": "number",
+      "required": false,
+      "description": "The csnp_interval property for Openfabric",
+      "minimum": 1,
+      "maximum": 600,
+      "typetext": "<number> (1 - 600)"
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "hello_interval",
+      "type": "number",
+      "required": false,
+      "description": "The hello_interval property for Openfabric",
+      "minimum": 1,
+      "maximum": 600,
+      "typetext": "<number> (1 - 600)"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "Identifier for SDN fabrics",
+      "format": "pve-sdn-fabric-id",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]"
+    },
+    {
+      "name": "ip6_prefix",
+      "type": "string",
+      "required": false,
+      "description": "The IP prefix for Node IPs",
+      "format": "CIDR",
+      "typetext": "<string>"
+    },
+    {
+      "name": "ip_prefix",
+      "type": "string",
+      "required": false,
+      "description": "The IP prefix for Node IPs",
+      "format": "CIDR",
+      "typetext": "<string>"
+    },
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    },
+    {
+      "name": "persistent_keepalive",
+      "type": "number",
+      "required": false,
+      "description": "A seconds interval, between 1 and 65535 inclusive, of how often to send an authenticated empty packet to the peer for the purpose of keeping a stateful firewall or NAT mapping valid persistently. For example, if the interface very rarely sends traffic, but it might at anytime receive traffic from another node, and it is behind NAT, the interface might benefit from having a persistent keepalive interval of 25 seconds. If unset or set to 0, it is turned off",
+      "minimum": 0,
+      "maximum": 65535,
+      "typetext": "<number> (0 - 65535)"
+    },
+    {
+      "name": "protocol",
+      "type": "string",
+      "required": true,
+      "description": "Type of configuration entry in an SDN Fabric section config",
+      "enum": [
+        "openfabric",
+        "ospf",
+        "wireguard",
+        "bgp"
+      ]
+    },
+    {
+      "name": "redistribute",
+      "type": "array",
+      "required": true,
+      "typetext": "<array>"
+    },
+    {
+      "name": "route_filter",
+      "type": "string",
+      "required": false,
+      "description": "A prefix list that should be used for filtering routes that are to be installed into the kernel routing table",
+      "format": "pve-sdn-prefix-list-id",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/fabrics",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"id\":\"<id>\",\"protocol\":\"openfabric\",\"redistribute\":\"<redistribute>\"}' 'https://PVE_HOST:8006/api2/json/cluster/sdn/fabrics/fabric'"
+}

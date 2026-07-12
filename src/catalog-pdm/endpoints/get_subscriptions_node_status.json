@@ -1,0 +1,119 @@
+{
+  "operationId": "get_subscriptions_node_status",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "node-status",
+  "method": "GET",
+  "path": "/subscriptions/node-status",
+  "description": "Get the subscription status of every remote node the caller can audit, combined with key pool\nassignment information.\n\nPer-remote `PRIV_RESOURCE_AUDIT` is enforced inside the handler so users only see remotes\nthey may audit.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "max-age",
+      "type": "integer",
+      "required": false,
+      "description": "Override the cache freshness window in seconds. Default 300 for panel views; pass 0 to force a fresh query."
+    }
+  ],
+  "returns": {
+    "description": "Subscription status of all remote nodes the user can audit.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Subscription status of a single remote node, combining remote query data with key pool\nassignment information.",
+      "properties": {
+        "assigned-key": {
+          "description": "Currently assigned key from the pool (if any).",
+          "optional": 1,
+          "type": "string"
+        },
+        "check-time": {
+          "description": "Epoch of the last successful subscription check on the node.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "current-key": {
+          "description": "Current key on the node (from remote query).",
+          "optional": 1,
+          "type": "string"
+        },
+        "level": {
+          "default": "None",
+          "description": "Describes the level of subscription",
+          "enum": [
+            "None",
+            "Unknown",
+            "Community",
+            "Basic",
+            "Standard",
+            "Premium"
+          ],
+          "type": "string"
+        },
+        "next-due-date": {
+          "description": "Next due date of the subscription, as reported by the remote.",
+          "optional": 1,
+          "type": "string"
+        },
+        "node": {
+          "description": "Node name.",
+          "type": "string"
+        },
+        "pending-clear": {
+          "description": "True when the pool has a clear queued for this node. Omitted on the wire when false.",
+          "type": "boolean"
+        },
+        "remote": {
+          "description": "Remote name.",
+          "type": "string"
+        },
+        "sockets": {
+          "description": "Number of CPU sockets (PVE only).",
+          "optional": 1,
+          "type": "integer"
+        },
+        "status": {
+          "default": "notfound",
+          "description": "Subscription status",
+          "enum": [
+            "new",
+            "notfound",
+            "active",
+            "invalid",
+            "expired",
+            "suspended"
+          ],
+          "type": "string"
+        },
+        "type": {
+          "default": "pve",
+          "description": "The type of a remote entry.",
+          "enum": [
+            "pve",
+            "pbs"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/subscriptions/node-status'"
+}

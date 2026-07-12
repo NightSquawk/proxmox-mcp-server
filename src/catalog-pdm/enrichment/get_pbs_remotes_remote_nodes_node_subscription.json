@@ -1,0 +1,23 @@
+{
+  "operationId": "get_pbs_remotes_remote_nodes_node_subscription",
+  "usageNotes": "Use this to check the subscription status of a specific PBS node registered as a PDM remote — useful for confirming a node is running a valid Proxmox Backup Server license before relying on enterprise features or repository access. Requires `Resource.Audit` on `/resource/{remote}`. The `status` field drives the result: treat anything other than `active` as a license gap requiring attention; `key` and `serverid` may be omitted if the caller lacks sufficient privilege to see them.",
+  "examples": [
+    {
+      "summary": "Check subscription status for node 'pbs01' on remote 'hetzner-pbs'",
+      "path_params": {
+        "remote": "hetzner-pbs",
+        "node": "pbs01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `checktime` field is a Unix timestamp of the last subscription validation check; if it is very stale the node may not have had internet access to validate recently.",
+    "A status of 'notfound' (the default) means no subscription key is configured, not that the API call failed.",
+    "The `key` and `serverid` fields are only returned when the authenticated principal has sufficient privilege to view them; their absence in the response is not an error."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_nodes_node",
+    "get_pbs_remotes_remote_nodes"
+  ]
+}

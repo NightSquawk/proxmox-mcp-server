@@ -1,0 +1,21 @@
+{
+  "operationId": "post_cluster_ha_status_arm_ha",
+  "usageNotes": "Use this endpoint to re-arm the Proxmox HA stack after it has been intentionally disarmed (e.g., following a manual quorum override or maintenance window). The call takes no parameters, returns null synchronously, and requires the Sys.Console privilege on the root path. Verify HA status via get_cluster_ha_status after calling to confirm the manager has resumed normal operation.",
+  "examples": [
+    {
+      "summary": "Re-arm the HA stack after a maintenance window",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The HA manager will only honor the re-arm once cluster quorum is restored; if the cluster is still partitioned or lacks quorum the manager will remain disarmed.",
+    "After calling this endpoint, poll GET /cluster/ha/status to confirm the HA manager state transitions back to 'master' or 'slave' (not 'error' or 'stopped').",
+    "This endpoint is idempotent — calling it when the HA stack is already armed has no effect and does not return an error."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_status",
+    "get_cluster_ha_status_manager_status",
+    "get_cluster_status"
+  ]
+}

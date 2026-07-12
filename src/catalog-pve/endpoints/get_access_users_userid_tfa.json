@@ -1,0 +1,93 @@
+{
+  "operationId": "get_access_users_userid_tfa",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "read_user_tfa_type",
+  "method": "GET",
+  "path": "/access/users/{userid}/tfa",
+  "description": "Get user TFA types (Personal and Realm).",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "Full User ID, in the `name@realm` format.",
+      "format": "pve-userid",
+      "maxLength": 64,
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "multiple",
+      "type": "boolean",
+      "required": false,
+      "description": "Request all entries as an array.",
+      "default": 0,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "additionalProperties": 0,
+    "properties": {
+      "realm": {
+        "description": "The type of TFA the users realm has set, if any.",
+        "enum": [
+          "oath",
+          "yubico"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "types": {
+        "description": "Array of the user configured TFA types, if any. Only available if 'multiple' was not passed.",
+        "items": {
+          "description": "A TFA type.",
+          "enum": [
+            "totp",
+            "u2f",
+            "yubico",
+            "webauthn",
+            "recovedry"
+          ],
+          "type": "string"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "user": {
+        "description": "The type of TFA the user has set, if any. Only set if 'multiple' was not passed.",
+        "enum": [
+          "oath",
+          "u2f"
+        ],
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "userid-param",
+        "self"
+      ],
+      [
+        "userid-group",
+        [
+          "User.Modify",
+          "Sys.Audit"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/users/<userid>/tfa'"
+}

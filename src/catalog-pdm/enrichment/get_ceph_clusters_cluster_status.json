@@ -1,0 +1,27 @@
+{
+  "operationId": "get_ceph_clusters_cluster_status",
+  "usageNotes": "Use this endpoint to retrieve the current health and status of a Ceph cluster managed by PDM — equivalent to running `ceph status` on the cluster. The `cluster` path parameter must be the Ceph cluster's FSID (not a human-readable name), which can be obtained from the cluster listing endpoint. Use `max-age` to control cache staleness: omitting it or passing `0` forces a live fetch, while a positive value allows PDM to serve a recently cached result, reducing load on the Ceph monitors.",
+  "examples": [
+    {
+      "summary": "Fetch live Ceph cluster status by FSID",
+      "path_params": {
+        "cluster": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "params": {
+        "max-age": 30
+      }
+    }
+  ],
+  "tips": [
+    "The cluster identifier is a UUID-format FSID, not a cluster name — use the cluster listing endpoint first if you only know the human-readable name.",
+    "Pass `max-age=0` (or omit the parameter) when you need guaranteed fresh data, such as right after a topology change or OSD failure.",
+    "A non-empty `health.checks` object in the response indicates degraded or warning conditions that warrant investigation.",
+    "This endpoint is accessible to all authenticated users (`permissions.user: all`), so no elevated privilege is needed."
+  ],
+  "relatedOperations": [
+    "get_ceph_clusters",
+    "get_ceph_clusters_cluster_health",
+    "get_ceph_clusters_cluster_osds",
+    "get_ceph_clusters_cluster_nodes"
+  ]
+}

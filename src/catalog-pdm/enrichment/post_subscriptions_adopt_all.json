@@ -1,0 +1,25 @@
+{
+  "operationId": "post_subscriptions_adopt_all",
+  "usageNotes": "Use this to bulk-import all untracked live subscription keys from every auditable remote into the PDM subscription pool in a single transaction. Requires `System.Modify` on the system path; additionally, the caller must hold `PRIV_RESOURCE_MODIFY` on each individual remote for that remote's subscriptions to be adopted — remotes where that privilege is absent are silently skipped rather than treated as errors. Pass a `digest` to guard against concurrent pool modifications racing with the bulk import.",
+  "examples": [
+    {
+      "summary": "Adopt all eligible foreign subscriptions with a concurrency guard",
+      "path_params": {},
+      "params": {
+        "digest": "a3c2e1f4b8d6e0912345678901234567890123456789012345678901234567ab"
+      }
+    }
+  ],
+  "tips": [
+    "Returns only the entries that were newly adopted; already-pooled or skipped keys are not included — a short list does not mean nothing was found.",
+    "Keys already in the pool but bound to a different node are intentionally skipped to prevent silent rebinding; resolve conflicts with the per-subscription update endpoint before retrying.",
+    "Keys that fail pattern validation (prefix unknown or length out of range) are dropped silently — inspect remote node health if expected keys do not appear in the response.",
+    "The operation is synchronous and returns the adopted list directly; no UPID/task polling is needed."
+  ],
+  "relatedOperations": [
+    "get_subscriptions",
+    "post_subscriptions",
+    "put_subscriptions_key",
+    "delete_subscriptions_key"
+  ]
+}

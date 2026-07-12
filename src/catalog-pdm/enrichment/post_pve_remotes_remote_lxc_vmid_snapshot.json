@@ -1,0 +1,29 @@
+{
+  "operationId": "post_pve_remotes_remote_lxc_vmid_snapshot",
+  "usageNotes": "Creates a point-in-time snapshot of a remote LXC container managed by Proxmox Datacenter Manager; the container does not need to be stopped unless RAM state preservation is required. Returns a remote UPID (task identifier) — poll the task status endpoint to determine when the snapshot completes before depending on the result. The caller must hold Resource.Manage on the remote/guest resource path.",
+  "examples": [
+    {
+      "summary": "Snapshot a running LXC container on a named remote before a software upgrade",
+      "path_params": {
+        "remote": "hetzner-pve1",
+        "vmid": 201
+      },
+      "params": {
+        "snapname": "pre-upgrade-2026-06-29",
+        "description": "Before upgrading Nginx to 1.26 LTS",
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "snapname must be unique per container — creating a snapshot with a duplicate name will fail.",
+    "The returned UPID is scoped to the remote cluster; use the appropriate remote task-status endpoint (not the local PDM one) to track completion.",
+    "Omitting 'node' lets PDM resolve the node automatically, which is reliable when the remote has a single-node cluster; specify it explicitly in multi-node environments to avoid ambiguity.",
+    "Snapshot names are limited to 40 characters and must start with an alphanumeric or underscore character — date-suffixed names like 'pre-upgrade-20260629' are a safe convention."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc_vmid_snapshot",
+    "delete_pve_remotes_remote_lxc_vmid_snapshot_snapname",
+    "post_pve_remotes_remote_lxc_vmid_snapshot_snapname_rollback"
+  ]
+}

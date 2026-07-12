@@ -1,0 +1,20 @@
+{
+  "operationId": "get_access_openid",
+  "usageNotes": "Returns the list of available sub-resources under the /access/openid path (e.g., 'login', 'callback', 'auth-url'). Use this as a discovery call to confirm which OpenID Connect endpoints are exposed by the cluster before calling them. No authentication is required beyond a valid API token, and no parameters are needed.",
+  "examples": [
+    {
+      "summary": "List available OpenID Connect sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'subdir' values are the relative child paths — append them to /access/openid/ to construct the full endpoint URLs.",
+    "This is a directory index only; it does not initiate or validate any OpenID Connect flow."
+  ],
+  "relatedOperations": [
+    "get_access_openid_login",
+    "get_access_openid_callback",
+    "get_access_openid_auth_url"
+  ]
+}

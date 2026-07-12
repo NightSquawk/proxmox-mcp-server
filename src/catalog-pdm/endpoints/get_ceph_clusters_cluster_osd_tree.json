@@ -1,0 +1,37 @@
+{
+  "operationId": "get_ceph_clusters_cluster_osd_tree",
+  "surface": "pdm",
+  "resource": "ceph",
+  "category": "Ceph",
+  "name": "osd-tree",
+  "method": "GET",
+  "path": "/ceph/clusters/{cluster}/osd-tree",
+  "description": "The cluster's OSD (CRUSH) tree.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "cluster",
+      "type": "string",
+      "required": true,
+      "description": "Ceph cluster identifier (fsid).",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Ceph CRUSH/OSD tree.",
+    "properties": {},
+    "type": "object"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/ceph/clusters/<cluster>/osd-tree'"
+}

@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_ha_status_manager_status",
+  "usageNotes": "Use this to get the full state of the Proxmox HA Manager, including the status of all Local Resource Managers (LRMs) on each node and the current disposition of every HA-managed service. Requires `Sys.Audit` on `/` — API tokens are supported. This endpoint returns a snapshot; poll it to detect HA failovers, quorum loss, or service relocation in progress.",
+  "examples": [
+    {
+      "summary": "Fetch full HA manager and LRM status across the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned object includes both the HA Manager (CRM) state and per-node LRM states — check both sections to distinguish a cluster-wide quorum problem from a single-node LRM issue.",
+    "HA Manager is only active on the quorum master node; if the master changes during a failover, this endpoint still returns consistent cluster-view data via the Proxmox cluster API layer.",
+    "Use alongside get_cluster_ha_status_current_status to cross-reference service-level HA states with the manager's internal view."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_status_current_status",
+    "get_cluster_ha_resources",
+    "get_cluster_ha_groups",
+    "get_cluster_status"
+  ]
+}

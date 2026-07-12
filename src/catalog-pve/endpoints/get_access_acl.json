@@ -1,0 +1,55 @@
+{
+  "operationId": "get_access_acl",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "read_acl",
+  "method": "GET",
+  "path": "/access/acl",
+  "description": "Get Access Control List (ACLs).",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "additionalProperties": 0,
+      "properties": {
+        "path": {
+          "description": "Access control path",
+          "type": "string"
+        },
+        "propagate": {
+          "default": 1,
+          "description": "Allow to propagate (inherit) permissions.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "roleid": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "user",
+            "group",
+            "token"
+          ],
+          "type": "string"
+        },
+        "ugid": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "The returned list is restricted to objects where you have rights to modify permissions.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/acl'"
+}

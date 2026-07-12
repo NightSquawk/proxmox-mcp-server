@@ -1,0 +1,26 @@
+{
+  "operationId": "post_pve_remotes_remote_qemu_vmid_stop",
+  "usageNotes": "Performs a hard stop (equivalent to pulling the power cord) on a QEMU VM running on a remote PVE node managed by PDM — all unsaved in-guest state is lost immediately. The caller must hold `Resource.Manage` on the remote/guest ACL path. Returns a remote UPID string; poll the task status endpoint to confirm completion before assuming the VM is fully stopped.",
+  "examples": [
+    {
+      "summary": "Hard-stop VM 105 on remote 'pve-hetzner', letting PDM pick the node",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Immediately cuts power to the VM without a graceful shutdown, discarding any unsaved in-guest data and risking filesystem corruption.",
+  "tips": [
+    "Prefer the shutdown endpoint when the guest OS is responsive — stop is a last resort for hung or unresponsive VMs.",
+    "The returned UPID is scoped to the remote PVE cluster; use the corresponding remote task-status endpoint (not a local PVE endpoint) to poll it.",
+    "If `node` is omitted, PDM resolves the current host node automatically — supply it explicitly if the VM might be in the middle of a migration."
+  ],
+  "relatedOperations": [
+    "post_pve_remotes_remote_qemu_vmid_shutdown",
+    "post_pve_remotes_remote_qemu_vmid_start",
+    "post_pve_remotes_remote_qemu_vmid_reset",
+    "get_pve_remotes_remote_tasks_upid_status"
+  ]
+}

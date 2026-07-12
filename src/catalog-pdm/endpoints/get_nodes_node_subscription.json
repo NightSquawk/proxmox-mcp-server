@@ -1,0 +1,94 @@
+{
+  "operationId": "get_nodes_node_subscription",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "subscription",
+  "method": "GET",
+  "path": "/nodes/{node}/subscription",
+  "description": "Return subscription status",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Proxmox subscription information",
+    "properties": {
+      "checktime": {
+        "description": "timestamp of the last check done",
+        "optional": 1,
+        "type": "integer"
+      },
+      "key": {
+        "description": "the subscription key, if set and permitted to access",
+        "optional": 1,
+        "type": "string"
+      },
+      "message": {
+        "description": "a more human readable status message",
+        "optional": 1,
+        "type": "string"
+      },
+      "nextduedate": {
+        "description": "next due date of the set subscription",
+        "optional": 1,
+        "type": "string"
+      },
+      "productname": {
+        "description": "human readable productname of the set subscription",
+        "optional": 1,
+        "type": "string"
+      },
+      "regdate": {
+        "description": "register date of the set subscription",
+        "optional": 1,
+        "type": "string"
+      },
+      "serverid": {
+        "description": "the server ID, if permitted to access",
+        "optional": 1,
+        "type": "string"
+      },
+      "signature": {
+        "description": "Signature for offline keys",
+        "optional": 1,
+        "type": "string"
+      },
+      "status": {
+        "default": "notfound",
+        "description": "Subscription status",
+        "enum": [
+          "new",
+          "notfound",
+          "active",
+          "invalid",
+          "expired",
+          "suspended"
+        ],
+        "type": "string"
+      },
+      "url": {
+        "description": "URL to the web shop",
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/subscription'"
+}

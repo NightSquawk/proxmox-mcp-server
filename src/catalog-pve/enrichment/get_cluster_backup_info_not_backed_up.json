@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_backup_info_not_backed_up",
+  "usageNotes": "Use this to audit backup coverage across the entire cluster — it returns every QEMU VM and LXC container that is not included in any configured backup job. Requires the Sys.Audit privilege at the root path (/), so API tokens must carry that permission. The response is cluster-wide regardless of node; no filtering parameters are available, so post-filter client-side if you need results scoped to a specific node or type.",
+  "examples": [
+    {
+      "summary": "List all guests with no backup coverage",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "An empty array means all guests are covered — treat a non-empty result as a backup gap that needs remediation.",
+    "The 'name' field in each result is optional and may be absent for guests that have no display name set.",
+    "Cross-reference VMIDs against your backup job configurations in /cluster/backup to determine which job to add the guest to.",
+    "This endpoint reflects backup job configuration, not backup execution history — a guest appears here if it is excluded from all jobs, even if a manual backup was recently run."
+  ],
+  "relatedOperations": [
+    "get_cluster_backup",
+    "get_cluster_backup_id",
+    "create_cluster_backup"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_ceph_status",
+  "usageNotes": "Use this to retrieve the current Ceph cluster health, monitor status, OSD map, and pool statistics from any node that is a member of the cluster. The response is cluster-wide (equivalent to `ceph status`), so any healthy, online Ceph node can be used as the target — choose a node that is reachable and actively participating in the cluster. Requires either Sys.Audit or Datastore.Audit on the root path; API tokens are supported.",
+  "examples": [
+    {
+      "summary": "Check Ceph cluster health from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Since the response is cluster-wide, any active Ceph member node returns the same data — pick the node closest to your API endpoint or the one you know is online.",
+    "Look at response fields health.status ('HEALTH_OK', 'HEALTH_WARN', 'HEALTH_ERR') and health.checks for actionable degradation details.",
+    "If Ceph is not configured on the cluster this endpoint returns an error; use GET /nodes/{node}/ceph/config or check for Ceph installation before calling.",
+    "For a cluster-scoped alias that does not require specifying a node, use GET /cluster/ceph/status instead."
+  ],
+  "relatedOperations": [
+    "get_cluster_ceph_status",
+    "get_nodes_node_ceph_osd",
+    "get_nodes_node_ceph_pools",
+    "get_nodes_node_ceph_mon",
+    "get_nodes_node_ceph_flags"
+  ]
+}

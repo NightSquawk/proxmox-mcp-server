@@ -1,0 +1,100 @@
+{
+  "operationId": "post_cluster_notifications_matchers",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "create_matcher",
+  "method": "POST",
+  "path": "/cluster/notifications/matchers",
+  "description": "Create a new matcher",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Comment",
+      "typetext": "<string>"
+    },
+    {
+      "name": "disable",
+      "type": "boolean",
+      "required": false,
+      "description": "Disable this matcher",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "invert-match",
+      "type": "boolean",
+      "required": false,
+      "description": "Invert match of the whole matcher",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "match-calendar",
+      "type": "array",
+      "required": false,
+      "description": "Match notification timestamp",
+      "typetext": "<array>"
+    },
+    {
+      "name": "match-field",
+      "type": "array",
+      "required": false,
+      "description": "Metadata fields to match (regex or exact match). Must be in the form (regex|exact):<field>=<value>",
+      "typetext": "<array>"
+    },
+    {
+      "name": "match-severity",
+      "type": "array",
+      "required": false,
+      "description": "Notification severities to match",
+      "typetext": "<array>"
+    },
+    {
+      "name": "mode",
+      "type": "string",
+      "required": false,
+      "description": "Choose between 'all' and 'any' for when multiple properties are specified",
+      "enum": [
+        "all",
+        "any"
+      ],
+      "default": "all"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "Name of the matcher.",
+      "format": "pve-configid",
+      "typetext": "<string>"
+    },
+    {
+      "name": "target",
+      "type": "array",
+      "required": false,
+      "description": "Targets to notify on match",
+      "typetext": "<array>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/mapping/notifications",
+      [
+        "Mapping.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"name\":\"<name>\"}' 'https://PVE_HOST:8006/api2/json/cluster/notifications/matchers'"
+}

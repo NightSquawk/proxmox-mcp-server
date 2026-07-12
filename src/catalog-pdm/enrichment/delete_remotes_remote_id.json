@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_remotes_remote_id",
+  "usageNotes": "Use this to permanently remove a remote Proxmox instance from PDM management; the remote entry is deleted synchronously (returns null, not a UPID). Pass `delete-token: true` to also revoke the API token that PDM created on the remote — omitting this leaves a dangling token on the remote side. Requires `Resource.Modify` privilege on the resource.",
+  "examples": [
+    {
+      "summary": "Remove a managed remote and revoke its PDM API token",
+      "path_params": {
+        "id": "pve-hetzner-01"
+      },
+      "params": {
+        "delete-token": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the remote from PDM management, severing all visibility and control over that Proxmox node; if `delete-token` is false, the orphaned API token remains active on the remote.",
+  "tips": [
+    "Always pass delete-token=true unless you have a specific reason to retain the API token on the remote (e.g., the token is shared with another PDM instance).",
+    "The remote ID must match the pattern /^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/ and be 2–32 characters — use list_remotes to confirm the exact ID before deleting.",
+    "This operation is synchronous and returns null on success; no task UPID is issued, so there is nothing to poll."
+  ],
+  "relatedOperations": [
+    "get_remotes_remote_id",
+    "put_remotes_remote_id",
+    "get_remotes"
+  ]
+}

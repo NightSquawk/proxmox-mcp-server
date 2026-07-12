@@ -1,0 +1,34 @@
+{
+  "operationId": "get_cluster_sdn_ipams_ipam_status",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "ipamindex",
+  "method": "GET",
+  "path": "/cluster/sdn/ipams/{ipam}/status",
+  "description": "List PVE IPAM Entries",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "ipam",
+      "type": "string",
+      "required": true,
+      "description": "The SDN ipam object identifier.",
+      "minLength": 2,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Only list entries where you have 'SDN.Audit' or 'SDN.Allocate' permissions on '/sdn/zones/<zone>/<vnet>'",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/ipams/<ipam>/status'"
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_firewall_rules_pos",
+  "usageNotes": "Use this to inspect a single node-level firewall rule by its zero-based position in the ruleset. Requires `Sys.Audit` on `/nodes/{node}`. Because rules are position-indexed, pair this with the rule list endpoint first to identify the target `pos` before fetching details.",
+  "examples": [
+    {
+      "summary": "Fetch the first rule on node pve1 to inspect its action and source filter",
+      "path_params": {
+        "node": "pve1",
+        "pos": 0
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Rule positions are zero-based and shift whenever rules are inserted or deleted — always re-query the list after any write operation to get current positions.",
+    "The `pos` path param is marked optional in the spec but functionally required; omitting it will cause an API error.",
+    "Check the `enable` field (0 or 1) to confirm whether the rule is currently active before troubleshooting connectivity."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_firewall_rules",
+    "put_nodes_node_firewall_rules_pos",
+    "delete_nodes_node_firewall_rules_pos",
+    "post_nodes_node_firewall_rules"
+  ]
+}

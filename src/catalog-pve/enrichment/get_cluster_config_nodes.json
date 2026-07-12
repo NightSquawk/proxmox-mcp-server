@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_config_nodes",
+  "usageNotes": "Returns the list of node names participating in the Corosync cluster quorum as defined in the cluster configuration. Use this to enumerate cluster members before targeting node-specific operations. Note that this reflects the configured node list, not live membership — a node may be listed here but currently offline.",
+  "examples": [
+    {
+      "summary": "List all Corosync cluster nodes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This endpoint reads the static cluster config (/etc/pve/corosync.conf), not real-time quorum state — use the cluster status endpoint to check which nodes are actually online.",
+    "Requires Sys.Audit on the root path; API tokens with that privilege work without additional scoping.",
+    "Each returned 'node' value matches the node name used in other node-scoped paths (e.g., /nodes/{node}/...)."
+  ],
+  "relatedOperations": [
+    "get_cluster_status",
+    "get_nodes",
+    "get_cluster_config"
+  ]
+}

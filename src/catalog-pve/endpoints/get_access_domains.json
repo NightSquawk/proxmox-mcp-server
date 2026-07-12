@@ -1,0 +1,56 @@
+{
+  "operationId": "get_access_domains",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "index",
+  "method": "GET",
+  "path": "/access/domains",
+  "description": "Authentication domain index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "comment": {
+          "description": "A comment. The GUI use this text when you select a domain (Realm) on the login window.",
+          "optional": 1,
+          "type": "string"
+        },
+        "realm": {
+          "type": "string"
+        },
+        "tfa": {
+          "description": "Two-factor authentication provider.",
+          "enum": [
+            "yubico",
+            "oath"
+          ],
+          "optional": 1,
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{realm}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Anyone can access that, because we need that list for the login box (before the user is authenticated).",
+    "user": "world"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/domains'"
+}

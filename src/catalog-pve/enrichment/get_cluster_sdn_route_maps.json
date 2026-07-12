@@ -1,0 +1,28 @@
+{
+  "operationId": "get_cluster_sdn_route_maps",
+  "usageNotes": "Use this to enumerate all SDN route maps visible to the authenticated user. Results are filtered by permission — only route maps where the caller holds SDN.Audit or SDN.Allocate on the cluster are returned. Pass `running: true` to retrieve the currently active (applied) configuration rather than the pending/configured state.",
+  "examples": [
+    {
+      "summary": "List all pending SDN route maps",
+      "path_params": {},
+      "params": {}
+    },
+    {
+      "summary": "List only the running (applied) SDN route maps",
+      "path_params": {},
+      "params": {
+        "running": true
+      }
+    }
+  ],
+  "tips": [
+    "Without the `running` flag, the response reflects the saved configuration which may differ from what is currently active if `pvesh set /cluster/sdn/reload` has not been run.",
+    "Each returned object contains only the `id` field; use a per-route-map GET to retrieve full configuration details.",
+    "SDN must be enabled in the cluster (Datacenter > SDN) before route maps appear; an empty array is the normal response on clusters that have never configured SDN routing."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_route_maps_id",
+    "create_cluster_sdn_route_maps",
+    "get_cluster_sdn"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_cluster_firewall_rules_pos",
+  "usageNotes": "Permanently removes a cluster-wide firewall rule at the specified zero-based position; the operation takes effect immediately and requires `Sys.Modify` on `/`. Always fetch the current rule list first to confirm the target position, since rules shift after any deletion. Pass the `digest` from the current ruleset to guard against concurrent modifications overwriting each other.",
+  "examples": [
+    {
+      "summary": "Delete the third cluster firewall rule (position 2), with digest guard",
+      "path_params": {
+        "pos": 2
+      },
+      "params": {
+        "digest": "a3f1c2e9d8b047a65f3312c8e1d4b5f6a2c9e1d3"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently deletes the cluster firewall rule at the given position; no undo is available and all cluster nodes immediately lose the traffic control that rule provided.",
+  "tips": [
+    "Rule positions are zero-indexed and compact — deleting position 2 shifts all higher-index rules down by one.",
+    "Retrieve the current ruleset with get_cluster_firewall_rules first; its response includes the digest you should pass here.",
+    "Omitting `pos` targets position 0 (the first rule) — always supply an explicit position to avoid accidental deletions.",
+    "This endpoint returns null on success; treat a 200 with no body as confirmation."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_rules",
+    "get_cluster_firewall_rules_pos",
+    "post_cluster_firewall_rules",
+    "put_cluster_firewall_rules_pos"
+  ]
+}

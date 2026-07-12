@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_firewall_status",
+  "usageNotes": "Use this to audit the firewall posture of a specific PVE node managed by PDM, including both the node-level firewall and the per-guest (VM/LXC) firewall state in a single call. The response distinguishes between rules that are present ('all') and rules that are active ('active'), so a guest with rules but firewall disabled will show enabled=false with a non-zero 'all' count. Requires Resource.Audit on the remote; no query parameters are needed.",
+  "examples": [
+    {
+      "summary": "Check firewall status for node 'pve1' on remote 'hetzner-de'",
+      "path_params": {
+        "remote": "hetzner-de",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A guest's 'status' property is optional — if the guest has no firewall rules configured at all, that key may be absent from the response.",
+    "The node-level 'status' block reflects the host firewall (nftables/iptables chain), while each entry in 'guests' reflects the per-VM or per-CT firewall independently.",
+    "Use 'active' vs 'all' to detect misconfiguration: if 'all' > 0 but 'enabled' is false, rules exist but the firewall is off.",
+    "The 'kind' field in each guest entry ('qemu' or 'lxc') lets you filter results by guest type without a separate lookup."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_firewall_rules",
+    "get_pve_remotes_remote_nodes_node_qemu_vmid_firewall_status",
+    "get_pve_remotes_remote_nodes_node_lxc_vmid_firewall_status",
+    "get_pve_remotes_remote"
+  ]
+}

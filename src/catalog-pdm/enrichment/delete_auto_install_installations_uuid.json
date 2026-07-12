@@ -1,0 +1,24 @@
+{
+  "operationId": "delete_auto_install_installations_uuid",
+  "usageNotes": "Use this to permanently remove an auto-install installation entry from PDM by its UUID. The operation is synchronous and returns null on success — there is no UPID or task to poll. Requires System.Modify privilege on the system/auto-installation ACL path; API tokens are supported.",
+  "examples": [
+    {
+      "summary": "Delete a completed or stale installation entry",
+      "path_params": {
+        "uuid": "a3f1c2d4-11b2-4e3a-9c87-0123456789ab"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the installation record; the entry cannot be recovered after deletion.",
+  "tips": [
+    "Verify the UUID via get_auto_install_installations or list_auto_install_installations before deleting — there is no confirmation step.",
+    "Deletion is immediate and synchronous; the API returns null (not a task UPID), so no polling is needed.",
+    "Only the UUID path parameter is required; no query parameters are accepted."
+  ],
+  "relatedOperations": [
+    "get_auto_install_installations_uuid",
+    "get_auto_install_installations",
+    "post_auto_install_installations"
+  ]
+}

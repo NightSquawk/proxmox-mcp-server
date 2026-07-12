@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_aplinfo",
+  "usageNotes": "Returns the list of available LXC appliance templates (from the Proxmox appliance repository) as seen by the specified node. The node must be online and able to reach the appliance info cache; if the cache is stale or missing, use the companion download operation first to refresh it. This endpoint requires no special privilege beyond a valid user session (permissions: user=all).",
+  "examples": [
+    {
+      "summary": "List all available appliance templates on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The list is sourced from the node-local appliance cache; if the list appears empty or outdated, trigger a cache refresh via POST /nodes/{node}/aplinfo (download action) before calling this endpoint.",
+    "Each returned object typically includes fields such as package, version, section, headline, architecture, and location — useful for filtering before downloading a template.",
+    "Results vary per node if nodes have different appliance repositories configured in /etc/apt/sources.list.d/ on the node."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_aplinfo",
+    "get_nodes_node_storage_content",
+    "post_nodes_node_lxc"
+  ]
+}

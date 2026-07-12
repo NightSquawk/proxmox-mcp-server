@@ -1,0 +1,41 @@
+{
+  "operationId": "get_version",
+  "surface": "pdm",
+  "resource": "version",
+  "category": "System",
+  "name": "version",
+  "method": "GET",
+  "path": "/version",
+  "description": "Return the program's version/release info",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Version information.",
+    "properties": {
+      "release": {
+        "description": "The package release.",
+        "type": "string"
+      },
+      "repoid": {
+        "description": "The repoid.",
+        "type": "string"
+      },
+      "version": {
+        "description": "The version string.",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "description": "Any valid user can access this.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/version'"
+}

@@ -1,0 +1,23 @@
+{
+  "operationId": "get_ceph_clusters",
+  "usageNotes": "Use this to enumerate all Ceph clusters registered in Proxmox Datacenter Manager and get a quick health snapshot for each. Results are filtered to clusters where the caller has at least one auditable PVE member, so unprivileged tokens will see a subset. Capacity and OSD/monitor fields are cached and may be absent if PDM has not yet polled a cluster — clusters in 'unreachable', 'gone', or 'tombstoned' states will still appear but with minimal live data.",
+  "examples": [
+    {
+      "summary": "List all accessible Ceph clusters and check health at a glance",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'state' field is key: 'detected' means reachable this sweep cycle; 'unreachable' means all probes failed but the cluster may still be healthy from another vantage; 'tombstoned' clusters are silently excluded from auto-re-detection until an admin runs the tombstone-reset command.",
+    "Capacity fields (bytes-avail, bytes-used, bytes-total) reflect cached values from the last successful poll — they are not real-time and may lag by minutes to hours.",
+    "If 'health' is absent, PDM has no cached status yet; trigger a manual cluster status fetch or wait for the next auto-detection sweep.",
+    "Use the 'remote' and 'node' fields to construct deep-links into the native PVE web UI for that cluster's Ceph panel.",
+    "A non-zero 'problem-count' paired with 'HEALTH_OK' indicates a race between the health string cache and the problem-count cache — treat either non-OK health or problem-count > 0 as needing investigation."
+  ],
+  "relatedOperations": [
+    "get_ceph_cluster",
+    "get_ceph_cluster_status",
+    "get_remotes"
+  ]
+}

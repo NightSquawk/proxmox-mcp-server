@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_sdn_dns",
+  "usageNotes": "Use this to list all SDN DNS provider integrations configured in the cluster. Requires 'SDN.Audit' or 'SDN.Allocate' on '/sdn/dns/<dns>' — callers only see entries they have permission on. Currently the only supported provider type is 'powerdns'; use the optional 'type' filter to scope results when you only care about that provider.",
+  "examples": [
+    {
+      "summary": "List all configured SDN DNS providers",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response array may be empty if no DNS integrations have been configured under Datacenter > SDN > DNS.",
+    "Each returned object includes a 'dns' field (the zone/config name) and a 'type' field — use the 'dns' value as the identifier when querying individual DNS config endpoints.",
+    "PowerDNS is the only type currently enumerated; passing any other value to the 'type' filter will return an empty list."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_dns_dns",
+    "get_cluster_sdn_zones",
+    "get_cluster_sdn"
+  ]
+}

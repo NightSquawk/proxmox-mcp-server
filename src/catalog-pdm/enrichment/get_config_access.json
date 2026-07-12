@@ -1,0 +1,21 @@
+{
+  "operationId": "get_config_access",
+  "usageNotes": "Use this endpoint to discover the available sub-resources under the /config/access namespace in Proxmox Datacenter Manager. It functions as a directory index and requires no elevated privileges — any authenticated user or API token may call it. The response structure is null-typed in the spec, meaning the API returns a list of child endpoints rather than a domain object.",
+  "examples": [
+    {
+      "summary": "List available access configuration sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "No query parameters are accepted; passing any will be silently ignored or rejected.",
+    "Because permissions are 'user: all', this is safe to call with any valid API token for capability discovery.",
+    "Use the returned directory entries to determine which /config/access/* endpoints exist before drilling into a specific sub-resource."
+  ],
+  "relatedOperations": [
+    "get_config_access_domains",
+    "get_config_access_users",
+    "get_config_access_roles"
+  ]
+}

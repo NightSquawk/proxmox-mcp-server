@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_rules_pos",
+  "usageNotes": "Retrieves a single firewall rule for an LXC container by its zero-based position in the ruleset. Use this to inspect a specific rule's full details (action, proto, ports, source/dest, enable state) before modifying or deleting it. Requires VM.Audit on /vms/{vmid}; the container does not need to be running.",
+  "examples": [
+    {
+      "summary": "Fetch the first firewall rule for LXC 200 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 200,
+        "pos": 0
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Rule positions are zero-indexed; use get_nodes_node_lxc_vmid_firewall_rules (list) first to enumerate positions before fetching a specific one.",
+    "The 'enable' field returns 0 (disabled) or 1 (enabled) as an integer, not a boolean.",
+    "If 'macro' is set, it overrides proto/dport/sport — individual port/protocol fields may be absent or ignored."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_rules",
+    "put_nodes_node_lxc_vmid_firewall_rules_pos",
+    "delete_nodes_node_lxc_vmid_firewall_rules_pos",
+    "post_nodes_node_lxc_vmid_firewall_rules"
+  ]
+}

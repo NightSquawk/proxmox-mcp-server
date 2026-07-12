@@ -1,0 +1,23 @@
+{
+  "operationId": "post_remotes_metric_collection_trigger",
+  "usageNotes": "Use this to manually kick off metric collection for one or all registered remotes — useful after adding a new remote or when dashboard metrics appear stale. Omit the `remote` body parameter to collect from every remote simultaneously. Returns null synchronously; there is no UPID to poll — collection happens in the background.",
+  "examples": [
+    {
+      "summary": "Trigger metric collection for a single remote named 'pve-hetzner'",
+      "path_params": {},
+      "params": {
+        "remote": "pve-hetzner"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting the `remote` field triggers collection for all remotes at once — use with care if many remotes are registered, as it may cause a brief spike in API load.",
+    "Remote IDs must be 2–32 characters and match the pattern [A-Za-z0-9_][A-Za-z0-9._-]* — the same ID used when the remote was registered.",
+    "Since the return type is null, success is confirmed by HTTP 200 with an empty body; no task ID is issued."
+  ],
+  "relatedOperations": [
+    "get_remotes",
+    "post_remotes",
+    "get_remotes_remoteid_metrics"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_tasks",
+  "usageNotes": "Use this endpoint to audit or monitor task history on a specific PDM node — useful after triggering async operations to confirm completion or identify failures. Unprivileged users only see their own tasks; to see all users' tasks the caller must hold Sys.Audit on /system/tasks. The default page size is 50; use 'limit' and 'start' together for pagination, or set limit=0 to retrieve all matching tasks at once.",
+  "examples": [
+    {
+      "summary": "List only failed tasks from the last 24 hours on node 'pdm01'",
+      "path_params": {
+        "node": "pdm01"
+      },
+      "params": {
+        "errors": true,
+        "since": 1719532800,
+        "limit": 100
+      }
+    }
+  ],
+  "tips": [
+    "Use 'running': true to poll for in-progress tasks immediately after triggering an async operation.",
+    "'typefilter' does a substring match on worker_type (e.g. 'backup', 'vzdump', 'syncjob') — no exact-match required.",
+    "Each returned item includes a UPID string that can be passed to the task log/status endpoints to retrieve full output.",
+    "Combine 'since' and 'until' UNIX epoch values to scope results to a specific maintenance window.",
+    "Pass 'userfilter' as 'user@realm' (e.g. 'root@pam') to narrow results to a single authenticator identity."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log",
+    "delete_nodes_node_tasks_upid"
+  ]
+}

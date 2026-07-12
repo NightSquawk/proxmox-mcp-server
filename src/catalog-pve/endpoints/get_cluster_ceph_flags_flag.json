@@ -1,0 +1,50 @@
+{
+  "operationId": "get_cluster_ceph_flags_flag",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_flag",
+  "method": "GET",
+  "path": "/cluster/ceph/flags/{flag}",
+  "description": "Get the status of a specific ceph flag.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "flag",
+      "type": "string",
+      "required": true,
+      "description": "The name of the flag name to get.",
+      "enum": [
+        "nobackfill",
+        "nodeep-scrub",
+        "nodown",
+        "noin",
+        "noout",
+        "norebalance",
+        "norecover",
+        "noscrub",
+        "notieragent",
+        "noup",
+        "pause"
+      ]
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "boolean"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/ceph/flags/nobackfill'"
+}

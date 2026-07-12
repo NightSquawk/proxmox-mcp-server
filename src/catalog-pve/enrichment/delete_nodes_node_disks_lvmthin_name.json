@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_disks_lvmthin_name",
+  "usageNotes": "Use this to permanently remove an LVM thin pool from a node; the target node must be online and the caller must hold Sys.Modify at the root path (plus Datastore.Allocate on /storage when using cleanup-config). The operation returns an async task UPID — poll the task status to confirm completion before treating the pool as removed. If VMs or containers still reference volumes inside the thin pool, removal will fail; evacuate or remove those volumes first.",
+  "examples": [
+    {
+      "summary": "Remove thin pool 'data-thin' from node 'pve1', clean up storage config and wipe underlying disks",
+      "path_params": {
+        "node": "pve1",
+        "name": "data-thin"
+      },
+      "params": {
+        "volume-group": "pve-vg",
+        "cleanup-config": true,
+        "cleanup-disks": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently destroys the LVM thin pool and all virtual disk volumes it contains; data is unrecoverable unless a backup exists, and cleanup-disks will additionally wipe the underlying block devices.",
+  "tips": [
+    "cleanup-config removes the storage definition from Proxmox; omit it if you plan to recreate the pool under the same name and want to preserve the storage entry.",
+    "cleanup-disks wipes partition/signature data so the physical disk can be reused — skip this flag if you intend to repurpose the VG for another thin pool without re-partitioning.",
+    "The required volume-group param must match the VG that contains the thin pool, not the thin pool name itself.",
+    "Always snapshot or back up any VM/CT disks stored in the pool before calling this endpoint."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_disks_lvmthin",
+    "get_nodes_node_disks_lvmthin",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

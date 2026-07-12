@@ -1,0 +1,30 @@
+{
+  "operationId": "put_access_acl",
+  "usageNotes": "Use this to grant or revoke role-based permissions on a Proxmox resource path (e.g. /vms/100, /storage/local, /nodes/pve1). The caller must hold the 'Modify' privilege on the target path itself. Supplying delete=true removes the matching ACL entry instead of adding it; at least one of users, groups, or tokens must be provided alongside the required path and roles.",
+  "examples": [
+    {
+      "summary": "Grant PVEVMAdmin role to a user on a specific VM, propagating to child paths",
+      "path_params": {},
+      "params": {
+        "path": "/vms/100",
+        "roles": "PVEVMAdmin",
+        "users": "jsmith@pve",
+        "propagate": true
+      }
+    }
+  ],
+  "tips": [
+    "The path /vms/{vmid} targets a single VM; /vms/ (root) targets all VMs — be specific to avoid over-granting.",
+    "propagate defaults to true; set it to false when you want the permission to apply only at the exact path level and not be inherited by child objects.",
+    "Built-in roles (PVEAdmin, PVEVMAdmin, PVEAuditor, etc.) cannot be deleted — use get_access_roles to confirm a custom role exists before assigning it.",
+    "API tokens inherit at most the privileges of their owning user; assigning a role broader than the user's own permissions has no net effect for the token.",
+    "Removing a non-existent ACL entry (delete=true on an entry that doesn't exist) is a no-op and returns null without error."
+  ],
+  "relatedOperations": [
+    "get_access_acl",
+    "get_access_roles",
+    "post_access_users",
+    "get_access_users",
+    "post_access_groups"
+  ]
+}

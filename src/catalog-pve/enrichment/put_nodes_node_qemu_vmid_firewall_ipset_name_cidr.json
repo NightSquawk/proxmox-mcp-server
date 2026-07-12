@@ -1,0 +1,32 @@
+{
+  "operationId": "put_nodes_node_qemu_vmid_firewall_ipset_name_cidr",
+  "usageNotes": "Use this to update the comment, nomatch flag, or digest guard on an existing CIDR entry within a VM-level firewall IP set; the CIDR itself is a path parameter and cannot be changed in-place — to change the address, delete and re-add the entry. Requires VM.Config.Network on /vms/{vmid}. Returns null synchronously (no UPID); the change is applied immediately to the in-memory firewall ruleset.",
+  "examples": [
+    {
+      "summary": "Add a comment and set nomatch on an existing IP set entry for VM 101",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101,
+        "name": "trusted-mgmt",
+        "cidr": "10.10.5.0/24"
+      },
+      "params": {
+        "comment": "Exclude management subnet from match",
+        "nomatch": true
+      }
+    }
+  ],
+  "tips": [
+    "Pass 'digest' to guard against concurrent edits — retrieve it from the GET endpoint for the same IP set entry before writing.",
+    "Setting 'nomatch' to true inverts the match for this CIDR, useful for punching exceptions into a broader allow/deny range.",
+    "The IP set 'name' must already exist; use post_nodes_node_qemu_vmid_firewall_ipset to create the set and post_nodes_node_qemu_vmid_firewall_ipset_name to add entries.",
+    "The cidr path parameter accepts plain IPs, CIDR notation, or Proxmox aliases — ensure the value matches exactly what was used when the entry was created."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_ipset_name_cidr",
+    "delete_nodes_node_qemu_vmid_firewall_ipset_name_cidr",
+    "post_nodes_node_qemu_vmid_firewall_ipset_name",
+    "get_nodes_node_qemu_vmid_firewall_ipset_name",
+    "get_nodes_node_qemu_vmid_firewall_ipset"
+  ]
+}

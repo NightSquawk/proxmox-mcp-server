@@ -1,0 +1,77 @@
+{
+  "operationId": "get_config_acme_plugins_id",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "{id}",
+  "method": "GET",
+  "path": "/config/acme/plugins/{id}",
+  "description": "List ACME challenge plugins.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "ACME Challenge Plugin ID.",
+      "minLength": 1,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "ACME plugin config. The API's format is inherited from PVE/PMG:",
+    "properties": {
+      "api": {
+        "description": "DNS Api name.",
+        "optional": 1,
+        "type": "string"
+      },
+      "data": {
+        "description": "Plugin configuration data.",
+        "optional": 1,
+        "type": "string"
+      },
+      "disable": {
+        "description": "Flag to disable the config.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "plugin": {
+        "description": "Plugin ID.",
+        "type": "string"
+      },
+      "type": {
+        "description": "Plugin type.",
+        "type": "string"
+      },
+      "validation-delay": {
+        "description": "Extra delay in seconds to wait before requesting validation.\n\nAllows to cope with long TTL of DNS records.",
+        "maximum": 4294967295,
+        "minimum": 0,
+        "optional": 1,
+        "type": "integer"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "certificates"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/acme/plugins/<id>'"
+}

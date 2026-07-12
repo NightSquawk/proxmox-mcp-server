@@ -1,0 +1,87 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_vncproxy",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "vncproxy",
+  "method": "POST",
+  "path": "/nodes/{node}/qemu/{vmid}/vncproxy",
+  "description": "Creates a TCP VNC proxy connections.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "generate-password",
+      "type": "boolean",
+      "required": false,
+      "description": "Deprecated, do not use. Password is generated when required.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "websocket",
+      "type": "boolean",
+      "required": false,
+      "description": "Prepare for websocket upgrade (only required when using serial terminal, otherwise upgrade is always possible).",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "additionalProperties": 0,
+    "properties": {
+      "cert": {
+        "type": "string"
+      },
+      "password": {
+        "description": "Password used for authentication within the VNC protocol. Consists of printable ASCII characters ('!' .. '~').",
+        "optional": 1,
+        "type": "string"
+      },
+      "port": {
+        "type": "integer"
+      },
+      "ticket": {
+        "type": "string"
+      },
+      "upid": {
+        "type": "string"
+      },
+      "user": {
+        "type": "string"
+      }
+    }
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Console"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/vncproxy'"
+}

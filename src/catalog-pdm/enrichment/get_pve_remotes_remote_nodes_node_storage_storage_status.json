@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_storage_storage_status",
+  "usageNotes": "Use this endpoint to check the live capacity and accessibility of a specific storage pool on a remote PVE node — useful for pre-flight checks before migrations or backups. The `active` and `enabled` fields are distinct: `enabled` reflects the configuration state while `active` indicates the storage is currently reachable and mounted. Requires `Resource.Audit` privilege on the remote's storage path; the target node must be online and the remote must be configured in PDM.",
+  "examples": [
+    {
+      "summary": "Check status of local-lvm storage on pve-node1 of the hetzner remote",
+      "path_params": {
+        "remote": "hetzner",
+        "node": "pve-node1",
+        "storage": "local-lvm"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If `active` is false but `enabled` is true, the storage backend is configured but currently unreachable (e.g. NFS mount dropped, disk offline) — investigate at the PVE node level.",
+    "Capacity fields (`avail`, `total`, `used`) are in bytes; divide by 1073741824 for GiB.",
+    "The `content` field lists what the storage is allowed to hold (images, backup, iso, etc.) — not what it currently contains.",
+    "The description mentions QEMU VMs but this endpoint applies to storage status, not VM status; node auto-detection noted in the description does not apply to the storage path variant."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_storage",
+    "get_pve_remotes_remote_nodes_node_storage_storage_content",
+    "get_pve_remotes_remote_nodes_node"
+  ]
+}

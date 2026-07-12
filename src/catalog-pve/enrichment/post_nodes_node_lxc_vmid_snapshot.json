@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_snapshot",
+  "usageNotes": "Creates a point-in-time snapshot of an LXC container; the container does not need to be stopped first, though a running container snapshot may have inconsistent filesystem state unless the application inside is quiesced. Returns a UPID string — poll the task API to confirm completion before relying on the snapshot. Requires the VM.Snapshot privilege on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Snapshot a running web-server container before a package upgrade",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 201
+      },
+      "params": {
+        "snapname": "preupgrade20260629",
+        "description": "Pre-upgrade snapshot before apt dist-upgrade 2026-06-29"
+      }
+    }
+  ],
+  "tips": [
+    "snapname must follow pve-configid format: alphanumeric plus hyphens/underscores, max 40 chars — no spaces or dots.",
+    "Snapshots of running containers capture RAM state implicitly via the container's filesystem, but they are NOT crash-consistent; quiesce or stop the container for a clean backup.",
+    "Poll GET /nodes/{node}/tasks/{upid}/status to wait for the snapshot task to finish before triggering any dependent operation (rollback, clone, etc.).",
+    "LXC snapshots require the storage backend to support snapshots (e.g., ZFS, LVM-thin, or Ceph); plain directory storage will fail at snapshot time."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_snapshot",
+    "post_nodes_node_lxc_vmid_snapshot_snapname_rollback",
+    "delete_nodes_node_lxc_vmid_snapshot_snapname",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

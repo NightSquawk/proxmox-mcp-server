@@ -1,0 +1,111 @@
+{
+  "operationId": "post_auto_install_tokens",
+  "surface": "pdm",
+  "resource": "auto-install",
+  "category": "Auto Install",
+  "name": "tokens",
+  "method": "POST",
+  "path": "/auto-install/tokens",
+  "description": "POST /auto-install/tokens\n\nCreates a new token for authenticating automated installations.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Comment.",
+      "maxLength": 128,
+      "pattern": "/^[[:^cntrl:]]*$/"
+    },
+    {
+      "name": "enabled",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether the token is enabled.",
+      "default": true
+    },
+    {
+      "name": "expire-at",
+      "type": "integer",
+      "required": false,
+      "description": "Token expiration date, in seconds since the epoch. '0' means no expiration.",
+      "default": 0,
+      "minimum": 0
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "API Token name",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Result when creating a new token.",
+    "properties": {
+      "secret": {
+        "description": "The secret value itself.",
+        "type": "string"
+      },
+      "token": {
+        "additionalProperties": false,
+        "description": "A token for authenticating requests from the automated installer.",
+        "properties": {
+          "comment": {
+            "description": "Comment.",
+            "maxLength": 128,
+            "optional": 1,
+            "pattern": "/^[[:^cntrl:]]*$/",
+            "type": "string"
+          },
+          "created-by": {
+            "description": "Name of the user that created it",
+            "type": "string"
+          },
+          "enabled": {
+            "default": true,
+            "description": "Whether this token is enabled",
+            "optional": 1,
+            "type": "boolean"
+          },
+          "expire-at": {
+            "description": "Token expiration date (seconds since epoch). '0' means no expiration date.",
+            "minimum": 0,
+            "optional": 1,
+            "type": "integer"
+          },
+          "id": {
+            "description": "API Token name",
+            "maxLength": 64,
+            "minLength": 3,
+            "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "auto-installation"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"id\":\"<id>\"}' 'https://PDM_HOST:8443/api2/json/auto-install/tokens'"
+}

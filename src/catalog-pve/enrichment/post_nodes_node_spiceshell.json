@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_spiceshell",
+  "usageNotes": "Creates a SPICE shell session on a specific node, returning connection parameters (host, tls-port, password, proxy, type) that can be passed directly to the 'remote-viewer' application for an interactive terminal. Requires the 'Sys.Console' privilege on '/nodes/{node}'; commands other than 'login' (e.g., 'upgrade', 'ceph_install') additionally require 'root@pam' authentication. Specify the 'proxy' parameter as the hostname used to reach the API so SPICE traffic is routed through a reachable node.",
+  "examples": [
+    {
+      "summary": "Open a SPICE login shell on node pve1, routing through the same node as SPICE proxy",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "cmd": "login",
+        "proxy": "pve1.example.com"
+      }
+    }
+  ],
+  "tips": [
+    "Pass the returned object directly to 'remote-viewer' (e.g., via a .vv connection file) — the password is single-use and short-lived.",
+    "The 'proxy' field defaults to the node running the request; set it explicitly to whatever hostname your client can actually reach to avoid SPICE connection failures in multi-node clusters.",
+    "The 'cmd-opts' field accepts null-terminated strings for passing extra arguments to built-in commands like 'upgrade' or 'ceph_install'.",
+    "SPICE requires the 'spiceproxy' service to be running on the target node (enabled by default on PVE nodes)."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_termproxy",
+    "get_nodes_node_vncshell",
+    "post_nodes_node_vncshell"
+  ]
+}

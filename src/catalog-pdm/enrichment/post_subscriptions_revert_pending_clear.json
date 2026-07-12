@@ -1,0 +1,24 @@
+{
+  "operationId": "post_subscriptions_revert_pending_clear",
+  "usageNotes": "Use this to cancel a queued 'Clear Key' action on a specific remote/node pair without discarding all other pending changes in the pool. This is the surgical undo for a misqueued clear — the subscription binding remains intact so the operator can re-queue or leave the live key in place. Pass the current config digest to guard against concurrent modifications racing this reversal.",
+  "examples": [
+    {
+      "summary": "Revert a queued key clear for node 'pve-node1' on remote 'hetzner-prod'",
+      "path_params": {},
+      "params": {
+        "remote": "hetzner-prod",
+        "node": "pve-node1",
+        "digest": "a3f1c2e4b5d6789012345678901234567890abcd1234567890abcdef12345678"
+      }
+    }
+  ],
+  "tips": [
+    "This targets one remote/node pair only — use the global Discard Pending path if you need to roll back all pending changes at once.",
+    "The digest param is optional but recommended in automated workflows to prevent a concurrent operator change from being silently overwritten.",
+    "Returns null on success; treat any non-2xx response as a sign the pending clear was already applied or the binding no longer exists."
+  ],
+  "relatedOperations": [
+    "post_subscriptions_queue_clear",
+    "post_subscriptions_discard_pending"
+  ]
+}

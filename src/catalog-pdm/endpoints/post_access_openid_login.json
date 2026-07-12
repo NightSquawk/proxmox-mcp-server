@@ -1,0 +1,69 @@
+{
+  "operationId": "post_access_openid_login",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "login",
+  "method": "POST",
+  "path": "/access/openid/login",
+  "description": "Get a new ticket as an HttpOnly cookie. Supports tickets via cookies.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "code",
+      "type": "string",
+      "required": true,
+      "description": "OpenId authorization code."
+    },
+    {
+      "name": "redirect-url",
+      "type": "string",
+      "required": true,
+      "description": "Redirection Url. The client should set this to used server url."
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "required": true,
+      "description": "OpenId state."
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "The API response for a ticket call.",
+    "properties": {
+      "CSRFPreventionToken": {
+        "description": "The CSRF prevention token.",
+        "optional": 1,
+        "type": "string"
+      },
+      "ticket": {
+        "description": "The ticket as is supposed to be used in the authentication header. Not provided here if the\nendpoint uses HttpOnly cookies to supply the actual ticket.",
+        "optional": 1,
+        "type": "string"
+      },
+      "ticket-info": {
+        "description": "Like a full ticket, except the signature is missing. Useful in HttpOnly-contexts\n(browsers).",
+        "optional": 1,
+        "type": "string"
+      },
+      "username": {
+        "description": "User ID",
+        "maxLength": 64,
+        "minLength": 3,
+        "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "user": "world"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"code\":\"<code>\",\"redirect-url\":\"<redirect-url>\",\"state\":\"<state>\"}' 'https://PDM_HOST:8443/api2/json/access/openid/login'"
+}

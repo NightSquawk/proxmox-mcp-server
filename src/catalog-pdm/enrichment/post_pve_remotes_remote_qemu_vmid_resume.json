@@ -1,0 +1,26 @@
+{
+  "operationId": "post_pve_remotes_remote_qemu_vmid_resume",
+  "usageNotes": "Use this to resume a QEMU VM on a remote PVE node that is currently in a paused or suspended (RAM-suspended) state. The operation is asynchronous and returns a remote UPID that should be polled for task completion before assuming the VM is running. The caller must hold Resource.Manage on the remote/VM resource path; the optional 'node' body parameter can pin execution to a specific cluster node if the remote is a cluster.",
+  "examples": [
+    {
+      "summary": "Resume a suspended VM (VMID 105) on remote 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 105
+      },
+      "params": {
+        "node": "pve01"
+      }
+    }
+  ],
+  "tips": [
+    "The returned UPID is scoped to the remote PVE node — use a PDM task-status endpoint (not a local PVE endpoint) to poll it.",
+    "Omit 'node' when the remote is a standalone host; supply it when the remote is a cluster to avoid ambiguous node selection.",
+    "A VM must be in 'paused' or 'suspended' power state for this call to succeed; attempting to resume a running or stopped VM will return an error from the remote."
+  ],
+  "relatedOperations": [
+    "post_pve_remotes_remote_qemu_vmid_suspend",
+    "get_pve_remotes_remote_qemu_vmid_status_current",
+    "get_pve_remotes_remote_tasks_upid_status"
+  ]
+}

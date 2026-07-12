@@ -1,0 +1,38 @@
+{
+  "operationId": "put_nodes_node_lxc_vmid_firewall_options",
+  "usageNotes": "Use this to enable, disable, or tune the per-container firewall (default policies, logging levels, DHCP/NDP/MAC filter toggles) for a specific LXC container. The firewall must also be enabled at the cluster and node level for per-container rules to take effect; setting 'enable: true' here alone is not sufficient. Returns null synchronously — no UPID is issued.",
+  "examples": [
+    {
+      "summary": "Enable the container firewall with DROP default policies and warning-level logging",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {
+        "enable": true,
+        "policy_in": "DROP",
+        "policy_out": "ACCEPT",
+        "log_level_in": "warning",
+        "log_level_out": "nolog",
+        "dhcp": true,
+        "ndp": true,
+        "macfilter": true,
+        "ipfilter": true
+      }
+    }
+  ],
+  "tips": [
+    "Use 'digest' (from the GET options response) to prevent race conditions when multiple administrators may be editing firewall config simultaneously.",
+    "The 'delete' param accepts a comma-separated list of option names (e.g. 'log_level_in,radv') to revert specific fields to their defaults without touching others.",
+    "ipfilter is particularly useful for containers: it automatically restricts each interface to only its configured IP(s), blocking IP spoofing at the hypervisor level.",
+    "macfilter defaults to enabled (1); disabling it allows a container to send traffic from arbitrary MAC addresses, which is a security risk on shared networks.",
+    "radv (Router Advertisement) should only be enabled on containers acting as IPv6 routers/gateways — enabling it on a normal workload container can disrupt IPv6 on the segment."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_options",
+    "get_nodes_node_lxc_vmid_firewall_rules",
+    "post_nodes_node_lxc_vmid_firewall_rules",
+    "get_cluster_firewall_options",
+    "put_nodes_node_firewall_options"
+  ]
+}

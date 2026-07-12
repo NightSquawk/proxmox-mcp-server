@@ -1,0 +1,21 @@
+{
+  "operationId": "get_nodes_node_dns",
+  "usageNotes": "Use this to read the current DNS resolver configuration (nameservers, search domain) for a specific PDM node. The response includes a SHA-256 digest suitable for optimistic-lock checks before issuing a write. Requires the System.Audit privilege on the node's dns path — token-based auth is supported.",
+  "examples": [
+    {
+      "summary": "Fetch DNS settings for a PDM node named 'pdm-node1'",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "dns1/dns2/dns3 and search are optional in the response — a node with minimal configuration may return only one nameserver or no search domain.",
+    "Capture the returned 'digest' value before calling a corresponding DNS write endpoint; passing a stale digest will cause the write to be rejected, preventing concurrent config clobbering.",
+    "The 'options' field surfaces any extra directives present in /etc/resolv.conf that PDM does not model explicitly (e.g. 'timeout', 'ndots')."
+  ],
+  "relatedOperations": [
+    "put_nodes_node_dns"
+  ]
+}

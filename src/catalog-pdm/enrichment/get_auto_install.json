@@ -1,0 +1,16 @@
+{
+  "operationId": "get_auto_install",
+  "usageNotes": "Returns the directory index of the auto-install API resource, listing available child endpoints under /auto-install. Use this as a discovery call to confirm which auto-install sub-resources the PDM instance exposes before calling more specific operations. Accessible by all authenticated users; no elevated privileges required.",
+  "examples": [
+    {
+      "summary": "List available auto-install sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This endpoint returns null per the spec — the directory index response body may be empty or minimal; treat it as a structural probe rather than a data-bearing call.",
+    "No parameters are accepted; any query string values will be ignored."
+  ],
+  "relatedOperations": []
+}

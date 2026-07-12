@@ -1,0 +1,48 @@
+{
+  "operationId": "delete_cluster_firewall_rules_pos",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete_rule",
+  "method": "DELETE",
+  "path": "/cluster/firewall/rules/{pos}",
+  "description": "Delete rule.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "pos",
+      "type": "integer",
+      "required": false,
+      "description": "Update rule at position <pos>.",
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    }
+  ],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/firewall/rules/0'"
+}

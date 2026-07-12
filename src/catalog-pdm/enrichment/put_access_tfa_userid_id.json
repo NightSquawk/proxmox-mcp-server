@@ -1,0 +1,28 @@
+{
+  "operationId": "put_access_tfa_userid_id",
+  "usageNotes": "Use this to rename or toggle a user's existing TFA entry — for example, to disable a hardware key that is temporarily unavailable or to label entries when a user registers multiple authenticators. The TFA entry ID must already exist; obtain it first via the corresponding GET. An admin with Access.Modify can update any user's entry, while a user can update their own; when acting as the owning user, Proxmox may require the current account password via the `password` field.",
+  "examples": [
+    {
+      "summary": "Disable a TOTP entry for a user and give it a descriptive label",
+      "path_params": {
+        "userid": "jsmith@pve",
+        "id": "totp-7f3a2b1c"
+      },
+      "params": {
+        "description": "Backup TOTP - phone (disabled while traveling)",
+        "enable": false
+      }
+    }
+  ],
+  "tips": [
+    "Returns null on success — absence of an error is the confirmation.",
+    "The `password` param is required when the calling principal is the entry owner (non-admin) on realms that enforce confirmation.",
+    "To find the TFA entry `id`, call the GET /access/tfa/{userid} list endpoint first — IDs are opaque strings like 'totp-<uuid>'.",
+    "Toggling `enable` to false is a safe way to temporarily lock out a second factor without deleting it; re-enable it later without re-enrollment."
+  ],
+  "relatedOperations": [
+    "get_access_tfa_userid",
+    "post_access_tfa_userid",
+    "delete_access_tfa_userid_id"
+  ]
+}

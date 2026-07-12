@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_network_iface",
+  "usageNotes": "Removes a network interface configuration from the node's network config file (`/etc/network/interfaces`). The change is staged — it takes effect only after applying the pending network configuration (see `put_nodes_node_network`). Use the `digest` parameter to guard against concurrent edits when multiple operators may be modifying network config simultaneously.",
+  "examples": [
+    {
+      "summary": "Delete a bridge interface named vmbr1 from node pdm01",
+      "path_params": {
+        "node": "pdm01",
+        "iface": "vmbr1"
+      },
+      "params": {
+        "digest": "a3f1e2b4c7d9e0f12345678901234567890abcdef1234567890abcdef12345678"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the named interface from the node's network configuration; any VMs or services bound to that interface lose their network path once the configuration is applied.",
+  "tips": [
+    "The deletion is not applied until you call PUT /nodes/{node}/network to commit pending network changes; the node continues using the old config until then.",
+    "Fetch the current digest via GET /nodes/{node}/network before deleting to pass a valid SHA256 digest and prevent race conditions.",
+    "Requires System.Modify privilege scoped to the specific interface path; token-based auth is supported.",
+    "Attempting to delete an interface that is still referenced by a VM NIC or another interface (e.g., a bond slave) may cause errors or network disruption after apply — verify dependencies first."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network",
+    "get_nodes_node_network_iface",
+    "post_nodes_node_network",
+    "put_nodes_node_network_iface",
+    "put_nodes_node_network"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_config_access_ldap_realm",
+  "usageNotes": "Use this to inspect the full configuration of a specific LDAP authentication realm configured in Proxmox Datacenter Manager, including server addresses, bind DN, TLS mode, sync attribute mappings, and sync defaults. Requires the System.Audit privilege on the access/domains path — API tokens are supported. Note that the bind-dn credential (password) is not returned; only the structural config is exposed.",
+  "examples": [
+    {
+      "summary": "Retrieve the configuration for an LDAP realm named 'corp-ad'",
+      "path_params": {
+        "realm": "corp-ad"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response omits the bind password even if one is configured — use this call only to verify structural settings, not credential presence.",
+    "Check the 'mode' field (ldap / ldap+starttls / ldaps) and 'verify' flag together when troubleshooting TLS handshake failures during user sync.",
+    "If 'default' is true, this realm is pre-selected on the PDM login screen — changing it affects all users who rely on the default.",
+    "sync-attributes and sync-defaults-options are returned as formatted strings (comma-separated key=value pairs), not nested objects."
+  ],
+  "relatedOperations": [
+    "list_config_access_ldap",
+    "update_config_access_ldap_realm",
+    "delete_config_access_ldap_realm",
+    "create_config_access_ldap_realm"
+  ]
+}

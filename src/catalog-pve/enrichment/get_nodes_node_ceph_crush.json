@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_ceph_crush",
+  "usageNotes": "Retrieves the raw CRUSH map text from the specified Ceph-enabled PVE node; use this to inspect placement rules, device classes, and bucket hierarchies for an existing Ceph cluster. The target node must be online and have Ceph configured — calling it on a node without Ceph will return an error. Requires either Sys.Audit or Datastore.Audit at the root path.",
+  "examples": [
+    {
+      "summary": "Fetch the CRUSH map from the primary Ceph monitor node",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a raw compiled CRUSH map in text form; pipe it through 'crushtool -d' locally if you need to decompile and diff against a modified version.",
+    "If you intend to modify placement rules, capture this output first as a baseline before calling any CRUSH-editing endpoints.",
+    "Any healthy cluster node that hosts a Ceph monitor can serve this endpoint — use a monitor node for the most authoritative view."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph_osd",
+    "get_nodes_node_ceph_pools"
+  ]
+}

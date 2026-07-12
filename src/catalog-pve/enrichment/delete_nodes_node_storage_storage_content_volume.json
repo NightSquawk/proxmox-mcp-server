@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_storage_storage_content_volume",
+  "usageNotes": "Use to permanently remove a disk image, ISO, snippet, or backup file from a storage pool. The node hosting the storage must be online. Returns a task UPID (string) when the deletion is asynchronous, or null if the optional `delay` parameter is set and the task completes within that window.",
+  "examples": [
+    {
+      "summary": "Delete a VM disk image from local-lvm storage on pve1",
+      "path_params": {
+        "node": "pve1",
+        "storage": "local-lvm",
+        "volume": "local-lvm:vm-101-disk-0"
+      },
+      "params": {
+        "delay": 10
+      }
+    }
+  ],
+  "destructiveReason": "Permanently deletes the volume data from the storage backend with no built-in recovery path — the disk image, ISO, or backup file is irrecoverably lost.",
+  "tips": [
+    "The `storage` path param is marked optional in the spec — Proxmox can infer it from the volume ID, but providing it explicitly avoids ambiguity across shared storage.",
+    "If the volume is still referenced by a VM config, detach it first (update the VM hardware config) or Proxmox may reject the delete.",
+    "Use `delay` (1–30 s) to get a synchronous-style response for small volumes; omit it for large volumes to avoid timeouts and poll the returned UPID via the tasks API instead.",
+    "Requires 'Datastore.Allocate' on the storage, or 'Datastore.AllocateSpace' + 'VM.Backup' for backup volumes — verify privileges before calling in automated workflows."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_content",
+    "get_nodes_node_storage_storage_content_volume",
+    "post_nodes_node_storage_storage_content",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

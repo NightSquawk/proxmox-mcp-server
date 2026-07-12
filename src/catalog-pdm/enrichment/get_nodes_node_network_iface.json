@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_network_iface",
+  "usageNotes": "Use this to inspect the full configuration of a specific network interface on a PDM node, including IP addressing, interface type, bond/bridge membership, and active state. Requires System.Audit privilege on the specific interface path. The response reflects the on-disk /etc/network/interfaces configuration, not necessarily the live kernel state — check the 'active' field to confirm the interface is currently UP.",
+  "examples": [
+    {
+      "summary": "Read configuration for the management bridge vmbr0 on node pdm1",
+      "path_params": {
+        "node": "pdm1",
+        "iface": "vmbr0"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'active' field reflects kernel UP state; 'autostart' reflects whether the interface is configured to come up at boot — both can differ after manual ifup/ifdown.",
+    "For VLAN interfaces, expect 'vlan-id' and 'vlan-raw-device' fields in the response; for bonds, expect 'bond_mode' and 'slaves'.",
+    "Interface names are capped at 15 characters (Linux IFNAMSIZ limit), which also applies to the iface path parameter.",
+    "This endpoint reads the pending configuration file. If changes have been made but not applied, the response may differ from what is currently active on the node."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network",
+    "put_nodes_node_network_iface",
+    "post_nodes_node_network",
+    "delete_nodes_node_network_iface"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_vncproxy",
+  "usageNotes": "Use this to open an interactive console session to a running LXC container via VNC; the response returns a short-lived ticket, one-time password, port, and TLS cert needed to connect a VNC client or Proxmox's noVNC web console. The caller must hold the VM.Console privilege on /vms/{vmid} and the container's node must be online. Enable the 'websocket' flag when connecting through Proxmox's built-in web UI (noVNC); omit it for raw TCP VNC clients.",
+  "examples": [
+    {
+      "summary": "Open a websocket VNC proxy session for LXC 200 on node pve1 at 1280×720",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 200
+      },
+      "params": {
+        "websocket": true,
+        "width": 1280,
+        "height": 720
+      }
+    }
+  ],
+  "tips": [
+    "The returned ticket and password are single-use and expire quickly; connect immediately after receiving the response.",
+    "The 'port' in the response is ephemeral and allocated on the target node — ensure your client can reach that node's port directly, not just the API host.",
+    "Width and height only hint the initial console geometry; the container's getty or init system controls the actual terminal size independently.",
+    "If the container is stopped, this call will fail — check container status with get_nodes_node_lxc_vmid_status_current before calling."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_status_current",
+    "post_nodes_node_lxc_vmid_status_start",
+    "post_nodes_node_lxc_vmid_termproxy"
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "operationId": "put_cluster_mapping_dir_id",
+  "usageNotes": "Use this to modify an existing cluster-wide directory mapping — update its description, change node-to-path mappings via the `map` array, or remove individual settings using the `delete` field. Requires the `Mapping.Modify` privilege on `/mapping/dir/{id}`. Pass the `digest` field (retrieved from a prior GET) to guard against concurrent edits overwriting each other. Returns null on success; any error is signaled via HTTP status.",
+  "examples": [
+    {
+      "summary": "Update a shared-storage directory mapping to add a new node path and refresh its description",
+      "path_params": {
+        "id": "shared-nfs"
+      },
+      "params": {
+        "description": "NFS share mounted on pve01 and pve02 under /mnt/nfs-share",
+        "map": [
+          "node=pve01,path=/mnt/nfs-share",
+          "node=pve02,path=/mnt/nfs-share"
+        ],
+        "digest": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+      }
+    }
+  ],
+  "tips": [
+    "Use the `delete` field (comma-separated configid list) to unset optional fields like `description` without resending the full payload.",
+    "Fetch the current mapping with GET /cluster/mapping/dir/{id} first to obtain a valid `digest` value before modifying.",
+    "The `map` array format is node-keyed; each element typically follows `node=<nodename>,path=<absolute-path>` — verify the exact format against your PVE version's schema.",
+    "Directory mappings are cluster-wide; a change here affects how all nodes resolve the mapping ID to a local path."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_dir_id",
+    "post_cluster_mapping_dir",
+    "delete_cluster_mapping_dir_id",
+    "get_cluster_mapping_dir"
+  ]
+}

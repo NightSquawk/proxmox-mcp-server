@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_storage_storage",
+  "usageNotes": "Removes a storage definition from the cluster-wide storage configuration. This is a synchronous operation — it returns null immediately, not a task UPID. It only deletes the configuration entry; any data on the underlying storage (disks, datasets, directories) is left untouched. Requires the Datastore.Allocate privilege on the /storage path.",
+  "examples": [
+    {
+      "summary": "Delete an NFS storage definition named 'nfs-backup'",
+      "path_params": {
+        "storage": "nfs-backup"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the named storage pool from the Proxmox cluster configuration; any VMs or backups referencing this storage ID will lose access to their configured paths until the storage is re-added.",
+  "tips": [
+    "Verify no VMs or CT have disks, backups, or ISOs referencing this storage ID before deleting — Proxmox does not block removal even if resources are still assigned.",
+    "The operation is cluster-wide; removing the storage here removes it from all nodes that share the cluster config.",
+    "If you need to temporarily disable a storage pool without losing the config, use the update endpoint to set 'disable: 1' instead."
+  ],
+  "relatedOperations": [
+    "get_storage_storage",
+    "put_storage_storage",
+    "get_storage",
+    "post_storage"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_config_acme_plugins_id",
+  "usageNotes": "Use this endpoint to retrieve the full configuration of a specific ACME challenge plugin registered in Proxmox Datacenter Manager, including its DNS API name, credentials data, enabled/disabled state, and validation delay. Requires the System.Modify privilege on the system/certificates path. Call list_config_acme_plugins first to enumerate valid plugin IDs if the ID is not already known.",
+  "examples": [
+    {
+      "summary": "Fetch details for a DNS-01 ACME plugin named 'cloudflare-dns'",
+      "path_params": {
+        "id": "cloudflare-dns"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'data' field contains raw credential key-value pairs (e.g. CF_Token=xxx); treat it as sensitive — avoid logging the full response.",
+    "A plugin returned with 'disable: true' is registered but will not be used for certificate issuance until re-enabled.",
+    "The 'validation-delay' field is useful for DNS providers with slow propagation; a value of 120–300 seconds is common for high-TTL zones.",
+    "Plugin IDs must match the pattern /^(?:[A-Za-z0-9_][A-Za-z0-9._-]*)$/ and are limited to 32 characters."
+  ],
+  "relatedOperations": [
+    "get_config_acme_plugins",
+    "post_config_acme_plugins",
+    "put_config_acme_plugins_id",
+    "delete_config_acme_plugins_id",
+    "get_config_acme_accounts_name"
+  ]
+}

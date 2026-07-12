@@ -1,0 +1,33 @@
+{
+  "operationId": "post_nodes_node_disks_zfs",
+  "usageNotes": "Use this endpoint to create a new ZFS pool on a specific node using one or more raw block devices; the node must be online and the caller must hold the Sys.Modify privilege on /. The operation returns a task UPID — poll the task status endpoint to confirm completion before treating the pool as available. Setting add_storage=true automatically registers the zpool as a Proxmox storage entry and additionally requires the Datastore.Allocate privilege on /storage.",
+  "examples": [
+    {
+      "summary": "Create a 3-disk RAIDZ1 pool named 'tank' on pve1 with LZ4 compression and auto-register it as storage",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "name": "tank",
+        "devices": "sdb,sdc,sdd",
+        "raidlevel": "raidz",
+        "compression": "lz4",
+        "ashift": 12,
+        "add_storage": true
+      }
+    }
+  ],
+  "tips": [
+    "ashift should match the physical sector size of your drives: 12 for 4K-native drives (most modern HDDs/SSDs), 9 for 512-byte legacy drives. Mismatched ashift degrades performance permanently and cannot be changed after pool creation.",
+    "draid and draid2/draid3 levels require the draid-config parameter (data and spares values); omitting it will cause the request to fail.",
+    "Devices must not be in use by another zpool, partition table, or filesystem — use get_nodes_node_disks_list to identify eligible 'available' disks first.",
+    "lz4 is the recommended default compression for most workloads; zstd offers higher ratios for cold data at higher CPU cost.",
+    "mirror requires an even number of devices (minimum 2); raid10 requires at least 4 devices."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_zfs",
+    "get_nodes_node_disks_list",
+    "delete_nodes_node_disks_zfs_name",
+    "get_nodes_node_tasks"
+  ]
+}

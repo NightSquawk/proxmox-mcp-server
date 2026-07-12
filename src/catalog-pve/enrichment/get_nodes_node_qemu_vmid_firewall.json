@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall",
+  "usageNotes": "Returns the directory index of firewall sub-resources available for a specific QEMU VM (rules, ipset, aliases, options, refs, log). Use this as a discovery call to confirm which firewall endpoints are reachable before navigating to a specific sub-resource. No special privilege is required beyond being an authenticated user.",
+  "examples": [
+    {
+      "summary": "List firewall sub-resources for VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a pure directory index — it does not return actual firewall rules or settings; follow up with sub-resource endpoints (e.g., get_nodes_node_qemu_vmid_firewall_rules) for actionable data.",
+    "The response links use a relative {name} href pattern, meaning each object's 'name' field is the sub-path segment to append.",
+    "VM-level firewall settings are independent of the node-level firewall; both must be enabled for VM firewall rules to take effect."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "get_nodes_node_qemu_vmid_firewall_options",
+    "get_nodes_node_qemu_vmid_firewall_ipset",
+    "get_nodes_node_qemu_vmid_firewall_aliases",
+    "get_nodes_node_qemu_vmid_firewall_log",
+    "get_nodes_node_qemu_vmid_firewall_refs"
+  ]
+}

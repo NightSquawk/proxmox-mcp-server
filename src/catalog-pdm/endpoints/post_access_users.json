@@ -1,0 +1,102 @@
+{
+  "operationId": "post_access_users",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "users",
+  "method": "POST",
+  "path": "/access/users",
+  "description": "Create new user.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Comment.",
+      "maxLength": 128,
+      "pattern": "/^[[:^cntrl:]]*$/"
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "required": false,
+      "description": "E-Mail Address.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "/^[[:^cntrl:]]*$/"
+    },
+    {
+      "name": "enable",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable the account (default). You can set this to '0' to disable the account.",
+      "default": true
+    },
+    {
+      "name": "expire",
+      "type": "integer",
+      "required": false,
+      "description": "Account expiration date (seconds since epoch). '0' means no expiration date.",
+      "default": 0,
+      "minimum": 0
+    },
+    {
+      "name": "firstname",
+      "type": "string",
+      "required": false,
+      "description": "First name.",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "/^[[:^cntrl:]]*$/"
+    },
+    {
+      "name": "lastname",
+      "type": "string",
+      "required": false,
+      "description": "Last name.",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "/^[[:^cntrl:]]*$/"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": false,
+      "description": "User Password.",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "/^[[:^cntrl:]]*$/"
+    },
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "User ID",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "access",
+        "users"
+      ],
+      "privs": [
+        "Access.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"userid\":\"<userid>\"}' 'https://PDM_HOST:8443/api2/json/access/users'"
+}

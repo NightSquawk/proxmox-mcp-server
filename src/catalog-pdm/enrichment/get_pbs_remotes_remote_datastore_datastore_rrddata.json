@@ -1,0 +1,28 @@
+{
+  "operationId": "get_pbs_remotes_remote_datastore_datastore_rrddata",
+  "usageNotes": "Use this to retrieve historical disk usage and I/O metrics for a specific PBS datastore on a registered PDM remote — useful for trending storage consumption, capacity planning, or spotting I/O anomalies over time. Both `cf` and `timeframe` are required; use `AVERAGE` for trend graphs and `MAX` to surface peak utilization spikes. The remote must be reachable from PDM and the caller needs `Resource.Audit` on `/resource/{remote}/datastore/{datastore}`.",
+  "examples": [
+    {
+      "summary": "Fetch daily average disk stats for the 'backups' datastore on the 'pbs-hetzner' remote",
+      "path_params": {
+        "remote": "pbs-hetzner",
+        "datastore": "backups"
+      },
+      "params": {
+        "cf": "AVERAGE",
+        "timeframe": "day"
+      }
+    }
+  ],
+  "tips": [
+    "Data points are spaced according to RRD resolution for the chosen timeframe — finer resolution for 'hour', coarser for 'year'/'decade'.",
+    "disk-available + disk-used may not equal disk-total exactly due to filesystem overhead; disk-total is the authoritative capacity figure.",
+    "disk-read and disk-write are rates (bytes/sec), not cumulative totals — use AVERAGE cf for bandwidth graphs, MAX cf to find peak bursts.",
+    "If the remote is offline or unreachable, PDM may return an error rather than partial data; check remote connectivity before relying on missing data points."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_datastore_datastore_status",
+    "get_pbs_remotes_remote_rrddata",
+    "get_pbs_remotes"
+  ]
+}

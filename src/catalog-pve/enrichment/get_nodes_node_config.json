@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_config",
+  "usageNotes": "Use this to inspect a node's local configuration including ACME certificate settings, ballooning target, Wake-on-LAN, boot delay, and location. Requires Sys.Audit on the root path — API tokens must carry that privilege. Use the optional `property` filter to retrieve a single field and avoid parsing the full object when only one setting is needed.",
+  "examples": [
+    {
+      "summary": "Fetch full node configuration for pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response includes a `digest` (SHA1 of the config file) — pass it to update operations to guard against concurrent modifications.",
+    "Use `property=acme` or `property=acmedomain0` to quickly check certificate domain assignments without fetching the full config.",
+    "ballooning-target defaults to 80 (percent); if not set, the field is absent from the response rather than returning the default explicitly.",
+    "wakeonlan and location are node-level overrides — if absent here, the datacenter-level defaults apply."
+  ],
+  "relatedOperations": [
+    "put_nodes_node_config",
+    "get_nodes_node_status",
+    "get_cluster_config_nodes"
+  ]
+}

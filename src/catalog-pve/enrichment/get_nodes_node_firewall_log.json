@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_firewall_log",
+  "usageNotes": "Use this endpoint to read the node-level firewall log (iptables/nftables kernel log entries) for a specific Proxmox node. Requires the `Sys.Syslog` privilege on `/nodes/{node}`, so API tokens scoped below that path will be denied. Use `since`/`until` (UNIX epoch) to narrow the time window; without them the full log is returned, which can be large on busy nodes.",
+  "examples": [
+    {
+      "summary": "Fetch the last 50 firewall log entries from node pve1 since a recent timestamp",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "limit": 50,
+        "since": 1719532800
+      }
+    }
+  ],
+  "tips": [
+    "Results are an array of objects with `n` (line number) and `t` (raw log text); parse `t` for IP, port, and action fields.",
+    "Use `start` + `limit` together for pagination through large log windows.",
+    "This endpoint reads the node firewall log only — for VM/CT firewall logs use the equivalent endpoint under `/nodes/{node}/qemu/{vmid}/firewall/log` or `/nodes/{node}/lxc/{vmid}/firewall/log`.",
+    "Log entries only appear if the firewall LOG rule action is configured; if the firewall is enabled but no LOG rules exist, the log will be empty."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_firewall_rules",
+    "get_nodes_node_firewall_options",
+    "get_cluster_firewall_log"
+  ]
+}

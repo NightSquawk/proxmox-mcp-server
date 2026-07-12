@@ -1,0 +1,29 @@
+{
+  "operationId": "post_config_acme_plugins",
+  "usageNotes": "Use this to register a new DNS-01 ACME challenge plugin in Proxmox Datacenter Manager so that managed nodes can obtain TLS certificates via Let's Encrypt (or another ACME CA) using DNS validation. The caller must hold the System.Modify privilege on /system/certificates. The `data` field must contain the DNS provider credentials base64-encoded with padding (standard base64, not URL-safe); the correct `api` value is the provider plugin ID supported by the underlying acme.sh DNS API (e.g., 'cloudflare', 'route53').",
+  "examples": [
+    {
+      "summary": "Register a Cloudflare DNS plugin for ACME certificate automation",
+      "path_params": {},
+      "params": {
+        "id": "cf-nightsquawk",
+        "type": "dns",
+        "api": "cloudflare",
+        "data": "Q0ZfVE9LRU49YWJjZGVmZ2hpamtsbW5vcHFyc3R1dnd4eXoxMjM0NTY=",
+        "disable": false,
+        "validation-delay": 60
+      }
+    }
+  ],
+  "tips": [
+    "The `id` field (1–32 chars, pattern [A-Za-z0-9_][A-Za-z0-9._-]*) becomes the plugin's reference name used when assigning it to a domain order — choose something descriptive like 'cf-prod' or 'r53-acme'.",
+    "If your DNS provider has slow propagation, raise `validation-delay` above the 30 s default (max 172800 s = 48 h) to avoid premature validation failures.",
+    "Credentials in `data` are stored as-is on the PDM node; restrict API token scope to only the DNS zone(s) needed to minimize blast radius if the credential is exposed.",
+    "To verify the plugin was created, follow up with get_config_acme_plugins or list the plugins endpoint."
+  ],
+  "relatedOperations": [
+    "get_config_acme_plugins",
+    "put_config_acme_plugins_id",
+    "delete_config_acme_plugins_id"
+  ]
+}

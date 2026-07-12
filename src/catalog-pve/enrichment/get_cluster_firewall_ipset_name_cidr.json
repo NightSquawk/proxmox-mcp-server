@@ -1,0 +1,27 @@
+{
+  "operationId": "get_cluster_firewall_ipset_name_cidr",
+  "usageNotes": "Use this to retrieve the comment and any properties attached to a specific IP or CIDR entry within a named cluster-level IPSet. The IPSet must already exist and the CIDR must be a current member — use list_cluster_firewall_ipset_name to enumerate entries first. Requires Sys.Audit on '/' and supports API tokens.",
+  "examples": [
+    {
+      "summary": "Read a specific CIDR entry from the 'trusted-mgmt' IPSet",
+      "path_params": {
+        "name": "trusted-mgmt",
+        "cidr": "10.10.0.0/24"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'cidr' path param accepts a plain IP (e.g. 192.168.1.5), a CIDR (e.g. 10.0.0.0/8), or a defined alias — the format is IPorCIDRorAlias.",
+    "IPSet names must start with a letter and be 2–64 characters; the API will 404 if the name or CIDR does not exist.",
+    "This endpoint operates at the cluster firewall level — it has no node equivalent; node-level IPSets use a separate /nodes/{node}/firewall path.",
+    "The returned object typically includes 'cidr', 'nomatch' (boolean negation flag), and an optional 'comment' field."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_ipsets",
+    "get_cluster_firewall_ipset_name",
+    "create_cluster_firewall_ipset_name_cidr",
+    "update_cluster_firewall_ipset_name_cidr",
+    "delete_cluster_firewall_ipset_name_cidr"
+  ]
+}

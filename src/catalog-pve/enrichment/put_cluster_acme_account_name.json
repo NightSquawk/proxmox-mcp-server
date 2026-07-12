@@ -1,0 +1,27 @@
+{
+  "operationId": "put_cluster_acme_account_name",
+  "usageNotes": "Use this to update the contact email address(es) registered with the ACME CA for an existing account, or to force a refresh of the account record from the CA without changing anything (omit the `contact` param). Requires that an ACME account already exists under the given config name; create one first with the corresponding POST endpoint if it does not. Returns a task UPID — poll the task status endpoint to confirm completion.",
+  "examples": [
+    {
+      "summary": "Update the contact email on the default ACME account",
+      "path_params": {
+        "name": "default"
+      },
+      "params": {
+        "contact": "admin@example.com"
+      }
+    }
+  ],
+  "tips": [
+    "Calling this endpoint with no body (or an empty body) acts as a CA refresh — useful to resync account status after CA-side changes without modifying local config.",
+    "The `name` path param defaults to 'default', so omitting it targets the default ACME account.",
+    "The returned string is a UPID; use get_nodes_node_tasks_upid_status to track completion.",
+    "Multiple contact addresses can be supplied as a comma-separated email list in the `contact` field."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_account_name",
+    "post_cluster_acme_account",
+    "delete_cluster_acme_account_name",
+    "get_cluster_acme_account"
+  ]
+}

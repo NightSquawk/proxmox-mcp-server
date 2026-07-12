@@ -1,0 +1,25 @@
+{
+  "operationId": "get_config_access_tfa",
+  "usageNotes": "Use this endpoint to discover the available sub-resources under the /config/access/tfa namespace in Proxmox Datacenter Manager. It acts as a directory index for TFA configuration — call it to enumerate which TFA-related child endpoints are exposed before drilling into a specific one. No elevated privileges are required; any authenticated user or API token can call it.",
+  "examples": [
+    {
+      "summary": "List available TFA configuration sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "No query parameters are accepted — the response is a fixed directory listing.",
+    "Because permissions are 'user: all', this is safe to use with any valid API token for capability discovery.",
+    "Use the returned directory entries to identify which /config/access/tfa/* endpoints are available before querying or modifying TFA settings."
+  ],
+  "relatedOperations": [
+    "get_config_access",
+    "get_access_tfa",
+    "get_access_tfa_userid",
+    "get_access_tfa_userid_id",
+    "post_access_tfa_userid",
+    "put_access_tfa_userid_id",
+    "delete_access_tfa_userid_id"
+  ]
+}

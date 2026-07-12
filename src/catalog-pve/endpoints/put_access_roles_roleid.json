@@ -1,0 +1,52 @@
+{
+  "operationId": "put_access_roles_roleid",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "update_role",
+  "method": "PUT",
+  "path": "/access/roles/{roleid}",
+  "description": "Update an existing role.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "roleid",
+      "type": "string",
+      "required": true,
+      "format": "pve-roleid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "append",
+      "type": "boolean",
+      "required": false,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "privs",
+      "type": "string",
+      "required": false,
+      "format": "pve-priv-list",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/access",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/access/roles/<roleid>'"
+}

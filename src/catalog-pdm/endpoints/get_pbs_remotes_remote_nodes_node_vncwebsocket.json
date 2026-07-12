@@ -1,0 +1,66 @@
+{
+  "operationId": "get_pbs_remotes_remote_nodes_node_vncwebsocket",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "vncwebsocket",
+  "method": "GET",
+  "path": "/pbs/remotes/{remote}/nodes/{node}/vncwebsocket",
+  "description": "Upgraded to websocket",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "port",
+      "type": "integer",
+      "required": true,
+      "description": "Terminal port"
+    },
+    {
+      "name": "vncticket",
+      "type": "string",
+      "required": true,
+      "description": "Terminal ticket"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "node",
+        "{node}"
+      ],
+      "privs": [
+        "Sys.Console"
+      ]
+    },
+    "description": "The user needs Sys.Console on /resource/{remote}/node/{node}."
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/nodes/<node>/vncwebsocket?port=0&vncticket=<vncticket>'"
+}

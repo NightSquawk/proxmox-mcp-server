@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_sdn_vnets_vnet_firewall",
+  "usageNotes": "Returns the firewall directory index for a specific SDN VNet, listing the available firewall sub-resources (typically 'rules' and 'ipset'). Use this as a discovery step before querying firewall rules or IP sets scoped to the VNet. SDN must be enabled in the cluster and the target VNet must already exist.",
+  "examples": [
+    {
+      "summary": "List firewall sub-resources for SDN VNet 'webapp1'",
+      "path_params": {
+        "vnet": "webapp1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "VNet identifiers are 2–8 alphanumeric characters starting with a letter; they are distinct from bridge names created on nodes.",
+    "This endpoint only lists available sub-resources (directory index); follow child links to 'rules' or 'ipset' endpoints to read or manage actual firewall entries.",
+    "SDN firewall rules at the VNet level are separate from node-level and VM-level firewall rules — changes here affect all traffic traversing the VNet."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_firewall_rules",
+    "get_cluster_sdn_vnets_vnet_firewall_ipset",
+    "get_cluster_sdn_vnets",
+    "get_cluster_sdn_vnets_vnet"
+  ]
+}

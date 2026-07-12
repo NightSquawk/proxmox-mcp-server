@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_tasks_upid_status",
+  "usageNotes": "Use this endpoint to poll the completion and outcome of any async PDM task after obtaining its UPID. Check the `status` field to distinguish a running task from a stopped one; only stopped tasks populate `exitstatus`, which will be 'OK' on success or 'Error: <msg>' on failure. The UPID must belong to the same node specified in the path — cross-node lookups will fail.",
+  "examples": [
+    {
+      "summary": "Check whether a remote sync task has finished and whether it succeeded",
+      "path_params": {
+        "node": "pdm-node1",
+        "upid": "UPID:pdm-node1:001A2B3C:0AB12CD3:0000000100000001:68123456:remsync:remote1:root@pam:"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Poll on a short interval (e.g. 2–5 seconds) until `status` transitions from 'running' to 'stopped', then read `exitstatus` for the final result.",
+    "Users can query their own tasks without extra privileges; checking another user's task requires Sys.Audit on /system/tasks.",
+    "The UPID encodes the node name — if the node segment in the UPID doesn't match the `node` path parameter, the request will return an error.",
+    "A stopped task with no `exitstatus` field indicates the task log was already pruned or the process was killed before it could write an exit code."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks",
+    "get_nodes_node_tasks_upid_log",
+    "delete_nodes_node_tasks_upid"
+  ]
+}

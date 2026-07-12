@@ -1,0 +1,27 @@
+{
+  "operationId": "get_cluster_resources",
+  "usageNotes": "Use this as the primary cluster-wide inventory call — it returns all nodes, VMs (qemu), containers (lxc), storage pools, and SDN entities in a single request with live utilization metrics. Omit the 'type' filter to get the full picture, or supply it to narrow results when you only care about one resource class. CPU and memory values are live stats, so offline or paused guests may return null/zero for those fields.",
+  "examples": [
+    {
+      "summary": "List all running VMs cluster-wide to check CPU and memory utilization",
+      "path_params": {},
+      "params": {
+        "type": "vm"
+      }
+    }
+  ],
+  "tips": [
+    "The 'id' field follows the pattern '<type>/<name-or-vmid>' (e.g., 'qemu/100', 'node/pve1', 'storage/local-lvm') — use it to build subsequent per-resource API calls.",
+    "Response type enum includes 'qemu' and 'lxc' even though the query param only accepts 'vm'; filtering by type='vm' returns both qemu and lxc entries.",
+    "The 'status' field values are resource-specific: nodes return 'online'/'offline', guests return 'running'/'stopped'/'paused', storage returns 'available'/'unavailable'.",
+    "Guests that are templates have template=true and will show status='stopped' with zero utilization — filter them out when building capacity reports.",
+    "This endpoint requires no special privilege beyond being authenticated (permissions: user='all'), so API tokens with minimal scope can call it safely."
+  ],
+  "relatedOperations": [
+    "get_nodes",
+    "get_node_status",
+    "get_cluster_status",
+    "get_node_qemu",
+    "get_node_lxc"
+  ]
+}

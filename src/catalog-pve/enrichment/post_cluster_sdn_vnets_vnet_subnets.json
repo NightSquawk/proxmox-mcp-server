@@ -1,0 +1,36 @@
+{
+  "operationId": "post_cluster_sdn_vnets_vnet_subnets",
+  "usageNotes": "Use this to define an IP subnet within an existing SDN VNet — a required step before VMs on that VNet can receive DHCP leases or participate in layer-3 routing. The caller must hold SDN.Allocate on '/sdn/zones/<zone>/<vnet>'; after creating the subnet, run 'apply' (POST /cluster/sdn) to push the configuration to nodes. The 'gateway' field is only meaningful on layer-3 zone VNets; setting 'snat' enables NAT masquerade via pve-firewall for outbound traffic from this subnet.",
+  "examples": [
+    {
+      "summary": "Create a /24 subnet with a gateway, DHCP range, and SNAT enabled on VNet 'tenant-vnet1'",
+      "path_params": {
+        "vnet": "tenant-vnet1"
+      },
+      "params": {
+        "subnet": "10.10.20.0/24",
+        "type": "subnet",
+        "gateway": "10.10.20.1",
+        "dhcp-dns-server": "10.10.20.1",
+        "dhcp-range": [
+          "start-address=10.10.20.100,end-address=10.10.20.200"
+        ],
+        "dnszoneprefix": "tenant1",
+        "snat": true
+      }
+    }
+  ],
+  "tips": [
+    "The 'subnet' identifier must match the pve-sdn-subnet-id format — typically CIDR notation such as '10.10.20.0/24'.",
+    "After creating or modifying SDN objects, call POST /cluster/sdn to apply pending changes cluster-wide; subnets are not active until applied.",
+    "DHCP ranges require the Proxmox IPAM integration (dnsmasq) to be configured on the zone; without it the range is stored but not served.",
+    "Setting 'snat' without pve-firewall enabled on the node has no effect — verify firewall is active before relying on masquerade."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_subnets",
+    "get_cluster_sdn_vnets_vnet_subnets_subnet",
+    "put_cluster_sdn_vnets_vnet_subnets_subnet",
+    "delete_cluster_sdn_vnets_vnet_subnets_subnet",
+    "post_cluster_sdn"
+  ]
+}

@@ -1,0 +1,51 @@
+{
+  "operationId": "delete_config_access_openid_realm",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "{realm}",
+  "method": "DELETE",
+  "path": "/config/access/openid/{realm}",
+  "description": "Remove a OpenID realm configuration",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "realm",
+      "type": "string",
+      "required": true,
+      "description": "Realm name.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "access",
+        "domains"
+      ],
+      "privs": [
+        "Realm.Allocate"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/access/openid/<realm>'"
+}

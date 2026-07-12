@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_config_acme_account_name",
+  "usageNotes": "Use this to deactivate and remove an ACME account registration from Proxmox Datacenter Manager; the CA (e.g. Let's Encrypt) will be notified to deactivate the account before local data is deleted. Requires the System.Modify privilege on the system/certificates path. Returns a UPID — poll the task log to confirm completion before assuming the account is gone.",
+  "examples": [
+    {
+      "summary": "Deactivate the default ACME account",
+      "path_params": {
+        "name": "default"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deactivates the ACME account at the CA and deletes its local credentials; any certificates that relied on this account can no longer be renewed without re-registering.",
+  "tips": [
+    "The `force` flag deletes local account data even if the CA returns an error during deactivation — use only when the account is already gone at the CA side and you need to clean up stale local state.",
+    "Because the response is a UPID, use a task-status endpoint to verify the deactivation completed without error before treating the account as removed.",
+    "Ensure no active certificate orders reference this account before deleting; orphaned orders will fail renewal silently."
+  ],
+  "relatedOperations": [
+    "get_config_acme_account_name",
+    "put_config_acme_account_name",
+    "post_config_acme_account",
+    "get_config_acme_account"
+  ]
+}

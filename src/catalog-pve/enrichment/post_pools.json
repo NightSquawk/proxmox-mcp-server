@@ -1,0 +1,25 @@
+{
+  "operationId": "post_pools",
+  "usageNotes": "Use this to create a new resource pool, which is the prerequisite for grouping VMs, containers, and storage under a shared permission scope. The caller must hold Pool.Allocate on /pool/{poolid} — this is typically a datacenter-level admin privilege. The API returns null on success; there is no task UPID since pool creation is synchronous.",
+  "examples": [
+    {
+      "summary": "Create a pool for a client tenant with a descriptive comment",
+      "path_params": {},
+      "params": {
+        "poolid": "client-acme",
+        "comment": "ACME Corp managed resources"
+      }
+    }
+  ],
+  "tips": [
+    "Pool IDs must match the pve-poolid format: alphanumeric, hyphens, and underscores; no spaces.",
+    "Pool IDs are case-sensitive and cannot be renamed after creation — choose a stable identifier.",
+    "After creating the pool, use PUT /pools/{poolid} to add VMs, containers, or storage members."
+  ],
+  "relatedOperations": [
+    "get_pools",
+    "get_pools_{poolid}",
+    "put_pools_{poolid}",
+    "delete_pools_{poolid}"
+  ]
+}

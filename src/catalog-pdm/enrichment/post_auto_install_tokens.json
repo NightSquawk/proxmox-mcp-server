@@ -1,0 +1,26 @@
+{
+  "operationId": "post_auto_install_tokens",
+  "usageNotes": "Use this endpoint to generate a new auto-install token that PDM's automated installer can use to authenticate against the datacenter manager. Requires the System.Modify privilege on the system/auto-installation path. The secret returned in the response is shown only once — store it immediately, as it cannot be retrieved again.",
+  "examples": [
+    {
+      "summary": "Create a short-lived auto-install token for a staging deployment",
+      "path_params": {},
+      "params": {
+        "id": "staging-deploy-01",
+        "comment": "Staging auto-install token for June 2026 rollout",
+        "enabled": true,
+        "expire-at": 1753747200
+      }
+    }
+  ],
+  "tips": [
+    "The `secret` field in the response is the raw token secret and is only returned at creation time — there is no retrieval endpoint; save it to a secrets manager immediately.",
+    "Set `expire-at` to a Unix timestamp (seconds since epoch) for time-bounded deployments; use 0 or omit the field for a non-expiring token.",
+    "Token `id` must start with an alphanumeric character or underscore and may contain dots, hyphens, and underscores; it must be 3–64 characters.",
+    "Tokens created here are scoped to auto-installation workflows and are distinct from user API tokens managed under /access/users."
+  ],
+  "relatedOperations": [
+    "get_auto_install",
+    "delete_auto_install_installations_uuid"
+  ]
+}

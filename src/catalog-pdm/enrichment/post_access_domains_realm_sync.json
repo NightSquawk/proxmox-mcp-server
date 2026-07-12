@@ -1,0 +1,29 @@
+{
+  "operationId": "post_access_domains_realm_sync",
+  "usageNotes": "Triggers an LDAP/AD or other external directory sync for a configured realm, pulling users into PDM. Returns a UPID — poll the task log to confirm completion before assuming users are available. Use `dry-run: true` first to preview what would be created, deleted, or updated without making any changes; this is especially important when `remove-vanished` includes `entry` or `acl`, as those options permanently remove users and their ACLs from PDM if they disappear from the source.",
+  "examples": [
+    {
+      "summary": "Sync the corporate LDAP realm, enabling new users immediately and removing stale entries and ACLs",
+      "path_params": {
+        "realm": "corp-ldap"
+      },
+      "params": {
+        "enable-new": true,
+        "remove-vanished": "entry;acl",
+        "dry-run": false
+      }
+    }
+  ],
+  "tips": [
+    "Run with `dry-run: true` before your first production sync — the response UPID still represents a real task log you can inspect to see what would change.",
+    "`remove-vanished: \"properties\"` strips custom attributes from existing users that are no longer present in the directory source; use carefully if you manage any PDM-local properties outside the directory.",
+    "The sync is asynchronous; poll `get_nodes_node_tasks_upid_status` (PVE) or the PDM task endpoint with the returned UPID to detect failures.",
+    "Requires the realm to already be configured under `/access/domains/{realm}` before syncing."
+  ],
+  "relatedOperations": [
+    "get_access_domains",
+    "post_access_domains",
+    "put_access_domains_realm",
+    "delete_access_domains_realm"
+  ]
+}

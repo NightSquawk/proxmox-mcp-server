@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_remotes_remote_firewall_options",
+  "usageNotes": "Returns the cluster-wide firewall configuration for a PVE remote registered in PDM, including whether the firewall is enabled, default inbound/outbound/forward policies, ebtables status, and log rate-limiting settings. Use this before modifying firewall rules to understand the current baseline policy, or to audit the security posture of a managed PVE cluster. Requires Resource.Audit on the remote — no write privilege needed.",
+  "examples": [
+    {
+      "summary": "Fetch firewall options for a PVE remote named 'hetzner-pve1'",
+      "path_params": {
+        "remote": "hetzner-pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'enable' field returns an integer (0 = disabled), not a boolean — check for === 0 rather than falsy.",
+    "If 'policy_in' or 'policy_out' are absent from the response, the cluster has not set an explicit default and falls back to the PVE compiled-in default (ACCEPT).",
+    "log_ratelimit is returned as a formatted string (e.g. '1,burst=5,rate=1/second'); parse it as a key=value list, not JSON.",
+    "ebtables defaults to true cluster-wide; disabling it affects bridge-level filtering for VMs on Linux bridges."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_firewall_rules",
+    "get_pve_remotes_remote_firewall_groups",
+    "get_pve_remotes_remote_firewall_aliases",
+    "get_pve_remotes_remote_firewall_ipset"
+  ]
+}

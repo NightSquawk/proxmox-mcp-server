@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_info",
+  "usageNotes": "Executes the QEMU Guest Agent 'info' command on a running VM, returning metadata about the guest agent itself (version, supported commands, etc.). The VM must be running and have the QEMU Guest Agent installed and active; the call will fail if the agent is not responsive. Requires either VM.GuestAgent.Audit or VM.GuestAgent.Unrestricted on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Retrieve guest agent info for VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If the call returns an error like 'QEMU guest agent is not running', verify the agent service is started inside the guest OS (e.g., qemu-guest-agent.service on Linux).",
+    "The returned 'result' object typically lists the agent version and which guest-agent commands are supported — useful before calling less-common agent subcommands.",
+    "This is a synchronous GET; no UPID is returned. Results are available immediately in the response."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_get_osinfo",
+    "get_nodes_node_qemu_vmid_agent_network_get_interfaces",
+    "post_nodes_node_qemu_vmid_agent_ping"
+  ]
+}

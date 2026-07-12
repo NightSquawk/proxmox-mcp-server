@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_disks_zfs_name",
+  "usageNotes": "Permanently destroys a ZFS pool on the specified node; the node must be online and the caller must hold Sys.Modify on /. Returns a task UPID — poll the task status endpoint to confirm completion before treating the pool as gone. If the pool is also registered as a Proxmox storage, pass cleanup-config=true to remove or disable that storage entry; without it the storage record remains and will show errors.",
+  "examples": [
+    {
+      "summary": "Destroy a ZFS pool named 'tank' on node 'pve1', removing its storage config entry and wiping the member disks for reuse",
+      "path_params": {
+        "node": "pve1",
+        "name": "tank"
+      },
+      "params": {
+        "cleanup-config": true,
+        "cleanup-disks": true
+      }
+    }
+  ],
+  "destructiveReason": "All data on the ZFS pool is irrecoverably destroyed; if cleanup-disks is set, the underlying disk partitions are also wiped and cannot be recovered.",
+  "tips": [
+    "Poll the returned UPID via GET /nodes/{node}/tasks/{upid}/status to detect failures — the DELETE call returns immediately with a task reference, not the final result.",
+    "cleanup-config only removes the storage from this node's configuration; if the storage is shared across multiple nodes you may need to remove it cluster-wide via the storage API afterward.",
+    "Ensure no VMs or CTs have active disks on this pool before destroying it — Proxmox does not enforce this check automatically.",
+    "cleanup-disks performs a partition wipe (dd/blkdiscard) on member vdevs; omit it if you plan to reuse the disks in a new pool with a fresh zpool create."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_zfs_name",
+    "get_nodes_node_disks_zfs",
+    "post_nodes_node_disks_zfs",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

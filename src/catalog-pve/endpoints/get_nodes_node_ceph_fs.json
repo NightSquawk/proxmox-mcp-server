@@ -1,0 +1,89 @@
+{
+  "operationId": "get_nodes_node_ceph_fs",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "index",
+  "method": "GET",
+  "path": "/nodes/{node}/ceph/fs",
+  "description": "Directory index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "additionalProperties": 1,
+      "properties": {
+        "data_pool": {
+          "description": "Name of the filesystem's first data pool. A CephFS can have more than one data pool; consumers interested in the full set should read 'data_pools' instead. Kept for backwards compatibility.",
+          "type": "string"
+        },
+        "data_pool_ids": {
+          "description": "Numeric ids of the data pools.",
+          "items": {
+            "description": "Data pool id.",
+            "type": "integer"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "data_pools": {
+          "description": "Names of all data pools assigned to the filesystem; a CephFS can have multiple data pools (e.g. replicated metadata plus EC data, or multiple device-class-specific data pools).",
+          "items": {
+            "description": "Data pool name.",
+            "type": "string"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "metadata_pool": {
+          "description": "Name of the metadata pool.",
+          "type": "string"
+        },
+        "metadata_pool_id": {
+          "description": "Numeric id of the metadata pool.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "name": {
+          "description": "The ceph filesystem name.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{name}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit",
+        "Datastore.Audit"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/fs'"
+}

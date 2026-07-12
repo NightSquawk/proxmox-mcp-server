@@ -1,0 +1,63 @@
+{
+  "operationId": "delete_access_tfa_userid_id",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "delete_tfa",
+  "method": "DELETE",
+  "path": "/access/tfa/{userid}/{id}",
+  "description": "Delete a TFA entry by ID.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": false,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "Full User ID, in the `name@realm` format.",
+      "format": "pve-userid",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "A TFA entry id.",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "password",
+      "type": "string",
+      "required": false,
+      "description": "The current password of the user performing the change.",
+      "minLength": 5,
+      "maxLength": 64,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "userid-param",
+        "self"
+      ],
+      [
+        "userid-group",
+        [
+          "User.Modify"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/tfa/<userid>/<id>'"
+}

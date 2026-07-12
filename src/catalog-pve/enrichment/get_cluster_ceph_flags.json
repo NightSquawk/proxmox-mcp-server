@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_ceph_flags",
+  "usageNotes": "Use this to get a cluster-wide snapshot of all Ceph OSD flags and their current on/off state. Requires Sys.Audit on the root path — read-only tokens with that privilege are sufficient. This is the first call to make when investigating Ceph health warnings related to noout, nobackfill, or scrub suppression, since any of these flags being set will show up in ceph status as a HEALTH_WARN.",
+  "examples": [
+    {
+      "summary": "List all Ceph flags to check for any suppressed operations",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A value of true means the flag is currently set (active). For example, noout=true means OSDs will not be marked out when they go down.",
+    "The pause flag halts all Ceph client I/O; if value is true on a production cluster it warrants immediate investigation.",
+    "Flags like noout and norebalance are often intentionally set during maintenance windows — verify with your change log before clearing them.",
+    "This endpoint reflects the live cluster state; it reads from the Ceph mon quorum so at least one monitor must be reachable."
+  ],
+  "relatedOperations": [
+    "get_cluster_ceph_status",
+    "set_cluster_ceph_flag",
+    "get_cluster_ceph_flag"
+  ]
+}

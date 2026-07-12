@@ -1,0 +1,73 @@
+{
+  "operationId": "delete_nodes_node_lxc_vmid",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "destroy_vm",
+  "method": "DELETE",
+  "path": "/nodes/{node}/lxc/{vmid}",
+  "description": "Destroy the container (also delete all uses files).",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "destroy-unreferenced-disks",
+      "type": "boolean",
+      "required": false,
+      "description": "If set, destroy additionally all disks with the VMID from all enabled storages which are not referenced in the config.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "force",
+      "type": "boolean",
+      "required": false,
+      "description": "Force destroy, even if running.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "purge",
+      "type": "boolean",
+      "required": false,
+      "description": "Remove container from all related configurations. For example, backup jobs, replication jobs or HA. Related ACLs and Firewall entries will *always* be removed.",
+      "default": 0,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100'"
+}

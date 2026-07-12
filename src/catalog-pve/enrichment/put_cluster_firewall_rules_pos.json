@@ -1,0 +1,30 @@
+{
+  "operationId": "put_cluster_firewall_rules_pos",
+  "usageNotes": "Use this endpoint to modify an existing cluster-level firewall rule in-place by its zero-based position index, or to reorder it via `moveto` (when `moveto` is set, all other body fields are ignored). Requires `Sys.Modify` on `/`; changes take effect immediately on the cluster firewall chain without a daemon restart. Pass the `digest` from the current rule read to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Disable an existing ACCEPT rule at position 3 and add a comment",
+      "path_params": {
+        "pos": 3
+      },
+      "params": {
+        "enable": 0,
+        "comment": "Temporarily disabled - maintenance window",
+        "digest": "a3f1c2d4e5b6a7f8c9d0e1f2a3b4c5d6e7f8a9b0"
+      }
+    }
+  ],
+  "tips": [
+    "Rule positions are zero-based; retrieve current positions first with GET /cluster/firewall/rules before updating.",
+    "Use `moveto` alone to reorder a rule without changing any of its properties — all other params are silently ignored when `moveto` is present.",
+    "The `delete` param accepts a comma-separated list of field names (e.g. `dest,sport`) to unset optional fields on the rule.",
+    "Returns null on success; a non-2xx response means the rule was not modified.",
+    "Cluster firewall rules apply to traffic between cluster nodes; they are distinct from per-VM/CT firewall rules."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_rules",
+    "get_cluster_firewall_rules_pos",
+    "post_cluster_firewall_rules",
+    "delete_cluster_firewall_rules_pos"
+  ]
+}

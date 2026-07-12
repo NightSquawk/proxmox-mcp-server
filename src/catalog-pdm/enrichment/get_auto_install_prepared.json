@@ -1,0 +1,24 @@
+{
+  "operationId": "get_auto_install_prepared",
+  "usageNotes": "Use this endpoint to enumerate all prepared auto-installer answer configurations stored in PDM, which are matched against incoming PXE/network boot requests to drive unattended Proxmox installations. Requires the System.Audit privilege on the system/auto-installation path — read-only tokens are sufficient. Note that several fields (fqdn, mailto, cidr, gateway, dns) may contain MiniJinja template expressions rather than literal values; they are resolved at install-time, not at retrieval time.",
+  "examples": [
+    {
+      "summary": "List all prepared auto-install answer configurations",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Only one configuration can have is-default set to true; its target-filter is ignored — it catches any installation not matched by a more specific configuration.",
+    "Configurations with authorized-tokens restrict which API tokens may retrieve that answer at install time; an empty list means any token can retrieve it.",
+    "disk-mode determines whether disk-list (fixed) or disk-filter (dynamic udev matching) is active — check both fields when reviewing a configuration.",
+    "MiniJinja template counters in template-counters auto-increment on each instantiation, enabling unique FQDNs or IPs across bulk deployments without editing the configuration."
+  ],
+  "relatedOperations": [
+    "get_auto_install",
+    "post_auto_install_prepared",
+    "put_auto_install_prepared_id",
+    "delete_auto_install_prepared_id",
+    "get_auto_install_prepared_id"
+  ]
+}

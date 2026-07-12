@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_ceph_mgr_id",
+  "usageNotes": "Use this to deploy a Ceph Manager (MGR) daemon on a specific cluster node; run it on at least two nodes for high availability (active + standby). The target node must be online and already participating in the Ceph cluster (i.e., a MON or OSD node). The `id` path parameter defaults to the node name, which is the conventional choice — only supply a custom id if you need multiple MGRs on the same node.",
+  "examples": [
+    {
+      "summary": "Create a Ceph MGR on node 'pve2' using the default id (node name)",
+      "path_params": {
+        "node": "pve2",
+        "id": "pve2"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A minimum of two MGR daemons across different nodes is recommended for HA; the active MGR handles dashboard and module duties while standbys are on hot standby.",
+    "After creation, verify the daemon with `ceph mgr stat` or GET /nodes/{node}/ceph/mgr to confirm the active MGR elected.",
+    "The Ceph dashboard and several Ceph modules (prometheus exporter, pg_autoscaler) require at least one active MGR — deploy MGR before enabling those modules.",
+    "The `id` must match the pattern [a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])? and is limited to 200 characters; stick to the node name to avoid confusion."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_mgr",
+    "delete_nodes_node_ceph_mgr_id",
+    "post_nodes_node_ceph_mon_monid",
+    "get_nodes_node_ceph_status"
+  ]
+}

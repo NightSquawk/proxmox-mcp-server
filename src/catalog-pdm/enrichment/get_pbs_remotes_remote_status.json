@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pbs_remotes_remote_status",
+  "usageNotes": "Use this to check the live health of a PBS remote node registered in PDM — including CPU load, memory, root disk usage, uptime, kernel, and boot mode. The remote must be reachable over the network and the caller needs `Resource.Audit` on `/resource/{remote}`; calls to an offline or unreachable remote will fail rather than return cached data. Query this before scheduling backup jobs or troubleshooting a remote that appears degraded.",
+  "examples": [
+    {
+      "summary": "Get status for a remote named 'pbs-hetzner'",
+      "path_params": {
+        "remote": "pbs-hetzner"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `cpu` field is a fractional value (0.0–1.0) representing utilization since the last query — multiply by 100 for a percentage.",
+    "Memory and root disk values are in bytes; divide by 1073741824 for GiB.",
+    "`loadavg` returns a three-element array: 1-minute, 5-minute, and 15-minute averages.",
+    "`kversion` is the legacy string form of the kernel version; prefer `current-kernel` for structured access.",
+    "The `info.fingerprint` field contains the PBS node's SSL fingerprint — useful for verifying identity during initial remote setup."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes",
+    "get_pbs_remotes_remote",
+    "get_pbs_remotes_remote_datastores"
+  ]
+}

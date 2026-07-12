@@ -1,0 +1,68 @@
+{
+  "operationId": "get_cluster_sdn_vnets_vnet_firewall_options",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_options",
+  "method": "GET",
+  "path": "/cluster/sdn/vnets/{vnet}/firewall/options",
+  "description": "Get vnet firewall options.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "vnet",
+      "type": "string",
+      "required": true,
+      "description": "The SDN vnet object identifier.",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "properties": {
+      "enable": {
+        "default": 0,
+        "description": "Enable/disable firewall rules.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "log_level_forward": {
+        "description": "Log level for forwarded traffic.",
+        "enum": [
+          "emerg",
+          "alert",
+          "crit",
+          "err",
+          "warning",
+          "notice",
+          "info",
+          "debug",
+          "nolog"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "policy_forward": {
+        "description": "Forward policy.",
+        "enum": [
+          "ACCEPT",
+          "DROP"
+        ],
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "description": "Needs SDN.Audit or SDN.Allocate permissions on '/sdn/zones/<zone>/<vnet>'",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/vnets/<vnet>/firewall/options'"
+}

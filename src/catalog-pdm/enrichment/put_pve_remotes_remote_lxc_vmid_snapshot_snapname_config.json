@@ -1,0 +1,29 @@
+{
+  "operationId": "put_pve_remotes_remote_lxc_vmid_snapshot_snapname_config",
+  "usageNotes": "Use this to annotate or correct the description on an existing LXC snapshot hosted on a remote PVE node — useful after an ad-hoc snapshot is taken without a description, or when the purpose of a snapshot changes. The operation is synchronous and returns null immediately (no UPID/task to poll). Requires the Resource.Manage privilege on the remote's guest resource path.",
+  "examples": [
+    {
+      "summary": "Add a description to a pre-update snapshot on a remote LXC container",
+      "path_params": {
+        "remote": "hetzner-pve1",
+        "vmid": 102,
+        "snapname": "pre-update-20260629"
+      },
+      "params": {
+        "description": "Snapshot taken before apt upgrade on 2026-06-29. Safe to delete after 7 days if no issues.",
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "The description field accepts free-form text and is the only editable field on a snapshot via this endpoint — snapshot name and content are immutable after creation.",
+    "Omitting the 'node' param lets PDM infer the node; supply it explicitly if the remote has multiple nodes to avoid ambiguity.",
+    "snapname must match an existing snapshot exactly (case-sensitive, same pattern as creation); verify available snapshots first via the corresponding GET endpoint."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc_vmid_snapshot_snapname_config",
+    "get_pve_remotes_remote_lxc_vmid_snapshot",
+    "post_pve_remotes_remote_lxc_vmid_snapshot",
+    "delete_pve_remotes_remote_lxc_vmid_snapshot_snapname"
+  ]
+}

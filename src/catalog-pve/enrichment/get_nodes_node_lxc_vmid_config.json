@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_config",
+  "usageNotes": "Use this to read the full configuration of a specific LXC container, including CPU, memory, network interfaces, mount points, and rootfs details. By default the API returns pending (not-yet-applied) values; pass `current: true` to get the live running configuration. To inspect a historical state, provide a `snapshot` name instead — `current` and `snapshot` are mutually exclusive.",
+  "examples": [
+    {
+      "summary": "Fetch the current running config for LXC container 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "current": true
+      }
+    }
+  ],
+  "tips": [
+    "The `digest` field in the response is a SHA1 of the config file — pass it back in write operations to guard against concurrent modifications.",
+    "A `lock` field in the response indicates an in-progress operation (backup, migrate, snapshot, etc.); writes will be rejected until the lock clears.",
+    "Network interfaces are returned as `net0`, `net1`, ... and mount points as `mp0`, `mp1`, ... — enumerate these keys in your client since the count varies per container.",
+    "If `unprivileged` is false, the container runs as root on the host; treat privileged containers with extra care when reading security-sensitive config.",
+    "Omitting both `current` and `snapshot` returns pending config, which may differ from what is actually running if a config change has not been applied yet."
+  ],
+  "relatedOperations": [
+    "put_nodes_node_lxc_vmid_config",
+    "get_nodes_node_lxc_vmid_snapshot",
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_nodes_node_lxc"
+  ]
+}

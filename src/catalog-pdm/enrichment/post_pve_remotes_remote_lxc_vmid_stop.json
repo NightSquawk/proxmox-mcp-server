@@ -1,0 +1,27 @@
+{
+  "operationId": "post_pve_remotes_remote_lxc_vmid_stop",
+  "usageNotes": "Issues an immediate hard stop of a remote LXC container — equivalent to pulling power, with no graceful shutdown sequence. Use this only when a clean shutdown via the 'shutdown' endpoint is not possible (e.g., container is frozen or unresponsive). Returns a remote UPID string; poll the remote task status endpoint to confirm completion. Requires Resource.Manage on the container's resource path.",
+  "examples": [
+    {
+      "summary": "Force-stop LXC container 102 on a named remote",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 102
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "destructiveReason": "Immediately kills the container process without flushing disk buffers or running shutdown hooks, which can cause filesystem corruption or data loss for in-flight writes.",
+  "tips": [
+    "Prefer the 'shutdown' endpoint for any container with active write workloads; use 'stop' only when shutdown is unresponsive.",
+    "The 'node' body param is optional — omit it to let PDM resolve the node automatically from the remote cluster.",
+    "Track the returned UPID against the remote task API to confirm the stop completed before attempting start or migration operations."
+  ],
+  "relatedOperations": [
+    "post_pve_remotes_remote_lxc_vmid_shutdown",
+    "post_pve_remotes_remote_lxc_vmid_start",
+    "get_pve_remotes_remote_lxc_vmid_status_current"
+  ]
+}

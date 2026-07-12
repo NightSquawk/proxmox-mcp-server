@@ -1,0 +1,30 @@
+{
+  "operationId": "post_nodes_node_disks_lvmthin",
+  "usageNotes": "Use this to initialize a raw block device as an LVM thin-pool on a specific node — a prerequisite for VM/CT disk storage backed by thin provisioning. The target device must be unpartitioned and unused (no existing filesystem or LVM metadata); the operation is irreversible on that device's data. Returns a task UPID; poll the task endpoint to confirm completion before referencing the pool as storage.",
+  "examples": [
+    {
+      "summary": "Create a thinpool named 'vmdata' on /dev/sdb and auto-register it as a PVE storage",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "device": "/dev/sdb",
+        "name": "vmdata",
+        "add_storage": true
+      }
+    }
+  ],
+  "tips": [
+    "Verify the device is truly unused first via get_nodes_node_disks_list (or lsblk on the node) — LVM initialization will destroy any existing data.",
+    "Setting add_storage=true requires the calling token/user to also hold Datastore.Allocate on /storage, in addition to Sys.Modify on /.",
+    "The thinpool name must conform to pve-storage-id format (alphanumeric, hyphens, underscores; no spaces); it becomes the storage ID visible across the cluster.",
+    "After creation, the thinpool appears as a 'lvmthin' storage type in datacenter storage; set content types (images, rootdir) separately via the storage edit endpoint."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_list",
+    "get_nodes_node_disks_lvmthin",
+    "delete_nodes_node_disks_lvmthin_name",
+    "get_storage",
+    "post_storage"
+  ]
+}

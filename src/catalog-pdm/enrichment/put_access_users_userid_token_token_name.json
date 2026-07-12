@@ -1,0 +1,29 @@
+{
+  "operationId": "put_access_users_userid_token_token_name",
+  "usageNotes": "Use this to update metadata (comment, expiry, enabled state) on an existing API token, or to rotate the token secret without changing its permissions by setting regenerate=true. The token secret is only returned in the response when regenerate=true — store it immediately, as PDM will not surface it again. A user may update their own tokens without Access.Modify; that privilege is only required to modify tokens belonging to other users.",
+  "examples": [
+    {
+      "summary": "Rotate the secret for an automation token while keeping its current permissions",
+      "path_params": {
+        "userid": "automation@pve",
+        "token-name": "deploy-token"
+      },
+      "params": {
+        "regenerate": true,
+        "comment": "Rotated 2026-06-29 — quarterly rotation"
+      }
+    }
+  ],
+  "tips": [
+    "Setting regenerate=true invalidates the old secret immediately; update any services using the token before or right after the call.",
+    "Use the digest param to guard against concurrent modifications when multiple admins may update the same token.",
+    "To clear the comment or expire fields, include them in the delete array rather than setting them to empty strings.",
+    "Disabling a token (enable=false) is a safe way to temporarily block access without losing the token configuration."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid_token_token_name",
+    "post_access_users_userid_token_token_name",
+    "delete_access_users_userid_token_token_name",
+    "get_access_users_userid_token"
+  ]
+}

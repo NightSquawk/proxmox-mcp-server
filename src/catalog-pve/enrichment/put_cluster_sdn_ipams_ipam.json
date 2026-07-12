@@ -1,0 +1,30 @@
+{
+  "operationId": "put_cluster_sdn_ipams_ipam",
+  "usageNotes": "Use this to update an existing SDN IPAM object's configuration (URL, API token, TLS fingerprint, etc.) without recreating it. Requires the SDN.Allocate privilege on /sdn/ipams. Pass the current config digest to guard against concurrent edits; omit fields you are not changing and use the 'delete' param to explicitly remove optional settings.",
+  "examples": [
+    {
+      "summary": "Update a phpIPAM integration's URL and API token",
+      "path_params": {
+        "ipam": "phpipam1"
+      },
+      "params": {
+        "url": "https://ipam.example.com",
+        "token": "myApiToken123",
+        "digest": "a3f1c2e4b5d6a7f8e9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2"
+      }
+    }
+  ],
+  "tips": [
+    "The endpoint returns null on success; confirm the update by reading the object with get_cluster_sdn_ipams_ipam.",
+    "Use the 'delete' param (comma-separated config key names) to unset optional fields like 'fingerprint' rather than sending an empty string.",
+    "After updating IPAM config, apply the pending SDN configuration via put_cluster_sdn_reload so changes take effect cluster-wide.",
+    "The 'lock-token' param is only needed if another SDN operation holds a global config lock; normal updates can omit it."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_ipams_ipam",
+    "get_cluster_sdn_ipams",
+    "post_cluster_sdn_ipams",
+    "delete_cluster_sdn_ipams_ipam",
+    "put_cluster_sdn_reload"
+  ]
+}

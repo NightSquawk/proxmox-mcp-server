@@ -1,0 +1,25 @@
+{
+  "operationId": "get_access_users_userid_token",
+  "usageNotes": "Use this to list all API tokens associated with a given Proxmox user (e.g., before auditing expiry dates or before creating/deleting a token). Any user can list their own tokens; listing another user's tokens requires the User.Modify privilege. Note that this endpoint returns token metadata only — the actual secret value is never retrievable after initial creation.",
+  "examples": [
+    {
+      "summary": "List all API tokens for the local admin user",
+      "path_params": {
+        "userid": "admin@pam"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Token secrets are shown only once at creation time (via the create endpoint); this list endpoint cannot retrieve them.",
+    "privsep: true (the default) means the token's effective permissions are the intersection of the token's ACLs and the user's ACLs — it cannot exceed the user's own rights.",
+    "An expire value of 0 means the token never expires; check this during access audits to flag unbounded tokens.",
+    "To inspect a single token's details, use the child resource: GET /access/users/{userid}/token/{tokenid}."
+  ],
+  "relatedOperations": [
+    "post_access_users_userid_token_tokenid",
+    "get_access_users_userid_token_tokenid",
+    "delete_access_users_userid_token_tokenid",
+    "get_access_users"
+  ]
+}

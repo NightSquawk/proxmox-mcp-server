@@ -1,0 +1,90 @@
+{
+  "operationId": "get_pbs_remotes_remote_tasks_upid_log",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "log",
+  "method": "GET",
+  "path": "/pbs/remotes/{remote}/tasks/{upid}/log",
+  "description": "Read a task log.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "upid",
+      "type": "string",
+      "required": true,
+      "description": "A remote UPID",
+      "minLength": 42
+    }
+  ],
+  "params": [
+    {
+      "name": "download",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether the tasklog file should be downloaded. This parameter can't be used in conjunction with other parameters",
+      "default": false
+    },
+    {
+      "name": "limit",
+      "type": "integer",
+      "required": false,
+      "description": "The amount of lines to read from the tasklog. Setting this parameter to 0 will return all lines until the end of the file.",
+      "default": 50,
+      "minimum": 0
+    },
+    {
+      "name": "start",
+      "type": "integer",
+      "required": false,
+      "description": "Start at this line when reading the tasklog",
+      "default": 0,
+      "minimum": 0
+    }
+  ],
+  "returns": {
+    "description": "Array of task log lines",
+    "items": {
+      "additionalProperties": false,
+      "description": "One line in the task log.",
+      "properties": {
+        "n": {
+          "description": "Line number",
+          "type": "integer"
+        },
+        "t": {
+          "description": "Line text",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/tasks/<upid>/log'"
+}

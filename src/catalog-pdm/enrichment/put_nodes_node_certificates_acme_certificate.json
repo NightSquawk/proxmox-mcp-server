@@ -1,0 +1,27 @@
+{
+  "operationId": "put_nodes_node_certificates_acme_certificate",
+  "usageNotes": "Renews the ACME (Let's Encrypt) TLS certificate on a PDM node; by default only proceeds if the certificate expires within 30 days, so pass force=true to renew immediately regardless of expiry. The call returns a UPID — poll the task log with the tasks API to confirm success before relying on the new certificate. Requires System.Modify on the node and a working ACME account/domain config already in place.",
+  "examples": [
+    {
+      "summary": "Force-renew the ACME certificate on node 'pdm1' immediately",
+      "path_params": {
+        "node": "pdm1"
+      },
+      "params": {
+        "force": true
+      }
+    }
+  ],
+  "tips": [
+    "Without force=true, the API is a no-op if the certificate has more than 30 days remaining — check the returned UPID task log to confirm whether renewal actually ran.",
+    "ACME account and domain must be configured on the node before calling this endpoint; use the ACME account/plugin APIs to set those up first.",
+    "API tokens are permitted (allowtoken: true), making this safe to call from automation scripts without interactive credentials.",
+    "After renewal, services using the PDM TLS certificate (web UI, API) will pick up the new cert on the next connection — no manual service restart required."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_certificates_acme_certificate",
+    "delete_nodes_node_certificates_acme_certificate",
+    "get_nodes_node_certificates_acme_account",
+    "get_nodes_node_certificates_info"
+  ]
+}

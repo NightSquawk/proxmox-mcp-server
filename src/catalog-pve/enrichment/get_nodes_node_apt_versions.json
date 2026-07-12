@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_apt_versions",
+  "usageNotes": "Use this to inspect the installed and available versions of key Proxmox packages (e.g., pve-manager, proxmox-ve, qemu-server) on a specific node — useful before or after running apt upgrades to confirm version state. The node must be online and reachable by the API; the caller needs Sys.Audit on /nodes/{node}. This endpoint returns package state only for Proxmox-curated packages, not the full dpkg database.",
+  "examples": [
+    {
+      "summary": "List important package versions on node 'pve1'",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'Version' field is the candidate upgrade version from apt, while 'OldVersion' is what is currently installed — if they differ, an update is available for that package.",
+    "The 'RunningKernel' field is only populated for the 'proxmox-ve' meta-package entry; use it to confirm whether a kernel update requires a reboot to take effect.",
+    "The 'ManagerVersion' field reflects the live pve-manager API version and may differ from the installed package version if an upgrade happened without a service restart.",
+    "NotifyStatus shows the version for which an update notification was already sent — useful for suppressing duplicate alerts in automation."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_update",
+    "post_nodes_node_apt_update",
+    "get_nodes_node_apt_changelog"
+  ]
+}

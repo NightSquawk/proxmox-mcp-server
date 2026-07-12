@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_lxc_vmid",
+  "usageNotes": "Permanently destroys an LXC container and all its associated files on the specified node; the operation is asynchronous and returns a task UPID that should be polled for completion. The container must be stopped first unless the `force` flag is set. Use `purge` to remove the container from backup jobs, replication jobs, and HA configurations — ACLs and firewall entries are always removed regardless.",
+  "examples": [
+    {
+      "summary": "Destroy a stopped LXC container and purge all references",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 201
+      },
+      "params": {
+        "purge": true,
+        "destroy-unreferenced-disks": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently deletes the container's rootfs, all referenced disk volumes, and (with destroy-unreferenced-disks) any orphaned disks sharing the VMID on enabled storages — data is unrecoverable without a prior backup.",
+  "tips": [
+    "Returns a task UPID string — use get_nodes_node_tasks_upid_status to poll until the task completes before treating the container as fully gone.",
+    "The container must be in a stopped state unless `force: true` is passed; forcing destruction of a running container kills it immediately with no graceful shutdown.",
+    "Without `purge`, stale references in backup and replication schedules will continue to run and generate errors — always pass purge: true for a clean removal.",
+    "Requires the VM.Allocate privilege on /vms/{vmid}; cluster-level permission is not sufficient."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_status_stop",
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_lxc"
+  ]
+}

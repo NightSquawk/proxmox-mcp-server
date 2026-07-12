@@ -1,0 +1,44 @@
+{
+  "operationId": "post_nodes_node_execute",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "execute",
+  "method": "POST",
+  "path": "/nodes/{node}/execute",
+  "description": "Execute multiple commands in order, root only.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "commands",
+      "type": "string",
+      "required": true,
+      "description": "JSON encoded array of commands.",
+      "format": "pve-command-batch",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {},
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"commands\":\"<commands>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/execute'"
+}

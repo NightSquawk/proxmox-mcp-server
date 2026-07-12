@@ -1,0 +1,20 @@
+{
+  "operationId": "get_remotes_tasks",
+  "usageNotes": "Returns a directory index of available task-related sub-endpoints under /remotes/tasks; useful for discovering what task operations are exposed for remotes without requiring any elevated privilege. No parameters are accepted, so the response is the same for all authenticated callers. Use this as an exploration step before calling specific remote-task endpoints.",
+  "examples": [
+    {
+      "summary": "List available task sub-endpoints for remotes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a pure directory/discovery endpoint — it does not return actual task records or UPIDs.",
+    "Accessible to all authenticated users (privilege: all), including API tokens."
+  ],
+  "relatedOperations": [
+    "get_remotes",
+    "get_nodes_tasks",
+    "get_nodes_tasks_upid_status"
+  ]
+}

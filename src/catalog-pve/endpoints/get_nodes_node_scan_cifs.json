@@ -1,0 +1,82 @@
+{
+  "operationId": "get_nodes_node_scan_cifs",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "cifsscan",
+  "method": "GET",
+  "path": "/nodes/{node}/scan/cifs",
+  "description": "Scan remote CIFS server.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "domain",
+      "type": "string",
+      "required": false,
+      "description": "SMB domain (Workgroup).",
+      "typetext": "<string>"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": false,
+      "description": "User password.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "server",
+      "type": "string",
+      "required": true,
+      "description": "The server address (name or IP).",
+      "format": "pve-storage-server",
+      "typetext": "<string>"
+    },
+    {
+      "name": "username",
+      "type": "string",
+      "required": false,
+      "description": "User name.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "description": {
+          "description": "Descriptive text from server.",
+          "type": "string"
+        },
+        "share": {
+          "description": "The cifs share name.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/storage",
+      [
+        "Datastore.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/scan/cifs?server=<server>'"
+}

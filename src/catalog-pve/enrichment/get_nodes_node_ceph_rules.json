@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_ceph_rules",
+  "usageNotes": "Returns the list of CRUSH rules configured in the Ceph cluster as seen from the specified node. Use this before creating or modifying Ceph pools to identify valid rule names to assign. Requires either Sys.Audit or Datastore.Audit privilege at the root path; the node must be online and Ceph must be initialized on the cluster.",
+  "examples": [
+    {
+      "summary": "List all CRUSH rules from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "CRUSH rules govern how Ceph distributes object replicas across failure domains (e.g., host, rack); knowing the available rules is required when setting the 'rule' field on a Ceph pool.",
+    "This endpoint is read-only and safe to call at any time without affecting cluster state.",
+    "If the node is part of a Ceph cluster but returns an empty array, Ceph may not be fully initialized — check with get_nodes_node_ceph_status."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph_pools",
+    "post_nodes_node_ceph_pools"
+  ]
+}

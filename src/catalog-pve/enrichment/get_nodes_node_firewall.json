@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_firewall",
+  "usageNotes": "Returns the list of available sub-resources under a node's firewall namespace (e.g., rules, options, log, refs). Use this as a discovery call to confirm which firewall sub-paths are exposed for a given node before querying them individually. Accessible to all authenticated users; no special privilege is required.",
+  "examples": [
+    {
+      "summary": "List firewall sub-resources for node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a directory index — each item's 'name' field corresponds to a child endpoint (e.g., 'rules', 'options', 'log', 'refs').",
+    "Use this call to verify the node is reachable and the firewall API surface is available before making write calls to sub-endpoints."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_firewall_options",
+    "get_nodes_node_firewall_rules",
+    "get_nodes_node_firewall_log",
+    "get_nodes_node_firewall_refs"
+  ]
+}

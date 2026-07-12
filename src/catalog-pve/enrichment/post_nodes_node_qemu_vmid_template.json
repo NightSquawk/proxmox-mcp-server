@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_template",
+  "usageNotes": "Converts an existing QEMU VM into a template, marking all its disks as base images so linked clones can be created from it. The VM must be stopped before calling this endpoint — converting a running VM is not allowed. Returns a task UPID; poll the task status to confirm completion before attempting to clone from the template.",
+  "examples": [
+    {
+      "summary": "Convert VM 200 to a full template on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 200
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The VM must be powered off before conversion; the API will reject the request if it is running.",
+    "Once converted to a template, the VM can no longer be started directly — only cloned.",
+    "Omit the 'disk' body parameter to convert all disks to base images in one call; specify a single disk slot (e.g. 'scsi0') only when you need a partial conversion.",
+    "Linked clones (fast, thin-provisioned) require the source disk to be a base image, which this operation produces.",
+    "The operation is irreversible via the API — you cannot demote a template back to a regular VM without manual intervention in the Proxmox UI or config files."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_clone",
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_status_stop",
+    "get_nodes_node_tasks"
+  ]
+}

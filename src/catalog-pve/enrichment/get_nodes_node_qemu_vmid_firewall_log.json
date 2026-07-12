@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_log",
+  "usageNotes": "Use this to retrieve per-VM firewall log entries from the node's kernel log; the VM's firewall must be enabled and the node hosting the VM must be online. Requires VM.Console on the VM's path — standard VM.Audit is not sufficient. Use 'since'/'until' UNIX epoch filters to narrow results for a specific incident window rather than fetching the entire log.",
+  "examples": [
+    {
+      "summary": "Fetch the 50 most recent firewall log entries for VM 101 on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101
+      },
+      "params": {
+        "limit": 50
+      }
+    }
+  ],
+  "tips": [
+    "Each returned item has 'n' (line number) and 't' (log text); line numbers can be used with 'start' for cursor-style pagination through large logs.",
+    "Log entries only appear if the VM's firewall is enabled at both the datacenter/node level and the VM level — a missing log is often a sign the firewall is disabled, not that traffic is allowed.",
+    "Use 'since' and 'until' together to scope a specific time window; both accept UNIX epoch integers."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "get_nodes_node_qemu_vmid_firewall_options",
+    "get_nodes_node_firewall_log"
+  ]
+}

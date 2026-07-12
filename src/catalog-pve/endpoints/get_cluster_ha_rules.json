@@ -1,0 +1,62 @@
+{
+  "operationId": "get_cluster_ha_rules",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "index",
+  "method": "GET",
+  "path": "/cluster/ha/rules",
+  "description": "Get HA rules.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "resource",
+      "type": "string",
+      "required": false,
+      "description": "Limit the returned list to rules affecting the specified resource.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "description": "Limit the returned list to the specified rule type.",
+      "enum": [
+        "node-affinity",
+        "resource-affinity"
+      ]
+    }
+  ],
+  "returns": {
+    "items": {
+      "links": [
+        {
+          "href": "{rule}",
+          "rel": "child"
+        }
+      ],
+      "properties": {
+        "rule": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/ha/rules'"
+}

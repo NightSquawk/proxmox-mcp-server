@@ -1,0 +1,32 @@
+{
+  "operationId": "put_cluster_sdn_fabrics_fabric_id",
+  "usageNotes": "Use this to modify an existing SDN fabric's protocol settings, IP prefix ranges, or routing parameters. The fabric must already exist; use the POST endpoint to create one. Changes take effect after running the SDN apply operation — the PUT itself returns null synchronously, not a task UPID. Requires SDN.Allocate on /sdn/fabrics/{id}; supply the current config digest to prevent race conditions when multiple operators may be editing simultaneously.",
+  "examples": [
+    {
+      "summary": "Update a WireGuard fabric to enable persistent keepalive for NAT traversal",
+      "path_params": {
+        "id": "wgfab01"
+      },
+      "params": {
+        "protocol": "wireguard",
+        "ip_prefix": "10.100.0.0/24",
+        "persistent_keepalive": 25,
+        "delete": [],
+        "redistribute": []
+      }
+    }
+  ],
+  "tips": [
+    "The 'delete' and 'redistribute' params are marked required in the spec even when empty — always pass them as empty arrays if not removing/adding entries.",
+    "After updating a fabric, call POST /cluster/sdn (apply) to push the config to all nodes; without apply the change is staged but not active.",
+    "Pass 'digest' (retrieved from GET /cluster/sdn/fabrics/fabric/{id}) to guard against concurrent modifications in multi-admin environments.",
+    "Protocol-specific params only apply to their respective protocol: 'area' and 'redistribute' for OSPF/Openfabric, 'csnp_interval'/'hello_interval' for Openfabric, 'persistent_keepalive' for WireGuard.",
+    "The 'lock-token' param is only needed when the global SDN config is locked by another operation — typically not required for normal updates."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics_fabric_id",
+    "post_cluster_sdn_fabrics",
+    "delete_cluster_sdn_fabrics_fabric_id",
+    "put_cluster_sdn"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_access_users_userid_token_tokenid",
+  "usageNotes": "Use this to inspect a specific API token's metadata — expiry, privilege-separation flag, and comment — without revealing the token secret itself (the secret is only returned at creation time). A user can read their own tokens; reading another user's tokens requires the User.Modify privilege on the realm or a parent path. Useful when auditing token expiration or confirming whether a token runs with full user privileges or a restricted ACL (privsep).",
+  "examples": [
+    {
+      "summary": "Read the 'automation' token for a local admin user",
+      "path_params": {
+        "userid": "admin@pam",
+        "tokenid": "automation"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The token secret is never returned by this endpoint — it is only shown once, at creation (post_access_users_userid_token_tokenid). Store it securely at that time.",
+    "privsep=true (the default) means the token's effective permissions are the intersection of its ACLs and the owner's ACLs — it cannot exceed the user's own rights.",
+    "An expire value of 0 means the token never expires; check this when auditing long-lived service accounts.",
+    "tokenid must start with a letter and may contain letters, digits, dots, hyphens, and underscores — validate before calling if building the ID programmatically."
+  ],
+  "relatedOperations": [
+    "post_access_users_userid_token_tokenid",
+    "put_access_users_userid_token_tokenid",
+    "delete_access_users_userid_token_tokenid",
+    "get_access_users_userid"
+  ]
+}

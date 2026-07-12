@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_hardware_pci_pci_id_or_mapping_mdev",
+  "usageNotes": "Use this to discover which mediated device (mdev) types a PCI device supports before assigning one to a VM — required for GPU partitioning workflows (e.g. NVIDIA vGPU, Intel GVT-g). The node must be online and the host kernel/driver must already expose mdev types via sysfs; if no mdev types are registered the response will be an empty array. Requires Sys.Audit or Sys.Modify at the root level.",
+  "examples": [
+    {
+      "summary": "List mdev types for an NVIDIA GPU at PCI address 0000:01:00.0 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "pci-id-or-mapping": "0000:01:00.0"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'available' field in each returned item shows remaining free instances — a value of 0 means every slot of that mdev type is already allocated to a VM.",
+    "You can pass either a raw PCI address (e.g. 0000:01:00.0) or a Proxmox PCI mapping name (e.g. gpu-nvidia) as pci-id-or-mapping.",
+    "If the driver does not register mdev support in sysfs, this endpoint returns an empty array rather than an error — verify the correct vGPU driver is installed and loaded on the node.",
+    "Use get_nodes_node_hardware_pci to enumerate available PCI devices on the node before calling this endpoint."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_hardware_pci",
+    "get_nodes_node_hardware_pci_pciid"
+  ]
+}

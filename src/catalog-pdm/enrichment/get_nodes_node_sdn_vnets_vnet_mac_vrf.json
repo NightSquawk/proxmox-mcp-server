@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_sdn_vnets_vnet_mac_vrf",
+  "usageNotes": "Use this endpoint to look up the MAC-VRF entry for a specific EVPN vnet as seen from a node on a given remote PDM instance — useful for verifying EVPN BGP MAC/IP advertisement and nexthop reachability across sites. The `remote` query parameter is required and must identify a configured PDM remote (2–32 chars, alphanumeric with dots/dashes). The node must be reachable and the vnet must be an EVPN-type SDN object; calling against a non-EVPN vnet or an unconfigured remote will return an error.",
+  "examples": [
+    {
+      "summary": "Get the MAC-VRF entry for vnet 'vnet10' from remote 'site-b' as seen by node 'pdm1'",
+      "path_params": {
+        "node": "pdm1",
+        "vnet": "vnet10"
+      },
+      "params": {
+        "remote": "site-b"
+      }
+    }
+  ],
+  "tips": [
+    "The returned MAC address matches the locally-learned unicast MAC advertised via EVPN Type-2 routes; use the nexthop field to confirm the VTEP tunnel endpoint is correct.",
+    "If the response is empty or returns an error, verify that EVPN is enabled on the zone backing the vnet and that BGP peering with the remote is established.",
+    "The MAC pattern enforces locally-administered or universal unicast bits — multicast MACs are rejected by the schema."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_vnets_vnet_ips",
+    "get_nodes_node_sdn_zones",
+    "get_nodes_node_sdn_vnets"
+  ]
+}

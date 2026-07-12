@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_fsfreeze_status",
+  "usageNotes": "Queries the current filesystem freeze state of a running VM via the QEMU Guest Agent; use this to confirm whether filesystems are frozen or thawed before or after backup operations. Requires the guest agent to be installed, running, and responsive inside the VM — the call will fail if the agent is not reachable. One of `VM.GuestAgent.Audit`, `VM.GuestAgent.FileSystemMgmt`, or `VM.GuestAgent.Unrestricted` privilege on `/vms/{vmid}` is sufficient.",
+  "examples": [
+    {
+      "summary": "Check filesystem freeze status on VM 200 running on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 200
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response wraps the guest agent reply in a `result` property; inspect `result` for the actual freeze state string (e.g. 'thawed' or 'frozen').",
+    "Call this after issuing fsfreeze-freeze or fsfreeze-thaw to verify the operation took effect before proceeding.",
+    "If the guest agent is not running, Proxmox returns a 500-level error — ensure `qemu-guest-agent` is active inside the guest OS.",
+    "This endpoint takes no body parameters; pass an empty JSON object `{}` or omit the body entirely."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_agent_fsfreeze_freeze",
+    "post_nodes_node_qemu_vmid_agent_fsfreeze_thaw",
+    "get_nodes_node_qemu_vmid_agent",
+    "post_nodes_node_qemu_vmid_agent_get_osinfo"
+  ]
+}

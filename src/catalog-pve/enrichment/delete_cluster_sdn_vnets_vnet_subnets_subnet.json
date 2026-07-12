@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_cluster_sdn_vnets_vnet_subnets_subnet",
+  "usageNotes": "Removes a subnet configuration object from an SDN vnet. The deletion is staged in the pending SDN config and does not take effect until the SDN configuration is applied via the apply endpoint. Requires 'SDN.Allocate' on the zone/vnet path; ensure no VMs or containers are still using the subnet's IPAM allocations before deleting.",
+  "examples": [
+    {
+      "summary": "Delete subnet 10.10.20.0/24 from vnet 'prodvn'",
+      "path_params": {
+        "vnet": "prodvn",
+        "subnet": "10.10.20.0-24"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the subnet object configuration, which will eliminate associated IPAM allocations and routing rules for that CIDR once the SDN config is applied.",
+  "tips": [
+    "Changes are staged until 'apply' is called on /cluster/sdn — deletion has no live impact until then.",
+    "The subnet identifier uses the pve-sdn-subnet-id format, which typically encodes the CIDR as '<network>-<prefix>' (e.g., 10.10.20.0-24).",
+    "If the SDN config is locked by another operation, pass the lock-token obtained from the lock endpoint to proceed.",
+    "Verify no IPAM IP allocations remain on this subnet before deleting to avoid orphaned records."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_subnets_subnet",
+    "get_cluster_sdn_vnets_vnet_subnets",
+    "create_cluster_sdn_vnets_vnet_subnets",
+    "put_cluster_sdn_vnets_vnet_subnets_subnet",
+    "put_cluster_sdn"
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "operationId": "get_nodes_node_storage_storage_content",
+  "usageNotes": "Use this to list volumes on a specific storage pool — disk images, ISO files, container templates, or backups — scoped to a single node. The target node must be online and the storage must be accessible from that node; content visible on one node may differ for shared storages depending on scan state. Narrow results with the `content` filter (e.g. `images`, `iso`, `backup`, `vztmpl`) or the `vmid` filter to avoid iterating large pools.",
+  "examples": [
+    {
+      "summary": "List all backup volumes on local-zfs storage for VM 101",
+      "path_params": {
+        "node": "pve01",
+        "storage": "local-zfs"
+      },
+      "params": {
+        "content": "images",
+        "vmid": 101
+      }
+    }
+  ],
+  "tips": [
+    "The `size` field is exact only when the storage plugin supports it; fall back to `approximate-size` for storages like PBS or thin-provisioned LVM.",
+    "For PBS storages, check the `verification.state` field to confirm the backup is verified — unverified backups may not restore cleanly.",
+    "The `protected` flag is returned for backup volumes and prevents deletion via the API until removed.",
+    "Use `content=iso` against an ISO-class storage to enumerate installable images before creating a VM.",
+    "volid values returned here are the correct identifiers to pass to volume-level operations (upload, delete, restore)."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_status",
+    "get_nodes_node_storage",
+    "post_nodes_node_storage_storage_content",
+    "delete_nodes_node_storage_storage_content_volume"
+  ]
+}

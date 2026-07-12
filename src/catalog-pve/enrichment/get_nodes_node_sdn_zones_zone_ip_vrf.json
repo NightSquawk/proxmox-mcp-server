@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_sdn_zones_zone_ip_vrf",
+  "usageNotes": "Use this to inspect the VRF (Virtual Routing and Forwarding) route table for a specific EVPN zone as seen by a given node — useful for verifying BGP-learned routes and inter-zone reachability during SDN troubleshooting. Requires the zone to be of type EVPN and the queried node to be online with SDN applied. Note that /32 host routes for guests local to the queried node are intentionally excluded from results, as those are handled directly via the vnet bridge.",
+  "examples": [
+    {
+      "summary": "Fetch VRF route table for EVPN zone 'evpn-prod' on node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "zone": "evpn-prod"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Results only reflect routes in the VRF routing table — not the full Linux routing table or guest ARP entries.",
+    "If the response is empty, the zone may not be applied on the node yet or BGP peering may not be established.",
+    "The 'protocol' field (e.g. 'bgp') indicates how the route was learned — useful for confirming EVPN control-plane convergence.",
+    "Run this on multiple nodes and compare results to detect asymmetric routing or BGP advertisement issues across the fabric."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_zones",
+    "get_cluster_sdn_zones_zone",
+    "get_nodes_node_sdn_zones_zone_content"
+  ]
+}

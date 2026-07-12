@@ -1,0 +1,23 @@
+{
+  "operationId": "get_config_certificate",
+  "usageNotes": "Use this to read the PDM node's current TLS certificate configuration, including which ACME account is bound and which domains (acmedomain0–acmedomain4) are configured for automatic certificate issuance. All returned fields are optional — an unconfigured node returns an empty object. Requires System.Audit privilege; a read-only API token with that privilege is sufficient.",
+  "examples": [
+    {
+      "summary": "Retrieve the current ACME certificate configuration for the PDM node",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Up to five domain slots (acmedomain0–acmedomain4) can be configured; slots absent from the response are simply unconfigured, not an error.",
+    "The 'alias' field within each acmedomain entry lets you redirect ACME DNS-01 challenges to a different domain via CNAME — useful when the PDM host's DNS zone is not directly manageable.",
+    "An empty 'plugin' field on a domain slot means standalone HTTP-01 validation is in use for that domain.",
+    "To see which ACME accounts are available to reference in the 'acme' field, call get_config_acme_account first."
+  ],
+  "relatedOperations": [
+    "get_config_acme",
+    "get_config_acme_account",
+    "get_config_acme_account_name",
+    "get_config_acme_plugins"
+  ]
+}

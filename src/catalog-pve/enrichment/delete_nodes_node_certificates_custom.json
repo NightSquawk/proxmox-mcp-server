@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_nodes_node_certificates_custom",
+  "usageNotes": "Removes the custom TLS certificate and private key from the specified node, reverting pveproxy to its self-signed certificate. Use `restart: true` to immediately reload pveproxy so the change takes effect without a manual service restart; omitting it means the old certificate stays in memory until the next pveproxy restart. Requires `Sys.Modify` on `/nodes/{node}` — API tokens are supported.",
+  "examples": [
+    {
+      "summary": "Remove the custom certificate on node pve1 and restart pveproxy immediately",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "restart": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently deletes the node's custom certificate chain and private key; HTTPS access reverts to the self-signed certificate, which will trigger browser/client trust warnings until a new certificate is uploaded.",
+  "tips": [
+    "If `restart` is false (default), pveproxy continues serving the old certificate from memory until the service is manually restarted or the node reboots.",
+    "After deletion, upload a replacement certificate with the POST /nodes/{node}/certificates/custom endpoint before restarting pveproxy to avoid a trust gap.",
+    "Returns null on success — no UPID is issued; the operation is synchronous."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_certificates_custom",
+    "get_nodes_node_certificates"
+  ]
+}

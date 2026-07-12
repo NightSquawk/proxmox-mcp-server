@@ -1,0 +1,28 @@
+{
+  "operationId": "put_nodes_node_lxc_vmid_resize",
+  "usageNotes": "Use this to grow a container's rootfs or any additional mount point (mp0–mp255); shrinking is not supported and will be rejected. The operation returns a task UPID — poll the task status endpoint to confirm completion before treating the resize as done. Pass the current config digest to guard against concurrent modifications.",
+  "examples": [
+    {
+      "summary": "Grow rootfs of CT 110 by 10 GB",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {
+        "disk": "rootfs",
+        "size": "+10G"
+      }
+    }
+  ],
+  "tips": [
+    "Prefix size with '+' (e.g. '+10G') for a relative increase; omit '+' to set an absolute size — but absolute values smaller than the current disk size will fail.",
+    "The container does not need to be stopped for a resize, but the filesystem inside the container may need a manual resize (e.g. 'resize2fs') after the block device grows.",
+    "Retrieve the current config digest from get_nodes_node_lxc_vmid_config and pass it as 'digest' to prevent a race condition if another process modifies the CT simultaneously.",
+    "Supported size suffixes: K (kilobytes), M (megabytes), G (gigabytes), T (terabytes); omitting a suffix defaults to bytes."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_config",
+    "get_nodes_node_tasks_upid_status",
+    "put_nodes_node_lxc_vmid_config"
+  ]
+}

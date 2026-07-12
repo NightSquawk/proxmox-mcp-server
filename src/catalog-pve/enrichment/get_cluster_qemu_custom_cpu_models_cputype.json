@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_qemu_custom_cpu_models_cputype",
+  "usageNotes": "Use this to inspect the full definition of a specific custom CPU model before assigning it to a VM — confirming its reported-model, enabled/disabled flags, and any phys-bits or level overrides. The caller must hold Mapping.Audit, Mapping.Use, or Mapping.Modify on the path /mapping/cpu/{cputype}. The 'custom-' prefix in the cputype path segment is optional; the API normalises both forms.",
+  "examples": [
+    {
+      "summary": "Retrieve details for a custom CPU model named 'custom-secure-epyc'",
+      "path_params": {
+        "cputype": "custom-secure-epyc"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Custom CPU model names are defined cluster-wide in /etc/pve/cpu-models.conf; verify the model exists there before querying.",
+    "The returned 'digest' field can be passed to modification calls to guard against concurrent edits.",
+    "Using 'phys-bits: host' in a custom model breaks live migration between hosts with different physical address bit widths — check this field before migrating VMs that use the model.",
+    "If the response 'hidden' flag is true, the guest OS will not detect it is running inside KVM, which is useful for software that refuses to run in virtual environments."
+  ],
+  "relatedOperations": [
+    "get_cluster_qemu_custom_cpu_models",
+    "post_cluster_qemu_custom_cpu_models",
+    "put_cluster_qemu_custom_cpu_models_cputype",
+    "delete_cluster_qemu_custom_cpu_models_cputype"
+  ]
+}

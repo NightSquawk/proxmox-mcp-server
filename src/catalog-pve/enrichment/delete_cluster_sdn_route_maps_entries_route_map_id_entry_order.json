@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_cluster_sdn_route_maps_entries_route_map_id_entry_order",
+  "usageNotes": "Permanently removes a single entry (identified by its zero-based order index) from an SDN route map. The route map must exist and the caller must hold SDN.Allocate on the route-map path; after deletion, apply the SDN configuration to push the change cluster-wide. If the global SDN config is currently locked by another operation, pass the matching lock-token to avoid a conflict error.",
+  "examples": [
+    {
+      "summary": "Delete the first entry (order 0) from a route map named 'rm-transit'",
+      "path_params": {
+        "route-map-id": "rm-transit",
+        "order": 0
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the specified route map entry; any BGP policy rule that relied on this entry will stop matching after the next SDN apply.",
+  "tips": [
+    "Entry order indices are not automatically renumbered after deletion — verify remaining entries' orders before referencing them in subsequent calls.",
+    "Changes take effect cluster-wide only after calling the SDN apply endpoint; deletion alone does not update the running FRR/BGP configuration.",
+    "Retrieve the current entry list first (GET on the entries collection) to confirm the correct order index before deleting."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_route_maps_entries_route_map_id",
+    "create_cluster_sdn_route_maps_entries_route_map_id_entry",
+    "get_cluster_sdn_route_maps_entries_route_map_id_entry_order",
+    "update_cluster_sdn_route_maps_entries_route_map_id_entry_order",
+    "post_cluster_sdn_apply"
+  ]
+}

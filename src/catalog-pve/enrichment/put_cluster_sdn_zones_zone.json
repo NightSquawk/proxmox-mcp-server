@@ -1,0 +1,31 @@
+{
+  "operationId": "put_cluster_sdn_zones_zone",
+  "usageNotes": "Use this to modify an existing SDN zone's configuration — for example changing exitnodes, MTU, peers list, or IPAM settings. The zone must already exist (use post_cluster_sdn_zones to create it). Changes take effect cluster-wide only after applying the pending SDN configuration via put_cluster_sdn (apply); until then the zone runs on its prior config. Pass the `digest` field (read from get_cluster_sdn_zones_zone) to guard against concurrent edits.",
+  "examples": [
+    {
+      "summary": "Update an EVPN zone to add a second exitnode and set MTU to 1450",
+      "path_params": {
+        "zone": "evpnz1"
+      },
+      "params": {
+        "exitnodes": "pve1,pve2",
+        "exitnodes-primary": "pve1",
+        "mtu": 1450
+      }
+    }
+  ],
+  "tips": [
+    "Changes are staged — always call put_cluster_sdn (apply) after this call or your changes will not be active.",
+    "Use the `delete` param (comma-separated config key names) to unset optional fields rather than setting them to empty strings.",
+    "For VXLAN zones, reducing MTU by at least 50 bytes from the physical NIC MTU avoids fragmentation across the tunnel.",
+    "The `digest` field is returned by get_cluster_sdn_zones_zone; supplying it prevents overwriting a concurrent change.",
+    "Requires SDN.Allocate on /sdn/zones/{zone} — not the broader Sys.Modify privilege."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_zones_zone",
+    "post_cluster_sdn_zones",
+    "delete_cluster_sdn_zones_zone",
+    "get_cluster_sdn_zones",
+    "put_cluster_sdn"
+  ]
+}

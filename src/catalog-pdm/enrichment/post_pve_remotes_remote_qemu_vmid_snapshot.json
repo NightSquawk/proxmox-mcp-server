@@ -1,0 +1,30 @@
+{
+  "operationId": "post_pve_remotes_remote_qemu_vmid_snapshot",
+  "usageNotes": "Use this to take a point-in-time snapshot of a remote QEMU VM via PDM without needing direct PVE API access. The operation is asynchronous — the response is a remote UPID string that must be polled for completion status. Omitting 'vmstate' (default false) produces a disk-only snapshot; set it to true only when you need to resume the VM exactly from its running state, as RAM capture significantly increases snapshot time and disk usage.",
+  "examples": [
+    {
+      "summary": "Create a pre-upgrade disk-only snapshot of VM 105 on the production-pve remote",
+      "path_params": {
+        "remote": "production-pve",
+        "vmid": 105
+      },
+      "params": {
+        "snapname": "pre-upgrade-2026",
+        "description": "Snapshot before OS upgrade on 2026-06-29",
+        "node": "pve01",
+        "vmstate": false
+      }
+    }
+  ],
+  "tips": [
+    "snapname must start with a letter or digit and contain only alphanumeric, dot, underscore, or hyphen characters — max 40 chars.",
+    "If 'node' is omitted, PDM resolves the VM's current node automatically; supply it to be explicit in clusters with live migration.",
+    "RAM-state snapshots (vmstate: true) require the VM to be running and roughly double the storage footprint of the snapshot.",
+    "Poll the returned remote UPID against the task-status endpoint to confirm the snapshot completed before proceeding with destructive operations."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_snapshot",
+    "delete_pve_remotes_remote_qemu_vmid_snapshot_snapname",
+    "post_pve_remotes_remote_qemu_vmid_snapshot_snapname_rollback"
+  ]
+}

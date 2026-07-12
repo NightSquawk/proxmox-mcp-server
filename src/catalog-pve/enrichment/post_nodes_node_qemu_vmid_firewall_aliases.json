@@ -1,0 +1,30 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_firewall_aliases",
+  "usageNotes": "Creates a named IP/CIDR alias scoped to a specific VM's firewall ruleset, making it reusable by name in that VM's firewall rules instead of repeating raw CIDRs. Requires VM.Config.Network on /vms/{vmid}. Alias names must start with a letter and contain only letters, digits, hyphens, or underscores (2–64 chars); names are VM-local and do not propagate to the cluster or datacenter alias pools.",
+  "examples": [
+    {
+      "summary": "Create an alias for a trusted management subnet on VM 201",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 201
+      },
+      "params": {
+        "name": "mgmt-subnet",
+        "cidr": "10.10.0.0/24",
+        "comment": "Internal management VLAN"
+      }
+    }
+  ],
+  "tips": [
+    "Alias names are VM-scoped — the same name can exist independently at the datacenter level or on another VM without conflict.",
+    "Returns null on success; verify creation with the corresponding GET list endpoint.",
+    "Use datacenter-level aliases (POST /cluster/firewall/aliases) for CIDRs shared across multiple VMs or nodes to avoid duplication."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_aliases",
+    "get_nodes_node_qemu_vmid_firewall_aliases_name",
+    "put_nodes_node_qemu_vmid_firewall_aliases_name",
+    "delete_nodes_node_qemu_vmid_firewall_aliases_name",
+    "post_nodes_node_qemu_vmid_firewall_rules"
+  ]
+}

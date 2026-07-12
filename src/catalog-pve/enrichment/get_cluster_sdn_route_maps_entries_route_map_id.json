@@ -1,0 +1,29 @@
+{
+  "operationId": "get_cluster_sdn_route_maps_entries_route_map_id",
+  "usageNotes": "Use this to inspect all ordered entries (permit/deny rules) within a specific SDN route map, including their match conditions and set actions. Requires SDN.Audit or SDN.Allocate on the route-map resource. Use the 'pending' flag to preview uncommitted changes before running 'apply' on the SDN config.",
+  "examples": [
+    {
+      "summary": "List all entries for a route map named 'bgp-out-filter', showing pending (unapplied) config",
+      "path_params": {
+        "route-map-id": "bgp-out-filter"
+      },
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "Entries are returned ordered by the 'order' field (0–65535); lower order = evaluated first.",
+    "The 'call' field chains evaluation to another route map by ID, enabling modular policy composition.",
+    "Use 'exit-action' values like 'on-match-next' or 'on-match-goto' to control evaluation flow after a match.",
+    "If both 'pending' and 'running' are omitted, the response reflects the saved (committed) config.",
+    "The digest field in each entry can be passed to update/delete calls to prevent concurrent modification races."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_route_maps",
+    "get_cluster_sdn_route_maps_route_map_id",
+    "get_cluster_sdn_route_maps_entries_route_map_id_order",
+    "post_cluster_sdn_route_maps_entries_route_map_id",
+    "put_cluster_sdn_apply"
+  ]
+}

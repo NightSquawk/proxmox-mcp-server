@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_network",
+  "usageNotes": "Use this to enumerate all network interfaces configured on a PDM node, including their type (eth, bridge, bond, vlan, alias), IP assignments, and active/autostart state. The caller must hold the System.Audit privilege on the node's network path. Results reflect the on-disk configuration (/etc/network/interfaces) and include a digest for optimistic-lock checks when making subsequent write calls.",
+  "examples": [
+    {
+      "summary": "List all network interfaces on node 'pve1'",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'active' field reflects the live kernel state (interface UP); 'autostart' reflects whether it is set to come up at boot — these can differ if an interface was manually downed or is pending a reboot after config changes.",
+    "Bridge interfaces include a 'bridge_ports' array listing their member NICs; bond interfaces expose their member NICs via 'slaves' and the bonding mode via 'bond_mode'.",
+    "The response includes a config digest. Pass this digest to write operations (e.g., PUT /nodes/{node}/network/{iface}) to avoid overwriting concurrent changes.",
+    "Use 'localhost' as the node value when the PDM API host is itself the target node."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network_iface",
+    "put_nodes_node_network_iface",
+    "post_nodes_node_network",
+    "delete_nodes_node_network_iface",
+    "put_nodes_node_network"
+  ]
+}

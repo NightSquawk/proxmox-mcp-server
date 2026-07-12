@@ -1,0 +1,20 @@
+{
+  "operationId": "get_remotes_metric_collection_status",
+  "usageNotes": "Use this to check whether PDM is successfully collecting metrics from each configured remote. Each entry reports the remote name, the Unix timestamp of the last successful collection, and any error from the most recent attempt — making it useful for diagnosing stale or missing metric data. No parameters are required; all configured remotes are returned in a single call.",
+  "examples": [
+    {
+      "summary": "Retrieve metric collection status for all remotes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A missing 'last-collection' field on an entry means no successful collection has ever completed for that remote — check connectivity and credentials.",
+    "An 'error' field present alongside a valid 'last-collection' timestamp means the last attempt failed but a prior one succeeded; metric data exists but may be stale.",
+    "Poll this endpoint after adding or modifying a remote to confirm collection begins within the expected interval."
+  ],
+  "relatedOperations": [
+    "get_remotes",
+    "get_remotes_metric_collection_config"
+  ]
+}

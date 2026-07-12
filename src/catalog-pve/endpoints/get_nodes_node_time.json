@@ -1,0 +1,58 @@
+{
+  "operationId": "get_nodes_node_time",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "time",
+  "method": "GET",
+  "path": "/nodes/{node}/time",
+  "description": "Read server time and time zone settings.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": 0,
+    "properties": {
+      "localtime": {
+        "description": "Seconds since 1970-01-01 00:00:00 (local time)",
+        "minimum": 1297163644,
+        "renderer": "timestamp_gmt",
+        "type": "integer"
+      },
+      "time": {
+        "description": "Seconds since 1970-01-01 00:00:00 UTC.",
+        "minimum": 1297163644,
+        "renderer": "timestamp",
+        "type": "integer"
+      },
+      "timezone": {
+        "description": "Time zone",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/time'"
+}

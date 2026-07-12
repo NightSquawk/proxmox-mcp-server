@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_cluster_sdn_zones_zone",
+  "usageNotes": "Deletes an SDN zone configuration object from the cluster. The zone must have no VNets assigned to it before deletion — removing a zone that still has dependent VNets will fail. Requires the `SDN.Allocate` privilege on the `/sdn/zones/{zone}` path, and changes must be applied to the running SDN configuration afterward via the SDN apply endpoint.",
+  "examples": [
+    {
+      "summary": "Delete an SDN zone named 'myzone'",
+      "path_params": {
+        "zone": "myzone"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the SDN zone configuration object; any network segmentation, routing policy, or VNet associations that depended on this zone must be reconfigured manually.",
+  "tips": [
+    "SDN changes are staged — after deleting the zone, call the SDN apply endpoint (PUT /cluster/sdn) to push the change to all nodes.",
+    "If the global SDN config is locked, supply the `lock-token` param to unlock and proceed in one step.",
+    "Zone identifiers are 2–8 alphanumeric characters starting with a letter; verify the exact ID with get_cluster_sdn_zones before deleting.",
+    "Check for dependent VNets first using list_cluster_sdn_vnets; deletion will be rejected if any VNet still references this zone."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_zones_zone",
+    "list_cluster_sdn_zones",
+    "create_cluster_sdn_zones",
+    "update_cluster_sdn_zones_zone",
+    "list_cluster_sdn_vnets",
+    "put_cluster_sdn"
+  ]
+}

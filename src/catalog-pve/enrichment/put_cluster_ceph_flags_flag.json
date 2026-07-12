@@ -1,0 +1,26 @@
+{
+  "operationId": "put_cluster_ceph_flags_flag",
+  "usageNotes": "Use this to set or clear a single Ceph cluster flag (e.g., noout, nobackfill) during maintenance windows or incident response. Requires Sys.Modify at the root path and executes synchronously — no UPID is returned, so the change takes effect immediately. Always clear maintenance flags (noout, norebalance) after completing cluster work to restore normal data balancing.",
+  "examples": [
+    {
+      "summary": "Set noout flag to prevent OSDs from being marked out during a planned maintenance window",
+      "path_params": {
+        "flag": "noout"
+      },
+      "params": {
+        "value": true
+      }
+    }
+  ],
+  "tips": [
+    "noout is the most commonly used flag during OSD or host maintenance — it prevents Ceph from triggering data rebalancing when OSDs go offline.",
+    "pause halts both reads and writes cluster-wide; use only in emergencies as it causes full I/O stall.",
+    "This endpoint targets one flag at a time and is synchronous; the bulk PUT /cluster/ceph/flags endpoint sets multiple flags but forks an async worker task.",
+    "Forgetting to clear flags like noout or norebalance after maintenance leaves the cluster in a degraded-but-silent state where failures won't trigger recovery."
+  ],
+  "relatedOperations": [
+    "get_cluster_ceph_flags_flag",
+    "get_cluster_ceph_flags",
+    "put_cluster_ceph_flags"
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_snapshot",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "snapshot",
+  "method": "POST",
+  "path": "/nodes/{node}/lxc/{vmid}/snapshot",
+  "description": "Snapshot a container.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "description",
+      "type": "string",
+      "required": false,
+      "description": "A textual description or comment.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "snapname",
+      "type": "string",
+      "required": true,
+      "description": "The name of the snapshot.",
+      "format": "pve-configid",
+      "maxLength": 40,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "description": "the task ID.",
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Snapshot"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"snapname\":\"<snapname>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100/snapshot'"
+}

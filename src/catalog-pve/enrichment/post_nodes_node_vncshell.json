@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_vncshell",
+  "usageNotes": "Creates a VNC shell proxy for direct node-level console access — use this for host OS access rather than VM/container console (which have their own vncproxy endpoints). The caller must hold Sys.Console on /nodes/{node}; the special-purpose commands 'ceph_install' and 'upgrade' additionally require root@pam authentication — API tokens cannot satisfy that requirement. Returns connection credentials (ticket, cert, port) consumed immediately by a VNC or noVNC websocket client; the session is ephemeral and the ticket expires quickly, so the client should connect without delay.",
+  "examples": [
+    {
+      "summary": "Open a standard login shell on node pve01 via websocket",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "cmd": "login",
+        "websocket": true,
+        "width": 1280,
+        "height": 800
+      }
+    }
+  ],
+  "tips": [
+    "The returned 'ticket' and 'password' fields are used as VNC credentials; pass 'ticket' as the VNC password when connecting via the standard VNC protocol path.",
+    "Set 'websocket: true' for noVNC browser clients — the Proxmox web UI always uses websocket mode.",
+    "The 'cmd-opts' field is null-byte delimited, not space delimited; construct it carefully if passing arguments to 'upgrade' or 'ceph_install'.",
+    "Width and height are cosmetic hints to the spawned terminal; the VNC client can resize after connection."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_vncwebsocket",
+    "post_nodes_node_termproxy",
+    "post_nodes_node_spiceshell"
+  ]
+}

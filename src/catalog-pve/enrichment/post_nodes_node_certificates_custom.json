@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_certificates_custom",
+  "usageNotes": "Use this to install a third-party or internally signed TLS certificate on a specific Proxmox node's web GUI (pveproxy). The caller must hold Sys.Modify on /nodes/{node}. Set restart: true to apply the certificate immediately — without it, pveproxy continues serving the old cert until manually restarted. If an ACME-managed certificate is already present, pass force: true to overwrite it; otherwise the request will fail.",
+  "examples": [
+    {
+      "summary": "Upload a Let's Encrypt cert bundle with private key and immediately restart pveproxy",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "certificates": "-----BEGIN CERTIFICATE-----\nMIIE...base64...==\n-----END CERTIFICATE-----\n-----BEGIN CERTIFICATE-----\nMIIE...intermediate...==\n-----END CERTIFICATE-----",
+        "key": "-----BEGIN PRIVATE KEY-----\nMIIE...base64key...==\n-----END PRIVATE KEY-----",
+        "force": true,
+        "restart": true
+      }
+    }
+  ],
+  "tips": [
+    "The certificates field must be a full PEM chain — leaf cert first, followed by any intermediates — to avoid browser trust errors.",
+    "If you omit the key param, Proxmox expects the private key was previously uploaded or is embedded in the existing keystore; for a clean install always supply the key.",
+    "The response returns the parsed cert metadata (fingerprint, notafter, SANs) synchronously — there is no UPID; verify the fingerprint in the response before confirming success.",
+    "restart: true triggers a graceful pveproxy reload; active API/web sessions will reconnect automatically within a few seconds.",
+    "To revert to a self-signed cert, use the DELETE endpoint for custom certificates rather than uploading a blank value."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_certificates_info",
+    "delete_nodes_node_certificates_custom",
+    "get_nodes_node_certificates_acme_certificate",
+    "post_nodes_node_certificates_acme_certificate"
+  ]
+}

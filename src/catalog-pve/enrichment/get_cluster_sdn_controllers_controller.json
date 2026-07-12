@@ -1,0 +1,27 @@
+{
+  "operationId": "get_cluster_sdn_controllers_controller",
+  "usageNotes": "Use this to inspect the stored configuration of a specific SDN controller (BGP, EVPN, IS-IS, or Faucet) by its identifier. Pass `pending=true` to see unapplied changes staged since the last `apply`, or `running=true` to see the live frr/dataplane config as opposed to the stored config — these two flags are mutually exclusive in practice. Requires `SDN.Allocate` on the `/sdn/controllers/{controller}` path, which is a cluster-level privilege not tied to any individual node.",
+  "examples": [
+    {
+      "summary": "Read configuration of a BGP/EVPN controller, including any pending (unapplied) changes",
+      "path_params": {
+        "controller": "evpn-core"
+      },
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "If the `state` field in the response is `changed` or `new`, the controller has pending config that has not been pushed to nodes yet — run apply-sdn to activate it.",
+    "The `digest` field should be passed back in any subsequent update call to guard against concurrent modifications.",
+    "BGP-specific fields (`asn`, `peers`, `loopback`, `ebgp`, `ebgp-multihop`, `bgp-mode`, `bgp-multipath-as-relax`) are only populated for controllers of type `bgp` or `evpn`; IS-IS fields (`isis-domain`, `isis-ifaces`, `isis-net`) only appear for type `isis`."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_controllers",
+    "create_cluster_sdn_controllers",
+    "update_cluster_sdn_controllers_controller",
+    "delete_cluster_sdn_controllers_controller",
+    "get_cluster_sdn"
+  ]
+}

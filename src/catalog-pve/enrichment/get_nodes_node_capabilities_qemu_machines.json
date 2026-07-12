@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_capabilities_qemu_machines",
+  "usageNotes": "Use this to discover which QEMU/KVM machine types (q35, i440fx) and specific versioned IDs are available on a given node before creating or migrating a VM. The `arch` parameter is only needed when targeting non-host architectures (e.g., querying aarch64 machine types on an x86_64 host). Results are node-specific — available versions vary by the QEMU package installed on that node.",
+  "examples": [
+    {
+      "summary": "List all available machine types on node pve1 (host default architecture)",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `id` field (e.g., 'q35-8.1+pve1') is the value to pass as `machine` when creating or updating a VM via qemu endpoints.",
+    "Versioned IDs with '+pveX' suffixes include Proxmox-specific patches; the `changes` field describes what those patches add.",
+    "If you omit `arch`, the API returns types for the host's native architecture — usually x86_64 on standard Proxmox nodes.",
+    "Run this per-node when planning cross-node VM migrations to confirm the destination node supports the same machine type version."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu",
+    "put_nodes_node_qemu_vmid_config",
+    "get_nodes_node_capabilities_qemu_cpu"
+  ]
+}

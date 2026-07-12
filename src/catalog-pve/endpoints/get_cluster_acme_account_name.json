@@ -1,0 +1,54 @@
+{
+  "operationId": "get_cluster_acme_account_name",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_account",
+  "method": "GET",
+  "path": "/cluster/acme/account/{name}",
+  "description": "Return existing ACME account information.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "description": "ACME account config file name.",
+      "format": "pve-configid",
+      "default": "default",
+      "typetext": "<name>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": 0,
+    "properties": {
+      "account": {
+        "optional": 1,
+        "renderer": "yaml",
+        "type": "object"
+      },
+      "directory": {
+        "description": "URL of ACME CA directory endpoint.",
+        "optional": 1,
+        "pattern": "^https?://.*",
+        "type": "string"
+      },
+      "location": {
+        "optional": 1,
+        "type": "string"
+      },
+      "tos": {
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/acme/account/<name>'"
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_auto_install_prepared_id",
+  "usageNotes": "Use this to permanently remove a prepared auto-installer answer configuration that is no longer needed. Requires the System.Modify privilege on the system/auto-installation ACL path. This operation returns null synchronously — there is no UPID or async task to poll; deletion is immediate.",
+  "examples": [
+    {
+      "summary": "Delete a prepared auto-install configuration by ID",
+      "path_params": {
+        "id": "ubuntu-24-04-standard"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the prepared answer configuration; any automated installation workflow referencing this ID will fail until a replacement configuration is created.",
+  "tips": [
+    "The id must be between 3 and 64 characters; verify the exact ID first using the list or get endpoint before deleting.",
+    "Deletion is immediate and irreversible — export or document the configuration before removing it if there is any chance it will be needed again.",
+    "API tokens are supported (allowtoken: true), so this can be safely scripted with a scoped token rather than user credentials."
+  ],
+  "relatedOperations": [
+    "get_auto_install_prepared_id",
+    "get_auto_install_prepared",
+    "post_auto_install_prepared",
+    "put_auto_install_prepared_id"
+  ]
+}

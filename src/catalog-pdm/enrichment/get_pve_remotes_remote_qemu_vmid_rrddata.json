@@ -1,0 +1,28 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_rrddata",
+  "usageNotes": "Fetches historical RRD time-series data for a QEMU VM on a PDM-managed PVE remote, useful for trending CPU, memory, disk I/O, and network utilization over time. Requires the `Resource.Audit` privilege on the remote+vmid path; the remote must be reachable and the VM must have existing RRD data (freshly created VMs may return sparse results). Use `AVERAGE` consolidation for trend analysis and `MAX` to surface peak spikes within the chosen timeframe.",
+  "examples": [
+    {
+      "summary": "Fetch last 24 hours of average stats for VM 101 on the 'hetzner-pve' remote",
+      "path_params": {
+        "remote": "hetzner-pve",
+        "vmid": 101
+      },
+      "params": {
+        "cf": "AVERAGE",
+        "timeframe": "day"
+      }
+    }
+  ],
+  "tips": [
+    "Data resolution decreases for longer timeframes (e.g., 'decade' returns very coarse points); use 'hour' or 'day' when fine-grained data is needed.",
+    "All numeric metric fields (cpu-current, mem-used, disk-read, etc.) are optional per data point — gaps appear when the VM was stopped or data was not recorded.",
+    "cpu-max represents the number of vCPUs allocated, not a percentage; divide cpu-current by cpu-max to get utilization ratio.",
+    "Disk and network values are rates (bytes/sec), not cumulative totals — factor in the RRD step interval if computing total throughput."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_status",
+    "get_pve_remotes_remote_lxc_vmid_rrddata",
+    "get_pve_remotes_remote_nodes_node_rrddata"
+  ]
+}

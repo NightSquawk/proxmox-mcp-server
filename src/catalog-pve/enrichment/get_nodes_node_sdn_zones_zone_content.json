@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_sdn_zones_zone_content",
+  "usageNotes": "Use this to list all VNets (virtual networks) provisioned within a specific SDN zone on a given node, along with each VNet's runtime status and any status detail message. The querying node must be online and have the SDN subsystem active; results reflect that node's local view of the zone, so query the node that is expected to be running the zone's bridges. Requires SDN.Audit privilege on /sdn/zones/{zone}.",
+  "examples": [
+    {
+      "summary": "List VNets in the 'prod01' SDN zone as seen from node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "zone": "prod01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Zone names are 2–8 characters and must match [a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]; verify the zone identifier against /cluster/sdn/zones before calling.",
+    "The 'status' and 'statusmsg' fields are optional in each returned item; a missing status typically means the VNet has not yet been applied/deployed on that node.",
+    "SDN changes must be applied (via the SDN apply operation) before new VNets appear with an 'ok' status here."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_zones",
+    "get_cluster_sdn_vnets",
+    "get_nodes_node_sdn_zones",
+    "get_nodes_node_sdn"
+  ]
+}

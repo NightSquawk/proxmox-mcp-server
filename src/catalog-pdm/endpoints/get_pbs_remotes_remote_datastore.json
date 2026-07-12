@@ -1,0 +1,374 @@
+{
+  "operationId": "get_pbs_remotes_remote_datastore",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "datastore",
+  "method": "GET",
+  "path": "/pbs/remotes/{remote}/datastore",
+  "description": "List the PBS remote's datastores.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "List of datastores configurations.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Datastore configuration properties.",
+      "properties": {
+        "backend": {
+          "description": "Datastore backend config",
+          "optional": 1,
+          "type": "string",
+          "typetext": "<backend-config>"
+        },
+        "backing-device": {
+          "description": "The UUID of the filesystem partition for removable datastores.",
+          "optional": 1,
+          "pattern": "/^[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}$/",
+          "type": "string"
+        },
+        "comment": {
+          "description": "Comment.",
+          "maxLength": 128,
+          "optional": 1,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "counter-reset-schedule": {
+          "description": "Reset notification threshold related counters at specified schedule.",
+          "optional": 1,
+          "type": "string",
+          "typetext": "<calendar-event>"
+        },
+        "gc-on-unmount": {
+          "description": "Run garbage collection before unmounting a removable datastore.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "gc-schedule": {
+          "description": "Run garbage collection job at specified schedule.",
+          "optional": 1,
+          "type": "string",
+          "typetext": "<calendar-event>"
+        },
+        "keep-daily": {
+          "description": "Number of daily backups to keep.",
+          "minimum": 1,
+          "optional": 1,
+          "type": "integer"
+        },
+        "keep-hourly": {
+          "description": "Number of hourly backups to keep.",
+          "minimum": 1,
+          "optional": 1,
+          "type": "integer"
+        },
+        "keep-last": {
+          "description": "Number of backups to keep.",
+          "minimum": 1,
+          "optional": 1,
+          "type": "integer"
+        },
+        "keep-monthly": {
+          "description": "Number of monthly backups to keep.",
+          "minimum": 1,
+          "optional": 1,
+          "type": "integer"
+        },
+        "keep-weekly": {
+          "description": "Number of weekly backups to keep.",
+          "minimum": 1,
+          "optional": 1,
+          "type": "integer"
+        },
+        "keep-yearly": {
+          "description": "Number of yearly backups to keep.",
+          "minimum": 1,
+          "optional": 1,
+          "type": "integer"
+        },
+        "maintenance-mode": {
+          "description": "Maintenance mode, type is either 'offline' or 'read-only', message should be enclosed in \"",
+          "format": {
+            "additionalProperties": false,
+            "default_key": "type",
+            "description": "Maintenance mode",
+            "properties": {
+              "message": {
+                "description": "Message describing the reason for the maintenance.",
+                "maxLength": 64,
+                "optional": 1,
+                "pattern": "/^[[:^cntrl:]]*$/",
+                "type": "string"
+              },
+              "type": {
+                "description": "Maintenance type.",
+                "enum": [
+                  "read-only",
+                  "offline",
+                  "delete",
+                  "unmount",
+                  "s3-refresh"
+                ],
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "optional": 1,
+          "type": "string",
+          "typetext": "[type=<enum> [,message=<string>]]"
+        },
+        "name": {
+          "description": "Datastore name.",
+          "maxLength": 32,
+          "minLength": 3,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "notification-mode": {
+          "default": "notification-system",
+          "description": "Configure how notifications for this datastore should be sent.\n`legacy-sendmail` sends email notifications to the user configured\nin `notify-user` via the system's `sendmail` executable.\n`notification-system` emits matchable notification events to the\nnotification system.",
+          "enum": [
+            "legacy-sendmail",
+            "notification-system"
+          ],
+          "optional": 1,
+          "type": "string"
+        },
+        "notification-thresholds": {
+          "description": "Threshold values for notifications",
+          "format": {
+            "additionalProperties": false,
+            "description": "Request counter thresholds",
+            "properties": {
+              "s3-delete": {
+                "description": "Threshold for DELETE requests.",
+                "optional": 1,
+                "type": "integer"
+              },
+              "s3-download": {
+                "description": "Byte size with optional unit (B, KB (base 10), MB, GB, ..., KiB (base 2), MiB, Gib, ...).",
+                "maxLength": 64,
+                "minLength": 1,
+                "optional": 1,
+                "type": "string"
+              },
+              "s3-get": {
+                "description": "Threshold for GET requests.",
+                "optional": 1,
+                "type": "integer"
+              },
+              "s3-head": {
+                "description": "Threshold for HEAD requests.",
+                "optional": 1,
+                "type": "integer"
+              },
+              "s3-post": {
+                "description": "Threshold for POST requests.",
+                "optional": 1,
+                "type": "integer"
+              },
+              "s3-put": {
+                "description": "Threshold for PUT requests.",
+                "optional": 1,
+                "type": "integer"
+              },
+              "s3-upload": {
+                "description": "Byte size with optional unit (B, KB (base 10), MB, GB, ..., KiB (base 2), MiB, Gib, ...).",
+                "maxLength": 64,
+                "minLength": 1,
+                "optional": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "optional": 1,
+          "type": "string",
+          "typetext": "[[s3-delete=<integer>] [,s3-download=<string>] [,s3-get=<integer>] [,s3-head=<integer>] [,s3-post=<integer>] [,s3-put=<integer>] [,s3-upload=<string>]]"
+        },
+        "notify": {
+          "description": "Datastore notification setting, enum can be one of 'always', 'never', or 'error'.",
+          "format": {
+            "additionalProperties": false,
+            "description": "Datastore notify settings",
+            "properties": {
+              "gc": {
+                "description": "When do we send notifications",
+                "enum": [
+                  "never",
+                  "always",
+                  "error"
+                ],
+                "optional": 1,
+                "type": "string"
+              },
+              "prune": {
+                "description": "When do we send notifications",
+                "enum": [
+                  "never",
+                  "always",
+                  "error"
+                ],
+                "optional": 1,
+                "type": "string"
+              },
+              "sync": {
+                "description": "When do we send notifications",
+                "enum": [
+                  "never",
+                  "always",
+                  "error"
+                ],
+                "optional": 1,
+                "type": "string"
+              },
+              "verify": {
+                "description": "When do we send notifications",
+                "enum": [
+                  "never",
+                  "always",
+                  "error"
+                ],
+                "optional": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "optional": 1,
+          "type": "string",
+          "typetext": "[[gc=<enum>] [,prune=<enum>] [,sync=<enum>] [,verify=<enum>]]"
+        },
+        "notify-user": {
+          "description": "User ID",
+          "maxLength": 64,
+          "minLength": 3,
+          "optional": 1,
+          "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "path": {
+          "description": "Either the absolute path to the datastore directory, or a relative on-device path for removable datastores.",
+          "maxLength": 4096,
+          "minLength": 1,
+          "type": "string"
+        },
+        "prune-schedule": {
+          "description": "Run prune job at specified schedule.",
+          "optional": 1,
+          "type": "string",
+          "typetext": "<calendar-event>"
+        },
+        "tuning": {
+          "description": "Datastore tuning options",
+          "format": {
+            "additionalProperties": false,
+            "description": "Datastore tuning options",
+            "properties": {
+              "chunk-order": {
+                "default": "inode",
+                "description": "The order to sort chunks by",
+                "enum": [
+                  "none",
+                  "inode"
+                ],
+                "optional": 1,
+                "type": "string"
+              },
+              "default-verification-readers": {
+                "default": 1,
+                "description": "The number of threads to use for reading chunks in verify job.",
+                "maximum": 32,
+                "minimum": 1,
+                "optional": 1,
+                "type": "integer"
+              },
+              "default-verification-workers": {
+                "default": 4,
+                "description": "The number of threads to use for verifying chunks in verify job.",
+                "maximum": 32,
+                "minimum": 1,
+                "optional": 1,
+                "type": "integer"
+              },
+              "gc-atime-cutoff": {
+                "default": 1445,
+                "description": "Cutoff (in minutes) for chunk cleanup atime check in garbage collection phase 2 (default 24h 5m)",
+                "maximum": 2880,
+                "minimum": 1,
+                "optional": 1,
+                "type": "integer"
+              },
+              "gc-atime-safety-check": {
+                "default": true,
+                "description": "Check filesystem atime updates are honored during store creation and garbage collection",
+                "optional": 1,
+                "type": "boolean"
+              },
+              "gc-cache-capacity": {
+                "default": 1048576,
+                "description": "Garbage collection chunk digest cache capacity",
+                "maximum": 8388608,
+                "minimum": 0,
+                "optional": 1,
+                "type": "integer"
+              },
+              "sync-level": {
+                "default": "filesystem",
+                "description": "The level of syncing that is done when writing into a datastore.",
+                "enum": [
+                  "none",
+                  "file",
+                  "filesystem"
+                ],
+                "optional": 1,
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "optional": 1,
+          "type": "string",
+          "typetext": "[[chunk-order=<enum>] [,default-verification-readers=<integer>] [,default-verification-workers=<integer>] [,gc-atime-cutoff=<integer>] [,gc-atime-safety-check=<1|0>] [,gc-cache-capacity=<integer>] [,sync-level=<enum>]]"
+        },
+        "verify-new": {
+          "description": "If enabled, all new backups will be verified right after completion.",
+          "optional": 1,
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/datastore'"
+}

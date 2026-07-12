@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_get_host_name",
+  "usageNotes": "Retrieves the hostname of a running QEMU VM by querying the QEMU Guest Agent (QGA) inside the guest OS. The guest agent must be installed, running, and enabled in the VM's hardware configuration — the call will fail with an error if the agent is not responsive. Use this to programmatically resolve a VM's OS-level hostname without logging into the guest.",
+  "examples": [
+    {
+      "summary": "Get the hostname of VM 101 on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Requires the QEMU Guest Agent package (qemu-guest-agent) to be installed inside the guest and the 'Guest Agent' option enabled in Proxmox VM options.",
+    "The returned object has a `result` property containing the hostname string as reported by the guest OS — not the Proxmox VM name.",
+    "If the VM is stopped or the agent is unresponsive, the API returns an error; always confirm the VM is in 'running' state before calling.",
+    "Requires VM.GuestAgent.Audit OR VM.GuestAgent.Unrestricted on /vms/{vmid}; API tokens with scoped permissions must include one of these."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_get_osinfo",
+    "get_nodes_node_qemu_vmid_agent_network_get_interfaces",
+    "get_nodes_node_qemu_vmid_agent_get_time",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

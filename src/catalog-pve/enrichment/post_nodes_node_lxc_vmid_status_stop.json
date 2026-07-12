@@ -1,0 +1,28 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_status_stop",
+  "usageNotes": "Immediately kills all processes in the container without a graceful shutdown — equivalent to pulling the power cord. Use only when the container is hung and unresponsive to a shutdown request, or when speed is more important than data integrity. Returns a task UPID; poll the task status to confirm the container reaches the 'stopped' state. Caller must hold VM.PowerMgmt on /vms/{vmid}.",
+  "destructiveReason": "All processes in the container are killed instantly with no opportunity to flush buffers or run shutdown hooks, which can corrupt open files and databases.",
+  "examples": [
+    {
+      "summary": "Force-stop an unresponsive LXC container (vmid 201) on node pve1, aborting any pending vzshutdown task first",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 201
+      },
+      "params": {
+        "overrule-shutdown": true
+      }
+    }
+  ],
+  "tips": [
+    "Prefer post_nodes_node_lxc_vmid_status_shutdown for a clean stop; use this only when shutdown is stuck or unresponsive.",
+    "Set overrule-shutdown: true when a vzshutdown task is already queued — otherwise the stop may be blocked.",
+    "skiplock: true requires root and should be reserved for recovery scenarios where an administrative lock is orphaned."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_status_shutdown",
+    "post_nodes_node_lxc_vmid_status_start",
+    "post_nodes_node_lxc_vmid_status_reboot",
+    "get_nodes_node_lxc_vmid_status_current"
+  ]
+}

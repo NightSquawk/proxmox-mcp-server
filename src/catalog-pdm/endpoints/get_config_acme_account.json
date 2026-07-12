@@ -1,0 +1,46 @@
+{
+  "operationId": "get_config_acme_account",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "account",
+  "method": "GET",
+  "path": "/config/acme/account",
+  "description": "List ACME accounts.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of ACME accounts.",
+    "items": {
+      "additionalProperties": false,
+      "description": "An ACME Account entry.\n\nCurrently only contains a 'name' property.",
+      "properties": {
+        "name": {
+          "description": "ACME account name.",
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "certificates"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/acme/account'"
+}

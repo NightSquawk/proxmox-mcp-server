@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_metrics",
+  "usageNotes": "Returns the list of available metrics server configurations (e.g., InfluxDB, Graphite) defined in the cluster. Use this to discover which external metric targets are configured before querying or modifying individual metric server entries. No parameters are required and no special privilege beyond cluster membership is needed.",
+  "examples": [
+    {
+      "summary": "List all configured cluster metric servers",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is an index listing child resources by name — follow each child name to get full configuration details via the metrics server-specific endpoint.",
+    "An empty array means no external metric servers have been configured in the cluster yet.",
+    "This endpoint is useful as a pre-flight check before adding a new metric server to avoid duplicates."
+  ],
+  "relatedOperations": [
+    "get_cluster_metrics_server",
+    "create_cluster_metrics_server",
+    "update_cluster_metrics_server",
+    "delete_cluster_metrics_server"
+  ]
+}

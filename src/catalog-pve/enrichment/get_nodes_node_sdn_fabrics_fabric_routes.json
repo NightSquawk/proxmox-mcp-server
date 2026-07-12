@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_sdn_fabrics_fabric_routes",
+  "usageNotes": "Returns the live routing table for a specific SDN fabric as seen from the given node, including each route's CIDR block and its nexthop list. Requires the SDN.Audit privilege on the fabric path; the target node must be online and the SDN fabric must already exist. Use this to verify route propagation and nexthop reachability after fabric or peer configuration changes.",
+  "examples": [
+    {
+      "summary": "List all routes for fabric 'evpn01' as seen from node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "fabric": "evpn01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'via' array may contain multiple nexthops if ECMP is in use; an empty array typically means the route is locally originated.",
+    "Run this on different nodes to detect asymmetric or missing route propagation across the fabric.",
+    "Fabric IDs are 2–8 alphanumeric characters with optional interior hyphens; check your fabric name against the pattern before calling."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_fabrics_fabric",
+    "get_cluster_sdn_fabrics",
+    "get_nodes_node_sdn"
+  ]
+}

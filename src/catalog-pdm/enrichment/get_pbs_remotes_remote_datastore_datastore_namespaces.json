@@ -1,0 +1,28 @@
+{
+  "operationId": "get_pbs_remotes_remote_datastore_datastore_namespaces",
+  "usageNotes": "Use this to discover what backup namespaces exist within a specific PBS remote datastore, typically before scoping a snapshot browse or restore to a sub-namespace. The calling PDM user or token requires the Resource.Audit privilege on the remote/datastore path. Without the 'parent' filter the call returns all namespaces up to PBS's 8-level depth limit; use 'max-depth' to limit the tree when datastores are heavily nested.",
+  "examples": [
+    {
+      "summary": "List all namespaces under the 'clients' parent namespace in a remote datastore, limited to two levels deep",
+      "path_params": {
+        "remote": "pbs-hetzner",
+        "datastore": "nightsquawk-backups"
+      },
+      "params": {
+        "parent": "clients",
+        "max-depth": 2
+      }
+    }
+  ],
+  "tips": [
+    "An empty 'ns' string in the response represents the root namespace of the datastore.",
+    "The 'comment' field is optional and sourced from the first line of the namespace's notes — useful for labeling namespaces by client or environment.",
+    "Namespaces support up to 8 path segments; the pattern enforces alphanumeric-plus-dots/dashes/underscores identifiers at each segment.",
+    "Omitting 'parent' lists from the datastore root; set 'max-depth=0' to return only the root namespace itself (no children)."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_datastore_datastore_snapshots",
+    "get_pbs_remotes_remote_datastore_datastore_groups",
+    "get_pbs_remotes"
+  ]
+}

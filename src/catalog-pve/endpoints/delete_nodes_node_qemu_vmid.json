@@ -1,0 +1,72 @@
+{
+  "operationId": "delete_nodes_node_qemu_vmid",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "destroy_vm",
+  "method": "DELETE",
+  "path": "/nodes/{node}/qemu/{vmid}",
+  "description": "Destroy the VM and  all used/owned volumes. Removes any VM specific permissions and firewall rules",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "destroy-unreferenced-disks",
+      "type": "boolean",
+      "required": false,
+      "description": "If set, destroy additionally all disks not referenced in the config but with a matching VMID from all enabled storages.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "purge",
+      "type": "boolean",
+      "required": false,
+      "description": "Remove VMID from configurations, like backup & replication jobs and HA.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "skiplock",
+      "type": "boolean",
+      "required": false,
+      "description": "Ignore locks - only root is allowed to use this option.",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100'"
+}

@@ -1,0 +1,88 @@
+{
+  "operationId": "get_nodes_node_apt_update",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "update",
+  "method": "GET",
+  "path": "/nodes/{node}/apt/update",
+  "description": "List available APT updates",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "A list of packages with available updates.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Describes a package for which an update is available.",
+      "properties": {
+        "Arch": {
+          "description": "Package architecture",
+          "type": "string"
+        },
+        "Description": {
+          "description": "Human readable package description",
+          "type": "string"
+        },
+        "ExtraInfo": {
+          "description": "Custom extra field for additional package information",
+          "optional": 1,
+          "type": "string"
+        },
+        "OldVersion": {
+          "description": "Old version currently installed",
+          "optional": 1,
+          "type": "string"
+        },
+        "Origin": {
+          "description": "Package origin",
+          "type": "string"
+        },
+        "Package": {
+          "description": "Package name",
+          "type": "string"
+        },
+        "Priority": {
+          "description": "Package priority in human-readable form",
+          "type": "string"
+        },
+        "Section": {
+          "description": "Package section",
+          "type": "string"
+        },
+        "Title": {
+          "description": "Package title",
+          "type": "string"
+        },
+        "Version": {
+          "description": "New version to be updated to",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/apt/update'"
+}

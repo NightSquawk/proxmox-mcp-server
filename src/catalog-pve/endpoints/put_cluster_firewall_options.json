@@ -1,0 +1,126 @@
+{
+  "operationId": "put_cluster_firewall_options",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "set_options",
+  "method": "PUT",
+  "path": "/cluster/firewall/options",
+  "description": "Set Firewall options.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "delete",
+      "type": "string",
+      "required": false,
+      "description": "A list of settings you want to delete.",
+      "format": "pve-configid-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "ebtables",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable ebtables rules cluster wide.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "enable",
+      "type": "integer",
+      "required": false,
+      "description": "Enable or disable the firewall cluster wide.",
+      "default": 0,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "log_ratelimit",
+      "type": "string",
+      "required": false,
+      "description": "Log ratelimiting settings",
+      "format": {
+        "burst": {
+          "default": 5,
+          "description": "Initial burst of packages which will always get logged before the rate is applied",
+          "minimum": 0,
+          "optional": 1,
+          "type": "integer"
+        },
+        "enable": {
+          "default": "1",
+          "default_key": 1,
+          "description": "Enable or disable log rate limiting",
+          "type": "boolean"
+        },
+        "rate": {
+          "default": "1/second",
+          "description": "Frequency with which the burst bucket gets refilled",
+          "format_description": "rate",
+          "optional": 1,
+          "pattern": "[1-9][0-9]*\\/(second|minute|hour|day)",
+          "type": "string"
+        }
+      },
+      "typetext": "[enable=]<1|0> [,burst=<integer>] [,rate=<rate>]"
+    },
+    {
+      "name": "policy_forward",
+      "type": "string",
+      "required": false,
+      "description": "Forward policy.",
+      "enum": [
+        "ACCEPT",
+        "DROP"
+      ]
+    },
+    {
+      "name": "policy_in",
+      "type": "string",
+      "required": false,
+      "description": "Input policy.",
+      "enum": [
+        "ACCEPT",
+        "REJECT",
+        "DROP"
+      ]
+    },
+    {
+      "name": "policy_out",
+      "type": "string",
+      "required": false,
+      "description": "Output policy.",
+      "enum": [
+        "ACCEPT",
+        "REJECT",
+        "DROP"
+      ]
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/firewall/options'"
+}

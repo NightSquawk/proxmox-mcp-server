@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_config",
+  "usageNotes": "Use this to read a QEMU VM's full configuration before making changes — the response includes a 'digest' field that should be passed to write operations to guard against concurrent modifications. By default the response reflects pending (not-yet-applied) config changes; pass 'current: true' to see what is actually running, or 'snapshot' to inspect a named snapshot's config. Requires VM.Audit permission on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Get the pending config for VM 101 on node pve1, requesting the running state instead",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "current": true
+      }
+    }
+  ],
+  "tips": [
+    "The 'digest' in the response is a SHA1 hash of the config file — include it in subsequent PUT calls to prevent overwriting changes made by another session.",
+    "Omitting 'current' (the default) returns pending values that will take effect after next VM restart; use 'current: true' when you need the live running config.",
+    "The 'snapshot' param accepts a snapshot name (pve-configid, max 40 chars) and returns that snapshot's frozen config rather than the live or pending config.",
+    "Fields like 'runningmachine', 'runningcpu', and 'vmstate' are internal snapshot bookkeeping values and should not be modified directly."
+  ],
+  "relatedOperations": [
+    "put_nodes_node_qemu_vmid_config",
+    "get_nodes_node_qemu_vmid_pending",
+    "post_nodes_node_qemu_vmid_snapshot",
+    "get_nodes_node_qemu_vmid_agent_get_osinfo"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_nodes_node_certificates_acme_certificate",
+  "usageNotes": "Revokes the node's current ACME-issued TLS certificate with the CA (e.g., Let's Encrypt), which will invalidate the certificate in the CA's records and trigger a new certificate order if ACME is reconfigured. Use this when you need to permanently retire a certificate — such as when rotating ACME accounts, changing the domain, or responding to a compromise. Requires Sys.Modify on the node; the node must be reachable and the ACME plugin must already be configured.",
+  "examples": [
+    {
+      "summary": "Revoke the ACME certificate on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Revokes the node's TLS certificate with the ACME CA, immediately invalidating it; the node will fall back to its self-signed certificate until a new ACME certificate is issued.",
+  "tips": [
+    "After revocation the node's web UI and API will present a self-signed certificate, causing browser warnings and breaking clients that enforce certificate validation.",
+    "This does not delete the local certificate files — use the ACME order endpoint to issue a replacement after revocation.",
+    "Revocation is reported to the CA and cannot be undone; if you only need to renew, use the POST /acme/certificate endpoint instead."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_certificates_acme_certificate",
+    "put_nodes_node_certificates_acme_certificate",
+    "get_nodes_node_certificates_info",
+    "get_nodes_node_config"
+  ]
+}

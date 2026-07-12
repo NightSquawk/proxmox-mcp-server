@@ -1,0 +1,88 @@
+{
+  "operationId": "get_nodes_node_storage_storage_file_restore_list",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "list",
+  "method": "GET",
+  "path": "/nodes/{node}/storage/{storage}/file-restore/list",
+  "description": "List files and directories for single file restore under the given path.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [
+    {
+      "name": "filepath",
+      "type": "string",
+      "required": true,
+      "description": "base64-path to the directory or file being listed, or \"/\".",
+      "typetext": "<string>"
+    },
+    {
+      "name": "volume",
+      "type": "string",
+      "required": true,
+      "description": "Backup volume ID or name. Currently only PBS snapshots are supported.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "filepath": {
+          "description": "base64 path of the current entry",
+          "type": "string"
+        },
+        "leaf": {
+          "description": "If this entry is a leaf in the directory graph.",
+          "type": "boolean"
+        },
+        "mtime": {
+          "description": "Entry last-modified time (unix timestamp).",
+          "optional": 1,
+          "type": "integer"
+        },
+        "size": {
+          "description": "Entry file size.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "text": {
+          "description": "Entry display text.",
+          "type": "string"
+        },
+        "type": {
+          "description": "Entry type.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "You need read access for the volume.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/file-restore/list?filepath=<filepath>&volume=<volume>'"
+}

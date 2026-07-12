@@ -1,0 +1,31 @@
+{
+  "operationId": "put_cluster_ha_groups_group",
+  "usageNotes": "Use this to modify an existing HA group's node membership, failback behavior, or restricted-placement policy — note the Proxmox API marks this endpoint deprecated in favor of HA rules. The call requires `Sys.Console` on `/` and returns null synchronously (no UPID); changes take effect immediately in the CRM. Pass the `digest` field (obtained from the GET endpoint) to guard against concurrent edits clobbering each other.",
+  "examples": [
+    {
+      "summary": "Update 'prod-ha' group to pin resources to two nodes with priority, disable failback, and restrict placement to those nodes only",
+      "path_params": {
+        "group": "prod-ha"
+      },
+      "params": {
+        "nodes": "pve-node1:100,pve-node2:50",
+        "nofailback": true,
+        "restricted": true,
+        "comment": "Production HA group — no failback, restricted to primary nodes"
+      }
+    }
+  ],
+  "tips": [
+    "Node priority is optional per node; omit it to treat all nodes as equal weight (e.g. 'pve-node1,pve-node2').",
+    "Setting 'restricted: true' without a complete 'nodes' list can leave HA resources with nowhere valid to run — verify all target nodes are online before saving.",
+    "Use the 'delete' param (comma-separated config keys like 'comment,nofailback') to unset fields rather than setting them to empty strings.",
+    "This endpoint is deprecated; prefer HA rules (ha/rules) for new configurations, but this endpoint remains the only way to edit pre-existing groups in-place."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_groups_group",
+    "get_cluster_ha_groups",
+    "post_cluster_ha_groups",
+    "delete_cluster_ha_groups_group",
+    "get_cluster_ha_resources"
+  ]
+}

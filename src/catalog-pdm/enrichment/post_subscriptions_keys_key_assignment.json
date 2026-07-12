@@ -1,0 +1,30 @@
+{
+  "operationId": "post_subscriptions_keys_key_assignment",
+  "usageNotes": "Use this to bind a subscription pool key to a specific node on a managed remote. The caller must hold `System.Modify` on the PDM system plus `PRIV_RESOURCE_MODIFY` on the target remote — you cannot assign a key to a remote you lack authority on. Returns null on success; check for a 4xx/5xx error response to detect conflicts.",
+  "examples": [
+    {
+      "summary": "Assign a PVE community key to node pve-prod-01 on remote datacenter-hetzner",
+      "path_params": {
+        "key": "pve4c-a1b2c3d4e5"
+      },
+      "params": {
+        "remote": "datacenter-hetzner",
+        "node": "pve-prod-01",
+        "digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "tips": [
+    "Supply the optional `digest` param (SHA256 of the current config) to prevent lost-update races when multiple operators manage subscription assignments concurrently.",
+    "Key format is strictly `pve<N><tier>-<10 hex chars>` for PVE keys or `pbs<tier>-<10 hex chars>` for PBS keys — validate client-side before calling to surface format errors early.",
+    "A node value of `localhost` is accepted and refers to the node local to the remote, useful when the remote has a single node.",
+    "This call is synchronous and returns null — no UPID is issued; completion is immediate or an error is returned."
+  ],
+  "relatedOperations": [
+    "get_subscriptions_keys",
+    "post_subscriptions_keys",
+    "delete_subscriptions_keys_key",
+    "get_subscriptions_keys_key_assignment",
+    "delete_subscriptions_keys_key_assignment"
+  ]
+}

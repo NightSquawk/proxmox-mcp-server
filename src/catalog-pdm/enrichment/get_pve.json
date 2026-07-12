@@ -1,0 +1,20 @@
+{
+  "operationId": "get_pve",
+  "usageNotes": "Returns the top-level PVE directory index for the PDM API, listing the available PVE sub-resources (remotes, realms, firewall). Use this as a discovery call to confirm which PVE sections are exposed on the connected PDM instance before navigating into specific remote, realm, or firewall endpoints. Accessible to all authenticated users with no additional privilege requirements.",
+  "examples": [
+    {
+      "summary": "List available PVE API sub-resources on PDM",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The return type is null in the spec — the actual response is an index array of sub-endpoint link objects; use the returned hrefs to discover callable children.",
+    "Use this before calling any specific PVE operation to verify which sub-resources are available on the connected PDM instance."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes",
+    "get_pve_realms",
+    "get_pve_firewall"
+  ]
+}

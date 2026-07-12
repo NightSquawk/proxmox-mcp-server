@@ -1,0 +1,66 @@
+{
+  "operationId": "post_subscriptions_keys_key_assignment",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "assignment",
+  "method": "POST",
+  "path": "/subscriptions/keys/{key}/assignment",
+  "description": "Bind a pool key to a remote node.\n\n`PRIV_SYS_MODIFY` lets the caller touch the pool config; per-remote `PRIV_RESOURCE_MODIFY`\nis enforced inside this handler so an operator cannot push a key to a remote they have no\nother authority on.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "key",
+      "type": "string",
+      "required": true,
+      "description": "Subscription key.",
+      "minLength": 15,
+      "maxLength": 18,
+      "pattern": "/^(?:pve[0-9]+|pbs)[cbsp]-[0-9a-f]{10}$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"node\":\"<node>\",\"remote\":\"<remote>\"}' 'https://PDM_HOST:8443/api2/json/subscriptions/keys/<key>/assignment'"
+}

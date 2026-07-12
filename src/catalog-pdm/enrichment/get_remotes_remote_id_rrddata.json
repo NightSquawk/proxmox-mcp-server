@@ -1,0 +1,26 @@
+{
+  "operationId": "get_remotes_remote_id_rrddata",
+  "usageNotes": "Use this endpoint to retrieve historical metric-collection performance data for a specific PDM remote, typically to assess polling health or response-time trends over time. Both `cf` and `timeframe` are required; choose `AVERAGE` for trend analysis and `MAX` to surface worst-case API response spikes. The only metric currently returned per data point is `metric-collection-response-time` (milliseconds), so this is most useful for diagnosing slow or degraded remote polling rather than guest-level metrics.",
+  "examples": [
+    {
+      "summary": "Fetch last hour of average metric-collection response times for remote 'pve-prod-01'",
+      "path_params": {
+        "id": "pve-prod-01"
+      },
+      "params": {
+        "cf": "AVERAGE",
+        "timeframe": "hour"
+      }
+    }
+  ],
+  "tips": [
+    "If metric-collection-response-time values are consistently high (e.g., >2000ms), check network latency between PDM and the remote PVE node or consider increasing the polling interval.",
+    "Use timeframe=decade sparingly — RRD data is heavily consolidated at that resolution and may mask short-duration anomalies.",
+    "The remote `id` must match the identifier assigned in PDM (2–32 chars, alphanumeric/dot/dash/underscore); verify with the list-remotes endpoint if unsure."
+  ],
+  "relatedOperations": [
+    "get_remotes",
+    "get_remotes_remote_id",
+    "get_remotes_remote_id_rrd"
+  ]
+}

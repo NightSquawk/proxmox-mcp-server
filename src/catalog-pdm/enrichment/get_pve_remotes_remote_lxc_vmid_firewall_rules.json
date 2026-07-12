@@ -1,0 +1,29 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid_firewall_rules",
+  "usageNotes": "Returns the ordered list of firewall rules applied to a specific LXC container on a PDM-managed PVE remote; rules are returned in positional order (pos field) which determines evaluation sequence. Requires Resource.Audit privilege on the remote+vmid path — read-only tokens are sufficient. If the container is managed by a cluster, supply the optional node parameter to target the specific cluster member hosting the container; omitting it lets PDM resolve the node automatically.",
+  "examples": [
+    {
+      "summary": "List all firewall rules for LXC 102 on the 'hetzner-pve' remote",
+      "path_params": {
+        "remote": "hetzner-pve",
+        "vmid": 102
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "Rules with enable=0 are present in the list but inactive; check this field before assuming a rule is enforced.",
+    "The action field may contain a security group name instead of ACCEPT/DROP/REJECT when a group reference is used — handle both cases when parsing results.",
+    "pos values are zero-indexed and determine match order; a lower pos value is evaluated first.",
+    "An empty array response means no container-level rules exist; cluster or datacenter-level rules may still apply to traffic."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc_vmid_firewall_options",
+    "get_pve_remotes_remote_lxc_vmid_firewall_refs",
+    "get_pve_remotes_remote_lxc_vmid_firewall_log",
+    "get_pve_remotes_remote_lxc_vmid_firewall_aliases",
+    "get_pve_remotes_remote_lxc_vmid_firewall_ipset"
+  ]
+}

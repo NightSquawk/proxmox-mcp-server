@@ -1,0 +1,25 @@
+{
+  "operationId": "post_remotes_remote_id_probe_certificate",
+  "usageNotes": "Use this when a live connection to a remote node fails with an ambiguous TLS error and you suspect the node's certificate has been rotated since the fingerprint was pinned. The probe bypasses the stored fingerprint and returns the current certificate so you can compare it — it never updates the stored pin itself; apply the new fingerprint via update_remote only after explicit user confirmation. Requires Resource.Audit on the remote resource, not a write privilege, so it is safe to run during an outage investigation.",
+  "examples": [
+    {
+      "summary": "Probe the current TLS certificate of a node in a remote named 'hetzner-de'",
+      "path_params": {
+        "id": "hetzner-de"
+      },
+      "params": {
+        "node": "pdm-node01.example.com"
+      }
+    }
+  ],
+  "tips": [
+    "This endpoint returns null — the live certificate data is surfaced in the HTTP response headers or a companion GET; use the result to decide whether to call update_remote with a new fingerprint.",
+    "Run this before concluding a remote is misconfigured; a silently rotated certificate is a common cause of 'connect error' that looks identical to a network failure.",
+    "The remote ID must match the pattern [A-Za-z0-9_][A-Za-z0-9._-]* and be 2–32 characters — validate before calling if building the ID programmatically."
+  ],
+  "relatedOperations": [
+    "get_remotes",
+    "get_remotes_remote_id",
+    "put_remotes_remote_id"
+  ]
+}

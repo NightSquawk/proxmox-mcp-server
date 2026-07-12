@@ -1,0 +1,27 @@
+{
+  "operationId": "get_cluster_firewall_groups_group_pos",
+  "usageNotes": "Use this endpoint to inspect a single firewall rule within a cluster-level security group by its zero-based position index. Requires the Sys.Audit privilege on the root path ('/'). The `pos` path parameter is listed as optional in the spec but is required in practice to retrieve a specific rule — omitting it returns position 0.",
+  "examples": [
+    {
+      "summary": "Fetch rule at position 2 from the 'web-servers' security group",
+      "path_params": {
+        "group": "web-servers",
+        "pos": 2
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Rule positions are zero-based; the first rule in a group is at pos=0.",
+    "The 'enable' field in the response is an integer flag (1=enabled, 0=disabled), not a boolean.",
+    "Security group names must be 2–18 characters, start with a letter, and contain only letters, digits, hyphens, or underscores.",
+    "To discover all rules in a group first, use list_cluster_firewall_groups_group (GET /cluster/firewall/groups/{group}) before targeting a specific position."
+  ],
+  "relatedOperations": [
+    "list_cluster_firewall_groups_group",
+    "create_cluster_firewall_groups_group_pos",
+    "update_cluster_firewall_groups_group_pos",
+    "delete_cluster_firewall_groups_group_pos",
+    "list_cluster_firewall_groups"
+  ]
+}

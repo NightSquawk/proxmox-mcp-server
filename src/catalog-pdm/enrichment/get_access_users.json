@@ -1,0 +1,25 @@
+{
+  "operationId": "get_access_users",
+  "usageNotes": "Use this to enumerate all PDM user accounts — any authenticated user can call it, but non-admin callers only receive their own record. Pass include_tokens=true when auditing API token usage or preparing to rotate tokens. The response includes account enable/disable state and expiration timestamps, making it useful for periodic access reviews.",
+  "examples": [
+    {
+      "summary": "List all users including their API tokens",
+      "path_params": {},
+      "params": {
+        "include_tokens": true
+      }
+    }
+  ],
+  "tips": [
+    "Non-privileged callers silently receive only their own user object — check the caller's realm privileges if the list looks unexpectedly short.",
+    "Token objects in the response never include the raw secret; use this to audit token IDs and expiry, not to retrieve secrets.",
+    "A non-zero 'tfa-locked-until' timestamp means the user is blocked from MFA-protected operations until that epoch; admin intervention is required to unlock early.",
+    "Expired users (expire > 0 and past current time) remain in the list — filter by 'enable' and 'expire' client-side if you need only active accounts."
+  ],
+  "relatedOperations": [
+    "get_access_tfa_userid",
+    "get_access_roles",
+    "get_access_acl",
+    "get_access_permissions"
+  ]
+}

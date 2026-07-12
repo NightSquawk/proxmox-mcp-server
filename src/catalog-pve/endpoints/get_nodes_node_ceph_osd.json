@@ -1,0 +1,55 @@
+{
+  "operationId": "get_nodes_node_ceph_osd",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "index",
+  "method": "GET",
+  "path": "/nodes/{node}/ceph/osd",
+  "description": "Get Ceph osd list/tree.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": 1,
+    "properties": {
+      "flags": {
+        "description": "Comma-joined list of currently-set OSD flags; absent when no flags are set on the cluster.",
+        "optional": 1,
+        "type": "string"
+      },
+      "root": {
+        "additionalProperties": 1,
+        "description": "Top-level CRUSH bucket; recursive structure with 'children' lists holding nested buckets and OSD leaves. Per-node properties (status, weight, in, usage, latencies, etc.) vary by node type and are not statically typed here.",
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit",
+        "Datastore.Audit"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/osd'"
+}

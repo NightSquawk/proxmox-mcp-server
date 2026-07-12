@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_status_suspend",
+  "usageNotes": "Suspends a running LXC container by freezing all its processes; the container remains in memory but is unresponsive until resumed. This feature is marked experimental by Proxmox and may not behave correctly for all workloads — prefer stopping the container for predictable results. The call returns a task UPID string; poll the node task API to confirm completion before assuming the container is suspended.",
+  "examples": [
+    {
+      "summary": "Suspend LXC container 201 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 201
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Suspends all processes in the container, immediately interrupting any active workloads or network services until the container is explicitly resumed.",
+  "tips": [
+    "This endpoint has no body parameters — POST with an empty body or no body.",
+    "Use post_nodes_node_lxc_vmid_status_resume to bring the container back online after suspension.",
+    "Because suspend is experimental in LXC, test on non-critical containers first; some unprivileged containers or those using certain cgroup features may freeze incorrectly.",
+    "The returned UPID can be passed to get_nodes_node_tasks_upid_status to poll task completion."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_status_resume",
+    "post_nodes_node_lxc_vmid_status_stop",
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

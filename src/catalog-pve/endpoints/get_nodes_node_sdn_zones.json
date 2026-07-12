@@ -1,0 +1,61 @@
+{
+  "operationId": "get_nodes_node_sdn_zones",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "index",
+  "method": "GET",
+  "path": "/nodes/{node}/sdn/zones",
+  "description": "Get status for all zones.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "status": {
+          "description": "Status of zone",
+          "enum": [
+            "available",
+            "pending",
+            "error"
+          ],
+          "type": "string"
+        },
+        "zone": {
+          "description": "The SDN zone object identifier.",
+          "maxLength": 8,
+          "minLength": 2,
+          "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{zone}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Only list entries where you have 'SDN.Audit'",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/sdn/zones'"
+}

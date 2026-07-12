@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_nodes_node_tasks_upid",
+  "usageNotes": "Use this to forcibly stop a running or queued task on a specific cluster node — for example, a hung migration, backup, or vzdump job. The UPID (Unique Process ID) must be obtained from a prior task-listing call; the target node must be online and reachable. Non-owner callers require 'Sys.Modify' on '/nodes/<node>'; task owners can stop their own tasks without that privilege.",
+  "examples": [
+    {
+      "summary": "Stop a hung vzdump backup task on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "upid": "UPID:pve1:00004A2B:012C3D4E:67890ABC:vzdump:101:root@pam:"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Forcibly terminates the running task process, which may leave in-progress operations (backups, migrations, snapshots) in an incomplete or inconsistent state.",
+  "tips": [
+    "Retrieve the UPID first via get_nodes_node_tasks (the active-task list) or the finished-task log — it is not guessable.",
+    "Check task status with get_nodes_node_tasks_upid_status before stopping; the task may have already completed.",
+    "Stopping a live migration mid-flight will keep the VM on the source node but may leave lock files; check /var/run/lock/qemu-server/ if the VM shows as locked afterward.",
+    "Returns null on success — poll the task status endpoint to confirm the process has actually exited."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks",
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log"
+  ]
+}

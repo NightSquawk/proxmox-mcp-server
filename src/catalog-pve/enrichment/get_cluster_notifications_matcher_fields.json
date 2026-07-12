@@ -1,0 +1,20 @@
+{
+  "operationId": "get_cluster_notifications_matcher_fields",
+  "usageNotes": "Call this before creating or editing a notification matcher to discover which metadata field names are valid for match conditions (e.g. 'type', 'severity', 'hostname'). Requires Mapping.Modify or Mapping.Audit on /mapping/notifications. Takes no parameters and returns the full list of supported fields cluster-wide.",
+  "examples": [
+    {
+      "summary": "List all available notification matcher field names",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Use the returned field names as the 'field' value when constructing matcher rules via create_cluster_notifications_matcher or update_cluster_notifications_matcher.",
+    "The response only contains field names, not their allowed values — use get_cluster_notifications_matcher_field_values to enumerate valid values for a specific field."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_matchers",
+    "create_cluster_notifications_matcher",
+    "update_cluster_notifications_matcher"
+  ]
+}

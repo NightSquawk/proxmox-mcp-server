@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_ceph_cfg_db",
+  "usageNotes": "Returns all key-value entries stored in the Ceph configuration database (mon config store), which supersedes the on-disk ceph.conf for runtime settings. Use this to audit active Ceph tunables across sections (global, osd, mon, mgr, etc.) and determine whether a setting can be changed without a daemon restart via the can_update_at_runtime field. The target node must be online and have Ceph configured; the caller needs either Sys.Audit or Datastore.Audit at the root path.",
+  "examples": [
+    {
+      "summary": "Retrieve all Ceph config DB entries from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Entries with level 'dev' are developer/internal knobs — avoid modifying them in production.",
+    "The 'mask' field scopes a setting to a specific host or device class (e.g. 'class:ssd'); an empty mask means the setting applies globally within its section.",
+    "All values are returned as strings regardless of their underlying type — cast appropriately when comparing or computing.",
+    "This reflects the live mon config store, not the on-disk ceph.conf; the two can differ if settings were applied via 'ceph config set' after initial deployment."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_cfg_raw",
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph_mon"
+  ]
+}

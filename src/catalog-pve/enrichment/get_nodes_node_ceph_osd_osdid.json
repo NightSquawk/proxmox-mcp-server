@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_ceph_osd_osdid",
+  "usageNotes": "Returns the child resource index for a specific OSD on a given node — use this to discover what sub-endpoints are available for that OSD (e.g. metadata, LV info) before drilling into them. The queried node must be online and running the Ceph OSD daemon; if the OSD ID does not exist on that node, the API will return an error. No special privileges are required beyond a valid API token.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for OSD 2 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "osdid": 2
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is an array of child resource descriptors (name/href pairs), not OSD metrics — use the returned names to construct follow-up calls for actual OSD details.",
+    "OSD IDs are cluster-global integers assigned by Ceph; you can list all OSDs and their hosting nodes via the cluster-level OSD endpoint before calling this per-node path.",
+    "This endpoint is safe to call on any node that hosts the OSD; calling it on a node that does not host the specified OSD will result in a 404 or empty response."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_osd",
+    "post_nodes_node_ceph_osd",
+    "delete_nodes_node_ceph_osd_osdid"
+  ]
+}

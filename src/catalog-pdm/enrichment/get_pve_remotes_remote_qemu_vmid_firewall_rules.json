@@ -1,0 +1,28 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_firewall_rules",
+  "usageNotes": "Use this endpoint to audit or display the ordered firewall ruleset for a specific QEMU VM on a PDM-managed PVE remote. The caller must hold the Resource.Audit privilege on the remote/VM path. If the VM lives on a specific cluster node, pass the optional `node` parameter to route the request directly; omitting it lets PDM auto-resolve but may fail if the VM is not found cluster-wide.",
+  "examples": [
+    {
+      "summary": "List all firewall rules for VM 101 on remote 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 101
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "Rules are returned in positional order (pos field); the first matching rule wins at enforcement time.",
+    "A rule with enable=0 is defined but inactive — it still appears in this list.",
+    "The action field may be a security group name rather than ACCEPT/DROP/REJECT when the rule references a group.",
+    "This reflects the VM-level ruleset only; datacenter-level and cluster-level rules are evaluated separately."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_firewall_rules_pos",
+    "get_pve_remotes_remote_qemu_vmid_firewall_options",
+    "get_pve_remotes_remote_qemu_vmid_firewall_refs",
+    "get_pve_remotes_remote_qemu_vmid_firewall_log"
+  ]
+}

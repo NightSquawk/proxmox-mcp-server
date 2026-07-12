@@ -1,0 +1,29 @@
+{
+  "operationId": "delete_cluster_sdn_vnets_vnet_firewall_rules_pos",
+  "usageNotes": "Permanently removes a firewall rule at the specified position from an SDN vnet's firewall rule set. Rules below the deleted position are renumbered downward, so rely on position only within a single atomic operation. Use the `digest` parameter to guard against concurrent edits — fetch the current digest from the GET endpoint before deleting.",
+  "examples": [
+    {
+      "summary": "Delete firewall rule at position 2 for vnet 'webapp01' with a digest guard",
+      "path_params": {
+        "vnet": "webapp01",
+        "pos": 2
+      },
+      "params": {
+        "digest": "a3f1c2e9b04d78e5f6a1234567890abc"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently deletes the firewall rule at the specified position; the rule cannot be recovered and remaining rules are renumbered immediately.",
+  "tips": [
+    "Omitting `pos` targets position 0 (the first rule) — always supply an explicit position to avoid accidental deletion of the wrong rule.",
+    "Rules are renumbered after deletion, so if deleting multiple rules in a loop, iterate from the highest position downward.",
+    "Requires SDN.Allocate on '/sdn/zones/<zone>/<vnet>' — confirm the calling token or user has this privilege before running.",
+    "The operation returns null on success; any HTTP error (403, 500) indicates the rule was not deleted."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_firewall_rules",
+    "get_cluster_sdn_vnets_vnet_firewall_rules_pos",
+    "put_cluster_sdn_vnets_vnet_firewall_rules_pos",
+    "post_cluster_sdn_vnets_vnet_firewall_rules"
+  ]
+}

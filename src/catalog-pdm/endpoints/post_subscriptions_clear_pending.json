@@ -1,0 +1,50 @@
+{
+  "operationId": "post_subscriptions_clear_pending",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "clear-pending",
+  "method": "POST",
+  "path": "/subscriptions/clear-pending",
+  "description": "Drop every queued change in one bulk transaction.\n\nTwo shapes of pending change are discarded:\n* pool key bound to a remote node whose live `current_key` does not match the assigned\npool key (a different live key, no key, or no row returned at all because the remote is\nunreachable / the node is gone): the binding is dropped, the key returns to the free\npool, and the remote is not touched.\n* queued Clear Keys (`pending_clear = true`): the flag is cleared; the binding and the\nlive key on the remote stay intact.\n\nOnly entries the caller has `PRIV_RESOURCE_MODIFY` on are touched; remotes the caller may\nonly audit are skipped. Mirrors `apply-pending` but drops the queue instead of pushing it,\nso an operator can disown stuck changes without first having to bring the target back online.\n\nThe optional `digest` is checked twice: once before the live-state fetch so a stale browser\ntab is rejected up-front, and again under the config lock so a parallel admin edit between\nfetch and write does not get silently overwritten.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Result of the bulk clear-pending API endpoint.",
+    "properties": {
+      "cleared": {
+        "description": "Number of pool entries whose pending push or clear was cleared.",
+        "maximum": 4294967295,
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/subscriptions/clear-pending'"
+}

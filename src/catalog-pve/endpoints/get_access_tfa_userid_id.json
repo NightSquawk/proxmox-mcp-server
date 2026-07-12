@@ -1,0 +1,86 @@
+{
+  "operationId": "get_access_tfa_userid_id",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "get_tfa_entry",
+  "method": "GET",
+  "path": "/access/tfa/{userid}/{id}",
+  "description": "Fetch a requested TFA entry if present.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "Full User ID, in the `name@realm` format.",
+      "format": "pve-userid",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "A TFA entry id.",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "TFA Entry.",
+    "properties": {
+      "created": {
+        "description": "Creation time of this entry as unix epoch.",
+        "type": "integer"
+      },
+      "description": {
+        "description": "User chosen description for this entry.",
+        "type": "string"
+      },
+      "enable": {
+        "default": 1,
+        "description": "Whether this TFA entry is currently enabled.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "id": {
+        "description": "The id used to reference this entry.",
+        "type": "string"
+      },
+      "type": {
+        "description": "TFA Entry Type.",
+        "enum": [
+          "totp",
+          "u2f",
+          "webauthn",
+          "recovery",
+          "yubico"
+        ],
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "userid-param",
+        "self"
+      ],
+      [
+        "userid-group",
+        [
+          "User.Modify",
+          "Sys.Audit"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/tfa/<userid>/<id>'"
+}

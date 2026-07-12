@@ -1,0 +1,37 @@
+{
+  "operationId": "post_nodes_node_firewall_rules",
+  "usageNotes": "Appends a new rule to the host-level firewall ruleset on the specified node; requires Sys.Modify on /nodes/{node}. The node firewall must be enabled separately — adding rules here has no effect if the host firewall is disabled in the node's firewall options. Use the 'pos' parameter to insert at a specific position; omit it to append at the end.",
+  "examples": [
+    {
+      "summary": "Block inbound SSH from a specific external IP on the host firewall",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "type": "in",
+        "action": "DROP",
+        "proto": "tcp",
+        "source": "203.0.113.45",
+        "dport": "22",
+        "comment": "Block SSH brute-force from known bad IP",
+        "enable": 1,
+        "log": "warning"
+      }
+    }
+  ],
+  "tips": [
+    "Rules on this endpoint apply to the Proxmox host itself, not to VM/CT guest traffic — use the VM or CT firewall endpoints for guest-level rules.",
+    "The 'digest' field can be fetched from GET /nodes/{node}/firewall/rules and passed here to guard against concurrent edits.",
+    "Use 'macro' (e.g., 'SSH', 'HTTP', 'HTTPS') instead of manually specifying proto+dport for common services — macros expand to the correct protocol and port automatically.",
+    "Setting 'enable': 0 creates the rule in a disabled state, useful for staging rules before activating them.",
+    "Rules are evaluated top-down; use 'pos' to control insertion order relative to existing rules."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_firewall_rules",
+    "get_nodes_node_firewall_rules_pos",
+    "put_nodes_node_firewall_rules_pos",
+    "delete_nodes_node_firewall_rules_pos",
+    "get_nodes_node_firewall_options",
+    "put_nodes_node_firewall_options"
+  ]
+}

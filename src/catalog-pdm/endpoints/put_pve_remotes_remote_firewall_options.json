@@ -1,0 +1,138 @@
+{
+  "operationId": "put_pve_remotes_remote_firewall_options",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "options",
+  "method": "PUT",
+  "path": "/pve/remotes/{remote}/firewall/options",
+  "description": "Update cluster firewall configuration",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "delete",
+      "type": "array",
+      "required": false,
+      "description": "A list of settings you want to delete."
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest.\nThis can be used to prevent concurrent modifications.",
+      "maxLength": 64
+    },
+    {
+      "name": "ebtables",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable ebtables rules cluster wide.",
+      "default": true
+    },
+    {
+      "name": "enable",
+      "type": "integer",
+      "required": false,
+      "description": "Enable or disable the firewall cluster wide.",
+      "default": 0,
+      "minimum": 0
+    },
+    {
+      "name": "log_ratelimit",
+      "type": "string",
+      "required": false,
+      "description": "Log ratelimiting settings",
+      "format": {
+        "additionalProperties": false,
+        "default_key": "enable",
+        "description": "Object.",
+        "properties": {
+          "burst": {
+            "default": 5,
+            "description": "Initial burst of packages which will always get logged before the rate\nis applied",
+            "minimum": 0,
+            "optional": 1,
+            "type": "integer"
+          },
+          "enable": {
+            "default": true,
+            "description": "Enable or disable log rate limiting",
+            "type": "boolean"
+          },
+          "rate": {
+            "default": "1/second",
+            "description": "Frequency with which the burst bucket gets refilled",
+            "optional": 1,
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "typetext": "[enable=<1|0> [,burst=<integer>] [,rate=<string>]]"
+    },
+    {
+      "name": "policy_forward",
+      "type": "string",
+      "required": false,
+      "description": "Firewall IO policies.",
+      "enum": [
+        "ACCEPT",
+        "DROP"
+      ],
+      "default": "ACCEPT"
+    },
+    {
+      "name": "policy_in",
+      "type": "string",
+      "required": false,
+      "description": "Firewall IO policies.",
+      "enum": [
+        "ACCEPT",
+        "DROP",
+        "REJECT"
+      ]
+    },
+    {
+      "name": "policy_out",
+      "type": "string",
+      "required": false,
+      "description": "Firewall IO policies.",
+      "enum": [
+        "ACCEPT",
+        "DROP",
+        "REJECT"
+      ]
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/firewall/options'"
+}

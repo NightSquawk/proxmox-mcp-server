@@ -1,0 +1,32 @@
+{
+  "operationId": "put_access_users_userid_token_tokenid",
+  "usageNotes": "Use this to update metadata or settings on an existing API token — such as adjusting its expiration date, toggling privilege separation, or updating a comment. When 'regenerate' is set, the response is the only opportunity to capture the new token secret; it cannot be retrieved again after this call. Callers must either own the token (self) or hold User.Modify on the user's group.",
+  "examples": [
+    {
+      "summary": "Rotate the secret for a monitoring service account token and extend its expiration by one year",
+      "path_params": {
+        "userid": "monitoring@pve",
+        "tokenid": "grafana-ro"
+      },
+      "params": {
+        "regenerate": true,
+        "expire": 1782000000,
+        "privsep": true,
+        "comment": "Rotated 2026-06-28 — annual rotation"
+      }
+    }
+  ],
+  "tips": [
+    "Capture the 'value' field from the response immediately when 'regenerate' is true — it is returned only once and cannot be retrieved via any subsequent GET.",
+    "The full tokenid string used in Authorization headers is '<userid>!<tokenid>' (e.g., 'monitoring@pve!grafana-ro'); the 'full-tokenid' field in the response provides this when regenerating.",
+    "Setting 'privsep': false grants the token all of the user's own privileges — use only for tightly scoped service accounts where ACL management overhead outweighs risk.",
+    "To clear an optional field (e.g., remove a comment or reset expiration to 'same as user'), pass its name in the 'delete' param as a comma-separated config-id list.",
+    "Regenerating invalidates the old secret immediately; coordinate rotation with all consumers before calling to avoid service interruption."
+  ],
+  "relatedOperations": [
+    "post_access_users_userid_token_tokenid",
+    "get_access_users_userid_token_tokenid",
+    "get_access_users_userid_token",
+    "delete_access_users_userid_token_tokenid"
+  ]
+}

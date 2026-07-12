@@ -1,0 +1,31 @@
+{
+  "operationId": "post_nodes_node_disks_directory",
+  "usageNotes": "Use this to format an unused block device with ext4 or xfs and mount it as a directory-backed storage under '/mnt/pve/NAME'. The target device must be completely unpartitioned and unused — Proxmox will refuse if the disk has any existing partition table or filesystem. The operation returns a task UPID; poll the task status to confirm completion before referencing the new storage.",
+  "examples": [
+    {
+      "summary": "Format /dev/sdb with ext4 and register it as a Proxmox directory storage named 'local-data'",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "device": "/dev/sdb",
+        "name": "local-data",
+        "filesystem": "ext4",
+        "add_storage": true
+      }
+    }
+  ],
+  "tips": [
+    "Use get_nodes_node_disks_list first to identify unused disks (those with no partition table reported).",
+    "Setting add_storage=true saves a separate step but requires the calling token/user to also hold 'Datastore.Allocate' on /storage, in addition to Sys.Modify on /.",
+    "xfs is preferred for large sequential workloads (e.g. backup targets, ISO stores); ext4 is the safe default for general use.",
+    "Once created, the directory storage appears in Datacenter > Storage and is immediately usable for VM disks, backups, and ISOs depending on content types configured afterward.",
+    "To undo, you must manually remove the storage from Proxmox config and unmount/wipe the device — there is no API delete counterpart for this specific create path."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_list",
+    "get_nodes_node_disks_directory",
+    "delete_nodes_node_disks_directory_name",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

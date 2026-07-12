@@ -1,0 +1,24 @@
+{
+  "operationId": "get_access_domains_realm",
+  "usageNotes": "Use this to inspect the full configuration of a specific authentication realm (LDAP, AD, PAM, PVE, OpenID, etc.) by its realm ID. Requires either the Realm.Allocate or Sys.Audit privilege on /access/realm. Returned fields vary by realm type (e.g. LDAP returns server/base_dn fields; OpenID returns issuer-url/client-id).",
+  "examples": [
+    {
+      "summary": "Fetch configuration for the built-in 'pam' realm",
+      "path_params": {
+        "realm": "pam"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Common realm IDs: 'pam' (Linux PAM), 'pve' (Proxmox built-in), or whatever was set at realm creation time.",
+    "Realm IDs are case-sensitive and max 32 characters; use list_access_domains to enumerate available realms before calling this.",
+    "API tokens are allowed (allowtoken: true), so service accounts can read realm config without interactive credentials."
+  ],
+  "relatedOperations": [
+    "list_access_domains",
+    "create_access_domains",
+    "update_access_domains_realm",
+    "delete_access_domains_realm"
+  ]
+}

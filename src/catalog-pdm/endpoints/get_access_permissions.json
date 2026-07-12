@@ -1,0 +1,47 @@
+{
+  "operationId": "get_access_permissions",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "permissions",
+  "method": "GET",
+  "path": "/access/permissions",
+  "description": "List permissions of given or currently authenticated user / API token.\n\nOptionally limited to specific path.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "auth-id",
+      "type": "string",
+      "required": false,
+      "description": "Authentication ID",
+      "minLength": 3,
+      "maxLength": 64,
+      "pattern": "/^(?:(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)|(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)!(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))$/"
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "required": false,
+      "description": "Access control path.",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "/^(?:/|(?:/(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))+)$/"
+    }
+  ],
+  "returns": {
+    "additionalProperties": true,
+    "description": "Map of ACL path to Map of privilege to propagate bit",
+    "properties": {},
+    "type": "object"
+  },
+  "permissions": {
+    "description": "Requires Sys.Audit on '/access', limited to own privileges otherwise.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/permissions'"
+}

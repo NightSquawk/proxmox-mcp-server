@@ -1,0 +1,34 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_clone",
+  "usageNotes": "Use this to create a new VM by cloning an existing VM or template; it returns a task UPID string that you must poll (via get_nodes_node_tasks_upid_status) to confirm completion before using the clone. For normal VMs a full disk copy is always performed, while templates default to a linked clone unless `full: true` is set — linked clones require the source to remain intact and on the same storage. Cross-node cloning (`target`) is only permitted when the source VM's disks reside on shared storage visible to both nodes.",
+  "examples": [
+    {
+      "summary": "Full clone of a template (VM 9000) to a new VM (101) on local-lvm, placed on the same node",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 9000
+      },
+      "params": {
+        "newid": 101,
+        "name": "ubuntu-worker-01",
+        "full": true,
+        "storage": "local-lvm",
+        "description": "Cloned from ubuntu-22.04 template on 2026-06-29"
+      }
+    }
+  ],
+  "tips": [
+    "The returned string is a UPID (e.g. UPID:pve01:...). Poll get_nodes_node_tasks_upid_status until status is 'stopped' and exitstatus is 'OK' before starting or reconfiguring the clone.",
+    "Linked clones (default for templates) share base disk blocks with the source — deleting or moving the source template will break linked clones. Use full: true if the source template may change.",
+    "Cross-node cloning requires shared storage (e.g. Ceph, NFS); disks on node-local storage cannot be cloned to a different target node.",
+    "If you specify `snapname`, the clone is created from that snapshot's disk state rather than the current disk state.",
+    "The caller needs VM.Clone on the source, VM.Allocate on the new VMID (or pool), Datastore.AllocateSpace on the target storage, and SDN.Use on any attached bridge/vnet — missing any of these returns a 403."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_qemu_vmid_config",
+    "put_nodes_node_qemu_vmid_config",
+    "post_nodes_node_qemu_vmid_status_start",
+    "delete_nodes_node_qemu_vmid"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "operationId": "get_nodes_node_sdn",
+  "usageNotes": "Returns the SDN (Software-Defined Networking) directory index for a specific PDM node, listing available SDN sub-resources. Because it requires no privileges beyond a valid session, it is useful for probing whether SDN capabilities are exposed on a given node before issuing more specific SDN calls. The endpoint returns null per the schema, meaning it functions as a navigation anchor rather than a data payload.",
+  "examples": [
+    {
+      "summary": "List SDN sub-resources for node 'pdm1'",
+      "path_params": {
+        "node": "pdm1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns null data — treat this as a directory listing stub; actual SDN configuration is retrieved through child endpoints under /nodes/{node}/sdn/.",
+    "Accessible with any valid API token (permissions: all), so safe to call for capability discovery without elevated credentials."
+  ],
+  "relatedOperations": []
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_termproxy",
+  "usageNotes": "Creates a terminal proxy session on the target node, returning a port, VNC ticket, UPID, and authenticated user — all required to open a WebSocket-based shell in the Proxmox web UI or a compatible VNC/xterm client. The calling user must hold Sys.Console on /nodes/{node}; using cmd values other than 'login' (e.g. 'upgrade', 'ceph_install') additionally requires the token or session to be authenticated as root@pam. The node must be online and reachable at the time of the call.",
+  "examples": [
+    {
+      "summary": "Open an interactive login shell on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "cmd": "login"
+      }
+    }
+  ],
+  "tips": [
+    "The returned 'port' is ephemeral — connect to it promptly before the termproxy worker times out.",
+    "Use the 'ticket' value as the VNC password when establishing the WebSocket connection via /nodes/{node}/vncwebsocket.",
+    "The 'upid' can be polled with the tasks API to confirm the worker is still alive.",
+    "cmd='upgrade' runs an interactive apt dist-upgrade session and requires root@pam authentication, not just Sys.Console."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_vncwebsocket",
+    "get_nodes_node_tasks",
+    "get_nodes_node_status"
+  ]
+}

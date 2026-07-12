@@ -1,0 +1,154 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_firewall_options",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "options",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/qemu/{vmid}/firewall/options",
+  "description": "Get QEMU firewall options.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "A guest ID",
+      "minimum": 1
+    }
+  ],
+  "params": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": false,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object.",
+    "properties": {
+      "dhcp": {
+        "default": false,
+        "description": "Enable DHCP.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "enable": {
+        "default": false,
+        "description": "Enable/disable firewall rules.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "ipfilter": {
+        "default": false,
+        "description": "Enable default IP filters. This is equivalent to adding an empty\nipfilter-net<id> ipset for every interface. Such ipsets implicitly\ncontain sane default restrictions such as restricting IPv6 link local\naddresses to the one derived from the interface's MAC address. For\ncontainers the configured IP addresses will be implicitly added.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "log_level_in": {
+        "default": "nolog",
+        "description": "Firewall log levels.",
+        "enum": [
+          "emerg",
+          "alert",
+          "crit",
+          "err",
+          "warning",
+          "notice",
+          "info",
+          "debug",
+          "nolog"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "log_level_out": {
+        "default": "nolog",
+        "description": "Firewall log levels.",
+        "enum": [
+          "emerg",
+          "alert",
+          "crit",
+          "err",
+          "warning",
+          "notice",
+          "info",
+          "debug",
+          "nolog"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "macfilter": {
+        "default": true,
+        "description": "Enable/disable MAC address filter.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "ndp": {
+        "default": true,
+        "description": "Enable NDP (Neighbor Discovery Protocol).",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "policy_in": {
+        "description": "Firewall IO policies.",
+        "enum": [
+          "ACCEPT",
+          "DROP",
+          "REJECT"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "policy_out": {
+        "description": "Firewall IO policies.",
+        "enum": [
+          "ACCEPT",
+          "DROP",
+          "REJECT"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "radv": {
+        "default": false,
+        "description": "Allow sending Router Advertisement.",
+        "optional": 1,
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "guest",
+        "{vmid}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/qemu/0/firewall/options'"
+}

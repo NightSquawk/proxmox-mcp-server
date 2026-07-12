@@ -1,0 +1,27 @@
+{
+  "operationId": "put_nodes_node_dns",
+  "usageNotes": "Use this to update the DNS resolver configuration on a specific Proxmox node, including the search domain and up to three nameserver IPs. The `search` field is required; omitting any `dns` field leaves that slot cleared in `/etc/resolv.conf`. The caller must hold `Sys.Modify` on `/nodes/{node}`, and the node must be online — there is no async task; the change takes effect immediately.",
+  "examples": [
+    {
+      "summary": "Set search domain and two nameservers on node pve01",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "search": "lab.nightsquawk.tech",
+        "dns1": "192.168.1.1",
+        "dns2": "1.1.1.1"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting dns1/dns2/dns3 clears those slots — always pass all resolvers you want to keep, not just the one you're changing.",
+    "This writes directly to the node's /etc/resolv.conf; in a clustered setup each node must be updated independently.",
+    "Returns null on success — a 2xx with empty body is the expected response, not an error."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_dns",
+    "put_nodes_node_hosts",
+    "get_nodes_node_network"
+  ]
+}

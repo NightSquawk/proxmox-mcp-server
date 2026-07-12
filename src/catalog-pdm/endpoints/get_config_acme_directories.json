@@ -1,0 +1,40 @@
+{
+  "operationId": "get_config_acme_directories",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "directories",
+  "method": "GET",
+  "path": "/config/acme/directories",
+  "description": "Get named known ACME directory endpoints.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of known ACME directories.",
+    "items": {
+      "additionalProperties": false,
+      "description": "An ACME directory endpoint with a name and URL.",
+      "properties": {
+        "name": {
+          "description": "The ACME directory's name.",
+          "type": "string"
+        },
+        "url": {
+          "description": "The ACME directory's endpoint URL.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/acme/directories'"
+}

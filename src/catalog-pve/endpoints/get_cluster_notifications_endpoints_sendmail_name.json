@@ -1,0 +1,100 @@
+{
+  "operationId": "get_cluster_notifications_endpoints_sendmail_name",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_sendmail_endpoint",
+  "method": "GET",
+  "path": "/cluster/notifications/endpoints/sendmail/{name}",
+  "description": "Return a specific sendmail endpoint",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "format": "pve-configid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "properties": {
+      "author": {
+        "description": "Author of the mail",
+        "optional": 1,
+        "type": "string"
+      },
+      "comment": {
+        "description": "Comment",
+        "optional": 1,
+        "type": "string"
+      },
+      "digest": {
+        "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+        "maxLength": 64,
+        "optional": 1,
+        "type": "string"
+      },
+      "disable": {
+        "default": 0,
+        "description": "Disable this target",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "from-address": {
+        "description": "`From` address for the mail",
+        "optional": 1,
+        "type": "string"
+      },
+      "mailto": {
+        "description": "List of email recipients",
+        "items": {
+          "format": "email-or-username",
+          "type": "string"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "mailto-user": {
+        "description": "List of users",
+        "items": {
+          "format": "pve-userid",
+          "type": "string"
+        },
+        "optional": 1,
+        "type": "array"
+      },
+      "name": {
+        "description": "The name of the endpoint.",
+        "format": "pve-configid",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "perm",
+        "/mapping/notifications",
+        [
+          "Mapping.Modify"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/notifications",
+        [
+          "Mapping.Audit"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/notifications/endpoints/sendmail/<name>'"
+}

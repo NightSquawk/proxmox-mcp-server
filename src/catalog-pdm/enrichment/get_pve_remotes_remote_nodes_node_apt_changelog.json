@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_apt_changelog",
+  "usageNotes": "Use this to inspect the Debian/apt changelog for a package on a remote PVE node before deciding whether to apply an update — useful for reviewing what changes are included in a pending upgrade. The `name` query parameter is required and must match the exact Debian package name; omit `version` to retrieve the changelog for the currently available candidate version. The remote must be reachable and the calling user must hold `Resource.Modify` on the remote/node/system path.",
+  "examples": [
+    {
+      "summary": "Fetch the changelog for the pve-manager package at its candidate version on a remote node",
+      "path_params": {
+        "remote": "hetzner-pve1",
+        "node": "pve1"
+      },
+      "params": {
+        "name": "pve-manager"
+      }
+    }
+  ],
+  "tips": [
+    "If you need the changelog for a specific installed version rather than the candidate, supply the `version` query parameter (e.g., the version string shown by `apt-cache show`).",
+    "Returns a plain-text string — the full Debian changelog — so expect a multi-line block of text, not a structured object.",
+    "The remote ID must satisfy the pattern ^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$ with a length of 2–32 characters; double-check the remote name if you receive a validation error."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_apt_update",
+    "get_pve_remotes_remote_nodes_node_apt_versions",
+    "post_pve_remotes_remote_nodes_node_apt_upgrade"
+  ]
+}

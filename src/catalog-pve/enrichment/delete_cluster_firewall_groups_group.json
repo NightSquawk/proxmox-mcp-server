@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_cluster_firewall_groups_group",
+  "usageNotes": "Permanently deletes a cluster-level firewall security group. The group must have all its rules removed first — Proxmox will reject the request if the group is non-empty. Requires the Sys.Modify privilege at the root path ('/'), meaning only cluster admins can perform this action.",
+  "examples": [
+    {
+      "summary": "Delete a security group named 'web-servers'",
+      "path_params": {
+        "group": "web-servers"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the named cluster firewall security group; any firewall rules still referencing this group by name on nodes or VMs will become dangling references.",
+  "tips": [
+    "Use get_cluster_firewall_groups_group (GET /cluster/firewall/groups/{group}) to list existing rules in the group before deletion — the group must be empty.",
+    "Security group names are 2–18 characters, must start with a letter, and may only contain letters, digits, hyphens, and underscores.",
+    "This operation returns null on success; absence of an error is the confirmation.",
+    "If any VM or node firewall rule references this group, those rule entries will silently become invalid after deletion — audit usages with get_cluster_firewall_refs before deleting."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_groups",
+    "get_cluster_firewall_groups_group",
+    "post_cluster_firewall_groups",
+    "delete_cluster_firewall_groups_group_pos",
+    "get_cluster_firewall_refs"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_acme_meta",
+  "usageNotes": "Use this to inspect an ACME CA directory before configuring it in Proxmox — it reveals whether an External Account Binding (EAB) is required, the Terms of Service URL, and the CAA hostnames the CA recognizes. Defaults to Let's Encrypt production; pass a different `directory` URL to query staging or a private ACME CA (e.g., ZeroSSL, Buypass). Requires Sys.Audit on any node; no ACME account needs to exist beforehand.",
+  "examples": [
+    {
+      "summary": "Query Let's Encrypt staging directory to check if EAB is required before adding the CA",
+      "path_params": {},
+      "params": {
+        "directory": "https://acme-staging-v02.api.letsencrypt.org/directory"
+      }
+    }
+  ],
+  "tips": [
+    "If externalAccountRequired is true, you must obtain EAB credentials from the CA before creating an ACME account in Proxmox.",
+    "Use the staging directory (acme-staging-v02) during initial setup to avoid Let's Encrypt rate limits.",
+    "The returned caaIdentities list tells you which hostnames to include in DNS CAA records for domain validation."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_tos",
+    "get_cluster_acme_directories",
+    "create_cluster_acme_account",
+    "get_cluster_acme_accounts"
+  ]
+}

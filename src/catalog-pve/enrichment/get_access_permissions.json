@@ -1,0 +1,26 @@
+{
+  "operationId": "get_access_permissions",
+  "usageNotes": "Use this to audit what privileges a specific user or API token actually has in effect across the cluster — useful for troubleshooting access denials or verifying least-privilege configurations. Omitting both `userid` and `path` returns the full privilege tree for the currently authenticated caller. To inspect another user's permissions, your token or user must hold `Sys.Audit` on `/access`; without it, you can only query yourself or tokens you own.",
+  "examples": [
+    {
+      "summary": "Fetch all effective permissions for a specific API token scoped to a single path",
+      "path_params": {},
+      "params": {
+        "userid": "kevin@pve!monitoring",
+        "path": "/nodes/pve01"
+      }
+    }
+  ],
+  "tips": [
+    "Omit `path` to get the full permission tree; supply it to narrow the response to one ACL path (faster for targeted checks).",
+    "The response maps each path to a privilege object where values are booleans indicating whether the privilege propagates to children.",
+    "API tokens always have permissions that are the intersection of their owner's permissions and any explicit token ACLs — effective permissions may be narrower than the owner's.",
+    "This endpoint is safe to call frequently; it is read-only and does not alter any cluster state."
+  ],
+  "relatedOperations": [
+    "get_access_users",
+    "get_access_roles",
+    "get_access_acl",
+    "get_access_token"
+  ]
+}

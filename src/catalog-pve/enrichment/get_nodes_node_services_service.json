@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_services_service",
+  "usageNotes": "Returns the list of available sub-command directories (e.g. 'state', 'start', 'stop', 'restart', 'reload') for a specific system service on a given node. Use this as a discovery step before calling service action endpoints — the returned 'subdir' values tell you which operations are valid for that service. Requires Sys.Audit on the node; the node must be online and reachable by the PVE API.",
+  "examples": [
+    {
+      "summary": "List available sub-commands for the pveproxy service on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "service": "pveproxy"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'subdir' values directly map to child API paths: e.g. a 'state' subdir corresponds to GET /nodes/{node}/services/{service}/state.",
+    "Not all services expose the same set of subdirs — always discover before assuming a sub-command like 'reload' exists for a given service.",
+    "Service names are an enum; submitting an unlisted service name will result in a 400 error rather than a graceful empty response."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_services",
+    "get_nodes_node_services_service_state",
+    "post_nodes_node_services_service_start",
+    "post_nodes_node_services_service_stop",
+    "post_nodes_node_services_service_restart",
+    "post_nodes_node_services_service_reload"
+  ]
+}

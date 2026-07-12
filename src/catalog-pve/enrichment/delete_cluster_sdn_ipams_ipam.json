@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_sdn_ipams_ipam",
+  "usageNotes": "Permanently removes an SDN IPAM object from the cluster-wide SDN configuration. Requires the SDN.Allocate privilege on /sdn/ipams and the IPAM must not be referenced by any existing SDN zones or VNets before deletion. The API returns null synchronously; changes take effect after the SDN configuration is applied (use the SDN apply endpoint to push changes to nodes).",
+  "examples": [
+    {
+      "summary": "Delete a NetBox IPAM integration named 'netbox1'",
+      "path_params": {
+        "ipam": "netbox1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the IPAM object configuration from the cluster; any SDN zones relying on it for IP address management will lose their IPAM association and automatic IP allocation will stop working.",
+  "tips": [
+    "Unlink the IPAM from all SDN zones before deleting — deletion of a referenced IPAM may be blocked or leave zones in a broken state.",
+    "Pass the lock-token if the SDN global config is currently locked by another operation to avoid a conflict error.",
+    "After deletion, call the SDN apply endpoint to propagate the removal to all cluster nodes."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_ipams_ipam",
+    "get_cluster_sdn_ipams",
+    "post_cluster_sdn_ipams",
+    "put_cluster_sdn_ipams_ipam",
+    "put_cluster_sdn"
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_ceph_osd_osdid_scrub",
+  "usageNotes": "Triggers a Ceph OSD scrub to detect data inconsistencies; use deep scrub (deep=true) periodically to also verify stored checksums against on-disk data. The call returns null immediately — scrub progress is tracked via Ceph itself (e.g., `ceph pg dump` or the Proxmox Ceph dashboard), not via a UPID. The target node must be online and the OSD must be in an 'up' state for the scrub to proceed.",
+  "examples": [
+    {
+      "summary": "Trigger a deep scrub on OSD.3 via node pve1",
+      "path_params": {
+        "node": "pve1",
+        "osdid": 3
+      },
+      "params": {
+        "deep": true
+      }
+    }
+  ],
+  "tips": [
+    "Normal scrubs verify object existence and metadata; deep scrubs additionally read and verify all object data checksums — they are more I/O intensive and take longer.",
+    "Scrub frequency is also controlled by Ceph's automatic scheduler (osd_scrub_min_interval / osd_scrub_max_interval); use this endpoint to force an immediate scrub outside of that schedule.",
+    "If the cluster is under heavy load, consider setting 'noscrub' or 'nodeep-scrub' flags via the Ceph CLI before triggering manual scrubs to control timing.",
+    "Requires the Sys.Modify privilege at the root ('/') level — API tokens must have this privilege explicitly granted."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_osd",
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph_osd_osdid_lv_info"
+  ]
+}

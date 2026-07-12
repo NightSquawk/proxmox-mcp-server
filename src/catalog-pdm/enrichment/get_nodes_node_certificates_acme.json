@@ -1,0 +1,22 @@
+{
+  "operationId": "get_nodes_node_certificates_acme",
+  "usageNotes": "Returns the ACME certificate sub-resource directory index for a given PDM node, listing the available ACME-related endpoints under /nodes/{node}/certificates/acme. Use this as a discovery call to confirm which ACME operations are exposed for a node before attempting certificate provisioning or renewal. No special privilege is required — any authenticated user or API token can call it.",
+  "examples": [
+    {
+      "summary": "List ACME certificate sub-resources for a PDM node named 'pdm-node1'",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response type is null in the schema, meaning the payload shape is not formally described; treat the response as an opaque directory listing of child endpoints.",
+    "Use this call before invoking ACME certificate order or renewal operations to confirm the node exposes ACME support."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_certificates",
+    "get_nodes_node_certificates_acme_account",
+    "get_nodes_node_certificates_acme_certificate"
+  ]
+}

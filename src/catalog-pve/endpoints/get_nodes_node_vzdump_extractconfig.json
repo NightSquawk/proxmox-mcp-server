@@ -1,0 +1,42 @@
+{
+  "operationId": "get_nodes_node_vzdump_extractconfig",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "extractconfig",
+  "method": "GET",
+  "path": "/nodes/{node}/vzdump/extractconfig",
+  "description": "Extract configuration from vzdump backup archive.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "volume",
+      "type": "string",
+      "required": true,
+      "description": "Volume identifier",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "description": "The user needs 'VM.Backup' permissions on the backed up guest ID, and 'Datastore.AllocateSpace' on the backup storage.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/vzdump/extractconfig?volume=<volume>'"
+}

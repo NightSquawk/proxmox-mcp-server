@@ -1,0 +1,39 @@
+{
+  "operationId": "delete_pools_poolid",
+  "surface": "pve",
+  "resource": "pools",
+  "category": "Pools",
+  "name": "delete_pool_deprecated",
+  "method": "DELETE",
+  "path": "/pools/{poolid}",
+  "description": "Delete pool (deprecated, no support for nested pools, use 'DELETE /pools/?poolid={poolid}').",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "poolid",
+      "type": "string",
+      "required": true,
+      "format": "pve-poolid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/pool/{poolid}",
+      [
+        "Pool.Allocate"
+      ]
+    ],
+    "description": "You can only delete empty pools (no members)."
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/pools/<poolid>'"
+}

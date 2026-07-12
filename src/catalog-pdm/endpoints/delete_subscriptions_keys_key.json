@@ -1,0 +1,50 @@
+{
+  "operationId": "delete_subscriptions_keys_key",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "{key}",
+  "method": "DELETE",
+  "path": "/subscriptions/keys/{key}",
+  "description": "Remove a key from the pool.\n\nIf the key is currently assigned to a remote node, the caller must also have\n`PRIV_RESOURCE_MODIFY` on that remote, so an audit-only operator cannot release a key\nanother admin had pinned. Refuses if the key is currently the live active key on its bound\nnode, since dropping the pool entry would orphan that subscription on the remote: the\noperator must run Clear Key on the Node Subscription Status panel first.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "key",
+      "type": "string",
+      "required": true,
+      "description": "Subscription key.",
+      "minLength": 15,
+      "maxLength": 18,
+      "pattern": "/^(?:pve[0-9]+|pbs)[cbsp]-[0-9a-f]{10}$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/subscriptions/keys/<key>'"
+}

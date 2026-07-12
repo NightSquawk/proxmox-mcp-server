@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_mtunnel",
+  "usageNotes": "This endpoint is intended exclusively for internal use by Proxmox's VM live-migration subsystem — do not call it directly from user-facing automation or scripts. It establishes the migration tunnel on the destination node, returning a socket path, an authentication ticket, and a task UPID that tracks the tunnel process. Requires both VM.Allocate on the target VM and Sys.Incoming on the cluster root; additional permission checks occur when the actual migration data transfer begins.",
+  "examples": [
+    {
+      "summary": "Open a migration tunnel for VM 105 on destination node pve2, pre-checking storage 'local-lvm' and bridge 'vmbr0'",
+      "path_params": {
+        "node": "pve2",
+        "vmid": 105
+      },
+      "params": {
+        "storages": "local-lvm",
+        "bridges": "vmbr0"
+      }
+    }
+  ],
+  "tips": [
+    "The returned 'socket' and 'ticket' are consumed by the source node's migration driver — they are not meant for manual use.",
+    "Pre-flight bridge and storage checks performed here are repeated during the actual data transfer; a pass here does not guarantee a pass at transfer time.",
+    "The UPID in the response can be polled via GET /nodes/{node}/tasks/{upid}/status to monitor tunnel lifecycle."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_migrate",
+    "get_nodes_node_tasks_upid_status",
+    "post_nodes_node_qemu_vmid_mtunnelwebsocket"
+  ]
+}

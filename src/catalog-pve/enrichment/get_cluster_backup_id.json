@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_backup_id",
+  "usageNotes": "Use this to inspect the full configuration of a specific vzdump backup job before modifying or cloning it — particularly useful for auditing retention policy (prune-backups), compression settings, and which guests are targeted. Requires Sys.Audit privilege at the root path (/). The job ID can be obtained from list_cluster_backup; the response is synchronous and returns the full job definition including the next scheduled run time.",
+  "examples": [
+    {
+      "summary": "Read a specific cluster backup job definition",
+      "path_params": {
+        "id": "backup-8d3f1a2b-4c5e"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The next-run field returns a UNIX timestamp; convert it to a readable date to confirm the schedule is active.",
+    "If enabled is absent or true and next-run is missing, the job may lack a valid schedule — check the schedule field.",
+    "The mailnotification and mailto fields are deprecated; prefer notification-mode with PVE's notification system.",
+    "A job with node set will only execute when vzdump runs on that specific node — cluster-wide jobs omit this field."
+  ],
+  "relatedOperations": [
+    "list_cluster_backup",
+    "update_cluster_backup_id",
+    "delete_cluster_backup_id",
+    "create_cluster_backup"
+  ]
+}

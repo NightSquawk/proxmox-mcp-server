@@ -1,0 +1,71 @@
+{
+  "operationId": "put_nodes_node_dns",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "update_dns",
+  "method": "PUT",
+  "path": "/nodes/{node}/dns",
+  "description": "Write DNS settings.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "dns1",
+      "type": "string",
+      "required": false,
+      "description": "First name server IP address.",
+      "format": "ip",
+      "typetext": "<string>"
+    },
+    {
+      "name": "dns2",
+      "type": "string",
+      "required": false,
+      "description": "Second name server IP address.",
+      "format": "ip",
+      "typetext": "<string>"
+    },
+    {
+      "name": "dns3",
+      "type": "string",
+      "required": false,
+      "description": "Third name server IP address.",
+      "format": "ip",
+      "typetext": "<string>"
+    },
+    {
+      "name": "search",
+      "type": "string",
+      "required": true,
+      "description": "Search domain for host-name lookup.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"search\":\"<search>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/dns'"
+}

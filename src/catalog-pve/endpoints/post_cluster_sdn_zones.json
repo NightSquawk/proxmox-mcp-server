@@ -1,0 +1,257 @@
+{
+  "operationId": "post_cluster_sdn_zones",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "create",
+  "method": "POST",
+  "path": "/cluster/sdn/zones",
+  "description": "Create a new sdn zone object.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "advertise-subnets",
+      "type": "boolean",
+      "required": false,
+      "description": "Advertise IP prefixes (Type-5 routes) instead of MAC/IP pairs (Type-2 routes).",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "bridge",
+      "type": "string",
+      "required": false,
+      "description": "The bridge for which VLANs should be managed.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "bridge-disable-mac-learning",
+      "type": "boolean",
+      "required": false,
+      "description": "Disable auto mac learning.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "controller",
+      "type": "string",
+      "required": false,
+      "description": "Controller for this zone.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "dhcp",
+      "type": "string",
+      "required": false,
+      "description": "Type of the DHCP backend for this zone",
+      "enum": [
+        "dnsmasq"
+      ]
+    },
+    {
+      "name": "disable-arp-nd-suppression",
+      "type": "boolean",
+      "required": false,
+      "description": "Suppress IPv4 ARP && IPv6 Neighbour Discovery messages.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "dns",
+      "type": "string",
+      "required": false,
+      "description": "dns api server",
+      "typetext": "<string>"
+    },
+    {
+      "name": "dnszone",
+      "type": "string",
+      "required": false,
+      "description": "dns domain zone  ex: mydomain.com",
+      "format": "dns-name",
+      "typetext": "<string>"
+    },
+    {
+      "name": "dp-id",
+      "type": "integer",
+      "required": false,
+      "description": "Faucet dataplane id",
+      "typetext": "<integer>"
+    },
+    {
+      "name": "exitnodes",
+      "type": "string",
+      "required": false,
+      "description": "List of cluster node names.",
+      "format": "pve-node-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "exitnodes-local-routing",
+      "type": "boolean",
+      "required": false,
+      "description": "Allow exitnodes to connect to EVPN guests.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "exitnodes-primary",
+      "type": "string",
+      "required": false,
+      "description": "Force traffic through this exitnode first.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "fabric",
+      "type": "string",
+      "required": false,
+      "description": "SDN fabric to use as underlay for this VXLAN zone.",
+      "format": "pve-sdn-fabric-id",
+      "typetext": "<string>"
+    },
+    {
+      "name": "ipam",
+      "type": "string",
+      "required": false,
+      "description": "use a specific ipam",
+      "typetext": "<string>"
+    },
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    },
+    {
+      "name": "mac",
+      "type": "string",
+      "required": false,
+      "description": "Anycast logical router mac address.",
+      "format": "mac-addr",
+      "typetext": "<string>"
+    },
+    {
+      "name": "mtu",
+      "type": "integer",
+      "required": false,
+      "description": "MTU of the zone, will be used for the created VNet bridges.",
+      "typetext": "<integer>"
+    },
+    {
+      "name": "nodes",
+      "type": "string",
+      "required": false,
+      "description": "List of cluster node names.",
+      "format": "pve-node-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "peers",
+      "type": "string",
+      "required": false,
+      "description": "Comma-separated list of peers, that are part of the VXLAN zone. Usually the IPs of the nodes.",
+      "format": "ip-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "reversedns",
+      "type": "string",
+      "required": false,
+      "description": "reverse dns api server",
+      "typetext": "<string>"
+    },
+    {
+      "name": "rt-import",
+      "type": "string",
+      "required": false,
+      "description": "List of Route Targets that should be imported into the VRF of the zone.",
+      "format": "pve-sdn-bgp-rt-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "secondary-controllers",
+      "type": "array",
+      "required": false,
+      "description": "Additional controllers.",
+      "typetext": "<array>"
+    },
+    {
+      "name": "tag",
+      "type": "integer",
+      "required": false,
+      "description": "Service-VLAN Tag (outer VLAN)",
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "description": "Plugin type.",
+      "format": "pve-configid",
+      "enum": [
+        "evpn",
+        "faucet",
+        "qinq",
+        "simple",
+        "vlan",
+        "vxlan"
+      ]
+    },
+    {
+      "name": "vlan-protocol",
+      "type": "string",
+      "required": false,
+      "description": "Which VLAN protocol should be used for the creation of the QinQ zone.",
+      "enum": [
+        "802.1q",
+        "802.1ad"
+      ],
+      "default": "802.1q"
+    },
+    {
+      "name": "vrf-vxlan",
+      "type": "integer",
+      "required": false,
+      "description": "VNI for the zone VRF.",
+      "minimum": 1,
+      "maximum": 16777215,
+      "typetext": "<integer> (1 - 16777215)"
+    },
+    {
+      "name": "vxlan-port",
+      "type": "integer",
+      "required": false,
+      "description": "UDP port that should be used for the VXLAN tunnel (default 4789).",
+      "default": 4789,
+      "minimum": 1,
+      "maximum": 65536,
+      "typetext": "<integer> (1 - 65536)"
+    },
+    {
+      "name": "zone",
+      "type": "string",
+      "required": true,
+      "description": "The SDN zone object identifier.",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/zones",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"type\":\"evpn\",\"zone\":\"<zone>\"}' 'https://PVE_HOST:8006/api2/json/cluster/sdn/zones'"
+}

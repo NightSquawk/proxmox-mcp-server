@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_report",
+  "usageNotes": "Use this endpoint to collect a comprehensive diagnostics snapshot of a single node — similar to the 'pvereport' CLI output — covering hardware, kernel, PVE versions, storage, and network state. The response is a raw text string (not JSON); it is intended for support submissions or offline analysis. The node must be online and reachable by the API host; calling against an offline node will return an error.",
+  "examples": [
+    {
+      "summary": "Fetch the full diagnostic report for node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned string is the same content produced by running 'pvereport' on the node's shell — useful for sharing with Proxmox support.",
+    "Output can be several hundred kilobytes; consider writing it to a file rather than displaying it inline.",
+    "Because there are no filtering parameters, parse or grep the returned string client-side if you only need a specific section (e.g., SMART data, subscription status)."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_status",
+    "get_nodes_node_syslog",
+    "get_nodes_node_journal",
+    "get_nodes_node_subscription"
+  ]
+}

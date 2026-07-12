@@ -1,0 +1,36 @@
+{
+  "operationId": "post_cluster_backup",
+  "usageNotes": "Use this to create a new scheduled vzdump backup job at the cluster level; the job is persisted in /etc/pve/jobs.cfg and run by the PVE scheduler — it does not trigger an immediate backup run. Requires Sys.Modify on '/'; the 'tmpdir', 'dumpdir', and 'script' parameters are additionally restricted to root@pam. Always supply either 'vmid', 'pool', or 'all' to define scope, and either 'storage' or 'dumpdir' as the backup destination, or the job will be created with no effective targets.",
+  "examples": [
+    {
+      "summary": "Create a nightly zstd-compressed snapshot backup of two VMs to local PBS storage, keeping the last 7 daily backups",
+      "path_params": {},
+      "params": {
+        "vmid": "101,102",
+        "storage": "pbs-local",
+        "mode": "snapshot",
+        "compress": "zstd",
+        "schedule": "daily 02:00",
+        "prune-backups": "keep-daily=7",
+        "enabled": true,
+        "comment": "Nightly production VM backups"
+      }
+    }
+  ],
+  "tips": [
+    "Use 'schedule' (systemd calendar event format, e.g. 'daily 02:00', 'weekly Mon 03:00') instead of the deprecated 'starttime'/'dow' pair.",
+    "The 'remove' param (default: true) prunes old backups per 'prune-backups' after each run — set to false if you want the storage's own retention policy to apply instead.",
+    "zstd compression with 'compress: zstd' is significantly faster than gzip/lzo for large VMs; pair with 'zstd: 0' to use all available cores.",
+    "Backup fleecing ('fleecing' param) allows snapshot-mode backups of running VMs with minimal I/O impact by using a scratch storage for the changed-block journal.",
+    "The 'node' param restricts the job to run only on the specified node; omit it for cluster-wide scope where any node can execute the job.",
+    "Returns null synchronously — job creation is not async. To verify the job was persisted, follow up with get_cluster_backup_id or list_cluster_backup."
+  ],
+  "relatedOperations": [
+    "get_cluster_backup",
+    "get_cluster_backup_id",
+    "put_cluster_backup_id",
+    "delete_cluster_backup_id",
+    "post_nodes_node_vzdump",
+    "get_cluster_backup_id_included_volumes"
+  ]
+}

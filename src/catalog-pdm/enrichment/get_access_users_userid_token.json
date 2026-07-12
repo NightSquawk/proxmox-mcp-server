@@ -1,0 +1,25 @@
+{
+  "operationId": "get_access_users_userid_token",
+  "usageNotes": "Use this to audit or inventory all API tokens associated with a given PDM user before rotating credentials, diagnosing auth failures, or verifying token expiry. Callers need either the `System.Audit` privilege on `/access/users` or must be querying their own userid. The response includes each token's `tokenid` (full auth ID in `user@realm!tokenname` format), enabled state, and expiry — note that `token-name` alone is not a unique identifier; always use `tokenid` when referencing a specific token in subsequent calls.",
+  "examples": [
+    {
+      "summary": "List all API tokens for a local admin user",
+      "path_params": {
+        "userid": "admin@pam"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `tokenid` field uses the full `user@realm!tokenname` format required by PDM API auth headers — copy it directly when constructing `PDMAPIToken=` credentials.",
+    "A token with `enable: false` will be rejected at auth time even if the secret is valid; check this field when troubleshooting 401s.",
+    "Tokens with `expire: 0` never expire — flag these during security audits.",
+    "This endpoint does NOT return the token secret; secrets are only available at token creation time."
+  ],
+  "relatedOperations": [
+    "post_access_users_userid_token_tokenname",
+    "get_access_users_userid_token_tokenname",
+    "delete_access_users_userid_token_tokenname",
+    "get_access_users"
+  ]
+}

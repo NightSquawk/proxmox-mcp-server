@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_firewall_macros",
+  "usageNotes": "Use this to retrieve the full list of built-in Proxmox firewall macro names and their descriptions before writing firewall rules that reference a macro in the 'macro' field. No authentication privilege is required beyond a valid login — any API token or user can call this. The list is static and cluster-wide; it reflects macros baked into the Proxmox firewall engine, not custom rules.",
+  "examples": [
+    {
+      "summary": "List all available firewall macros to find the correct name before creating a rule",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Macro names are case-sensitive when used in firewall rules (e.g., 'SSH' not 'ssh').",
+    "This endpoint returns no pagination — the full macro list is always returned in a single response.",
+    "Use the 'descr' field to understand what traffic a macro covers before applying it to a rule."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_rules",
+    "create_cluster_firewall_rule",
+    "get_nodes_node_firewall_rules"
+  ]
+}

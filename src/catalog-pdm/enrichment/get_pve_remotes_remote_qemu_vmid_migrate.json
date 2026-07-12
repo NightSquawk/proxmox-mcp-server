@@ -1,0 +1,30 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_migrate",
+  "usageNotes": "Call this before initiating a QEMU VM migration to check whether the migration is feasible — it returns local disks, local resources that block migration, allowed/disallowed target nodes, and HA affinity dependencies. If `local_resources` is non-empty the migration will be blocked; resolve those passthrough devices first. Supply `target` to get node-specific blocking details such as unavailable storages or HA conflicts.",
+  "examples": [
+    {
+      "summary": "Check migration preconditions for VM 105 on remote 'pve-hetzner', targeting node 'pve2'",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 105
+      },
+      "params": {
+        "node": "pve1",
+        "target": "pve2"
+      }
+    }
+  ],
+  "tips": [
+    "A non-empty `local_resources` array means the VM cannot be live-migrated without detaching those resources (e.g. USB passthrough, PCIe devices).",
+    "`local_disks` lists CD-ROM ISOs and unused volumes that must be accounted for; ISOs on local storage are not automatically transferred and will block migration unless the target has the same ISO available.",
+    "`dependent-ha-resources` will be moved to the same target node automatically — confirm the target can host them before proceeding.",
+    "If `has-dbus-vmstate` is false, connection-tracking state (conntrack) will not survive the migration; plan for brief session drops on stateful services.",
+    "`allowed_nodes` is omitted when `target` is not specified — pass `target` to get the full node-specific feasibility breakdown in `not_allowed_nodes`."
+  ],
+  "relatedOperations": [
+    "post_pve_remotes_remote_qemu_vmid_migrate",
+    "get_pve_remotes_remote_lxc_vmid_migrate",
+    "get_pve_remotes_remote_qemu_vmid_status_current",
+    "get_pve_remotes_remote_nodes"
+  ]
+}

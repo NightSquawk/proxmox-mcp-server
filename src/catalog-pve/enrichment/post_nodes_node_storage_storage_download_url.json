@@ -1,0 +1,34 @@
+{
+  "operationId": "post_nodes_node_storage_storage_download_url",
+  "usageNotes": "Use this to pull ISO images, container templates, or importable VM images from a public URL directly onto a Proxmox node's storage — no local upload needed. The operation is asynchronous: it returns a task UPID that you must poll (via get_nodes_node_tasks_upid_status) to confirm completion. The target node must be online and have outbound HTTP/HTTPS access to the URL; the storage must support the requested content type (e.g., ISO requires a storage configured for 'iso' content).",
+  "examples": [
+    {
+      "summary": "Download a Debian 12 ISO to local storage on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "storage": "local"
+      },
+      "params": {
+        "content": "iso",
+        "filename": "debian-12.11.0-amd64-netinst.iso",
+        "url": "https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/debian-12.11.0-amd64-netinst.iso",
+        "checksum": "3ade9e3459ce0fdea31f3cbfb7574f3eca9c0e5f89c5748c3e3b70e43e8b0e14",
+        "checksum-algorithm": "sha256",
+        "verify-certificates": true
+      }
+    }
+  ],
+  "tips": [
+    "The returned string is a UPID (e.g., UPID:pve01:...). Track it with the task-status endpoint to detect download failures or checksum mismatches.",
+    "Filename will be normalized by Proxmox (spaces replaced, certain characters stripped) — use the task log or storage browse to confirm the final name.",
+    "Set verify-certificates to false only for internal/self-signed URLs; production public downloads should always verify.",
+    "The 'import' content type is for OVA/VMDK images intended for VM import, not ISOs or LXC templates — choose content type to match what the storage expects.",
+    "Downloading large images over a slow or metered uplink blocks storage I/O on that node for the duration; prefer off-peak scheduling for large files."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log",
+    "get_nodes_node_storage_storage_content",
+    "delete_nodes_node_storage_storage_content_volume"
+  ]
+}

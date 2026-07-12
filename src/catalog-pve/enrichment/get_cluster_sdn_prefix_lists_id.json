@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_sdn_prefix_lists_id",
+  "usageNotes": "Retrieves the configuration of a single SDN prefix list by its identifier. Use this to inspect prefix entries, verify membership, or confirm the current state before modifying the list. Requires the SDN.Audit privilege on the specific prefix-list path; the SDN subsystem must be enabled on the cluster.",
+  "examples": [
+    {
+      "summary": "Fetch the configuration for a prefix list named 'rfc1918'",
+      "path_params": {
+        "id": "rfc1918"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Prefix list IDs follow the pve-sdn-prefix-list-id format — use only alphanumeric characters and hyphens.",
+    "Changes to SDN objects (including prefix lists) are staged until applied via the SDN apply endpoint; the returned config reflects the staged/pending state.",
+    "If the prefix list was recently created or modified and not yet applied, the returned object may differ from what is currently active in the data plane."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_prefix_lists",
+    "create_cluster_sdn_prefix_lists",
+    "update_cluster_sdn_prefix_lists_id",
+    "delete_cluster_sdn_prefix_lists_id",
+    "apply_cluster_sdn"
+  ]
+}

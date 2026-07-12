@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_tasks_upid_log",
+  "usageNotes": "Use this to retrieve paginated log output for any task identified by its UPID — most useful for polling a running task or inspecting a completed one. Obtain the UPID from the operation that launched the task (e.g. a backup, migration, or sync job). Use `start` + `limit` for pagination through large logs, or set `limit=0` to return all lines; pass `download=true` exclusively (without any other params) to stream the raw log file.",
+  "examples": [
+    {
+      "summary": "Fetch the first 100 lines of a task log on the local PDM node",
+      "path_params": {
+        "node": "localhost",
+        "upid": "UPID:localhost:00003A2F:000B1C4E:00000001:67A1B2C3:vzdump:101:root@pam:"
+      },
+      "params": {
+        "start": 0,
+        "limit": 100,
+        "test-status": true
+      }
+    }
+  ],
+  "tips": [
+    "Set `test-status: true` to check whether the task is still running alongside the log fetch — avoids a separate status call.",
+    "When paginating, use the `total` field in the response to know when you have fetched all lines.",
+    "`download=true` cannot be combined with `start`, `limit`, or `test-status` — it triggers a raw file download instead of JSON.",
+    "The UPID encodes the originating node; always route the request to that same node, not a different cluster member."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks",
+    "delete_nodes_node_tasks_upid"
+  ]
+}

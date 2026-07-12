@@ -1,0 +1,28 @@
+{
+  "operationId": "delete_nodes_node_lxc_vmid_snapshot_snapname",
+  "usageNotes": "Permanently deletes a named LXC snapshot and its associated disk data; the operation is asynchronous and returns a UPID task ID that should be polled to confirm completion. The caller must hold the VM.Snapshot privilege on /vms/{vmid}, and the target node must be online. Use the `force` parameter only as a last resort when disk snapshot removal fails and you want to at least clean the config entry — disk data may then be orphaned.",
+  "examples": [
+    {
+      "summary": "Delete a pre-upgrade snapshot named 'before_upgrade' from LXC 110 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110,
+        "snapname": "before_upgrade"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the snapshot and its stored disk state; this data cannot be recovered after deletion.",
+  "tips": [
+    "Poll the returned UPID via the tasks API to confirm the snapshot was fully removed before taking further snapshot actions on the same CT.",
+    "Deleting a snapshot with a child snapshot (rollback chain) is not supported; remove descendants first.",
+    "If the LXC uses an overlayfs/dir-based rootfs, snapshot deletion is typically instant; for ZFS or LVM-thin it may take longer depending on data size.",
+    "The `force` flag bypasses disk-layer removal errors but can leave orphaned volumes on the storage — audit storage afterward if used."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_snapshot",
+    "get_nodes_node_lxc_vmid_snapshot",
+    "post_nodes_node_lxc_vmid_snapshot_snapname_rollback",
+    "get_nodes_node_lxc_vmid_snapshot_snapname_config"
+  ]
+}

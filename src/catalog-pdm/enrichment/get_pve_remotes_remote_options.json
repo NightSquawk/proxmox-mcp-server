@@ -1,0 +1,23 @@
+{
+  "operationId": "get_pve_remotes_remote_options",
+  "usageNotes": "Use this to retrieve the cluster-level options (e.g. migration settings, HA preferences) for a specific PVE remote registered in PDM. Requires the `Resource.Audit` privilege on the remote resource; API tokens are supported. The return schema is not fully typed in the spec (`null`) — inspect the raw response body for the actual option fields returned by the target cluster's version.",
+  "examples": [
+    {
+      "summary": "Fetch cluster options for the remote named 'pve-prod'",
+      "path_params": {
+        "remote": "pve-prod"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The remote name must match the ID registered in PDM (2–32 chars, alphanumeric with . _ - allowed after the first char).",
+    "A `null` return type in the spec means no schema is enforced client-side — the actual response is a JSON object with cluster option fields; log or pretty-print it to discover available keys.",
+    "This is a read-only, non-destructive call safe to run in production at any time."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes",
+    "get_pve_remotes_remote",
+    "get_pve_remotes_remote_status"
+  ]
+}

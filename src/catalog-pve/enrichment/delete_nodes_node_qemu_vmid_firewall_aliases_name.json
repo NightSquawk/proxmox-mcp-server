@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_qemu_vmid_firewall_aliases_name",
+  "usageNotes": "Permanently removes a named IP/network alias from a VM's firewall alias set; any firewall rules on that VM that reference this alias by name will break silently after deletion, so audit dependent rules first. The operation returns null synchronously — there is no UPID to poll. Requires VM.Config.Network on the VM's path.",
+  "examples": [
+    {
+      "summary": "Delete the 'mgmt-net' alias from VM 200 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 200,
+        "name": "mgmt-net"
+      },
+      "params": {
+        "digest": "a3f1c2e4b5d60789abcdef1234567890abcdef12"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the named firewall alias; any VM firewall rules referencing this alias by name will no longer resolve, potentially breaking intended traffic policies without immediate error.",
+  "tips": [
+    "Pass the current config digest to guard against concurrent modifications — fetch it from the GET aliases list before deleting.",
+    "Check for rules referencing the alias name before deletion: use the VM firewall rules list endpoint and grep for the alias name.",
+    "This is VM-scoped; a same-named alias at the datacenter or node level is a separate object and is unaffected."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_aliases",
+    "get_nodes_node_qemu_vmid_firewall_aliases_name",
+    "post_nodes_node_qemu_vmid_firewall_aliases",
+    "put_nodes_node_qemu_vmid_firewall_aliases_name",
+    "get_nodes_node_qemu_vmid_firewall_rules"
+  ]
+}

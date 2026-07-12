@@ -1,0 +1,33 @@
+{
+  "operationId": "put_nodes_node_lxc_vmid_config",
+  "usageNotes": "Use this to modify the configuration of an existing LXC container — CPU, memory, network interfaces, mount points, tags, hostname, and more — without recreating it. The call returns null synchronously (no UPID); most settings take effect on the next container start, but some (like description and tags) apply immediately. Requires at least one of VM.Config.Disk, VM.Config.CPU, VM.Config.Memory, VM.Config.Network, or VM.Config.Options on /vms/{vmid}; non-volume bind-mount points are restricted to root@pam.",
+  "examples": [
+    {
+      "summary": "Increase memory to 2 GB and add a tag for a running web container",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {
+        "memory": 2048,
+        "swap": 512,
+        "tags": "web;production",
+        "description": "Nginx reverse proxy for client portal"
+      }
+    }
+  ],
+  "tips": [
+    "Pass the 'digest' field (from GET config) to guard against concurrent edits — the API rejects the update if the config has changed since you read it.",
+    "Use the 'delete' param to unset optional fields (e.g., delete='nameserver,searchdomain') rather than sending empty strings.",
+    "Changing 'unprivileged' after container creation is unsupported and can break filesystem permissions — treat it as read-only post-create.",
+    "Network interface changes (net[n]) take effect on the next container start; the running container keeps its current network state.",
+    "The 'revert' param discards a pending (unapplied) config change without requiring a full reconfigure cycle."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_config",
+    "post_nodes_node_lxc_vmid_start",
+    "post_nodes_node_lxc_vmid_stop",
+    "post_nodes_node_lxc_vmid_snapshot",
+    "get_nodes_node_lxc"
+  ]
+}

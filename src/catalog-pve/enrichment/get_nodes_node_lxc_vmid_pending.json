@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_pending",
+  "usageNotes": "Use this endpoint to inspect an LXC container's current configuration alongside any pending changes that will take effect after the next container restart. Each item in the response array represents one config key with its current `value`, pending `value` (if a change is queued), and a `delete` flag (non-zero means the key is queued for removal). Requires `VM.Audit` on `/vms/{vmid}`; API tokens are supported.",
+  "examples": [
+    {
+      "summary": "Check pending configuration changes for container 200 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 200
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A non-null `pending` field alongside a `value` field means the config key was changed but the container has not yet been restarted to apply it.",
+    "A `delete` value of 1 or 2 means the key is scheduled for removal on next restart — treat the current `value` as still active until then.",
+    "This endpoint is read-only and synchronous; no UPID is returned."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_config",
+    "post_nodes_node_lxc_vmid_config",
+    "post_nodes_node_lxc_vmid_reboot",
+    "post_nodes_node_lxc_vmid_shutdown"
+  ]
+}

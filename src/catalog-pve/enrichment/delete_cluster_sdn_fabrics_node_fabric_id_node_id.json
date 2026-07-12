@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_cluster_sdn_fabrics_node_fabric_id_node_id",
+  "usageNotes": "Removes a specific node from an SDN fabric configuration. The caller must hold SDN.Allocate on the fabric path and Sys.Modify on the target node — both privileges are required simultaneously. This operation returns null synchronously; after deletion, apply the SDN configuration (POST /cluster/sdn) to propagate the change across the cluster.",
+  "examples": [
+    {
+      "summary": "Remove node 'pve2' from the SDN fabric 'fab01'",
+      "path_params": {
+        "fabric_id": "fab01",
+        "node_id": "pve2"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the node's participation record from the SDN fabric; any fabric-specific network configuration (routes, peers, VTEP settings) tied to that node entry is lost and must be re-added manually if the node is to rejoin.",
+  "tips": [
+    "fabric_id must be 2–8 alphanumeric characters and cannot start or end with a hyphen.",
+    "Removing a node from the fabric does not remove the node from the cluster; it only detaches it from this SDN fabric's control plane.",
+    "After deletion, run POST /cluster/sdn to commit and apply the updated SDN state cluster-wide.",
+    "Verify no active SDN zones or VNets depend on this node's fabric membership before removing it."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics_node_fabric_id_node_id",
+    "post_cluster_sdn_fabrics_node_fabric_id",
+    "get_cluster_sdn_fabrics_fabric_id",
+    "put_cluster_sdn"
+  ]
+}

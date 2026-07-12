@@ -1,0 +1,27 @@
+{
+  "operationId": "get_cluster_sdn_vnets_vnet_subnets_subnet",
+  "usageNotes": "Reads the configuration of a specific SDN subnet within a vnet. Use the 'pending' flag to inspect changes that have been staged but not yet applied via 'apply', and 'running' to see what is currently active in the network stack — these can differ after a config change before reload. Requires 'SDN.Audit' or 'SDN.Allocate' on '/sdn/zones/<zone>/<vnet>'.",
+  "examples": [
+    {
+      "summary": "Read configuration for subnet 10.10.20.0/24 within vnet 'prodnet', showing pending changes",
+      "path_params": {
+        "vnet": "prodnet",
+        "subnet": "10.10.20.0-24"
+      },
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "The subnet path param uses pve-sdn-subnet-id format — typically the CIDR with the slash replaced by a dash (e.g. 10.0.0.0/24 → 10.0.0.0-24).",
+    "If both 'pending' and 'running' are omitted, the response reflects the stored (committed) configuration, which may differ from what is live if a reload is pending.",
+    "List available subnets for a vnet first using get_cluster_sdn_vnets_vnet_subnets before calling this endpoint to confirm valid subnet IDs."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_subnets",
+    "get_cluster_sdn_vnets_vnet",
+    "get_cluster_sdn_vnets",
+    "get_cluster_sdn_zones_zone"
+  ]
+}

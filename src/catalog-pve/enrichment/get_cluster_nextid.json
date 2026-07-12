@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_nextid",
+  "usageNotes": "Call this before creating a VM or container to obtain a free VMID that Proxmox will not assign to another resource. When called without a vmid, it returns the next available ID cluster-wide; when called with a specific vmid, it asserts that ID is currently unallocated (returning the same ID on success, or an error if already in use). Note that the returned ID is not reserved — a concurrent creation race is possible on busy clusters, so use it promptly.",
+  "examples": [
+    {
+      "summary": "Get the next free VMID (no preference)",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Pass a specific vmid (e.g. 200) to validate your desired ID is free before a planned deployment — useful in scripted provisioning workflows.",
+    "The returned VMID is not locked; on clusters with high VM creation frequency, call this immediately before the create request to minimize collision risk.",
+    "VMIDs below 100 are reserved by Proxmox; the minimum valid value is 100."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu",
+    "post_nodes_node_lxc",
+    "get_cluster_resources"
+  ]
+}

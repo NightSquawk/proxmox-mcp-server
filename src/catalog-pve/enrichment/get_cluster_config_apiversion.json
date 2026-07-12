@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_config_apiversion",
+  "usageNotes": "Call this before initiating a cluster join workflow to confirm the target node supports the join API version your client expects. Requires Sys.Audit on / — available to API tokens. Currently always returns 1; check for values greater than your minimum supported version before proceeding.",
+  "examples": [
+    {
+      "summary": "Check the cluster join API version before adding a new node",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "No parameters required — the endpoint is a simple capability probe.",
+    "Use this as a pre-flight check in node-join automation to guard against version mismatches.",
+    "The returned integer is the API version, not the Proxmox VE release version."
+  ],
+  "relatedOperations": [
+    "get_cluster_config",
+    "post_cluster_config_join",
+    "get_cluster_config_join"
+  ]
+}

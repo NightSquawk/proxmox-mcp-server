@@ -1,0 +1,43 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_storage_storage",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "{storage}",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/nodes/{node}/storage/{storage}",
+  "description": "Directory index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Path parameter (no further detail in Proxmox schema; inherited from parent resource)."
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Path parameter (no further detail in Proxmox schema; inherited from parent resource)."
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "Path parameter (no further detail in Proxmox schema; inherited from parent resource)."
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/nodes/<node>/storage/<storage>'"
+}

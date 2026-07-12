@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pbs_remotes_remote_datastore_datastore",
+  "usageNotes": "Returns the API directory index for a specific datastore on a PBS remote — this is a navigation/discovery endpoint that lists available sub-routes, not backup snapshot data. Use it to confirm that a remote+datastore combination is reachable and to discover child API paths before querying snapshots, namespaces, or usage stats. The PBS remote must already be configured in PDM and the datastore name must exist on that remote.",
+  "examples": [
+    {
+      "summary": "List available API sub-paths for a datastore named 'main' on PBS remote 'pbs-hetzner'",
+      "path_params": {
+        "remote": "pbs-hetzner",
+        "datastore": "main"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns null/empty data on success — the meaningful payload is the directory index of child routes, not backup content.",
+    "If the remote is offline or credentials are stale, this call will fail; use it as a lightweight connectivity probe before heavier datastore operations.",
+    "The 'remote' value must match the name configured in PDM under PBS Remotes, not the PBS hostname directly."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_datastore",
+    "get_pbs_remotes_remote_datastore_datastore_snapshots",
+    "get_pbs_remotes_remote_datastore_datastore_namespace"
+  ]
+}

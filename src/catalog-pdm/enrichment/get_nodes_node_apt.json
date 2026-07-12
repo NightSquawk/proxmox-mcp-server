@@ -1,0 +1,22 @@
+{
+  "operationId": "get_nodes_node_apt",
+  "usageNotes": "Returns the directory index of APT sub-endpoints available under a given PDM node (e.g. update, changelog, versions). Use this to discover which package-management operations are exposed for a node before calling them. No special privilege is required, but the target node must be online and reachable by PDM.",
+  "examples": [
+    {
+      "summary": "List available APT sub-endpoints for node 'pdm-node1'",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a link/directory index, not package data — follow up with sibling endpoints like get_nodes_node_apt_update or get_nodes_node_apt_versions to retrieve actionable information.",
+    "This endpoint is safe to call at any time; it is read-only and has no side effects."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_update",
+    "get_nodes_node_apt_versions",
+    "get_nodes_node_apt_changelog"
+  ]
+}

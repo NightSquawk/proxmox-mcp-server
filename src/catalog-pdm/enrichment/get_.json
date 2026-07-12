@@ -1,0 +1,17 @@
+{
+  "operationId": "get_",
+  "usageNotes": "Call this endpoint to retrieve the top-level directory index of the Proxmox Datacenter Manager API — useful for discovery, connectivity testing, or confirming that a PDM host is reachable and responding. No parameters are required and no special privileges beyond a valid API token are needed. This is the lightest possible call to verify authentication credentials are accepted.",
+  "examples": [
+    {
+      "summary": "Verify PDM API reachability with an API token",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Because this endpoint accepts all authenticated users, it is safe to use as a health-check or smoke-test in automation before issuing more privileged calls.",
+    "The PDM API listens on port 8443 by default; ensure firewall rules allow TCP 8443 from your client.",
+    "Returns null per spec — the value of this call is the HTTP 200 response code, not the response body."
+  ],
+  "relatedOperations": []
+}

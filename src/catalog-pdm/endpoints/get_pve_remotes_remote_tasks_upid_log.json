@@ -1,0 +1,123 @@
+{
+  "operationId": "get_pve_remotes_remote_tasks_upid_log",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "log",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/tasks/{upid}/log",
+  "description": "Read a task log.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "upid",
+      "type": "string",
+      "required": true,
+      "description": "A remote UPID",
+      "minLength": 42
+    }
+  ],
+  "params": [
+    {
+      "name": "download",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether the tasklog file should be downloaded. This parameter can't be used in conjunction with other parameters",
+      "default": false
+    },
+    {
+      "name": "limit",
+      "type": "integer",
+      "required": false,
+      "description": "The amount of lines to read from the tasklog. Setting this parameter to 0 will return all lines until the end of the file.",
+      "default": 50,
+      "minimum": 0
+    },
+    {
+      "name": "start",
+      "type": "integer",
+      "required": false,
+      "description": "Start at this line when reading the tasklog",
+      "default": 0,
+      "minimum": 0
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object.",
+    "properties": {
+      "exitstatus": {
+        "description": "The task's exit status.",
+        "optional": 1,
+        "type": "string"
+      },
+      "id": {
+        "description": "The task id.",
+        "type": "string"
+      },
+      "node": {
+        "description": "The task's node.",
+        "type": "string"
+      },
+      "pid": {
+        "description": "The task process id.",
+        "type": "integer"
+      },
+      "pstart": {
+        "description": "The task's proc start time.",
+        "type": "integer"
+      },
+      "starttime": {
+        "description": "The task's start time.",
+        "type": "integer"
+      },
+      "status": {
+        "description": "A guest's run state.",
+        "enum": [
+          "running",
+          "stopped"
+        ],
+        "type": "string"
+      },
+      "type": {
+        "description": "The task type.",
+        "type": "string"
+      },
+      "upid": {
+        "description": "The task's UPID.",
+        "type": "string"
+      },
+      "user": {
+        "description": "The task owner's user id.",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/tasks/<upid>/log'"
+}

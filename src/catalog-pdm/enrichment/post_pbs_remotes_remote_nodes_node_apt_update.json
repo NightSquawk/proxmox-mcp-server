@@ -1,0 +1,26 @@
+{
+  "operationId": "post_pbs_remotes_remote_nodes_node_apt_update",
+  "usageNotes": "Triggers an `apt-get update` on the specified PBS remote node, refreshing the local package index so that pending upgrades become visible via the APT changelog/versions endpoints. The operation is asynchronous — it returns a remote UPID string that must be polled for completion. The caller must hold `Resource.Modify` on the remote+node+system path, and the remote node must be reachable from PDM at the time of the call.",
+  "examples": [
+    {
+      "summary": "Refresh the APT package index on node 'pbs-node1' of the remote named 'hetzner-pbs'",
+      "path_params": {
+        "remote": "hetzner-pbs",
+        "node": "pbs-node1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "No request body parameters are required — send an empty JSON object ({}) as the body.",
+    "The returned UPID is a remote UPID (≥42 chars); use the corresponding task-status endpoint scoped to the same remote+node to poll for completion before querying available upgrades.",
+    "Remote name must be 2–32 characters and match the pattern [A-Za-z0-9_][A-Za-z0-9._-]* — simple alphanumeric names with hyphens or underscores are safe.",
+    "This only refreshes the package index; it does not install or upgrade any packages."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_nodes_node_apt_update",
+    "get_pbs_remotes_remote_nodes_node_apt_versions",
+    "get_pbs_remotes_remote_nodes_node_apt_changelog",
+    "get_pbs_remotes_remote_tasks_upid_status"
+  ]
+}

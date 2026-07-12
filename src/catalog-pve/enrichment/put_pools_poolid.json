@@ -1,0 +1,29 @@
+{
+  "operationId": "put_pools_poolid",
+  "usageNotes": "This is the deprecated path-based variant of pool updates; for environments using nested pools, use PUT /pools/ with a poolid query parameter instead. Use this endpoint to add or remove VMs/storage from a pool, or to update the pool comment. Callers need Pool.Allocate on /pool/{poolid} plus the relevant object permissions for any VMs or storage being added or removed.",
+  "examples": [
+    {
+      "summary": "Add two VMs and a storage to an existing pool",
+      "path_params": {
+        "poolid": "dev-team"
+      },
+      "params": {
+        "vms": "101,102",
+        "storage": "local-lvm",
+        "comment": "Dev team sandbox pool"
+      }
+    }
+  ],
+  "tips": [
+    "Set 'delete': true to remove listed vms/storage from the pool rather than adding them; omitting it (or setting false) performs an add.",
+    "Set 'allow-move': true when a VM is already a member of a different pool and you want to reassign it — without this flag the request will fail if any listed VMID is already pooled elsewhere.",
+    "Returns null on success; treat any non-error response as confirmation.",
+    "Prefer PUT /pools/?poolid={poolid} for any cluster running Proxmox VE 7.3+ nested-pool support."
+  ],
+  "relatedOperations": [
+    "get_pools_poolid",
+    "post_pools",
+    "delete_pools_poolid",
+    "get_pools"
+  ]
+}

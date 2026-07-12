@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_remotes_remote_firewall_status",
+  "usageNotes": "Use this endpoint to get a cluster-wide snapshot of firewall enablement and rule counts across all nodes and guests on a PDM-managed PVE remote. The response is hierarchical: top-level cluster status, per-node status, and per-guest (LXC or QEMU) status — each with enabled flag, total rule count (all), and active rule count (active). Requires Resource.Audit on the remote; the remote must already be registered in PDM and reachable.",
+  "examples": [
+    {
+      "summary": "Check firewall status across all nodes and guests on the 'prod-cluster' remote",
+      "path_params": {
+        "remote": "prod-cluster"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'status' field is optional on nodes and guests — a missing status object typically means the firewall module returned no data for that resource (e.g. node offline or guest stopped).",
+    "Compare 'active' vs 'all' rule counts to identify resources where rules exist but the firewall is disabled (enabled: false) or rules are partially inactive.",
+    "Guest 'kind' distinguishes LXC containers from QEMU VMs — useful when filtering results by workload type.",
+    "This is a read-only audit call; no changes are made to firewall state."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_firewall_aliases",
+    "get_pve_remotes_remote_firewall_groups",
+    "get_pve_remotes_remote_firewall_ipset",
+    "get_pve_remotes_remote_firewall_refs"
+  ]
+}

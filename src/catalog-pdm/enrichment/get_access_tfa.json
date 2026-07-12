@@ -1,0 +1,23 @@
+{
+  "operationId": "get_access_tfa",
+  "usageNotes": "Use this endpoint to audit all TFA configurations across users in the Proxmox Datacenter Manager instance. Unprivileged users receive only their own entry; admin-level access is required to see all users. The response also surfaces lockout state — check `totp-locked` and `tfa-locked-until` to identify accounts currently blocked from second-factor authentication.",
+  "examples": [
+    {
+      "summary": "List all TFA entries (admin token)",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A user with no TFA entries will not appear in the result array; absence from the list means no TFA is configured, not that the request failed.",
+    "The `tfa-locked-until` field is only present when a lockout is active — always check for its existence before reading it.",
+    "Entry type `recovery` indicates one-time recovery codes; audit these alongside `totp` and `webauthn` entries when reviewing security posture.",
+    "API tokens (`allowtoken: true`) can call this endpoint, making it safe for automated compliance scans without exposing a user password."
+  ],
+  "relatedOperations": [
+    "get_access_tfa_userid",
+    "post_access_tfa_userid",
+    "delete_access_tfa_userid_id",
+    "get_access_users"
+  ]
+}

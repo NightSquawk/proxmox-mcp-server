@@ -1,0 +1,35 @@
+{
+  "operationId": "post_cluster_firewall_rules",
+  "usageNotes": "Use this to append a new firewall rule to the cluster-level ruleset, which applies globally across all nodes and VMs unless overridden at a lower scope. Requires the Sys.Modify privilege on the root path (/). Rules are inserted at the end of the list by default; supply 'pos' to insert at a specific zero-based position, which shifts existing rules down.",
+  "examples": [
+    {
+      "summary": "Block inbound SSH from a specific external subnet at the cluster level",
+      "path_params": {},
+      "params": {
+        "type": "in",
+        "action": "DROP",
+        "proto": "tcp",
+        "source": "198.51.100.0/24",
+        "dport": "22",
+        "comment": "Block SSH brute-force attempts from known bad subnet",
+        "enable": 1,
+        "log": "warning"
+      }
+    }
+  ],
+  "tips": [
+    "The 'action' field accepts either a standard verdict (ACCEPT, DROP, REJECT) or the name of an existing security group — use the 'group' type when referencing a security group.",
+    "New rules are disabled by default (enable=0) unless you explicitly pass enable=1; always verify the rule is active after creation.",
+    "Use the 'digest' param when scripting back-to-back changes to guard against race conditions with concurrent edits.",
+    "Do not mix IPv4 and IPv6 addresses in the same 'source' or 'dest' field; use separate rules for each address family.",
+    "Cluster-level rules are evaluated before node- and VM-level rules; an overly broad DROP here can silently block traffic across the entire cluster."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_rules",
+    "get_cluster_firewall_rules_pos",
+    "put_cluster_firewall_rules_pos",
+    "delete_cluster_firewall_rules_pos",
+    "get_cluster_firewall_groups",
+    "post_cluster_firewall_groups"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_capabilities_qemu_cpu",
+  "usageNotes": "Use this endpoint to discover valid CPU model names before creating or reconfiguring a VM — the returned `name` values are the identifiers accepted by the `cpu` parameter in VM create/update calls. Custom models are visibility-filtered by the caller's Mapping.{Audit,Use,Modify} privilege on `/mapping/cpu/<name>`, so the list may vary between users. When targeting an ARM guest, pass `arch=aarch64`; omitting `arch` defaults to the host's native architecture.",
+  "examples": [
+    {
+      "summary": "List all available QEMU CPU models on node pve1 for x86_64 guests",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "arch": "x86_64"
+      }
+    }
+  ],
+  "tips": [
+    "Models with `abstract: true` (e.g. x86-64-v2, x86-64-v3) are PVE baseline profiles — they cannot be used as the `reported-model` field when defining a custom CPU type.",
+    "Custom CPU models appear with a `custom-` prefix in their `name`; these are defined via the `/cluster/mapping/cpu` API and stored cluster-wide.",
+    "Running this against any online node in the cluster is sufficient — the built-in model list is QEMU-version-dependent, so results may differ if nodes run different QEMU versions after a partial upgrade."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu",
+    "put_nodes_node_qemu_vmid_config",
+    "get_cluster_mapping_cpu",
+    "get_nodes_node_capabilities_qemu_machines"
+  ]
+}

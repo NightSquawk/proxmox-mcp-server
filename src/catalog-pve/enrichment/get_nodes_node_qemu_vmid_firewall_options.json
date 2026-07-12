@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_firewall_options",
+  "usageNotes": "Use this to read the current firewall behavior settings for a specific QEMU VM — including whether the firewall is enabled, default input/output policies, DHCP/NDP/MAC filter state, and log levels. Requires VM.Audit on the VM's path; no node-level privilege is needed. If the firewall has never been explicitly configured for the VM, most fields will be absent (falling back to their documented defaults).",
+  "examples": [
+    {
+      "summary": "Retrieve firewall options for VM 105 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Fields not returned in the response are at their default values (e.g. enable defaults to false, macfilter defaults to true).",
+    "A VM firewall being enabled here does not mean rules exist — check the rules endpoint separately to confirm active rule coverage.",
+    "policy_in and policy_out are only meaningful when the firewall is enabled; the default implicit policy when no policy is set is ACCEPT.",
+    "ipfilter, when enabled, auto-populates per-interface ipsets with link-local restrictions — useful for preventing IP spoofing without manual ipset management."
+  ],
+  "relatedOperations": [
+    "put_nodes_node_qemu_vmid_firewall_options",
+    "get_nodes_node_qemu_vmid_firewall_rules",
+    "get_nodes_node_qemu_vmid_firewall_ipsets",
+    "get_nodes_node_qemu_vmid_firewall_log"
+  ]
+}

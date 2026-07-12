@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_refs",
+  "usageNotes": "Use this endpoint to discover which IPSet and Alias names are valid in the source/destination fields of firewall rules for a specific LXC container. This is useful before creating or editing firewall rules to avoid referencing undefined objects. The caller requires VM.Audit permission on the target VMID.",
+  "examples": [
+    {
+      "summary": "List all firewall reference objects (aliases and ipsets) for LXC 110 on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Omit the 'type' query parameter to return both aliases and ipsets in one call.",
+    "The 'scope' field in each result indicates whether the reference is defined at the container level or the cluster/datacenter level.",
+    "Use the returned 'ref' value (not 'name') when constructing firewall rule source/destination strings."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_rules",
+    "get_nodes_node_lxc_vmid_firewall_aliases",
+    "get_nodes_node_lxc_vmid_firewall_ipset",
+    "get_cluster_firewall_refs"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_status",
+  "usageNotes": "Use this to get a real-time health snapshot of a specific cluster node, including CPU usage, memory, root filesystem, load averages, kernel version, and boot mode. The node must be online and reachable by the cluster; if the node is offline, the API will return an error rather than stale data. Requires Sys.Audit on /nodes/{node}.",
+  "examples": [
+    {
+      "summary": "Get status of cluster node 'pve1'",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "cpu is a float between 0 and 1 (e.g., 0.42 = 42% utilization) — multiply by 100 for a percentage display.",
+    "memory.available is the kernel-reported available memory (includes reclaimable caches), which is typically larger than memory.free; prefer available for headroom estimates.",
+    "loadavg returns three strings for 1-, 5-, and 15-minute averages — parse as floats before comparing to cpuinfo.cpus to gauge saturation.",
+    "boot-info.secureboot is only present when boot-info.mode is 'efi'; absence of the field implies legacy-BIOS or secure boot not detected.",
+    "rootfs reflects the root partition only (/); storage pools like local-lvm or ZFS datasets are not included here — use storage status endpoints for those."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_rrddata",
+    "get_nodes_node_network",
+    "get_nodes",
+    "get_cluster_resources"
+  ]
+}

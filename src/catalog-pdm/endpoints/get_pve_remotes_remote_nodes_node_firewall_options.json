@@ -1,0 +1,247 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_firewall_options",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "options",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/nodes/{node}/firewall/options",
+  "description": "Get nodes firewall options.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object.",
+    "properties": {
+      "enable": {
+        "default": true,
+        "description": "Enable host firewall rules.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "log_level_forward": {
+        "default": "nolog",
+        "description": "Firewall log levels.",
+        "enum": [
+          "emerg",
+          "alert",
+          "crit",
+          "err",
+          "warning",
+          "notice",
+          "info",
+          "debug",
+          "nolog"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "log_level_in": {
+        "default": "nolog",
+        "description": "Firewall log levels.",
+        "enum": [
+          "emerg",
+          "alert",
+          "crit",
+          "err",
+          "warning",
+          "notice",
+          "info",
+          "debug",
+          "nolog"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "log_level_out": {
+        "default": "nolog",
+        "description": "Firewall log levels.",
+        "enum": [
+          "emerg",
+          "alert",
+          "crit",
+          "err",
+          "warning",
+          "notice",
+          "info",
+          "debug",
+          "nolog"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "log_nf_conntrack": {
+        "default": false,
+        "description": "Enable logging of conntrack information.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "ndp": {
+        "default": true,
+        "description": "Enable NDP (Neighbor Discovery Protocol).",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "nf_conntrack_allow_invalid": {
+        "default": false,
+        "description": "Allow invalid packets on connection tracking.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "nf_conntrack_helpers": {
+        "default": "",
+        "description": "Enable conntrack helpers for specific protocols. Supported protocols:\namanda, ftp, irc, netbios-ns, pptp, sane, sip, snmp, tftp",
+        "format": {
+          "description": "list",
+          "items": {
+            "description": "Firewall conntrack helper.",
+            "enum": [
+              "amanda",
+              "ftp",
+              "irc",
+              "netbios-ns",
+              "pptp",
+              "sane",
+              "sip",
+              "snmp",
+              "tftp"
+            ],
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[<enum>, ...]"
+      },
+      "nf_conntrack_max": {
+        "default": 262144,
+        "description": "Maximum number of tracked connections.",
+        "minimum": 32768,
+        "optional": 1,
+        "type": "integer"
+      },
+      "nf_conntrack_tcp_timeout_established": {
+        "default": 432000,
+        "description": "Conntrack established timeout.",
+        "minimum": 7875,
+        "optional": 1,
+        "type": "integer"
+      },
+      "nf_conntrack_tcp_timeout_syn_recv": {
+        "default": 60,
+        "description": "Conntrack syn recv timeout.",
+        "maximum": 60,
+        "minimum": 30,
+        "optional": 1,
+        "type": "integer"
+      },
+      "nftables": {
+        "default": false,
+        "description": "Enable nftables based firewall (tech preview)",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "nosmurfs": {
+        "default": false,
+        "description": "Enable SMURFS filter.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "protection_synflood": {
+        "default": false,
+        "description": "Enable synflood protection",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "protection_synflood_burst": {
+        "default": 1000,
+        "description": "Synflood protection rate burst by ip src.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "protection_synflood_rate": {
+        "default": 200,
+        "description": "Synflood protection rate syn/sec by ip src.",
+        "optional": 1,
+        "type": "integer"
+      },
+      "smurf_log_level": {
+        "default": "nolog",
+        "description": "Firewall log levels.",
+        "enum": [
+          "emerg",
+          "alert",
+          "crit",
+          "err",
+          "warning",
+          "notice",
+          "info",
+          "debug",
+          "nolog"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "tcp_flags_log_level": {
+        "default": "nolog",
+        "description": "Firewall log levels.",
+        "enum": [
+          "emerg",
+          "alert",
+          "crit",
+          "err",
+          "warning",
+          "notice",
+          "info",
+          "debug",
+          "nolog"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "tcpflags": {
+        "default": false,
+        "description": "Filter illegal combinations of TCP flags.",
+        "optional": 1,
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/nodes/<node>/firewall/options'"
+}

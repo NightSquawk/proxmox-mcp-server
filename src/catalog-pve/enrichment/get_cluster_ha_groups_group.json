@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_ha_groups_group",
+  "usageNotes": "Retrieves the configuration of a specific HA group by its identifier, including member nodes and group options. Note that HA groups are deprecated in favor of HA rules in recent Proxmox versions — prefer the HA rules API for new configurations. Requires the Sys.Audit privilege on the root path.",
+  "examples": [
+    {
+      "summary": "Fetch configuration for the HA group named 'prod-ha'",
+      "path_params": {
+        "group": "prod-ha"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The group identifier must match the pve-configid format: alphanumeric with hyphens/underscores, no spaces.",
+    "This endpoint is marked deprecated — check /cluster/ha/rules equivalents for forward-compatible HA management.",
+    "Returns an empty object schema in the spec; actual response includes fields like 'nodes', 'nofailback', 'restricted', and 'comment'."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_groups",
+    "get_cluster_ha_status_current",
+    "get_cluster_ha_resources_sid"
+  ]
+}

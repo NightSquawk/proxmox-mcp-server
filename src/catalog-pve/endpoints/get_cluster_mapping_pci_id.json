@@ -1,0 +1,55 @@
+{
+  "operationId": "get_cluster_mapping_pci_id",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get",
+  "method": "GET",
+  "path": "/cluster/mapping/pci/{id}",
+  "description": "Get PCI Mapping.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "format": "pve-configid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "perm",
+        "/mapping/pci/{id}",
+        [
+          "Mapping.Use"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/pci/{id}",
+        [
+          "Mapping.Modify"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/pci/{id}",
+        [
+          "Mapping.Audit"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/mapping/pci/<id>'"
+}

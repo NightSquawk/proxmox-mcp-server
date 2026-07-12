@@ -1,0 +1,70 @@
+{
+  "operationId": "post_nodes_node_services_service_restart",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "service_restart",
+  "method": "POST",
+  "path": "/nodes/{node}/services/{service}/restart",
+  "description": "Hard restart service. Use reload if you want to reduce interruptions.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "service",
+      "type": "string",
+      "required": true,
+      "description": "Service ID",
+      "enum": [
+        "chrony",
+        "corosync",
+        "cron",
+        "ksmtuned",
+        "lxcfs",
+        "postfix",
+        "proxmox-firewall",
+        "pve-cluster",
+        "pve-firewall",
+        "pve-ha-crm",
+        "pve-ha-lrm",
+        "pve-lxc-syscalld",
+        "pvedaemon",
+        "pvefw-logger",
+        "pveproxy",
+        "pvescheduler",
+        "pvestatd",
+        "qmeventd",
+        "spiceproxy",
+        "sshd",
+        "syslog",
+        "systemd-journald",
+        "systemd-timesyncd"
+      ]
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/services/chrony/restart'"
+}

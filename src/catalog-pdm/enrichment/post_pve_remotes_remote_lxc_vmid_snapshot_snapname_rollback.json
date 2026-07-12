@@ -1,0 +1,31 @@
+{
+  "operationId": "post_pve_remotes_remote_lxc_vmid_snapshot_snapname_rollback",
+  "usageNotes": "Rolls back a remote LXC container to a named snapshot, reverting both disk and configuration to the snapshot state — all changes made after the snapshot was taken are permanently lost. The container must be stopped before rollback (unless `start` is set, which will start it after a successful rollback). Returns a remote UPID; poll that UPID for task completion before assuming the rollback is done. Requires `Resource.Manage` on the remote guest.",
+  "examples": [
+    {
+      "summary": "Roll back LXC 201 on remote 'hetzner-pve' to snapshot 'pre-upgrade' and start it afterward",
+      "path_params": {
+        "remote": "hetzner-pve",
+        "vmid": 201,
+        "snapname": "pre-upgrade"
+      },
+      "params": {
+        "start": true
+      }
+    }
+  ],
+  "destructiveReason": "All disk data and configuration changes made after the snapshot was taken are permanently discarded and cannot be recovered.",
+  "tips": [
+    "Stop the container before initiating rollback; a running container will cause the operation to fail on most storage backends.",
+    "Use `start: true` to atomically start the container after rollback rather than issuing a separate start call.",
+    "The returned UPID is scoped to the remote node — use the appropriate remote task-status endpoint to poll it, not the local PDM task API.",
+    "Snapshot names are case-sensitive and follow the pattern [A-Za-z0-9_][A-Za-z0-9._-]*; verify the exact name via the snapshot list endpoint before calling rollback.",
+    "If the container uses linked clones or external volumes not covered by the snapshot, those volumes are NOT rolled back."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc_vmid_snapshot",
+    "post_pve_remotes_remote_lxc_vmid_snapshot",
+    "delete_pve_remotes_remote_lxc_vmid_snapshot_snapname",
+    "post_pve_remotes_remote_lxc_vmid_status_start"
+  ]
+}

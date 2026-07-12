@@ -1,0 +1,92 @@
+{
+  "operationId": "get_nodes_node_disks_lvm",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "index",
+  "method": "GET",
+  "path": "/nodes/{node}/disks/lvm",
+  "description": "List LVM Volume Groups",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "properties": {
+      "children": {
+        "items": {
+          "properties": {
+            "children": {
+              "description": "The underlying physical volumes",
+              "items": {
+                "properties": {
+                  "free": {
+                    "description": "The free bytes in the physical volume",
+                    "type": "integer"
+                  },
+                  "leaf": {
+                    "type": "boolean"
+                  },
+                  "name": {
+                    "description": "The name of the physical volume",
+                    "type": "string"
+                  },
+                  "size": {
+                    "description": "The size of the physical volume in bytes",
+                    "type": "integer"
+                  }
+                },
+                "type": "object"
+              },
+              "optional": 1,
+              "type": "array"
+            },
+            "free": {
+              "description": "The free bytes in the volume group",
+              "type": "integer"
+            },
+            "leaf": {
+              "type": "boolean"
+            },
+            "name": {
+              "description": "The name of the volume group",
+              "type": "string"
+            },
+            "size": {
+              "description": "The size of the volume group in bytes",
+              "type": "integer"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "leaf": {
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/disks/lvm'"
+}

@@ -1,0 +1,34 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_clone",
+  "usageNotes": "Use this to clone an existing LXC container into a new container with a distinct VMID; the operation is asynchronous and returns a UPID task string that must be polled via the task API to confirm completion. For normal (non-template) containers a full disk copy is always performed, so ensure the target storage has sufficient free space before cloning. Cross-node cloning (via 'target') is only permitted when the source container resides on shared storage accessible to both nodes.",
+  "examples": [
+    {
+      "summary": "Full clone of container 110 to new container 200 on the same node, placed in pool 'clients'",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {
+        "newid": 200,
+        "hostname": "ct-clone-200",
+        "description": "Clone of ct-110 for staging",
+        "full": true,
+        "storage": "local-zfs",
+        "pool": "clients"
+      }
+    }
+  ],
+  "tips": [
+    "The return value is a UPID (e.g. 'UPID:pve01:...'). Poll GET /nodes/{node}/tasks/{upid}/status to wait for the clone to finish before starting the new container.",
+    "Linked clones (full=false) are only possible when the source is a CT template; attempting them on a running or stopped regular container silently falls back to a full clone.",
+    "If you specify 'snapname', the clone is created from that snapshot's disk state rather than the current disk — useful for golden-image workflows.",
+    "Cross-node cloning requires the caller to also hold 'Datastore.AllocateSpace' on the target storage and 'SDN.Use' on any bridge the new container will use.",
+    "The 'bwlimit' parameter throttles disk I/O during the copy in KiB/s; leave it unset on lightly loaded nodes to let the storage layer use its configured default."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "post_nodes_node_lxc_vmid_snapshot",
+    "post_nodes_node_lxc",
+    "delete_nodes_node_lxc_vmid"
+  ]
+}

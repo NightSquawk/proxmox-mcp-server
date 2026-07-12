@@ -1,0 +1,27 @@
+{
+  "operationId": "post_cluster_firewall_groups",
+  "usageNotes": "Creates a new cluster-level firewall security group, which acts as a named, reusable set of firewall rules that can be referenced in VM, container, or host firewall policies. Requires the `Sys.Modify` privilege at the root (`/`) path — API tokens must have this privilege explicitly granted. The `rename` parameter doubles as an update path: POST with `rename` set to an existing group name and `group` set to the new name (or the same name to update only the comment) to rename or annotate an existing group without deleting it.",
+  "examples": [
+    {
+      "summary": "Create a security group for web-tier VMs allowing HTTP/HTTPS inbound",
+      "path_params": {},
+      "params": {
+        "group": "web-tier",
+        "comment": "Allow HTTP and HTTPS inbound for web-facing VMs"
+      }
+    }
+  ],
+  "tips": [
+    "Group names must start with a letter and can contain letters, digits, hyphens, and underscores (2–18 chars); plan a naming scheme before creating many groups.",
+    "Use the `digest` param when scripting bulk changes to detect race conditions — fetch the current digest from `get_cluster_firewall_groups` first.",
+    "Security groups created here are cluster-wide but contain no rules until you add them via the rule-creation endpoints (e.g., `post_cluster_firewall_groups_{group}_rules`).",
+    "To rename an existing group without losing its rules, POST with `rename` = current name and `group` = new name; rules are preserved under the new name."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_groups",
+    "delete_cluster_firewall_groups_{group}",
+    "get_cluster_firewall_groups_{group}",
+    "post_cluster_firewall_groups_{group}_rules",
+    "get_cluster_firewall_groups_{group}_rules"
+  ]
+}

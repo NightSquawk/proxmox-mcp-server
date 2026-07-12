@@ -1,0 +1,89 @@
+{
+  "operationId": "get_nodes_node_syslog",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "syslog",
+  "method": "GET",
+  "path": "/nodes/{node}/syslog",
+  "description": "Read system log",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "limit",
+      "type": "integer",
+      "required": false,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "service",
+      "type": "string",
+      "required": false,
+      "description": "Service ID",
+      "maxLength": 128,
+      "typetext": "<string>"
+    },
+    {
+      "name": "since",
+      "type": "string",
+      "required": false,
+      "description": "Display all log since this date-time string.",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}( \\d{2}:\\d{2}(:\\d{2})?)?$"
+    },
+    {
+      "name": "start",
+      "type": "integer",
+      "required": false,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "until",
+      "type": "string",
+      "required": false,
+      "description": "Display all log until this date-time string.",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}( \\d{2}:\\d{2}(:\\d{2})?)?$"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "n": {
+          "description": "Line number",
+          "type": "integer"
+        },
+        "t": {
+          "description": "Line text",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Syslog"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/syslog'"
+}

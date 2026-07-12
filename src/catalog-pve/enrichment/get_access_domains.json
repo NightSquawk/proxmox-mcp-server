@@ -1,0 +1,23 @@
+{
+  "operationId": "get_access_domains",
+  "usageNotes": "Use this to enumerate all configured authentication realms (e.g., 'pve', 'pam', LDAP/AD, OpenID) available on the cluster. No authentication is required — Proxmox intentionally exposes this endpoint publicly so login UIs can populate the realm dropdown before a user authenticates. Results include the realm ID, type, optional comment, and whether a legacy TFA provider (yubico or oath) is configured.",
+  "examples": [
+    {
+      "summary": "List all authentication domains on the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'tfa' field only appears for realms using the older yubico/oath TFA providers; modern TOTP/WebAuthn TFA configured via the user TFA API will not show here.",
+    "Realm names returned here are the values to pass as the 'realm' parameter when authenticating via POST /access/ticket.",
+    "The built-in 'pam' (Linux PAM) and 'pve' (Proxmox internal) realms are always present."
+  ],
+  "relatedOperations": [
+    "create_access_ticket",
+    "get_access_domain",
+    "create_access_domain",
+    "update_access_domain",
+    "delete_access_domain"
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "operationId": "put_cluster_acme_plugins_id",
+  "usageNotes": "Use this to modify an existing ACME DNS plugin configuration — swap the backing DNS provider API, rotate credentials in the base64-encoded `data` field, or adjust the `validation-delay` if DNS TTLs are causing certificate issuance failures. Requires `Sys.Modify` at the root path; the plugin must already exist (use post_cluster_acme_plugins to create). Pass `digest` (retrieved from get_cluster_acme_plugins_id) to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Update a Cloudflare DNS plugin to increase validation delay and rotate API credentials",
+      "path_params": {
+        "id": "cf-plugin"
+      },
+      "params": {
+        "api": "cf",
+        "data": "Q0ZfVG9rZW49eW91cl9jbG91ZGZsYXJlX2FwaV90b2tlbg==",
+        "validation-delay": 120,
+        "nodes": "pve1,pve2"
+      }
+    }
+  ],
+  "tips": [
+    "The `data` field must be base64-encoded key=value pairs matching the chosen DNS provider's required environment variables (e.g., CF_Token=xxx for Cloudflare).",
+    "Set `validation-delay` higher (e.g. 120-300s) when the DNS provider has slow propagation; the default 30s is often too short for providers with long TTLs.",
+    "Use the `delete` param to remove individual settings (e.g. `nodes`) rather than resending the full config — avoids accidentally clearing fields.",
+    "Use `disable: true` to temporarily take a plugin out of rotation without deleting it, useful when rotating credentials.",
+    "Returns null on success; any error indicates the update was not applied."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_plugins_id",
+    "post_cluster_acme_plugins",
+    "delete_cluster_acme_plugins_id",
+    "get_cluster_acme_plugins"
+  ]
+}

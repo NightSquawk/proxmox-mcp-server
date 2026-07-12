@@ -1,0 +1,65 @@
+{
+  "operationId": "get_nodes_node_storage_storage_file_restore_download",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "download",
+  "method": "GET",
+  "path": "/nodes/{node}/storage/{storage}/file-restore/download",
+  "description": "Extract a file or directory (as zip archive) from a PBS backup.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": true,
+      "description": "The storage identifier.",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    }
+  ],
+  "params": [
+    {
+      "name": "filepath",
+      "type": "string",
+      "required": true,
+      "description": "base64-path to the directory or file to download.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "tar",
+      "type": "boolean",
+      "required": false,
+      "description": "Download dirs as 'tar.zst' instead of 'zip'.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "volume",
+      "type": "string",
+      "required": true,
+      "description": "Backup volume ID or name. Currently only PBS snapshots are supported.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "any"
+  },
+  "permissions": {
+    "description": "You need read access for the volume.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage/<storage>/file-restore/download?filepath=<filepath>&volume=<volume>'"
+}

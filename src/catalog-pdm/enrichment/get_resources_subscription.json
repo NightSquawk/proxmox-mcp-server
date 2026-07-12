@@ -1,0 +1,24 @@
+{
+  "operationId": "get_resources_subscription",
+  "usageNotes": "Use this endpoint to audit subscription compliance across all remotes registered in Proxmox Datacenter Manager — for example, before a maintenance window or when onboarding a new remote cluster. The `state` field in each result summarizes the remote as `active`, `mixed` (some nodes unsubscribed), `none`, or `unknown`; drill into per-node detail with `verbose=true` if you need to identify which specific nodes are out of compliance. Cached results are returned by default (up to 24 hours old); pass `max-age=0` to force a live fetch from all remotes.",
+  "examples": [
+    {
+      "summary": "Fetch live subscription status for all remotes with per-node detail",
+      "path_params": {},
+      "params": {
+        "max-age": 0,
+        "verbose": true
+      }
+    }
+  ],
+  "tips": [
+    "The default max-age of 86400 seconds means you may see stale subscription state; use max-age=0 when accuracy matters (e.g. compliance checks or after adding a subscription key).",
+    "The `node-status` map is only populated when verbose=true and the caller has sufficient privileges on the remote; without it, only the aggregate `state` enum is returned.",
+    "A `state` of `unknown` typically means PDM could not reach the remote to check — verify remote connectivity before treating it as a subscription problem.",
+    "This endpoint requires no special privilege beyond `user: all`, so API tokens with minimal scope can poll it safely."
+  ],
+  "relatedOperations": [
+    "get_resources_remotes",
+    "get_resources_resources"
+  ]
+}

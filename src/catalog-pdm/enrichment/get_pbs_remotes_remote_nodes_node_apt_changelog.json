@@ -1,0 +1,27 @@
+{
+  "operationId": "get_pbs_remotes_remote_nodes_node_apt_changelog",
+  "usageNotes": "Use this to retrieve the Debian/Ubuntu changelog for a specific package installed on a remote PBS node, which helps assess what changed between versions before applying updates. The caller must have Resource.Modify privilege on the remote node's system resource path. Omit the version parameter to retrieve the changelog for the current candidate (latest available) version.",
+  "examples": [
+    {
+      "summary": "Get the changelog for the proxmox-backup-server package on a remote PBS node",
+      "path_params": {
+        "remote": "pbs-hetzner",
+        "node": "pbs01"
+      },
+      "params": {
+        "name": "proxmox-backup-server",
+        "version": "3.3.2-1"
+      }
+    }
+  ],
+  "tips": [
+    "Package names must match Debian naming conventions (lowercase, hyphens allowed) — the pattern rejects uppercase letters.",
+    "If the target version is not cached locally on the PBS node, the node must be able to reach the APT repository to fetch the changelog.",
+    "Use the companion apt/versions or apt/update endpoints to discover available package versions before querying a specific changelog."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_nodes_node_apt_versions",
+    "post_pbs_remotes_remote_nodes_node_apt_update",
+    "get_pbs_remotes_remote_nodes_node_apt_update"
+  ]
+}

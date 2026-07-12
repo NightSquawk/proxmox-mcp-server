@@ -1,0 +1,142 @@
+{
+  "operationId": "get_access_users",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "users",
+  "method": "GET",
+  "path": "/access/users",
+  "description": "List users",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "include_tokens",
+      "type": "boolean",
+      "required": false,
+      "description": "Include user's API tokens in returned list.",
+      "default": false
+    }
+  ],
+  "returns": {
+    "description": "List users (with config digest).",
+    "items": {
+      "additionalProperties": false,
+      "description": "User properties with added list of ApiTokens",
+      "properties": {
+        "comment": {
+          "description": "Comment.",
+          "maxLength": 128,
+          "optional": 1,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "email": {
+          "description": "E-Mail Address.",
+          "maxLength": 64,
+          "minLength": 2,
+          "optional": 1,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "enable": {
+          "default": true,
+          "description": "Enable the account (default). You can set this to '0' to disable the account.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "expire": {
+          "default": 0,
+          "description": "Account expiration date (seconds since epoch). '0' means no expiration date.",
+          "minimum": 0,
+          "optional": 1,
+          "type": "integer"
+        },
+        "firstname": {
+          "description": "First name.",
+          "maxLength": 64,
+          "minLength": 1,
+          "optional": 1,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "lastname": {
+          "description": "Last name.",
+          "maxLength": 64,
+          "minLength": 1,
+          "optional": 1,
+          "pattern": "/^[[:^cntrl:]]*$/",
+          "type": "string"
+        },
+        "tfa-locked-until": {
+          "description": "Contains a timestamp until when a user is locked out of 2nd factors",
+          "optional": 1,
+          "type": "integer"
+        },
+        "tokens": {
+          "description": "List of user's API tokens.",
+          "items": {
+            "additionalProperties": false,
+            "description": "ApiToken properties.",
+            "properties": {
+              "comment": {
+                "description": "Comment.",
+                "maxLength": 128,
+                "optional": 1,
+                "pattern": "/^[[:^cntrl:]]*$/",
+                "type": "string"
+              },
+              "enable": {
+                "default": true,
+                "description": "Enable the account (default). You can set this to '0' to disable the account.",
+                "optional": 1,
+                "type": "boolean"
+              },
+              "expire": {
+                "default": 0,
+                "description": "Account expiration date (seconds since epoch). '0' means no expiration date.",
+                "minimum": 0,
+                "optional": 1,
+                "type": "integer"
+              },
+              "tokenid": {
+                "description": "API Token ID",
+                "maxLength": 64,
+                "minLength": 3,
+                "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)!(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+                "type": "string"
+              }
+            },
+            "type": "object"
+          },
+          "optional": 1,
+          "type": "array"
+        },
+        "totp-locked": {
+          "default": false,
+          "description": "True if the user is currently locked out of TOTP factors",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "userid": {
+          "description": "User ID",
+          "maxLength": 64,
+          "minLength": 3,
+          "pattern": "/^(?:[^\\s:/[:cntrl:]]+)@(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Returns all or just the logged-in user (/API token owner), depending on privileges.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/users'"
+}

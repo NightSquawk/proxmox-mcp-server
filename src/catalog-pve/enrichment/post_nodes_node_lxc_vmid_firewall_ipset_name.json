@@ -1,0 +1,33 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_firewall_ipset_name",
+  "usageNotes": "Adds a single IP address, CIDR block, or alias to a named IPSet on an LXC container's firewall; the IPSet must already exist before calling this endpoint. Requires VM.Config.Network permission on the target container. The `nomatch` flag inverts the entry's match logic, useful for carving out exclusions within a broader allow/deny rule referencing the IPSet.",
+  "examples": [
+    {
+      "summary": "Add a trusted office CIDR to an existing 'trusted-hosts' IPSet on LXC 120",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 120,
+        "name": "trusted-hosts"
+      },
+      "params": {
+        "cidr": "203.0.113.0/24",
+        "comment": "Office public IP range",
+        "nomatch": false
+      }
+    }
+  ],
+  "tips": [
+    "The IPSet must be created first via the corresponding POST /ipset endpoint before entries can be added.",
+    "The 'cidr' field accepts a bare IP (e.g. '10.0.0.5'), a CIDR block (e.g. '10.0.0.0/24'), or an alias name prefixed with '+' if defined in the firewall alias list.",
+    "Setting 'nomatch' to true turns this entry into a negation — the IPSet rule will explicitly exclude this CIDR rather than match it.",
+    "Changes take effect immediately in the firewall rule evaluation; no container restart is needed.",
+    "IPSets are container-local; entries added here are not shared with the node-level or cluster-level firewall IPSets."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_firewall_ipset",
+    "get_nodes_node_lxc_vmid_firewall_ipset_name",
+    "get_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+    "put_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+    "delete_nodes_node_lxc_vmid_firewall_ipset_name_cidr"
+  ]
+}

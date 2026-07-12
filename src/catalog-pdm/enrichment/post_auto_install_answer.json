@@ -1,0 +1,49 @@
+{
+  "operationId": "post_auto_install_answer",
+  "usageNotes": "Called by the Proxmox automated installer (proxmox-auto-install-assistant) when a new machine boots from an auto-install ISO and fetches its answer file via HTTP — it is not typically called directly by administrators. The installer POSTs system-discovery data (DMI hardware info, ISO metadata, detected network interfaces, and product config) and receives back a fully-resolved answer-file object that governs disk setup, network, credentials, and post-install hooks for that specific machine. Authentication uses specialized bearer tokens (not standard API tokens), and the endpoint is world-accessible by design so the booting machine can reach it without pre-enrolled credentials.",
+  "examples": [
+    {
+      "summary": "PVE node fetches its answer file during unattended installation",
+      "path_params": {},
+      "params": {
+        "$schema": {
+          "version": "1"
+        },
+        "dmi": {
+          "system": {
+            "manufacturer": "Supermicro",
+            "product-name": "SYS-5019S-M",
+            "serial-number": "A123456789"
+          }
+        },
+        "iso": {
+          "release": "8.2",
+          "product": "pve"
+        },
+        "network_interfaces": [
+          {
+            "name": "eth0",
+            "mac": "ac:1f:6b:2d:44:e1",
+            "link": true
+          }
+        ],
+        "product": {
+          "fullname": "Proxmox VE",
+          "abbreviation": "pve"
+        }
+      }
+    }
+  ],
+  "tips": [
+    "This endpoint is consumed by the installer at boot time, not by admin tooling — use it to verify what answer file a specific machine would receive before deploying.",
+    "The bearer token scheme is separate from normal PDM API tokens; configure it in the PDM auto-install settings before pointing ISOs at the PDM answer server.",
+    "The response's 'global.fqdn' field can be set to 'from-dhcp' so each machine self-registers its hostname rather than receiving a hardcoded one.",
+    "Use 'disk-setup.filter' with udev properties (e.g. ID_BUS=ata, ID_SERIAL) to target specific disks without listing them by name, which is safer across heterogeneous hardware.",
+    "Set 'post-installation-webhook' to call back your provisioning system after install completes so you can trigger Ansible/Salt runs or update your CMDB automatically."
+  ],
+  "relatedOperations": [
+    "get_auto_install_answer",
+    "post_auto_install_answer_match",
+    "get_nodes"
+  ]
+}

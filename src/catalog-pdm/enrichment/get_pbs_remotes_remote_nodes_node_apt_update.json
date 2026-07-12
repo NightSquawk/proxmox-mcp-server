@@ -1,0 +1,23 @@
+{
+  "operationId": "get_pbs_remotes_remote_nodes_node_apt_update",
+  "usageNotes": "Use this to check what APT package updates are pending on a remote PBS node — useful before scheduling maintenance or deciding whether to trigger an upgrade run. The remote node must be reachable and already registered in PDM; the caller needs Resource.Modify on the remote/node/system path. Results reflect the last APT cache refresh on the node, not a live apt-get update run — if the list looks stale, trigger an apt-get update on the node first.",
+  "examples": [
+    {
+      "summary": "List pending APT updates on node 'pbs1' of remote 'hetzner-pbs'",
+      "path_params": {
+        "remote": "hetzner-pbs",
+        "node": "pbs1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Results are based on the node's local APT cache; if OldVersion equals Version the cache may be out of date.",
+    "Check the Origin field to distinguish Proxmox-signed packages from upstream Debian packages before applying updates.",
+    "The 'localhost' node alias is accepted when PDM itself is the PBS node."
+  ],
+  "relatedOperations": [
+    "get_pbs_remotes_remote_nodes_node_apt_changelog",
+    "post_pbs_remotes_remote_nodes_node_apt_update"
+  ]
+}

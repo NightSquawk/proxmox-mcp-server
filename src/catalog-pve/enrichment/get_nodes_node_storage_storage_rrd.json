@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_storage_storage_rrd",
+  "usageNotes": "Use this to retrieve historical storage performance graphs (returned as a PNG file path) for a specific storage pool on a node. Requires either Datastore.Audit or Datastore.AllocateSpace on the /storage/{storage} path. The response contains a filename pointing to the generated PNG — not the image bytes directly — so the caller must fetch that file separately if the image is needed.",
+  "examples": [
+    {
+      "summary": "Fetch a daily average disk usage graph for the local-zfs storage on pve1",
+      "path_params": {
+        "node": "pve1",
+        "storage": "local-zfs"
+      },
+      "params": {
+        "ds": "used",
+        "timeframe": "day",
+        "cf": "AVERAGE"
+      }
+    }
+  ],
+  "tips": [
+    "Common datasources for storage RRD include 'used' and 'total' — check the storage's rrddata endpoint to discover what datasources are available for a given pool.",
+    "Use cf=MAX instead of AVERAGE to surface peak usage spikes that averages would mask.",
+    "The returned filename is a server-side path to the PNG; it is not returned as base64 or a URL — use a subsequent file fetch if you need the image bytes.",
+    "This endpoint is read-only and safe to poll frequently for dashboarding; it does not modify any state."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_rrddata",
+    "get_nodes_node_storage_storage_status"
+  ]
+}

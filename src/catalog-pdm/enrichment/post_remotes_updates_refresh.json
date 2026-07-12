@@ -1,0 +1,20 @@
+{
+  "operationId": "post_remotes_updates_refresh",
+  "usageNotes": "Triggers an async re-scan of pending package updates across all configured PDM remotes. Returns a UPID that must be polled for completion before the refreshed data is available. The caller needs Resource.Modify on /resource/{remote} for each remote that should be included in the refresh.",
+  "examples": [
+    {
+      "summary": "Trigger an update-summary refresh for all remotes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "No body parameters are accepted; send an empty JSON object ({}) or omit the body.",
+    "Poll the returned UPID via the PDM tasks API to determine when the refresh completes before querying update summaries.",
+    "Remotes that are offline or unreachable at refresh time will simply not update; no error is raised for individual failures."
+  ],
+  "relatedOperations": [
+    "get_remotes_updates",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

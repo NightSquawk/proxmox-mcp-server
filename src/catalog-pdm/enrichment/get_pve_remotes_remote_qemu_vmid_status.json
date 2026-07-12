@@ -1,0 +1,28 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid_status",
+  "usageNotes": "Use this to poll the live run-state and resource metrics of a QEMU VM on a PDM-registered remote PVE cluster. The remote must already be configured in PDM and the caller needs Resource.Audit on the remote/VM path. If you omit the optional 'node' query parameter, PDM resolves the hosting node automatically; supply it only when you already know the node and want to enforce placement validation.",
+  "examples": [
+    {
+      "summary": "Get status of VM 101 on remote 'pve-hetzner', letting PDM resolve the node automatically",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'status' field returns only 'running' or 'stopped'; check 'qmpstatus' for finer-grained QEMU states such as 'paused' or 'prelaunch'.",
+    "Memory fields 'mem' vs 'memhost' differ: 'mem' is balloon-reported guest usage, 'memhost' is actual host-side allocation — use 'memhost' for capacity planning.",
+    "Disk I/O counters ('diskread'/'diskwrite') are cumulative since VM start and may be absent for some storage backends (e.g., NFS without block stats).",
+    "The 'pid' field is only present when the VM is running; its absence is a reliable programmatic signal that the VM is stopped.",
+    "Pressure stall fields (pressurecpufull, pressureiofull, etc.) require Linux PSI support on the PVE host and are absent on older kernels."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu",
+    "get_pve_remotes_remote_qemu_vmid_config",
+    "post_pve_remotes_remote_qemu_vmid_status_start",
+    "post_pve_remotes_remote_qemu_vmid_status_stop",
+    "get_pve_remotes"
+  ]
+}

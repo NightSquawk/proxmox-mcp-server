@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_cluster_acme_plugins_id",
+  "usageNotes": "Use this to permanently remove an ACME plugin configuration from the cluster. Before deleting, ensure no ACME accounts or domains are referencing this plugin; removing a plugin that is still in use will prevent certificate renewals from succeeding. Requires the Sys.Modify privilege at the root path — only cluster administrators should perform this action.",
+  "examples": [
+    {
+      "summary": "Delete a Let's Encrypt DNS plugin named 'cf-dns'",
+      "path_params": {
+        "id": "cf-dns"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the named ACME plugin configuration from the cluster; any ACME accounts or certificate domains still referencing this plugin will fail to renew.",
+  "tips": [
+    "Run get_cluster_acme_plugins_id first to confirm the plugin exists and note any accounts using it.",
+    "After deletion, verify no domain entries in any node's ACME config still reference the deleted plugin ID.",
+    "Returns null on success — no UPID is issued; the operation is synchronous."
+  ],
+  "relatedOperations": [
+    "get_cluster_acme_plugins_id",
+    "get_cluster_acme_plugins",
+    "post_cluster_acme_plugins",
+    "put_cluster_acme_plugins_id"
+  ]
+}

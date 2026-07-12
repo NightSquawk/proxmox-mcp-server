@@ -1,0 +1,29 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_storage_storage_rrddata",
+  "usageNotes": "Use this to retrieve historical disk usage time-series data for a specific storage pool on a PVE remote node — useful for trending capacity utilization over time. Requires the `Resource.Audit` privilege on the `resource/{remote}/storage/{storage}` ACL path in PDM. Both `cf` and `timeframe` are required; choose `AVERAGE` for smooth trend graphs and `MAX` to catch utilization spikes.",
+  "examples": [
+    {
+      "summary": "Get hourly average disk usage for the 'local-lvm' storage on node 'pve1' of remote 'hetzner-de'",
+      "path_params": {
+        "remote": "hetzner-de",
+        "node": "pve1",
+        "storage": "local-lvm"
+      },
+      "params": {
+        "cf": "AVERAGE",
+        "timeframe": "hour"
+      }
+    }
+  ],
+  "tips": [
+    "Data points may be sparse or omitted near the current time — RRD rounds data into fixed-width buckets, so the most recent bucket is often incomplete.",
+    "Use 'timeframe=decade' only for long-term capacity planning; resolution is very coarse and individual data points may span months.",
+    "Both 'disk-total' and 'disk-used' are optional per data point — expect nulls during periods when the storage was offline or unreported.",
+    "The node value accepts 'localhost' as a special alias when PDM and PVE are co-located, but using the actual hostname is more portable."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_storage_storage_status",
+    "get_pve_remotes_remote_nodes_node_rrddata",
+    "get_pve_remotes_remote_nodes_node_storage"
+  ]
+}

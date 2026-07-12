@@ -1,0 +1,51 @@
+{
+  "operationId": "delete_cluster_sdn_vnets_vnet_subnets_subnet",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete",
+  "method": "DELETE",
+  "path": "/cluster/sdn/vnets/{vnet}/subnets/{subnet}",
+  "description": "Delete sdn subnet object configuration.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "vnet",
+      "type": "string",
+      "required": true,
+      "description": "The SDN vnet object identifier.",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    },
+    {
+      "name": "subnet",
+      "type": "string",
+      "required": true,
+      "description": "The SDN subnet object identifier.",
+      "format": "pve-sdn-subnet-id",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "description": "Require 'SDN.Allocate' permission on '/sdn/zones/<zone>/<vnet>'",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/vnets/<vnet>/subnets/<subnet>'"
+}

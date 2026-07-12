@@ -1,0 +1,175 @@
+{
+  "operationId": "get_nodes_node_storage",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "index",
+  "method": "GET",
+  "path": "/nodes/{node}/storage",
+  "description": "Get status for all datastores.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "content",
+      "type": "string",
+      "required": false,
+      "description": "Only list stores which support this content type.",
+      "format": "pve-storage-content-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "enabled",
+      "type": "boolean",
+      "required": false,
+      "description": "Only list stores which are enabled (not disabled in config).",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "format",
+      "type": "boolean",
+      "required": false,
+      "description": "Include information about formats",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "storage",
+      "type": "string",
+      "required": false,
+      "description": "Only list status for  specified storage",
+      "format": "pve-storage-id",
+      "typetext": "<storage ID>"
+    },
+    {
+      "name": "target",
+      "type": "string",
+      "required": false,
+      "description": "If target is different to 'node', we only lists shared storages which content is accessible on this 'node' and the specified 'target' node.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "active": {
+          "description": "Set when storage is accessible.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "avail": {
+          "description": "Available storage space in bytes.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "content": {
+          "description": "Allowed storage content types.",
+          "format": "pve-storage-content-list",
+          "type": "string"
+        },
+        "enabled": {
+          "description": "Set when storage is enabled (not disabled).",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "formats": {
+          "description": "Lists the supported and default format. Use 'formats' instead. Only included if 'format' parameter is set.",
+          "optional": 1,
+          "properties": {
+            "default": {
+              "description": "The default format of the storage.",
+              "enum": [
+                "qcow2",
+                "raw",
+                "subvol",
+                "vmdk"
+              ],
+              "type": "string"
+            },
+            "supported": {
+              "description": "The list of supported formats",
+              "items": {
+                "enum": [
+                  "qcow2",
+                  "raw",
+                  "subvol",
+                  "vmdk"
+                ],
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "select_existing": {
+          "description": "Instead of creating new volumes, one must select one that is already existing. Only included if 'format' parameter is set.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "shared": {
+          "description": "Shared flag from storage configuration.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "storage": {
+          "description": "The storage identifier.",
+          "format": "pve-storage-id",
+          "format_description": "storage ID",
+          "type": "string"
+        },
+        "total": {
+          "description": "Total storage space in bytes.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "type": {
+          "description": "Storage type.",
+          "type": "string"
+        },
+        "used": {
+          "description": "Used storage space in bytes.",
+          "optional": 1,
+          "renderer": "bytes",
+          "type": "integer"
+        },
+        "used_fraction": {
+          "description": "Used fraction (used/total).",
+          "optional": 1,
+          "renderer": "fraction_as_percentage",
+          "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{storage}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Only list entries where you have 'Datastore.Audit' or 'Datastore.AllocateSpace' permissions on '/storage/<storage>'",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/storage'"
+}

@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_ceph_fs",
+  "usageNotes": "Lists all CephFS filesystems known to the specified Proxmox node, including their metadata pool and one or more data pools. Requires Sys.Audit or Datastore.Audit on the root path, and the target node must be online and participating in the Ceph cluster. Use this to discover filesystem names and their associated pool layout before mounting a CephFS share or configuring a Proxmox storage entry.",
+  "examples": [
+    {
+      "summary": "List all CephFS filesystems on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'data_pool' field returns only the first data pool for backwards compatibility; check 'data_pools' for the full list if EC or multi-pool layouts are in use.",
+    "A node does not need to be a Ceph MDS host to query this endpoint — any node in the cluster can return the filesystem index.",
+    "Use the returned 'name' value as the {filesystem} path segment in filesystem-specific Ceph endpoints."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_pools",
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_storage"
+  ]
+}

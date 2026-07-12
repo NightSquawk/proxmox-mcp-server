@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_hardware_pci",
+  "usageNotes": "Use this endpoint to enumerate all PCI devices physically present on a node — essential before configuring PCI passthrough (PCIe PT) or mediated device (mdev) assignments for VMs. The node must be online and reachable; the caller needs either Sys.Audit or Sys.Modify at the root path. Bridge, memory controller, and processor-class devices are filtered out by default; pass a custom pci-class-blacklist (or an empty string) if you need those classes included.",
+  "examples": [
+    {
+      "summary": "List all PCI devices on node 'pve1' with full vendor/device names",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "verbose": true
+      }
+    }
+  ],
+  "tips": [
+    "An iommugroup value of -1 means IOMMU is not active or the device is not grouped — passthrough will not work without IOMMU enabled in BIOS and the kernel (intel_iommu=on / amd_iommu=on).",
+    "Devices with mdev: true support mediated-device (vGPU) slicing, not just full passthrough — check this field before deciding on a passthrough strategy.",
+    "Set verbose: false for a quick ID-only list when scripting; use verbose: true (the default) when you need vendor/device names for documentation or VM config.",
+    "To include normally-filtered classes (e.g., bridges), pass pci-class-blacklist as an empty string or omit the classes you want visible."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_hardware_pci_pciid",
+    "get_nodes_node_hardware_pci_pciid_mdev",
+    "post_nodes_node_qemu_vmid_config",
+    "put_nodes_node_qemu_vmid_config"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_migrate",
+  "usageNotes": "Call this before initiating a VM migration to check whether the migration is feasible. The response identifies blocking local resources (e.g. passthrough PCI/USB devices), local disks that cannot follow the VM, storage unavailability on candidate nodes, and HA affinity constraints — all of which must be resolved before POST migrate will succeed. Pass an optional `target` node to get a targeted feasibility report including `not_allowed_nodes` detail for all other cluster members.",
+  "examples": [
+    {
+      "summary": "Check migration preconditions for VM 105 on node pve1, scoped to target node pve2",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {
+        "target": "pve2"
+      }
+    }
+  ],
+  "tips": [
+    "If `local_resources` is non-empty, live migration is impossible without removing or mapping the listed PCI/USB devices first.",
+    "Local disks (especially CD-ROM images or disks on non-shared storage) listed in `local_disks` must be moved to shared storage or the migration must use offline mode.",
+    "`dependent-ha-resources` lists HA resources that will automatically follow the VM to the target — verify the target node satisfies their affinity rules before migrating.",
+    "Use the `mapped-resource-info` field (not the deprecated `mapped-resources`) to determine whether any mapped resources support live migration.",
+    "A `running: true` response means the VM is live; factor this in when choosing between live and offline migration via the POST endpoint."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_migrate",
+    "get_nodes_node_qemu_vmid_status_current",
+    "get_cluster_resources"
+  ]
+}

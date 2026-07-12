@@ -1,0 +1,39 @@
+{
+  "operationId": "delete_pools",
+  "surface": "pve",
+  "resource": "pools",
+  "category": "Pools",
+  "name": "delete_pool",
+  "method": "DELETE",
+  "path": "/pools",
+  "description": "Delete pool.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "poolid",
+      "type": "string",
+      "required": true,
+      "format": "pve-poolid",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/pool/{poolid}",
+      [
+        "Pool.Allocate"
+      ]
+    ],
+    "description": "You can only delete empty pools (no members)."
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/pools?poolid=<poolid>'"
+}

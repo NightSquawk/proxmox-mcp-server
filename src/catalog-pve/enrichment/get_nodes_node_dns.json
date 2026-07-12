@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_dns",
+  "usageNotes": "Use this to inspect the DNS resolver configuration (up to three nameservers and the search domain) currently active on a specific node's /etc/resolv.conf. The target node must be online and reachable by the API; the caller needs Sys.Audit on /nodes/{node}. All returned fields are optional — a node with minimal config may return only a subset.",
+  "examples": [
+    {
+      "summary": "Read DNS settings from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "All response fields (dns1, dns2, dns3, search) are optional; check for their presence before using them.",
+    "To update DNS settings, use the corresponding PUT endpoint (update_nodes_node_dns).",
+    "In a cluster, each node stores its own /etc/resolv.conf — query each node individually if you need a cluster-wide view."
+  ],
+  "relatedOperations": [
+    "update_nodes_node_dns",
+    "get_nodes_node_network",
+    "get_nodes_node_status"
+  ]
+}

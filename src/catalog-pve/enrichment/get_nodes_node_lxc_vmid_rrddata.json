@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_rrddata",
+  "usageNotes": "Retrieves time-series performance data (CPU, memory, network, disk I/O) for an LXC container from the node's RRD database. The container must exist on the specified node and the caller needs VM.Audit on /vms/{vmid}. Use 'AVERAGE' for trend graphs and 'MAX' to surface peak spikes; omitting 'cf' lets Proxmox apply its default consolidation.",
+  "examples": [
+    {
+      "summary": "Fetch the last hour of average performance data for container 110",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {
+        "timeframe": "hour",
+        "cf": "AVERAGE"
+      }
+    }
+  ],
+  "tips": [
+    "Returned data points are spaced according to the RRD resolution for the chosen timeframe — finer resolution for 'hour', coarser for 'year'.",
+    "Fields in each returned object vary by what metrics Proxmox has recorded; check for null/missing keys before graphing.",
+    "If the container was recently created or was stopped for most of the window, many data points will be empty or zero.",
+    "MAX consolidation is most useful for 'week' or longer timeframes where average values can mask short bursts."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_rrd",
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_nodes_node_rrddata"
+  ]
+}

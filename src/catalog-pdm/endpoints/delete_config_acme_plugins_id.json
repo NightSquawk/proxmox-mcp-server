@@ -1,0 +1,43 @@
+{
+  "operationId": "delete_config_acme_plugins_id",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "{id}",
+  "method": "DELETE",
+  "path": "/config/acme/plugins/{id}",
+  "description": "Delete an ACME plugin configuration.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "ACME Challenge Plugin ID.",
+      "minLength": 1,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "certificates"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/acme/plugins/<id>'"
+}

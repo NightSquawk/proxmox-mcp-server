@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_sdn_zones_zone_ip_vrf",
+  "usageNotes": "Use this to inspect the IP-VRF routing entry that Proxmox SDN has programmed for an EVPN zone on a specific remote node — useful for verifying that BGP EVPN route advertisement is correct after zone or VNet changes. The target zone must be of type EVPN; calling this against a non-EVPN zone will return an error. The returned route shows where VRF traffic is being forwarded (nexthops) and which protocol installed it (typically BGP).",
+  "examples": [
+    {
+      "summary": "Retrieve the IP-VRF route entry for EVPN zone 'evpn-prod' on node 'pve1' of remote 'hetzner-de'",
+      "path_params": {
+        "remote": "hetzner-de",
+        "node": "pve1",
+        "zone": "evpn-prod"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'protocol' field indicates how the VRF route was learned — a value other than 'bgp' may indicate an EVPN control-plane issue.",
+    "An empty or missing nexthops array suggests the VRF interface is not up or BGP peering for this zone has not converged.",
+    "Cross-reference with SDN zone apply status to confirm the zone config has been pushed to FRR before interpreting results."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_sdn_zones_zone",
+    "get_pve_remotes_remote_nodes_node_sdn_zones",
+    "get_pve_remotes_remote_nodes_node_sdn"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "operationId": "put_cluster_notifications_matchers_name",
+  "usageNotes": "Use this to update an existing notification matcher's targeting rules, severity filters, calendar windows, or assigned targets. Requires Mapping.Modify on /mapping/notifications. Supply the digest from the GET response to guard against concurrent edits overwriting each other. To clear an optional field (e.g. remove match-calendar entries), pass the field name(s) in the delete array rather than setting them empty.",
+  "examples": [
+    {
+      "summary": "Update matcher to route critical and error backup notifications to a Gotify target, effective only on weekdays",
+      "path_params": {
+        "name": "backup-alerts"
+      },
+      "params": {
+        "match-severity": ["critical", "error"],
+        "match-field": ["exact:type=vzdump"],
+        "match-calendar": ["mon..fri 08:00-20:00"],
+        "target": ["gotify-ops"],
+        "mode": "all",
+        "disable": false,
+        "comment": "Weekday backup failure alerts to ops Gotify channel"
+      }
+    }
+  ],
+  "tips": [
+    "The delete param accepts an array of param names (e.g. [\"match-calendar\"]) to unset fields — you cannot clear them by omitting them or passing empty arrays.",
+    "mode: 'all' requires every specified match-* condition to be true simultaneously; mode: 'any' fires on the first match — pick carefully when combining severity and field filters.",
+    "invert-match negates the entire combined result, useful for 'notify on anything except' patterns.",
+    "match-field values must be prefixed with 'exact:' or 'regex:' followed by field=value; omitting the prefix causes a validation error.",
+    "Returns null on success — check for HTTP 200 to confirm the update was applied."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_matchers_name",
+    "post_cluster_notifications_matchers",
+    "delete_cluster_notifications_matchers_name",
+    "get_cluster_notifications_matchers",
+    "get_cluster_notifications_targets"
+  ]
+}

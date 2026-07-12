@@ -1,0 +1,30 @@
+{
+  "operationId": "put_cluster_sdn_dns_dns",
+  "usageNotes": "Use this to update an existing SDN DNS provider object (e.g. PowerDNS) in the cluster SDN configuration. Requires the `SDN.Allocate` privilege on `/sdn/dns`. After updating, you must apply the pending SDN configuration via `put_cluster_sdn` for the changes to take effect on nodes.",
+  "examples": [
+    {
+      "summary": "Update the API URL and TTL for an existing PowerDNS SDN integration",
+      "path_params": {
+        "dns": "pdns01"
+      },
+      "params": {
+        "url": "https://powerdns.internal:8081",
+        "key": "mysecretapikey",
+        "ttl": 300
+      }
+    }
+  ],
+  "tips": [
+    "Pass `digest` (from the corresponding GET) to guard against concurrent modifications — the API will reject the write if another change has been committed since you read the config.",
+    "Use the `delete` param to unset optional fields (e.g. `fingerprint`) rather than leaving stale values; value is a comma-separated list of config key names.",
+    "The `fingerprint` field (SHA-256, colon-separated hex pairs) is required when the DNS provider uses a self-signed TLS certificate and you want Proxmox to validate it.",
+    "Changes are staged — they do not propagate to SDN-capable nodes until you call the apply endpoint (`put_cluster_sdn`)."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_dns_dns",
+    "get_cluster_sdn_dns",
+    "post_cluster_sdn_dns",
+    "delete_cluster_sdn_dns_dns",
+    "put_cluster_sdn"
+  ]
+}

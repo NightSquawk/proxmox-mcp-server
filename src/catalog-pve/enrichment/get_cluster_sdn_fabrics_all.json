@@ -1,0 +1,27 @@
+{
+  "operationId": "get_cluster_sdn_fabrics_all",
+  "usageNotes": "Use this endpoint to enumerate all SDN fabrics and their per-node configuration across the cluster, spanning all protocols (OSPF, OpenFabric, WireGuard, BGP). By default it returns the committed running configuration; pass 'pending=true' to inspect changes that have been staged but not yet applied. Callers need at least 'SDN.Audit' on '/sdn/fabrics/<fabric>' to see a fabric entry, and 'Sys.Audit' on '/nodes/<node_id>' to see its node entries — partial results are returned silently when permissions cover only a subset.",
+  "examples": [
+    {
+      "summary": "List all committed SDN fabrics and nodes (default view)",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response object has two top-level arrays — 'fabrics' (fabric-level config) and 'nodes' (per-node membership) — iterate both to get the full picture for a fabric.",
+    "Protocol-specific fields (e.g. 'area' for OSPF, 'persistent_keepalive' for WireGuard) are only present on entries whose 'protocol' field matches their 'instance-types'; check 'protocol' first before accessing those fields.",
+    "Use 'pending=true' after staging SDN changes (e.g. via PUT/POST fabric endpoints) to verify staged config before applying it with the SDN apply endpoint.",
+    "The 'digest' field on each fabric/node entry can be fed back to write operations to guard against concurrent modifications.",
+    "If a fabric or node is missing from the response, verify the calling token has the required 'SDN.Audit'/'Sys.Audit' privilege on the specific fabric or node path — the API silently omits unauthorized entries rather than returning an error."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics",
+    "get_cluster_sdn_fabrics_id",
+    "get_cluster_sdn_fabrics_id_nodes",
+    "get_cluster_sdn_fabrics_id_nodes_nodeid",
+    "post_cluster_sdn_fabrics",
+    "put_cluster_sdn_fabrics_id",
+    "post_cluster_sdn_apply"
+  ]
+}

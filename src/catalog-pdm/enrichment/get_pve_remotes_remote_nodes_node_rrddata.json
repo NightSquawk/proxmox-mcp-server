@@ -1,0 +1,29 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_rrddata",
+  "usageNotes": "Use this to retrieve time-series performance metrics (CPU, memory, disk, swap, network) for a specific node on a PDM-managed PVE remote. Both `cf` and `timeframe` are required — choose `AVERAGE` for trend analysis and `MAX` to surface peak utilization spikes. The caller must hold the `Resource.Audit` privilege on the remote/node resource path in PDM.",
+  "examples": [
+    {
+      "summary": "Fetch hourly average CPU and memory stats for a node named 'pve1' on the remote 'hetzner-de'",
+      "path_params": {
+        "remote": "hetzner-de",
+        "node": "pve1"
+      },
+      "params": {
+        "cf": "AVERAGE",
+        "timeframe": "hour"
+      }
+    }
+  ],
+  "tips": [
+    "All numeric metric fields are optional in each data point; gaps occur when the node was unreachable or data was not yet recorded for that RRD slot.",
+    "Use `timeframe=decade` only when you need long-term capacity planning; resolution is very coarse and individual spikes are invisible.",
+    "The `cpu-max` field represents the number of logical CPU cores, not a utilization percentage — divide `cpu-current` by `cpu-max` to get a 0–1 utilization ratio.",
+    "Disk and memory values are in bytes; convert appropriately before displaying to end users.",
+    "The `node` path parameter accepts the literal string 'localhost' to refer to the PDM host itself if it is also a PVE node."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node_status",
+    "get_pve_remotes_remote_nodes",
+    "get_pve_remotes_remote_nodes_node_tasks"
+  ]
+}

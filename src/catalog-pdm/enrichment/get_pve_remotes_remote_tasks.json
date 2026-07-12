@@ -1,0 +1,25 @@
+{
+  "operationId": "get_pve_remotes_remote_tasks",
+  "usageNotes": "Use this to audit recent or in-progress tasks on a managed PVE remote — either across the entire cluster (omit `node`) or scoped to a single node. Requires `Resource.Audit` privilege on the target remote. Each returned item includes a UPID that can be passed to task-log or task-status endpoints to retrieve full output.",
+  "examples": [
+    {
+      "summary": "List all tasks on a specific node of a managed PVE remote",
+      "path_params": {
+        "remote": "pve-prod"
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting `node` returns tasks across all nodes in the remote cluster — useful for a global view but may return a large result set.",
+    "The `status` field is optional in responses; a missing status typically means the task is still running.",
+    "Use the `upid` from each result with a task-log or task-status call to inspect output or wait for completion.",
+    "The `remote` identifier must match a configured PDM remote name exactly (2–32 chars, alphanumeric/dot/dash/underscore)."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes",
+    "get_pve_remotes_remote_nodes"
+  ]
+}

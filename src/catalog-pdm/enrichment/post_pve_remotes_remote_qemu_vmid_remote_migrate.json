@@ -1,0 +1,35 @@
+{
+  "operationId": "post_pve_remotes_remote_qemu_vmid_remote_migrate",
+  "usageNotes": "Use this endpoint to migrate a QEMU VM from one PDM-managed remote to another remote cluster. Both the source remote and target remote must be configured and reachable in PDM, and the caller requires Resource.Migrate on the source guest path for both source and target. The operation is asynchronous — it returns a remote UPID string (min 42 chars) that must be polled for completion status; set 'online: true' only when the VM is running and downtime is unacceptable, and always provide explicit target-bridge and target-storage mappings since there is no automatic network/storage name matching across clusters.",
+  "examples": [
+    {
+      "summary": "Offline migrate VM 105 from remote 'pve-hetzner' to remote 'pve-ovh', remapping storage and bridge, with source VM deleted on success",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 105
+      },
+      "params": {
+        "target": "pve-ovh",
+        "target-bridge": ["vmbr0=vmbr0"],
+        "target-storage": ["local-lvm=local-lvm"],
+        "target-vmid": 105,
+        "delete": true,
+        "online": false,
+        "bwlimit": 102400
+      }
+    }
+  ],
+  "tips": [
+    "The returned UPID is a *remote* UPID — poll the source remote's task endpoint, not the local PDM task endpoint.",
+    "target-bridge and target-storage accept array entries in 'source=destination' mapping format; every disk and NIC used by the VM must have a mapping or migration will fail.",
+    "Set bwlimit (KiB/s) during business hours to avoid saturating the WAN link between clusters; 0 means unlimited.",
+    "If target-vmid is omitted, PDM will attempt to preserve the source VMID on the destination cluster — ensure it is not already in use on the target.",
+    "online migration across remote clusters requires SPICE/VNC console sessions to be interrupted briefly during final sync; warn users before triggering."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid",
+    "get_pve_remotes_remote_qemu",
+    "get_pve_remotes",
+    "post_pve_remotes_remote_lxc_vmid_remote_migrate"
+  ]
+}

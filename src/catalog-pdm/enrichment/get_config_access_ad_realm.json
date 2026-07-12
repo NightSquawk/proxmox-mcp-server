@@ -1,0 +1,25 @@
+{
+  "operationId": "get_config_access_ad_realm",
+  "usageNotes": "Retrieves the full configuration of a specific Active Directory (LDAP) authentication realm by name — use this to inspect connection settings (server, port, TLS mode, bind DN, base DN), sync attribute mappings, and sync defaults before modifying or troubleshooting an AD realm. Requires the System.Audit privilege on the access/domains path; API tokens are supported. The realm name must already exist in PDM — use get_config_access_ad to list known realm names first.",
+  "examples": [
+    {
+      "summary": "Read configuration for the AD realm named 'corp-ad'",
+      "path_params": {
+        "realm": "corp-ad"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response omits sensitive credentials such as the bind password — use this endpoint for configuration auditing, not credential retrieval.",
+    "Check the 'mode' field (ldap / ldap+starttls / ldaps) and 'verify' flag to assess whether the realm is using an encrypted and verified connection.",
+    "If 'default' is true, this realm is pre-selected on the PDM login screen — there should only be one default realm across all realms.",
+    "The 'sync-attributes' and 'sync-defaults-options' fields control automated user synchronization behavior; review them before running a sync via post_access_domains_realm_sync."
+  ],
+  "relatedOperations": [
+    "get_config_access_ad",
+    "put_config_access_ad_realm",
+    "delete_config_access_ad_realm",
+    "post_config_access_ad"
+  ]
+}

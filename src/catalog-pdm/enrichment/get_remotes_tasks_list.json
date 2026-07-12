@@ -1,0 +1,27 @@
+{
+  "operationId": "get_remotes_tasks_list",
+  "usageNotes": "Use this to audit or monitor background task activity across all PDM-managed remotes (Proxmox Backup Server nodes). Filter by remote ID to scope results to a single remote, or combine `running: true` with a `typefilter` (e.g. 'sync') to watch live sync jobs. Results default to 50 tasks ordered by start time descending; set `limit: 0` to retrieve all tasks, but prefer `since`/`until` bounds on busy remotes to avoid large payloads.",
+  "examples": [
+    {
+      "summary": "List the last 20 failed tasks on a specific remote since the start of the month",
+      "path_params": {},
+      "params": {
+        "remote": "pbs-hetzner",
+        "errors": true,
+        "limit": 20,
+        "since": 1748736000
+      }
+    }
+  ],
+  "tips": [
+    "Use `running: true` to poll for active sync or verify jobs before triggering a new one — PDM may queue or reject duplicate runs.",
+    "The `upid` field in each result is the Unique Process ID; pass it to the PDM task log endpoint to retrieve full task output.",
+    "`statusfilter` is an array of status strings (e.g. ['error', 'warning']); an empty array behaves as no filter.",
+    "`typefilter` is a substring match against worker_type, so 'sync' will match 'sync', 'pull-sync', etc.",
+    "Pagination is controlled by `start` + `limit`; iterate by incrementing `start` by `limit` until fewer results than `limit` are returned."
+  ],
+  "relatedOperations": [
+    "get_remotes_list",
+    "get_remotes_read"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_qemu",
+  "usageNotes": "Returns a cluster-wide index of all QEMU VM entries across all nodes; useful as a quick inventory check without targeting a specific node. No parameters are required and any authenticated user may call it, but results reflect only VMs visible to the caller's permission set. Does not include LXC containers — use the equivalent cluster/lxc endpoint for those.",
+  "examples": [
+    {
+      "summary": "List all QEMU VMs across the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns VM metadata (name, VMID, node, status) but not full config details — follow up with get_nodes_node_qemu_vmid_config per VM for config specifics.",
+    "Useful for finding which node a given VMID lives on before issuing node-scoped operations.",
+    "Returned list is an array of child link objects; the 'name' field corresponds to the VMID."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu",
+    "get_nodes_node_qemu_vmid_status_current",
+    "get_nodes_node_qemu_vmid_config",
+    "get_cluster_resources"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu_vmid",
+  "usageNotes": "Returns the directory index of available sub-resources and actions for a specific QEMU VM on a PDM-registered PVE remote. Use this as a discovery call to enumerate what child endpoints exist under a given VM before calling more specific operations (e.g., status, config, migration). The remote must be reachable and the vmid must exist on that remote; both are inherited path parameters with no server-side format enforcement, so invalid values return an error rather than an empty list.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for VM 101 on the 'pve-hetzner' remote",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": "101"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This endpoint is a directory index (returns null per the spec); its primary value is confirming that the remote+vmid path is valid and discoverable before chaining deeper calls.",
+    "Because permissions are set to 'user: all', any authenticated PDM user or API token can call this — no specific PVE privilege is required at the PDM layer.",
+    "API tokens (allowtoken: true) work here; prefer scoped tokens over user credentials in automation."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu",
+    "get_pve_remotes_remote"
+  ]
+}

@@ -1,0 +1,250 @@
+{
+  "operationId": "get_nodes_node_apt_repositories",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "repositories",
+  "method": "GET",
+  "path": "/nodes/{node}/apt/repositories",
+  "description": "Get APT repository information.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Result from parsing the APT repository files in /etc/apt/.",
+    "properties": {
+      "digest": {
+        "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+        "pattern": "/^[a-f0-9]{64}$/",
+        "type": "string"
+      },
+      "errors": {
+        "description": "List of problematic files.",
+        "items": {
+          "additionalProperties": false,
+          "description": "Error type for problems with APT repository files.",
+          "properties": {
+            "error": {
+              "description": "The error message.",
+              "type": "string"
+            },
+            "path": {
+              "description": "The path to the problematic file.",
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "files": {
+        "description": "List of parsed repository files.",
+        "items": {
+          "additionalProperties": false,
+          "description": "Represents an abstract APT repository file.",
+          "properties": {
+            "content": {
+              "description": "The file content, if already parsed.",
+              "optional": 1,
+              "type": "string"
+            },
+            "digest": {
+              "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+              "optional": 1,
+              "pattern": "/^[a-f0-9]{64}$/",
+              "type": "string"
+            },
+            "file-type": {
+              "description": "The type of format used for an APT repository.",
+              "enum": [
+                "list",
+                "sources"
+              ],
+              "type": "string"
+            },
+            "path": {
+              "description": "The path to the file. If None, `contents` must be set directly.",
+              "optional": 1,
+              "type": "string"
+            },
+            "repositories": {
+              "description": "List of APT repositories.",
+              "items": {
+                "additionalProperties": false,
+                "description": "Describes an APT repository.",
+                "properties": {
+                  "Comment": {
+                    "description": "Associated comment.",
+                    "optional": 1,
+                    "type": "string"
+                  },
+                  "Components": {
+                    "description": "List of repository components.",
+                    "items": {
+                      "description": "Repository component.",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "Enabled": {
+                    "description": "Whether the repository is enabled or not.",
+                    "type": "boolean"
+                  },
+                  "FileType": {
+                    "description": "The type of format used for an APT repository.",
+                    "enum": [
+                      "list",
+                      "sources"
+                    ],
+                    "type": "string"
+                  },
+                  "Options": {
+                    "description": "Additional options.",
+                    "items": {
+                      "additionalProperties": false,
+                      "description": "Additional options for an APT repository.\nUsed for both single- and multi-value options.",
+                      "properties": {
+                        "Key": {
+                          "description": "Option key.",
+                          "type": "string"
+                        },
+                        "Values": {
+                          "description": "Option values.",
+                          "items": {
+                            "description": "Value.",
+                            "type": "string"
+                          },
+                          "type": "array"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "optional": 1,
+                    "type": "array"
+                  },
+                  "Suites": {
+                    "description": "List of distributions.",
+                    "items": {
+                      "description": "Package distribution.",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "Types": {
+                    "description": "List of package types.",
+                    "items": {
+                      "description": "The type of an APT package.",
+                      "enum": [
+                        "deb",
+                        "deb-src"
+                      ],
+                      "type": "string"
+                    },
+                    "type": "array"
+                  },
+                  "URIs": {
+                    "description": "List of repository URIs.",
+                    "items": {
+                      "description": "Repository URI.",
+                      "type": "string"
+                    },
+                    "type": "array"
+                  }
+                },
+                "type": "object"
+              },
+              "type": "array"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "infos": {
+        "description": "List of additional information/warnings about the repositories",
+        "items": {
+          "additionalProperties": false,
+          "description": "Additional information for a repository.",
+          "properties": {
+            "index": {
+              "description": "Index of the associated repository within the file (starting from 0).",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "kind": {
+              "description": "Info kind (e.g. \"warning\")",
+              "type": "string"
+            },
+            "message": {
+              "description": "Info message",
+              "type": "string"
+            },
+            "path": {
+              "description": "Path to the defining file.",
+              "type": "string"
+            },
+            "property": {
+              "description": "The property from which the info originates (e.g. \"Suites\")",
+              "optional": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "standard-repos": {
+        "description": "List of standard repositories and their configuration status.",
+        "items": {
+          "additionalProperties": false,
+          "description": "Reference to a standard repository and configuration status.",
+          "properties": {
+            "description": {
+              "description": "Description of the repository.",
+              "type": "string"
+            },
+            "handle": {
+              "description": "Handle referencing a standard repository.",
+              "type": "string"
+            },
+            "name": {
+              "description": "Display name of the repository.",
+              "type": "string"
+            },
+            "status": {
+              "description": "Configuration status of the associated repository, where `None` means\nnot configured, and `Some(bool)` indicates enabled or disabled.",
+              "optional": 1,
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/apt/repositories'"
+}

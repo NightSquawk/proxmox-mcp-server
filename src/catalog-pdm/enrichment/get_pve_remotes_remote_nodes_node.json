@@ -1,0 +1,23 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node",
+  "usageNotes": "Returns the API directory index for a specific node under a PDM-registered PVE remote — use it to discover which child endpoints are available for that node (e.g. guests, storage, tasks). Both the remote name and the node name must already exist in PDM; the node name matches the Proxmox cluster node name (not a hostname). The response type is null in the schema because PDM returns a list of child endpoint descriptors rather than structured node data.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for node 'pve1' on remote 'hetzner-prod'",
+      "path_params": {
+        "remote": "hetzner-prod",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The node name must match exactly as registered in the PVE cluster — check get_pve_remotes_remote_nodes for valid node names under a remote.",
+    "This is a directory index; the useful data lives in child endpoints (guests, tasks, etc.), not in this response itself.",
+    "API tokens are accepted (allowtoken: true), so service-account tokens with minimal scope work fine for this read-only call."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes",
+    "get_pve_remotes"
+  ]
+}

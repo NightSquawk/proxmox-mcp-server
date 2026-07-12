@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_cluster_firewall_ipset_name",
+  "usageNotes": "Permanently deletes a named cluster-level firewall IPSet. By default the deletion fails if the IPSet still contains members; pass `force: true` to delete all members along with the set in one operation. Requires `Sys.Modify` on the root path — API tokens must have this privilege explicitly granted.",
+  "examples": [
+    {
+      "summary": "Delete an empty IPSet named 'trusted-mgmt'",
+      "path_params": {
+        "name": "trusted-mgmt"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the named IPSet and, when force is true, all of its member IP/CIDR entries — any firewall rules referencing this IPSet by name will break silently.",
+  "tips": [
+    "Check for firewall rules that reference the IPSet by name before deleting; Proxmox does not cascade-update rules, so orphaned references can silently open or block traffic unexpectedly.",
+    "Use `force: true` only when you have confirmed no active firewall rules depend on the set members.",
+    "IPSet names must start with a letter and may only contain letters, digits, hyphens, and underscores (2–64 chars)."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_ipsets",
+    "get_cluster_firewall_ipset_name",
+    "create_cluster_firewall_ipset",
+    "delete_cluster_firewall_ipset_name_cidr"
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "get_ceph_clusters_cluster_pools",
+  "usageNotes": "Use this to enumerate all Ceph pools in a managed cluster and inspect their replication settings, PG counts, and current usage. The `cluster` path parameter must be the Ceph FSID (not a friendly name), which can be retrieved from `get_ceph_clusters`. Usage statistics (`bytes_used`, `percent_used`) are optional and will be absent if the cluster has not yet reported them.",
+  "examples": [
+    {
+      "summary": "List all pools in a Ceph cluster by FSID",
+      "path_params": {
+        "cluster": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `cluster` value is the Ceph FSID (UUID format), not a human-readable cluster name — use get_ceph_clusters to look it up first.",
+    "Pool type 'unknown' means PDM does not recognise the pool type; treat those pools as read-only/opaque.",
+    "When pg_autoscale_mode is 'on', the live pg_num may drift from pg_num_final as the autoscaler adjusts — compare both fields to detect in-progress scaling.",
+    "application_metadata keys (e.g. 'rbd', 'cephfs', 'rgw') indicate which Ceph service is using the pool; pools with no application tag are unassigned."
+  ],
+  "relatedOperations": [
+    "get_ceph_clusters",
+    "get_ceph_clusters_cluster",
+    "get_ceph_clusters_cluster_osds"
+  ]
+}

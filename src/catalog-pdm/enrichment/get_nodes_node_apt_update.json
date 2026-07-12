@@ -1,0 +1,22 @@
+{
+  "operationId": "get_nodes_node_apt_update",
+  "usageNotes": "Returns the cached list of available APT package updates for the specified PDM node; this reflects the last `apt-get update` run on that node, not live repository state — call the corresponding refresh/update trigger first if you need a current snapshot. Requires only System.Audit, so API tokens scoped to read-only monitoring can use this safely. The node must be online and reachable by the PDM server.",
+  "examples": [
+    {
+      "summary": "List pending APT updates for the pdm1 node",
+      "path_params": {
+        "node": "pdm1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "An empty array response means the cached package index shows no pending updates — it does not guarantee the node is fully up to date if the index is stale.",
+    "Check the 'OldVersion' and 'Version' fields together to assess upgrade delta size before scheduling maintenance.",
+    "The 'Origin' field (e.g. 'Debian:stable', 'Proxmox') helps distinguish vendor security patches from upstream Debian updates.",
+    "Use 'localhost' as the node value when calling from a script running directly on the PDM node itself."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_apt_update"
+  ]
+}

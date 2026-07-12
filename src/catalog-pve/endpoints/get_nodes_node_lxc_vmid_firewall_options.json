@@ -1,0 +1,137 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_options",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "get_options",
+  "method": "GET",
+  "path": "/nodes/{node}/lxc/{vmid}/firewall/options",
+  "description": "Get VM firewall options.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "properties": {
+      "dhcp": {
+        "default": 0,
+        "description": "Enable DHCP.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "enable": {
+        "default": 0,
+        "description": "Enable/disable firewall rules.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "ipfilter": {
+        "description": "Enable default IP filters. This is equivalent to adding an empty ipfilter-net<id> ipset for every interface. Such ipsets implicitly contain sane default restrictions such as restricting IPv6 link local addresses to the one derived from the interface's MAC address. For containers the configured IP addresses will be implicitly added.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "log_level_in": {
+        "description": "Log level for incoming traffic.",
+        "enum": [
+          "emerg",
+          "alert",
+          "crit",
+          "err",
+          "warning",
+          "notice",
+          "info",
+          "debug",
+          "nolog"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "log_level_out": {
+        "description": "Log level for outgoing traffic.",
+        "enum": [
+          "emerg",
+          "alert",
+          "crit",
+          "err",
+          "warning",
+          "notice",
+          "info",
+          "debug",
+          "nolog"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "macfilter": {
+        "default": 1,
+        "description": "Enable/disable MAC address filter.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "ndp": {
+        "default": 1,
+        "description": "Enable NDP (Neighbor Discovery Protocol).",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "policy_in": {
+        "description": "Input policy.",
+        "enum": [
+          "ACCEPT",
+          "REJECT",
+          "DROP"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "policy_out": {
+        "description": "Output policy.",
+        "enum": [
+          "ACCEPT",
+          "REJECT",
+          "DROP"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "radv": {
+        "description": "Allow sending Router Advertisement.",
+        "optional": 1,
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100/firewall/options'"
+}

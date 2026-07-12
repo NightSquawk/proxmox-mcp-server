@@ -1,0 +1,76 @@
+{
+  "operationId": "post_nodes_node_migrateall",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "migrateall",
+  "method": "POST",
+  "path": "/nodes/{node}/migrateall",
+  "description": "Migrate all VMs and Containers.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "max-workers",
+      "type": "integer",
+      "required": false,
+      "description": "Maximal number of parallel migration job. If not set, uses'max_workers' from datacenter.cfg. One of both must be set!",
+      "minimum": 1,
+      "maximum": 64,
+      "typetext": "<integer> (1 - 64)"
+    },
+    {
+      "name": "maxworkers",
+      "type": "integer",
+      "required": false,
+      "description": "Maximal number of parallel migration job. If not set, uses'max_workers' from datacenter.cfg. One of both must be set!Deprecated, use 'max-workers' instead.",
+      "minimum": 1,
+      "maximum": 64,
+      "typetext": "<integer> (1 - 64)"
+    },
+    {
+      "name": "target",
+      "type": "string",
+      "required": true,
+      "description": "Target node.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vms",
+      "type": "string",
+      "required": false,
+      "description": "Only consider Guests with these IDs.",
+      "format": "pve-vmid-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "with-local-disks",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable live storage migration for local disk",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "description": "The 'VM.Migrate' permission is required on '/' or on '/vms/<ID>' for each ID passed via the 'vms' parameter.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"target\":\"<target>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/migrateall'"
+}

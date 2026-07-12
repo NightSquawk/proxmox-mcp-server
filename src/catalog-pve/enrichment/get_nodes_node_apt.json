@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_apt",
+  "usageNotes": "Returns the APT sub-resource directory for a specific node, listing the available child endpoints (e.g., update, changelog, versions). Use this as a discovery call to confirm which APT operations are accessible before invoking them. The node must be online and reachable by the cluster; no special privilege is required beyond basic authenticated access.",
+  "examples": [
+    {
+      "summary": "List available APT sub-resources on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a directory index, not a package list — use get_nodes_node_apt_update to retrieve pending package updates.",
+    "Accessible to all authenticated users (permissions: user=all), so no admin token is needed for this call.",
+    "Child resource IDs returned here map directly to sub-paths under /nodes/{node}/apt/ for subsequent calls."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_update",
+    "get_nodes_node_apt_versions",
+    "get_nodes_node_apt_changelog"
+  ]
+}

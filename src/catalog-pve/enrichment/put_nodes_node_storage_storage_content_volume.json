@@ -1,0 +1,29 @@
+{
+  "operationId": "put_nodes_node_storage_storage_content_volume",
+  "usageNotes": "Use this to update metadata on an existing storage volume — specifically its freeform notes or protection flag. The protection flag is only honored for backup volumes (vzdump archives) and prevents deletion when set to true. The call returns null synchronously (no UPID); success means the attribute was applied immediately.",
+  "examples": [
+    {
+      "summary": "Mark a backup volume as protected and add a note",
+      "path_params": {
+        "node": "pve01",
+        "storage": "local",
+        "volume": "backup/vzdump-qemu-101-2024_06_15-02_00_01.vma.zst"
+      },
+      "params": {
+        "notes": "Pre-migration snapshot — do not delete",
+        "protected": true
+      }
+    }
+  ],
+  "tips": [
+    "The 'protected' flag only has effect on backup-type volumes; setting it on a disk image or ISO is accepted but silently ignored.",
+    "To clear protection, send 'protected': false explicitly — omitting the field leaves the existing value unchanged.",
+    "Volume IDs for backups follow the pattern 'backup/vzdump-<type>-<vmid>-<timestamp>.<ext>'; get the exact string from get_nodes_node_storage_storage_content first.",
+    "The storage path param is marked required:false in the spec but is practically required — Proxmox cannot resolve the volume without it."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_content",
+    "get_nodes_node_storage_storage_content_volume",
+    "delete_nodes_node_storage_storage_content_volume"
+  ]
+}

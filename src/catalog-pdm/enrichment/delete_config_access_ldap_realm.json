@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_config_access_ldap_realm",
+  "usageNotes": "Use this to permanently remove an LDAP realm from Proxmox Datacenter Manager so it no longer appears as an authentication source. The caller must hold the Realm.Allocate privilege on the access/domains path. Pass the current config digest to guard against concurrent modifications — omitting it allows the delete to proceed unconditionally.",
+  "examples": [
+    {
+      "summary": "Delete an LDAP realm named 'corp-ad', using a digest to prevent concurrent modification",
+      "path_params": {
+        "realm": "corp-ad"
+      },
+      "params": {
+        "digest": "a3f1c2e4b5d6a7f8e9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the named LDAP realm configuration; any users or tokens that rely on this realm for authentication will no longer be able to log in.",
+  "tips": [
+    "Read the current realm config first (get_config_access_ldap_realm) to obtain the digest if you want optimistic-locking protection.",
+    "Realm names are 2–32 characters and must match /^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/; a mismatch returns a 400 before any deletion occurs.",
+    "This operation returns null on success — no UPID is issued, the deletion is synchronous."
+  ],
+  "relatedOperations": [
+    "get_config_access_ldap_realm",
+    "put_config_access_ldap_realm",
+    "post_config_access_ldap",
+    "get_config_access_ldap"
+  ]
+}

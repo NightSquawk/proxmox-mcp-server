@@ -1,0 +1,30 @@
+{
+  "operationId": "post_pve_remotes_remote_qemu_vmid_snapshot_snapname_rollback",
+  "usageNotes": "Rolls back a remote QEMU VM to a named snapshot, reverting its disk, config, and RAM state (if RAM was captured in the snapshot); the guest must be shut down before calling this unless the snapshot includes RAM state. Returns a remote UPID string representing the async task — poll the task status endpoint to confirm completion before treating the rollback as done. Requires Resource.Manage privilege on the remote/VM resource.",
+  "examples": [
+    {
+      "summary": "Roll back VM 105 on remote 'pve-hetzner' to snapshot 'pre-update' and start the guest after",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 105,
+        "snapname": "pre-update"
+      },
+      "params": {
+        "node": "pve1",
+        "start": true
+      }
+    }
+  ],
+  "destructiveReason": "All disk and configuration changes made after the snapshot was taken are permanently discarded; if the snapshot does not include RAM state, any in-memory data at snapshot time is also lost.",
+  "tips": [
+    "Take a fresh snapshot of the current state before rolling back if there is any chance you need to recover post-snapshot changes.",
+    "If 'node' is omitted, PDM selects an appropriate node automatically; specify it explicitly when the VM is on a specific cluster node to avoid ambiguity.",
+    "The returned UPID is scoped to the remote cluster — use the corresponding PDM task-status endpoint (not a local PVE node endpoint) to track it.",
+    "Snapshots with RAM state allow rollback while the VM is running, but this is rare and risky; prefer rolling back with the VM stopped."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_snapshot",
+    "post_pve_remotes_remote_qemu_vmid_snapshot",
+    "delete_pve_remotes_remote_qemu_vmid_snapshot_snapname"
+  ]
+}

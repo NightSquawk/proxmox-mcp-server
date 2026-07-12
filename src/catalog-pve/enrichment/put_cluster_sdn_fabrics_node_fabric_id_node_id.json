@@ -1,0 +1,34 @@
+{
+  "operationId": "put_cluster_sdn_fabrics_node_fabric_id_node_id",
+  "usageNotes": "Use this to update an existing node's configuration within an SDN fabric — for example, changing its IP address, WireGuard endpoint, allowed CIDRs, or role. Requires both SDN.Allocate on the fabric path and Sys.Modify on the target node; both privileges must be satisfied simultaneously. The 'protocol' field is required on every update call and must match the fabric's protocol type — sending a mismatched protocol will be rejected.",
+  "examples": [
+    {
+      "summary": "Update a WireGuard fabric node's allowed IPs and endpoint",
+      "path_params": {
+        "fabric_id": "wg-core",
+        "node_id": "pve02"
+      },
+      "params": {
+        "protocol": "wireguard",
+        "role": "internal",
+        "ip": "10.10.1.2",
+        "allowed_ips": ["10.10.1.0/24", "192.168.50.0/24"],
+        "endpoint": "203.0.113.45:51820",
+        "delete": [],
+        "interfaces": ["vmbr0"]
+      }
+    }
+  ],
+  "tips": [
+    "Pass the 'digest' from the current node config to guard against concurrent edits overwriting each other.",
+    "The 'delete' and 'interfaces' arrays are marked required in the spec — even when making no changes to those fields, pass empty arrays rather than omitting them.",
+    "For external WireGuard nodes, 'public_key' and 'endpoint' are typically both needed; internal nodes rely on auto-exchanged keys from the cluster.",
+    "Changes to SDN fabric nodes take effect only after running the SDN apply step (PUT /cluster/sdn/fabrics/{fabric_id}/apply or equivalent reload)."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics_node_fabric_id_node_id",
+    "delete_cluster_sdn_fabrics_node_fabric_id_node_id",
+    "get_cluster_sdn_fabrics_fabric_id",
+    "put_cluster_sdn_fabrics_fabric_id"
+  ]
+}

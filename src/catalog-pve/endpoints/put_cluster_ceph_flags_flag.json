@@ -1,0 +1,58 @@
+{
+  "operationId": "put_cluster_ceph_flags_flag",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "update_flag",
+  "method": "PUT",
+  "path": "/cluster/ceph/flags/{flag}",
+  "description": "Set or clear (unset) a specific Ceph flag. Runs synchronously (unlike the bulk PUT /cluster/ceph/flags endpoint, which forks a worker task).",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "flag",
+      "type": "string",
+      "required": true,
+      "description": "The ceph flag to update",
+      "enum": [
+        "nobackfill",
+        "nodeep-scrub",
+        "nodown",
+        "noin",
+        "noout",
+        "norebalance",
+        "norecover",
+        "noscrub",
+        "notieragent",
+        "noup",
+        "pause"
+      ]
+    }
+  ],
+  "params": [
+    {
+      "name": "value",
+      "type": "boolean",
+      "required": true,
+      "description": "The new value of the flag",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"value\":\"1\"}' 'https://PVE_HOST:8006/api2/json/cluster/ceph/flags/nobackfill'"
+}

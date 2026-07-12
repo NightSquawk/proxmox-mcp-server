@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_scan_zfs",
+  "usageNotes": "Use this to discover ZFS pools that already exist on a node's local disks before adding them as Proxmox storage. The node must be online and have ZFS kernel modules loaded; pools that are not imported will not appear in the results. Requires Datastore.Allocate on /storage, so API tokens used for storage provisioning workflows will have the necessary privilege.",
+  "examples": [
+    {
+      "summary": "List all ZFS pools available on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Only imported (active) ZFS pools are returned — unimported pools or pools on offline disks will not appear.",
+    "Run this before calling the storage-create endpoint to confirm the pool name exists and is spelled correctly.",
+    "If no pools are returned but you expect some, verify ZFS is loaded on the node: `zpool list` via SSH will confirm the local view."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_scan_iscsi",
+    "get_nodes_node_scan_lvm",
+    "get_nodes_node_scan_lvmthin",
+    "get_nodes_node_scan_nfs",
+    "get_storage"
+  ]
+}

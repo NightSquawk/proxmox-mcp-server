@@ -1,0 +1,69 @@
+{
+  "operationId": "post_nodes_node_apt_repositories",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "change_repository",
+  "method": "POST",
+  "path": "/nodes/{node}/apt/repositories",
+  "description": "Change the properties of a repository. Currently only allows enabling/disabling.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Digest to detect modifications.",
+      "maxLength": 80,
+      "typetext": "<string>"
+    },
+    {
+      "name": "enabled",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether the repository should be enabled or not.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "index",
+      "type": "integer",
+      "required": true,
+      "description": "Index within the file (starting from 0).",
+      "typetext": "<integer>"
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "required": true,
+      "description": "Path to the containing file.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"index\":\"0\",\"path\":\"<path>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/apt/repositories'"
+}

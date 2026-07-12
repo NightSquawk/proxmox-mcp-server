@@ -1,0 +1,186 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_subscription",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "subscription",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/nodes/{node}/subscription",
+  "description": "Get subscription for the node",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": true,
+    "description": "Object.",
+    "properties": {
+      "boot-info": {
+        "additionalProperties": false,
+        "description": "Meta-information about the boot mode.",
+        "properties": {
+          "mode": {
+            "description": "Through which firmware the system got booted.",
+            "enum": [
+              "efi",
+              "legacy-bios"
+            ],
+            "type": "string"
+          },
+          "secureboot": {
+            "default": false,
+            "description": "System is booted in secure mode, only applicable for the \"efi\" mode.",
+            "optional": 1,
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "cpu": {
+        "description": "The current cpu usage.",
+        "type": "number"
+      },
+      "cpuinfo": {
+        "additionalProperties": false,
+        "description": "Object.",
+        "properties": {
+          "cores": {
+            "description": "The number of physical cores of the CPU.",
+            "type": "integer"
+          },
+          "cpus": {
+            "description": "The number of logical threads of the CPU.",
+            "type": "integer"
+          },
+          "model": {
+            "description": "The CPU model",
+            "type": "string"
+          },
+          "sockets": {
+            "description": "The number of logical threads of the CPU.",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "current-kernel": {
+        "additionalProperties": false,
+        "description": "Meta-information about the currently booted kernel of this node.",
+        "properties": {
+          "machine": {
+            "description": "Hardware (architecture) type",
+            "type": "string"
+          },
+          "release": {
+            "description": "OS kernel release (e.g., \"6.8.0\")",
+            "type": "string"
+          },
+          "sysname": {
+            "description": "OS kernel name (e.g., \"Linux\")",
+            "type": "string"
+          },
+          "version": {
+            "description": "OS kernel version with build info",
+            "type": "string"
+          }
+        },
+        "type": "object"
+      },
+      "loadavg": {
+        "description": "An array of load avg for 1, 5 and 15 minutes respectively.",
+        "items": {
+          "description": "The value of the load.",
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "memory": {
+        "additionalProperties": false,
+        "description": "Object.",
+        "properties": {
+          "available": {
+            "description": "The available memory in bytes.",
+            "optional": 1,
+            "type": "integer"
+          },
+          "free": {
+            "description": "The free memory in bytes.",
+            "type": "integer"
+          },
+          "total": {
+            "description": "The total memory in bytes.",
+            "type": "integer"
+          },
+          "used": {
+            "description": "The used memory in bytes.",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      },
+      "pveversion": {
+        "description": "The PVE version string.",
+        "type": "string"
+      },
+      "rootfs": {
+        "additionalProperties": false,
+        "description": "Object.",
+        "properties": {
+          "avail": {
+            "description": "The available bytes in the root filesystem.",
+            "type": "integer"
+          },
+          "free": {
+            "description": "The free bytes on the root filesystem.",
+            "type": "integer"
+          },
+          "total": {
+            "description": "The total size of the root filesystem in bytes.",
+            "type": "integer"
+          },
+          "used": {
+            "description": "The used bytes in the root filesystem.",
+            "type": "integer"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "node",
+        "{node}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/nodes/<node>/subscription'"
+}

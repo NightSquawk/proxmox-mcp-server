@@ -1,0 +1,37 @@
+{
+  "operationId": "get_pve_remotes",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "remotes",
+  "method": "GET",
+  "path": "/pve/remotes",
+  "description": "Return the list of PVE remotes",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "List of PVE remotes",
+    "items": {
+      "additionalProperties": false,
+      "description": "The information required to connect to a remote instance.",
+      "properties": {
+        "remote": {
+          "description": "Remote ID.",
+          "maxLength": 32,
+          "minLength": 2,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes'"
+}

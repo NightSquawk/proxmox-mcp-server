@@ -1,0 +1,30 @@
+{
+  "operationId": "put_access_users_userid",
+  "usageNotes": "Use this to update an existing Proxmox user's profile fields — display name, email, group memberships, expiration, or enable/disable status. The caller must hold `User.Modify` on the user or on all groups listed in the `groups` param; changing group membership requires the `groups_param` check to pass as well. This call is synchronous and returns null on success — no UPID is issued.",
+  "examples": [
+    {
+      "summary": "Disable a departing employee account and clear their group memberships",
+      "path_params": {
+        "userid": "jsmith@pve"
+      },
+      "params": {
+        "enable": false,
+        "groups": "",
+        "comment": "Account disabled 2026-06-28 - employee offboarded"
+      }
+    }
+  ],
+  "tips": [
+    "The `groups` param replaces the user's group list entirely unless `append` is set to true — omitting `groups` leaves existing memberships untouched.",
+    "Set `expire` to a Unix epoch timestamp (e.g. 1751155200) to auto-expire an account on a future date; set to 0 to remove an existing expiry.",
+    "The `keys` field is for legacy YubiKey OTP tokens, not TOTP/WebAuthn — most modern MFA is managed separately via /access/users/{userid}/tfa.",
+    "Realm-synced users (e.g. LDAP/AD via `@ldap` or `@ad` realms) may have some fields overwritten on the next sync — local overrides do not persist for synced attributes."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid",
+    "post_access_users",
+    "delete_access_users_userid",
+    "get_access_users_userid_tfa",
+    "put_access_users_userid_tfa"
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "operationId": "post_remotes_remote_id_probe_certificate",
+  "surface": "pdm",
+  "resource": "remotes",
+  "category": "Remotes",
+  "name": "probe-certificate",
+  "method": "POST",
+  "path": "/remotes/remote/{id}/probe-certificate",
+  "description": "Re-probe a configured node's TLS certificate without using the pinned fingerprint.\n\nLets clients detect a rotated certificate (the live connection only fails with an\nambiguous connect error) and decide whether to update the stored fingerprint. This\nnever changes the stored pin; updating it goes through `update_remote` after explicit\nuser confirmation.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Hostname of the configured node to probe."
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{id}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"node\":\"<node>\"}' 'https://PDM_HOST:8443/api2/json/remotes/remote/<id>/probe-certificate'"
+}

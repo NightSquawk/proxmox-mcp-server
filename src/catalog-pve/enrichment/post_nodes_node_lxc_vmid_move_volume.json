@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_move_volume",
+  "usageNotes": "Use this to migrate an LXC rootfs or mount-point volume to a different storage pool (e.g., local-lvm to ceph), or to reassign a volume from one container to another. The operation returns a task UPID and runs asynchronously — poll the task status before assuming completion. Without `delete: true`, the source volume is retained as an `unusedN` entry in the container config and will consume storage until manually removed.",
+  "examples": [
+    {
+      "summary": "Move rootfs of LXC 201 from local storage to ceph-rbd, deleting the original",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 201
+      },
+      "params": {
+        "volume": "rootfs",
+        "storage": "ceph-rbd",
+        "delete": true
+      }
+    }
+  ],
+  "tips": [
+    "The container does not need to be stopped for a mount-point (mp*) move, but moving rootfs on a running container may fail or require a shutdown depending on storage type.",
+    "When moving a volume to a different container (target-vmid), both the source and target containers must be on the same node; use target-volume to control which config key it lands on.",
+    "Supply `digest` (from the current container config) and `target-digest` when scripting to guard against concurrent config changes.",
+    "Omitting `storage` while supplying `target-vmid` reassigns the volume to the target container on the same storage — useful for splitting a cloned container's disks."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_lxc_vmid_config",
+    "delete_nodes_node_lxc_vmid_unlink"
+  ]
+}

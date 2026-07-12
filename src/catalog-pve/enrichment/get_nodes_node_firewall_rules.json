@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_firewall_rules",
+  "usageNotes": "Returns the ordered list of host-level firewall rules for a specific node (not VM/CT rules). Rules are returned in positional order; the `pos` field is the zero-based index used by rule-specific endpoints. Requires `Sys.Audit` on `/nodes/{node}` — API tokens must have this privilege explicitly granted.",
+  "examples": [
+    {
+      "summary": "List all firewall rules on node pve01",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Each returned object's `pos` value is the handle for GET/PUT/DELETE on /nodes/{node}/firewall/rules/{pos}.",
+    "Rules with `enable: 0` are present in the list but inactive; check this field before assuming a rule is enforced.",
+    "An `action` that does not match ACCEPT/DROP/REJECT is a security group reference — it will not have src/dest/port fields of its own.",
+    "This endpoint covers only the node host firewall chain. VM and container rules live under /nodes/{node}/qemu/{vmid}/firewall/rules and /nodes/{node}/lxc/{vmid}/firewall/rules respectively.",
+    "The node firewall must be enabled at the node level (not just cluster level) for these rules to be active; verify with get_nodes_node_firewall_options."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_firewall_rules_pos",
+    "post_nodes_node_firewall_rules",
+    "put_nodes_node_firewall_rules_pos",
+    "delete_nodes_node_firewall_rules_pos",
+    "get_nodes_node_firewall_options",
+    "get_cluster_firewall_rules"
+  ]
+}

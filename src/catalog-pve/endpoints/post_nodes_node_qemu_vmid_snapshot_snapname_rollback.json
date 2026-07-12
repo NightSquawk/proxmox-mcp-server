@@ -1,0 +1,71 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_snapshot_snapname_rollback",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "rollback",
+  "method": "POST",
+  "path": "/nodes/{node}/qemu/{vmid}/snapshot/{snapname}/rollback",
+  "description": "Rollback VM state to specified snapshot.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    },
+    {
+      "name": "snapname",
+      "type": "string",
+      "required": true,
+      "description": "The name of the snapshot.",
+      "format": "pve-configid",
+      "maxLength": 40,
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "start",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether the VM should get started after rolling back successfully. (Note: VMs will be automatically started if the snapshot includes RAM.)",
+      "default": 0,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "description": "the task ID.",
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Snapshot",
+        "VM.Snapshot.Rollback"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/snapshot/<snapname>/rollback'"
+}

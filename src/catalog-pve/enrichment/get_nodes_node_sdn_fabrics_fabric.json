@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_sdn_fabrics_fabric",
+  "usageNotes": "Returns the directory index of available sub-resources (subdirectories) for a specific SDN fabric on a given node — useful for discovering what status or configuration endpoints are available under that fabric. Requires SDN.Audit permission on /sdn/fabrics/{fabric}; the fabric must already exist and the node must be online. This is a navigation endpoint, not a status endpoint — follow the returned 'subdir' links to fetch actual fabric data.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for SDN fabric 'vxlan01' on node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "fabric": "vxlan01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The fabric ID must be 2–8 alphanumeric characters with internal hyphens allowed (e.g. 'vx01', 'evpn-dc'); single-character IDs are rejected.",
+    "The response is a directory index — each object contains a 'subdir' field pointing to a child resource. Use those paths to retrieve actual fabric status or peer information.",
+    "SDN fabric support requires the Proxmox SDN plugin to be configured; if no fabrics exist, this endpoint will return 404."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_fabrics",
+    "get_cluster_sdn_fabrics",
+    "get_cluster_sdn_fabrics_fabric"
+  ]
+}

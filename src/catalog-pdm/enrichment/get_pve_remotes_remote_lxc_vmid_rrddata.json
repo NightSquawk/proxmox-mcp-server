@@ -1,0 +1,29 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid_rrddata",
+  "usageNotes": "Use this endpoint to retrieve historical performance metrics (CPU, memory, disk I/O, network, uptime) for a specific LXC container managed by a PDM remote. The caller must hold `Resource.Audit` on the remote/guest path; the LXC must be known to the PDM remote (it need not be running, but the remote PVE node must be reachable). Use `AVERAGE` for trend graphs and `MAX` for peak-usage analysis — the two consolidation functions can return noticeably different values for bursty workloads.",
+  "examples": [
+    {
+      "summary": "Fetch last 24-hour average stats for LXC 101 on remote 'hetzner-pve'",
+      "path_params": {
+        "remote": "hetzner-pve",
+        "vmid": 101
+      },
+      "params": {
+        "cf": "AVERAGE",
+        "timeframe": "day"
+      }
+    }
+  ],
+  "tips": [
+    "Both `cf` and `timeframe` are required; omitting either returns a 400 error.",
+    "RRD data points that fall in periods when the container was stopped will have most fields absent (optional fields omitted) — the `time` field is always present.",
+    "The `cpu-current` value is a fraction (0.0–1.0 per core) not a percentage; multiply by 100 × `cpu-max` for a human-readable % of total capacity.",
+    "Longer timeframes (week, month, year, decade) use coarser RRD resolution, so individual spikes visible in `hour` or `day` may be smoothed out.",
+    "The remote name must match the PDM-registered remote ID exactly (case-sensitive, 2–32 chars, alphanumeric/dot/dash/underscore)."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_rrddata",
+    "get_pve_remotes_remote_node_rrddata",
+    "get_pve_remotes_remote_lxc_vmid_status_current"
+  ]
+}

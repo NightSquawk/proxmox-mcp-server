@@ -1,0 +1,103 @@
+{
+  "operationId": "post_cluster_notifications_endpoints_sendmail",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "create_sendmail_endpoint",
+  "method": "POST",
+  "path": "/cluster/notifications/endpoints/sendmail",
+  "description": "Create a new sendmail endpoint",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "author",
+      "type": "string",
+      "required": false,
+      "description": "Author of the mail",
+      "typetext": "<string>"
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "description": "Comment",
+      "typetext": "<string>"
+    },
+    {
+      "name": "disable",
+      "type": "boolean",
+      "required": false,
+      "description": "Disable this target",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "from-address",
+      "type": "string",
+      "required": false,
+      "description": "`From` address for the mail",
+      "typetext": "<string>"
+    },
+    {
+      "name": "mailto",
+      "type": "array",
+      "required": false,
+      "description": "List of email recipients",
+      "typetext": "<array>"
+    },
+    {
+      "name": "mailto-user",
+      "type": "array",
+      "required": false,
+      "description": "List of users",
+      "typetext": "<array>"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "The name of the endpoint.",
+      "format": "pve-configid",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "and",
+      [
+        "perm",
+        "/mapping/notifications",
+        [
+          "Mapping.Modify"
+        ]
+      ],
+      [
+        "or",
+        [
+          "perm",
+          "/",
+          [
+            "Sys.Audit",
+            "Sys.Modify"
+          ]
+        ],
+        [
+          "perm",
+          "/",
+          [
+            "Sys.AccessNetwork"
+          ]
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"name\":\"<name>\"}' 'https://PVE_HOST:8006/api2/json/cluster/notifications/endpoints/sendmail'"
+}

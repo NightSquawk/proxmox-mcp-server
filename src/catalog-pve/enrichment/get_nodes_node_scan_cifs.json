@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_scan_cifs",
+  "usageNotes": "Use this to discover the list of shares exported by a remote CIFS/SMB server before adding it as a Proxmox storage backend. The scan is performed from the specified cluster node, so that node must be online and have network connectivity to the target server. Credentials are optional for guest-accessible shares but required for authenticated shares; omitting them on a protected server will return an empty list or an error rather than an explicit auth failure.",
+  "examples": [
+    {
+      "summary": "List all CIFS shares on a NAS at 192.168.10.50 using domain credentials",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "server": "192.168.10.50",
+        "username": "svcproxmox",
+        "password": "s3cr3t!",
+        "domain": "HOMELAB"
+      }
+    }
+  ],
+  "tips": [
+    "If the target server only allows guest access, omit username/password/domain entirely.",
+    "The scan runs synchronously and returns results directly — there is no UPID/task to poll.",
+    "Run this from the node that will actually mount the share; cross-node routing differences can make a share reachable from one node but not another.",
+    "Share names returned here map directly to the 'share' field used when creating a CIFS storage entry via post_storage."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_scan_nfs",
+    "post_storage",
+    "get_storage"
+  ]
+}

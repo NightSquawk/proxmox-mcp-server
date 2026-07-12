@@ -1,0 +1,118 @@
+{
+  "operationId": "get_pbs_remotes_remote_datastore_datastore_rrddata",
+  "surface": "pdm",
+  "resource": "pbs",
+  "category": "PBS Remotes",
+  "name": "rrddata",
+  "method": "GET",
+  "path": "/pbs/remotes/{remote}/datastore/{datastore}/rrddata",
+  "description": "Read PBS datastore stats",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "datastore",
+      "type": "string",
+      "required": true,
+      "description": "Datastore name.",
+      "minLength": 3,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "cf",
+      "type": "string",
+      "required": true,
+      "description": "RRD consolidation mode",
+      "enum": [
+        "MAX",
+        "AVERAGE"
+      ]
+    },
+    {
+      "name": "timeframe",
+      "type": "string",
+      "required": true,
+      "description": "RRD time frame",
+      "enum": [
+        "hour",
+        "day",
+        "week",
+        "month",
+        "year",
+        "decade"
+      ]
+    }
+  ],
+  "returns": {
+    "description": "A list of PBS datastore data points.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Single point in time with all known data points for a Proxmox Backup Server datasstore",
+      "properties": {
+        "disk-available": {
+          "description": "Available disk space",
+          "optional": 1,
+          "type": "number"
+        },
+        "disk-read": {
+          "description": "Disk read rate",
+          "optional": 1,
+          "type": "number"
+        },
+        "disk-total": {
+          "description": "Total disk size",
+          "optional": 1,
+          "type": "number"
+        },
+        "disk-used": {
+          "description": "Disk utiliziation",
+          "optional": 1,
+          "type": "number"
+        },
+        "disk-write": {
+          "description": "Disk write rate",
+          "optional": 1,
+          "type": "number"
+        },
+        "time": {
+          "description": "Timestamp (UNIX epoch)",
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "datastore",
+        "{datastore}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    },
+    "description": "The user needs to have at least the `Resource.Audit` privilege on `/resource/{remote}/datastore/{datastore}`."
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pbs/remotes/<remote>/datastore/<datastore>/rrddata?cf=MAX&timeframe=hour'"
+}

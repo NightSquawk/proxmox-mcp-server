@@ -1,0 +1,24 @@
+{
+  "operationId": "delete_pve_remotes_remote_tasks_upid",
+  "usageNotes": "Use this endpoint to stop (cancel) a running task on a remote Proxmox VE node via PDM. The caller must hold Resource.Manage on the target remote, and the remote must be reachable by PDM at the time of the request. Note that the spec description says 'Get the status' but the method is DELETE — this actually stops/cancels the task identified by the UPID; returns null on success.",
+  "examples": [
+    {
+      "summary": "Cancel a running migration task on remote 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "upid": "UPID:pve-hetzner:00001A2B:0012D687:66808F00:qmigrate:105:root@pam:"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Cancels the in-progress task on the remote PVE node; any work performed by that task up to the cancellation point is not automatically rolled back (e.g., a partially migrated VM may be left in an inconsistent state).",
+  "tips": [
+    "Obtain the UPID from a prior task-creation response or from list_pve_remotes_remote_tasks; UPIDs are at least 42 characters long.",
+    "A null return indicates the stop request was accepted — poll the task status endpoint to confirm the task has actually terminated.",
+    "Not all PVE task types support mid-flight cancellation; the task may finish normally before the stop signal is processed."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_tasks_upid",
+    "list_pve_remotes_remote_tasks"
+  ]
+}

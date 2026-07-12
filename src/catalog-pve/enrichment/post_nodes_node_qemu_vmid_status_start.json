@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_status_start",
+  "usageNotes": "Boots a stopped or suspended QEMU VM on the specified node; requires VM.PowerMgmt on /vms/{vmid}. Returns a task UPID string — poll the task status endpoint to confirm the VM reached the running state before taking dependent actions. The target node must be online and the VM must not be locked (use skiplock only as root in emergencies).",
+  "examples": [
+    {
+      "summary": "Start VM 105 on node pve1 with default settings",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned UPID can be passed to GET /nodes/{node}/tasks/{upid}/status to poll for completion before assuming the VM is fully booted.",
+    "Default timeout scales with VM memory (max(30, GiB of RAM)) — for large-memory VMs, callers should not treat a slow response as a failure without checking the task status.",
+    "migratedfrom, migration_network, migration_type, nets-host-mtu, and with-conntrack-state are internal migration parameters set by the cluster during live migration; do not supply them for normal boots.",
+    "skiplock bypasses advisory locks but is restricted to root — prefer resolving the lock via its source operation rather than forcing it.",
+    "If the VM was previously suspended to disk (state saved), it will restore from the saved state rather than performing a cold boot."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_status_stop",
+    "post_nodes_node_qemu_vmid_status_shutdown",
+    "post_nodes_node_qemu_vmid_status_reset",
+    "post_nodes_node_qemu_vmid_status_suspend",
+    "get_nodes_node_qemu_vmid_status_current",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

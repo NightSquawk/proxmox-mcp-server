@@ -1,0 +1,35 @@
+{
+  "operationId": "post_cluster_jobs_realm_sync_id",
+  "usageNotes": "Creates a scheduled realm-sync job that periodically imports users and/or groups from an external authentication domain (e.g., LDAP, AD) into Proxmox. The `schedule` field uses systemd calendar event syntax (e.g., `daily`, `0/6:00`) and is required. The caller must hold `Realm.AllocateUser` on the target realm and `User.Modify` on `/access/groups/`; this is a cluster-level config write and returns null on success (not a UPID — the job runs on its own schedule, not immediately).",
+  "examples": [
+    {
+      "summary": "Create a nightly LDAP sync job that enables new users and removes vanished entries",
+      "path_params": {
+        "id": "ldap-nightly-sync"
+      },
+      "params": {
+        "realm": "company-ldap",
+        "schedule": "daily",
+        "scope": "both",
+        "enable-new": true,
+        "enabled": true,
+        "remove-vanished": "entry;acl",
+        "comment": "Nightly sync of all users and groups from company LDAP"
+      }
+    }
+  ],
+  "tips": [
+    "The `id` must conform to pve-configid format (alphanumeric plus hyphen/underscore, max 64 chars) and must be unique across all realm-sync jobs.",
+    "Set `remove-vanished` cautiously: including `properties` will strip custom PVE attributes on existing users that are not present in the LDAP source.",
+    "This endpoint creates the job definition only — to trigger an immediate sync run, use the separate run/trigger endpoint for realm-sync jobs.",
+    "The `realm` body param must match an existing authentication domain configured under Datacenter > Permissions > Realms.",
+    "Disabling `enable-new` (set to false) lets you review imported accounts before they can log in, useful for staged rollouts."
+  ],
+  "relatedOperations": [
+    "get_cluster_jobs_realm_sync",
+    "get_cluster_jobs_realm_sync_id",
+    "put_cluster_jobs_realm_sync_id",
+    "delete_cluster_jobs_realm_sync_id",
+    "post_access_domains_realm_sync"
+  ]
+}

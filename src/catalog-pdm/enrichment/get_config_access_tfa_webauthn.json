@@ -1,0 +1,22 @@
+{
+  "operationId": "get_config_access_tfa_webauthn",
+  "usageNotes": "Returns the WebAuthn (FIDO2) relying-party configuration currently active in Proxmox Datacenter Manager — specifically the RP ID, RP name, origin, and subdomain policy. Call this before enrolling hardware keys or troubleshooting failed WebAuthn assertions to confirm the relying-party settings match the URL users actually browse to. Any authenticated user or API token may call it; no elevated privilege is required.",
+  "examples": [
+    {
+      "summary": "Fetch the current WebAuthn relying-party config",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `id` field is the Relying Party ID (domain only, no scheme/port). It must exactly match the eTLD+1 of the URL users browse — a mismatch causes every WebAuthn assertion to fail.",
+    "If `origin` is omitted, PDM derives it automatically; set it explicitly when your PDM instance is behind a reverse proxy or load balancer with a different hostname.",
+    "`allow-subdomains: true` (the default) lets credentials registered on `pdm.example.com` authenticate on `other.example.com` — disable it in strict single-host deployments.",
+    "Changing `id` or `rp` invalidates all existing registered hardware keys; warn users before modifying those fields via the corresponding PUT/POST endpoint."
+  ],
+  "relatedOperations": [
+    "put_config_access_tfa_webauthn",
+    "get_config_access_tfa",
+    "post_access_tfa"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "operationId": "post_cluster_notifications_endpoints_webhook",
+  "usageNotes": "Use this to register a new webhook endpoint in the cluster notification system so Proxmox can push alerts (backups, HA events, etc.) to an external HTTP receiver. Requires `Mapping.Modify` on `/mapping/notifications` plus either `Sys.Audit`+`Sys.Modify` or `Sys.AccessNetwork` on `/`. Both the `body` and `header` values must be base64-encoded; secrets follow the same property-string format (`name=<name>,value=<base64>`) and are stored encrypted server-side.",
+  "examples": [
+    {
+      "summary": "Create a webhook that POSTs JSON alerts with an Authorization header and a Bearer token secret",
+      "path_params": {},
+      "params": {
+        "name": "ops-alertmanager",
+        "url": "https://alerts.example.com/hooks/proxmox",
+        "method": "post",
+        "body": "eyJldmVudCI6IHt7dGl0bGV9fX0=",
+        "header": [
+          "name=Content-Type,value=YXBwbGljYXRpb24vanNvbg==",
+          "name=Authorization,value=QmVhcmVyIHt7c2VjcmV0LnRva2VufX0="
+        ],
+        "secret": [
+          "name=token,value=bXlzdXBlcnNlY3JldHRva2Vu"
+        ],
+        "comment": "Alertmanager webhook for cluster notifications",
+        "disable": false
+      }
+    }
+  ],
+  "tips": [
+    "All `value` fields in `header` and `secret` entries must be base64-encoded; plain text will be rejected or misinterpreted.",
+    "Webhook names must follow the `pve-configid` format: alphanumeric plus hyphens, no spaces, max 64 chars.",
+    "Use template variables like `{{title}}` or `{{secret.mykey}}` inside the base64-encoded `body` to inject notification content or secrets at delivery time.",
+    "Create the endpoint in `disable: true` state first to validate config before enabling it in production.",
+    "After creation, wire this endpoint to a notification matcher via `post_cluster_notifications_matchers` so it actually receives events."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_webhook",
+    "get_cluster_notifications_endpoints_webhook_name",
+    "put_cluster_notifications_endpoints_webhook_name",
+    "delete_cluster_notifications_endpoints_webhook_name",
+    "post_cluster_notifications_matchers",
+    "get_cluster_notifications_endpoints"
+  ]
+}

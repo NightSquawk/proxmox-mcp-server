@@ -1,0 +1,53 @@
+{
+  "operationId": "post_auto_install_prepared",
+  "usageNotes": "Use this to register a new prepared answer file in Proxmox Datacenter Manager's auto-install system, which allows bare-metal nodes to be installed unattended when they PXE-boot. Requires the System.Modify privilege on the system/auto-installation path. If you omit 'target-filter', the configuration acts as a catch-all default for any installation request not matched by a narrower config — only one such default can exist at a time, so setting 'is-default: true' will silently override any prior default.",
+  "examples": [
+    {
+      "summary": "Create a prepared answer for a static-IP PVE node using ZFS mirrored disks",
+      "path_params": {},
+      "params": {
+        "id": "pve-node-zfs-static",
+        "country": "us",
+        "timezone": "America/Los_Angeles",
+        "keyboard": "en-us",
+        "mailto": "admin@example.com",
+        "fqdn": "pve01.internal.example.com",
+        "use-dhcp-fqdn": false,
+        "use-dhcp-network": false,
+        "cidr": "10.10.1.11/24",
+        "gateway": "10.10.1.1",
+        "dns": "10.10.1.1",
+        "disk-mode": "filter",
+        "disk-filter": { "ID_MODEL": "SAMSUNG*" },
+        "disk-filter-match": "any",
+        "filesystem": {
+          "filesystem": "zfs",
+          "ashift": 12,
+          "copies": 1
+        },
+        "netif-name-pinning-enabled": true,
+        "reboot-mode": "reboot",
+        "reboot-on-error": false,
+        "root-ssh-keys": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI... admin@jumphost"],
+        "subscription-key": "pve8c-0a1b2c3d4e",
+        "is-default": false,
+        "target-filter": { "/product": "Proxmox VE" }
+      }
+    }
+  ],
+  "tips": [
+    "Only one prepared config may have 'is-default: true'; creating a second will overwrite the flag on the existing default.",
+    "Fields that support MiniJinja templating (fqdn, mailto, cidr, gateway, dns) are rendered at install time — use 'template-counters' to drive auto-incrementing host numbers across a fleet.",
+    "Use 'authorized-tokens' to restrict which PDM API tokens can fetch this answer file, reducing the blast radius if a token is compromised.",
+    "When 'disk-mode' is 'filter', 'disk-filter' and 'disk-filter-match' drive selection; when it is 'list', populate 'disk-list' with block device names like 'sda' or 'nvme0n1' — mixing both modes is not supported.",
+    "If 'post-hook-base-url' is an HTTPS endpoint you control, pair it with 'post-hook-cert-fp' (sha256 fingerprint) to pin the TLS certificate and prevent MITM during post-install callback."
+  ],
+  "relatedOperations": [
+    "get_auto_install_prepared",
+    "get_auto_install_prepared_id",
+    "put_auto_install_prepared_id",
+    "delete_auto_install_prepared_id",
+    "get_auto_install_token",
+    "post_auto_install_token"
+  ]
+}

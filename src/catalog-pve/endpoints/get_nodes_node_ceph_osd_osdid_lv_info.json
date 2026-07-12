@@ -1,0 +1,87 @@
+{
+  "operationId": "get_nodes_node_ceph_osd_osdid_lv_info",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "osdvolume",
+  "method": "GET",
+  "path": "/nodes/{node}/ceph/osd/{osdid}/lv-info",
+  "description": "Get OSD volume details",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "osdid",
+      "type": "integer",
+      "required": true,
+      "description": "OSD ID",
+      "typetext": "<integer>"
+    }
+  ],
+  "params": [
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "description": "OSD device type",
+      "enum": [
+        "block",
+        "db",
+        "wal"
+      ],
+      "default": "block"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "creation_time": {
+        "description": "Creation time as reported by `lvs`.",
+        "type": "string"
+      },
+      "lv_name": {
+        "description": "Name of the logical volume (LV).",
+        "type": "string"
+      },
+      "lv_path": {
+        "description": "Path to the logical volume (LV).",
+        "type": "string"
+      },
+      "lv_size": {
+        "description": "Size of the logical volume (LV).",
+        "type": "integer"
+      },
+      "lv_uuid": {
+        "description": "UUID of the logical volume (LV).",
+        "type": "string"
+      },
+      "vg_name": {
+        "description": "Name of the volume group (VG).",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/osd/0/lv-info'"
+}

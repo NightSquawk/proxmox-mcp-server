@@ -1,0 +1,196 @@
+{
+  "operationId": "put_cluster_sdn_controllers_controller",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "update",
+  "method": "PUT",
+  "path": "/cluster/sdn/controllers/{controller}",
+  "description": "Update sdn controller object configuration.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "controller",
+      "type": "string",
+      "required": true,
+      "description": "The SDN controller object identifier.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[a-zA-Z][a-zA-Z0-9_-]*[a-zA-Z0-9]"
+    }
+  ],
+  "params": [
+    {
+      "name": "asn",
+      "type": "integer",
+      "required": false,
+      "description": "autonomous system number",
+      "minimum": 0,
+      "maximum": 4294967295,
+      "typetext": "<integer> (0 - 4294967295)"
+    },
+    {
+      "name": "bgp-mode",
+      "type": "string",
+      "required": false,
+      "description": "Whether to use eBGP or iBGP. Auto mode chooses depending on BGP controller or falls back to iBGP.",
+      "enum": [
+        "auto",
+        "external",
+        "internal"
+      ],
+      "default": "auto"
+    },
+    {
+      "name": "bgp-multipath-as-path-relax",
+      "type": "boolean",
+      "required": false,
+      "description": "Consider different AS paths of equal length for multipath computation.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "delete",
+      "type": "string",
+      "required": false,
+      "description": "A list of settings you want to delete.",
+      "format": "pve-configid-list",
+      "maxLength": 4096,
+      "typetext": "<string>"
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "ebgp",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable eBGP (remote-as external).",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "ebgp-multihop",
+      "type": "integer",
+      "required": false,
+      "description": "Set maximum amount of hops for eBGP peers.",
+      "typetext": "<integer>"
+    },
+    {
+      "name": "fabric",
+      "type": "string",
+      "required": false,
+      "description": "SDN fabric to use as underlay for this EVPN controller.",
+      "format": "pve-sdn-fabric-id",
+      "typetext": "<string>"
+    },
+    {
+      "name": "isis-domain",
+      "type": "string",
+      "required": false,
+      "description": "Name of the IS-IS domain.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "isis-ifaces",
+      "type": "string",
+      "required": false,
+      "description": "Comma-separated list of interfaces where IS-IS should be active.",
+      "format": "pve-iface-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "isis-net",
+      "type": "string",
+      "required": false,
+      "description": "Network Entity title for this node in the IS-IS network.",
+      "format": "pve-sdn-isis-net",
+      "minLength": 20,
+      "maxLength": 50,
+      "pattern": "[a-fA-F0-9]{2}(\\.[a-fA-F0-9]{4}){3,9}\\.[a-fA-F0-9]{2}"
+    },
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    },
+    {
+      "name": "loopback",
+      "type": "string",
+      "required": false,
+      "description": "Name of the loopback/dummy interface that provides the Router-IP.",
+      "typetext": "<string>"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": false,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "nodes",
+      "type": "string",
+      "required": false,
+      "description": "List of cluster node names.",
+      "format": "pve-node-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "peer-group-name",
+      "type": "string",
+      "required": false,
+      "description": "Name of the peer group for this EVPN controller",
+      "format": "pve-configid",
+      "default": "VTEP",
+      "typetext": "<string>"
+    },
+    {
+      "name": "peers",
+      "type": "string",
+      "required": false,
+      "description": "peers address list.",
+      "format": "ip-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "route-map-in",
+      "type": "string",
+      "required": false,
+      "description": "Route Map that should be applied for incoming routes",
+      "format": "pve-sdn-route-map-id",
+      "typetext": "<string>"
+    },
+    {
+      "name": "route-map-out",
+      "type": "string",
+      "required": false,
+      "description": "Route Map that should be applied for outgoing routes",
+      "format": "pve-sdn-route-map-id",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/controllers",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/sdn/controllers/<controller>'"
+}

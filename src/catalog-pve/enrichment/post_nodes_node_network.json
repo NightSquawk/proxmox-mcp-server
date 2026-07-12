@@ -1,0 +1,35 @@
+{
+  "operationId": "post_nodes_node_network",
+  "usageNotes": "Use this to define a new network interface (bridge, bond, VLAN, OVS type, etc.) in the node's /etc/network/interfaces — the config is written to disk but does NOT take effect until you apply pending changes via PUT /nodes/{node}/network. The caller must hold Sys.Modify on /nodes/{node}. Only one of cidr/address+netmask is needed for IPv4; gateway should only be set on the interface that carries the default route.",
+  "examples": [
+    {
+      "summary": "Create a VLAN-aware Linux bridge vmbr1 with a static IP on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "iface": "vmbr1",
+        "type": "bridge",
+        "cidr": "10.10.20.1/24",
+        "autostart": true,
+        "bridge_ports": "eno2",
+        "bridge_vlan_aware": true,
+        "comments": "VM guest traffic bridge - VLAN trunk"
+      }
+    }
+  ],
+  "tips": [
+    "Changes are staged only — always follow up with PUT /nodes/{node}/network (apply) or the node network will remain unchanged until the next reboot or manual ifup.",
+    "For a plain bond, set type=bond and list member interfaces in 'slaves'; for OVS bonds use ovs_bonds instead.",
+    "Setting gateway on more than one interface will produce a broken routing table — only set it on the primary uplink interface.",
+    "bridge_vids is only evaluated when bridge_vlan_aware is true; omit it to allow all VLANs.",
+    "Interface names must be 2–20 characters and follow Linux iface naming rules (no spaces, no slashes)."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network",
+    "get_nodes_node_network_iface",
+    "put_nodes_node_network_iface",
+    "delete_nodes_node_network_iface",
+    "put_nodes_node_network"
+  ]
+}

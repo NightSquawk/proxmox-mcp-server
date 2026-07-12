@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_sdn_fabrics_fabric_neighbors",
+  "usageNotes": "Use this to inspect the live BGP/EVPN neighbor table for a specific SDN fabric as seen from a given node. Results are sourced from FRR in real time, so the node must be online and FRR must be running for the call to succeed. Requires SDN.Audit permission on the fabric path; read-only, no cluster-wide quorum needed.",
+  "examples": [
+    {
+      "summary": "List all BGP neighbors for fabric 'evpn01' as seen from node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "fabric": "evpn01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Neighbor status strings (e.g. 'Established', 'Active', 'Idle') come directly from FRR's JSON output — consult FRR BGP docs for meaning.",
+    "Uptime is formatted by FRR (e.g. '8h24m12s') and resets on BGP session flap; a short uptime relative to fabric age indicates a recent peering drop.",
+    "If the fabric has no configured peers the response is an empty array, not an error.",
+    "Each node in the cluster may report a different neighbor view; poll all nodes when diagnosing asymmetric routing or split-brain."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_fabrics_fabric",
+    "get_nodes_node_sdn_fabrics",
+    "get_cluster_sdn_fabrics",
+    "get_cluster_sdn_fabrics_fabric"
+  ]
+}

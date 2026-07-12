@@ -1,0 +1,40 @@
+{
+  "operationId": "delete_nodes_node_tasks_upid",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "stop_task",
+  "method": "DELETE",
+  "path": "/nodes/{node}/tasks/{upid}",
+  "description": "Stop a task.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "upid",
+      "type": "string",
+      "required": true,
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "description": "The user needs 'Sys.Modify' permissions on '/nodes/<node>' if they aren't the owner of the task.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/tasks/<upid>'"
+}

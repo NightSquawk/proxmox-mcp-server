@@ -1,0 +1,27 @@
+{
+  "operationId": "put_nodes_node_apt_repositories",
+  "usageNotes": "Use this endpoint to add or re-enable a standard Proxmox-defined APT repository on a target node by its handle string (e.g. 'pve-no-subscription', 'pbs-enterprise'). If the repository is already present but disabled, calling this re-enables it rather than creating a duplicate entry. Pass the current config digest to guard against concurrent modifications — obtain the digest first via GET /nodes/{node}/apt/repositories.",
+  "examples": [
+    {
+      "summary": "Enable the no-subscription Proxmox Datacenter Manager repository on a node",
+      "path_params": {
+        "node": "pdm01"
+      },
+      "params": {
+        "handle": "pdm-no-subscription",
+        "digest": "a3f1e2b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2"
+      }
+    }
+  ],
+  "tips": [
+    "Fetch the current digest with GET /nodes/{node}/apt/repositories before writing, then pass it in the request to prevent race conditions.",
+    "The 'handle' refers to Proxmox-defined standard repository identifiers — it is not a free-form URL or sources.list entry. Only handles recognized by the PDM node are valid.",
+    "After adding or enabling a repository, run GET /nodes/{node}/apt/update (or POST to trigger an apt-get update) so the package index reflects the newly enabled source.",
+    "The node must be online and reachable by PDM; this call operates directly on that node's APT configuration."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_repositories",
+    "post_nodes_node_apt_repositories",
+    "post_nodes_node_apt_update"
+  ]
+}

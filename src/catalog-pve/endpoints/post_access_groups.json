@@ -1,0 +1,44 @@
+{
+  "operationId": "post_access_groups",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "create_group",
+  "method": "POST",
+  "path": "/access/groups",
+  "description": "Create new group.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "typetext": "<string>"
+    },
+    {
+      "name": "groupid",
+      "type": "string",
+      "required": true,
+      "format": "pve-groupid",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/access/groups",
+      [
+        "Group.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"groupid\":\"<groupid>\"}' 'https://PVE_HOST:8006/api2/json/access/groups'"
+}

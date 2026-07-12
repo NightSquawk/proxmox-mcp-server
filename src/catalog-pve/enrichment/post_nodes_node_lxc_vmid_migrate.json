@@ -1,0 +1,34 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_migrate",
+  "usageNotes": "Initiates an LXC container migration to another cluster node; returns a task UPID immediately — poll the task log to track completion. For running containers, set `online: true` for live migration (minimal downtime) or `restart: true` to shut down, migrate, then restart; omitting both requires the container to already be stopped. The caller needs `VM.Migrate` on `/vms/{vmid}` and the target node must be reachable within the cluster.",
+  "examples": [
+    {
+      "summary": "Live-migrate a running container to a second node, mapping its storage to the target pool",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 201
+      },
+      "params": {
+        "target": "pve2",
+        "online": true,
+        "target-storage": "local-lvm",
+        "bwlimit": 102400
+      }
+    }
+  ],
+  "destructiveReason": "Migrating a running container with `online` causes a brief service interruption during final sync; using `restart` shuts the container down on the source node, and a failed migration may leave it offline until manually started.",
+  "tips": [
+    "The returned string is a UPID (e.g. UPID:pve1:...:vzdump:...); use GET /nodes/{node}/tasks/{upid}/status to poll for completion.",
+    "If `target-storage` is omitted and the source storage is not shared across nodes, migration will fail — always specify a mapping for local storage.",
+    "Setting `bwlimit: 0` disables throttling entirely; useful on a quiet link but can saturate a production network.",
+    "Restart migration respects the `timeout` parameter (default 180 s) for the shutdown phase — increase it for containers with slow stop scripts.",
+    "Use GET /nodes/{node}/lxc/{vmid}/migrate to check pre-migration feasibility before issuing the POST."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_migrate",
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_tasks_upid_log",
+    "post_nodes_node_lxc_vmid_status_shutdown",
+    "post_nodes_node_lxc_vmid_status_start"
+  ]
+}

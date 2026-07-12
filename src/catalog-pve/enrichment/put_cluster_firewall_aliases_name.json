@@ -1,0 +1,28 @@
+{
+  "operationId": "put_cluster_firewall_aliases_name",
+  "usageNotes": "Use this to update the CIDR, comment, or name of an existing cluster-level firewall alias. Requires `Sys.Modify` on `/`. Pass the `digest` field (obtained from the GET alias endpoint) to guard against concurrent edits overwriting each other. To rename an alias, supply the new name in `rename` while the path `{name}` remains the current name.",
+  "examples": [
+    {
+      "summary": "Update alias CIDR and rename it from 'office-net' to 'hq-net'",
+      "path_params": {
+        "name": "office-net"
+      },
+      "params": {
+        "cidr": "203.0.113.0/24",
+        "rename": "hq-net",
+        "comment": "HQ main office subnet"
+      }
+    }
+  ],
+  "tips": [
+    "The `digest` param is the SHA1 of the current config file — fetch it via GET /cluster/firewall/aliases/{name} before updating to enable optimistic concurrency control.",
+    "Alias names must start with a letter and may only contain letters, digits, hyphens, and underscores (pattern: [A-Za-z][A-Za-z0-9\\-\\_]+); the new name in `rename` follows the same constraint.",
+    "This operation is cluster-wide; the updated alias is immediately available to all node and VM firewall rules that reference it."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_aliases_name",
+    "get_cluster_firewall_aliases",
+    "post_cluster_firewall_aliases",
+    "delete_cluster_firewall_aliases_name"
+  ]
+}

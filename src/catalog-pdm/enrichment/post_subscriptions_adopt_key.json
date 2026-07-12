@@ -1,0 +1,25 @@
+{
+  "operationId": "post_subscriptions_adopt_key",
+  "usageNotes": "Use this to pull the active subscription key from a remote node into the PDM subscription pool without modifying the remote itself. The remote node must be reachable and the caller must hold `PRIV_RESOURCE_MODIFY` on that specific remote in addition to the top-level `System.Modify` privilege. The call is refused if that (remote, node) pair is already pool-managed — use Assign or Clear paths first to reconcile any existing binding.",
+  "examples": [
+    {
+      "summary": "Adopt the live subscription key from node 'pve1' on remote 'hetzner-de'",
+      "path_params": {},
+      "params": {
+        "remote": "hetzner-de",
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "If the key is already in the pool but unbound, adoption rebinds it to (remote, node) and preserves its original source label (e.g. 'Manual').",
+    "If the key is already bound to a different (remote, node) pair, the call is rejected — you must clear or reassign that binding before adopting.",
+    "Pass the current pool config `digest` to guard against concurrent modifications when scripting bulk adoptions.",
+    "Returns null on success; errors surface as HTTP 4xx/5xx with a descriptive message."
+  ],
+  "relatedOperations": [
+    "get_subscriptions",
+    "post_subscriptions_assign_key",
+    "delete_subscriptions_key"
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_netstat",
+  "usageNotes": "Returns per-interface network counters (bytes in/out, packets, errors, drops) for all tap and VM network devices currently active on the node. The node must be online and reachable; results reflect kernel-level counters at the moment of the call and are not persisted. Use this for a live point-in-time traffic snapshot — for historical metrics, use the RRD-based network history endpoints instead.",
+  "examples": [
+    {
+      "summary": "Fetch live network counters for all VM/CT interfaces on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Counters are cumulative since the interface was last created or the kernel counter wrapped; subtract two readings over time to get a rate.",
+    "Only tap/veth interfaces attached to running VMs and containers appear — stopped guests produce no entries.",
+    "Counter wrap (32-bit on older kernels) can cause apparent negative deltas; handle defensively when computing rates.",
+    "For per-VM bandwidth accounting, correlate the interface name (e.g. tap101i0) back to the VMID using the guest config."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_rrddata",
+    "get_nodes_node_network",
+    "get_nodes_node_qemu_vmid_interfaces",
+    "get_nodes_node_status"
+  ]
+}

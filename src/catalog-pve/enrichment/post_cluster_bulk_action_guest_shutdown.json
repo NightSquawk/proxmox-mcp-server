@@ -1,0 +1,29 @@
+{
+  "operationId": "post_cluster_bulk_action_guest_shutdown",
+  "usageNotes": "Use this to gracefully shut down all (or a filtered subset of) VMs and containers across the entire cluster in one call. Requires 'VM.PowerMgmt' on '/' for a cluster-wide sweep, or on each '/vms/<ID>' when scoping via the 'vms' parameter. Returns a UPID string — poll the task status endpoint to confirm completion before assuming all guests are down.",
+  "examples": [
+    {
+      "summary": "Shut down a specific set of VMs with a 5-minute timeout and force-stop fallback, limiting concurrency to 8 workers",
+      "path_params": {},
+      "params": {
+        "vms": [100, 101, 205],
+        "timeout": 300,
+        "force-stop": true,
+        "max-workers": 8
+      }
+    }
+  ],
+  "destructiveReason": "Issues ACPI shutdown signals (and optionally hard-stops after timeout) to every matched guest, terminating all running workloads and making services unavailable until guests are manually restarted.",
+  "tips": [
+    "Omitting 'vms' targets every running guest on the cluster — double-check scope before submitting.",
+    "The default 'force-stop: true' (default 1) means any guest that does not shut down within 'timeout' seconds will be hard-killed; set it to false and raise 'timeout' if guests need extra time for graceful shutdown scripts.",
+    "Use 'max-workers' to throttle concurrency on large clusters and avoid overloading storage or network during simultaneous shutdowns.",
+    "'maxworkers' is deprecated; always use 'max-workers' in new integrations.",
+    "Poll the returned UPID via GET /nodes/{node}/tasks/{upid}/status to confirm all workers finished before declaring the cluster quiesced."
+  ],
+  "relatedOperations": [
+    "post_cluster_bulk_action_guest_start",
+    "post_cluster_bulk_action_guest_stop",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

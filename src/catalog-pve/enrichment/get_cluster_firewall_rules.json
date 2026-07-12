@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_firewall_rules",
+  "usageNotes": "Returns the ordered list of firewall rules defined at the cluster level — rules that apply across all nodes and VMs unless overridden at a lower scope. Requires the Sys.Audit privilege on the root path (/). Rules are returned in positional order (pos field); the pos value is what you pass to rule-specific endpoints when reading, updating, or deleting a single rule.",
+  "examples": [
+    {
+      "summary": "List all cluster-level firewall rules",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'pos' field in each returned rule is the 1-based index used by sibling endpoints (get/update/delete a single rule). Rules are evaluated top-down; lower pos = higher priority.",
+    "A rule's 'enable' field is an integer flag (1 = enabled, 0 = disabled) — disabled rules remain in the list but are not enforced.",
+    "The 'action' field may be ACCEPT, DROP, REJECT, or a security group name — check the type field ('in'/'out'/'group') to distinguish firewall rules from group references.",
+    "Cluster-level rules apply globally; node-level and VM/CT-level rules can override or supplement them. Use this endpoint to audit the base policy before troubleshooting connectivity."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_rule",
+    "create_cluster_firewall_rule",
+    "update_cluster_firewall_rule",
+    "delete_cluster_firewall_rule",
+    "get_cluster_firewall_groups",
+    "get_cluster_firewall_options"
+  ]
+}

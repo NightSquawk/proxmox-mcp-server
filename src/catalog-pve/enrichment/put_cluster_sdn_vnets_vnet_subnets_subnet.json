@@ -1,0 +1,30 @@
+{
+  "operationId": "put_cluster_sdn_vnets_vnet_subnets_subnet",
+  "usageNotes": "Use this to modify an existing SDN subnet's configuration — such as changing its gateway, DHCP ranges, DNS server, or SNAT setting — without recreating it. Requires 'SDN.Allocate' on the parent zone/vnet path; changes take effect after applying the pending SDN config via the reload endpoint. Use the 'digest' param to guard against concurrent modifications when running automation.",
+  "examples": [
+    {
+      "summary": "Update subnet to add a DHCP DNS server and enable SNAT masquerade",
+      "path_params": {
+        "vnet": "vnet-prod",
+        "subnet": "10.10.20.0-24"
+      },
+      "params": {
+        "gateway": "10.10.20.1",
+        "dhcp-dns-server": "10.10.20.5",
+        "snat": true
+      }
+    }
+  ],
+  "tips": [
+    "Changes are staged — run the SDN apply/reload endpoint after updating to push config to all nodes.",
+    "The 'delete' param accepts a comma-separated list of field names (e.g. 'dnszoneprefix,dhcp-dns-server') to unset optional fields without a full rewrite.",
+    "The gateway is only meaningful for layer3 (routed) zones; it will be assigned as the vnet interface IP on the controlling node.",
+    "SNAT (masquerade) only applies when pve-firewall is active on the node; enabling it without the firewall has no effect."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets_vnet_subnets_subnet",
+    "post_cluster_sdn_vnets_vnet_subnets",
+    "delete_cluster_sdn_vnets_vnet_subnets_subnet",
+    "put_cluster_sdn"
+  ]
+}

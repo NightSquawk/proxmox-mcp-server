@@ -1,0 +1,25 @@
+{
+  "operationId": "get_storage_storage",
+  "usageNotes": "Use this to retrieve the full configuration of a specific storage pool by its ID — including type, content flags, path/server details, and enabled state. The caller must hold `Datastore.Allocate` on `/storage/{storage}`, which is typically restricted to administrators. This operates on the cluster-level storage config, not a per-node view, so the result is authoritative regardless of which node you query.",
+  "examples": [
+    {
+      "summary": "Read configuration for a local ZFS storage pool",
+      "path_params": {
+        "storage": "tank-vms"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned object shape varies by storage type (e.g., `dir`, `zfspool`, `nfs`, `cifs`, `rbd`) — type-specific fields are only present for the matching backend.",
+    "To list all storage IDs available on the cluster before querying a specific one, call `get_storage` first.",
+    "This endpoint reads the cluster config (`/etc/pve/storage.cfg`), not live mount/availability status — use node-level storage queries to check if a storage is currently active on a specific node."
+  ],
+  "relatedOperations": [
+    "get_storage",
+    "put_storage_storage",
+    "delete_storage_storage",
+    "get_nodes_node_storage",
+    "get_nodes_node_storage_storage_status"
+  ]
+}

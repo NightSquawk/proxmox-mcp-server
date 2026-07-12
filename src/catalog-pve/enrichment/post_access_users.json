@@ -1,0 +1,36 @@
+{
+  "operationId": "post_access_users",
+  "usageNotes": "Use this to provision a new Proxmox VE user account in the specified realm (e.g. `pve`, `pam`, or an LDAP/AD realm). The `userid` must follow the `name@realm` format and the realm must already exist. The `password` field is only meaningful for the built-in `pve` realm — users in external realms (LDAP, AD, OpenID) authenticate against that backend, not Proxmox. The caller needs `Realm.AllocateUser` on the target realm and `User.Modify` on any groups being assigned.",
+  "examples": [
+    {
+      "summary": "Create a local PVE user assigned to the 'helpdesk' group with a 1-year expiry",
+      "path_params": {},
+      "params": {
+        "userid": "jsmith@pve",
+        "firstname": "John",
+        "lastname": "Smith",
+        "email": "jsmith@example.com",
+        "password": "TempPass123!",
+        "groups": "helpdesk",
+        "enable": true,
+        "expire": 1782000000,
+        "comment": "Helpdesk tier-1 tech, onboarded 2026-06-28"
+      }
+    }
+  ],
+  "tips": [
+    "The `password` field sets the initial Proxmox-local password and only takes effect for `@pve` realm users; omit it for LDAP/AD/OpenID realm users.",
+    "Use `expire` as a Unix epoch integer (e.g. from `date -d '2027-01-01' +%s`); set to 0 for no expiry.",
+    "Assigning a user to non-existent groups will cause the request to fail — create groups first via POST /access/groups.",
+    "The `keys` field stores YubiKey token IDs for second-factor auth; it does not configure TOTP — that is managed separately.",
+    "New users have no ACL permissions by default; grant access via PUT /access/acl after creation."
+  ],
+  "relatedOperations": [
+    "get_access_users",
+    "get_access_users_userid",
+    "put_access_users_userid",
+    "delete_access_users_userid",
+    "post_access_groups",
+    "put_access_acl"
+  ]
+}

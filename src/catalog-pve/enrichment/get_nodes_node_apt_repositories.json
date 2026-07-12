@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_apt_repositories",
+  "usageNotes": "Use this to audit the APT repository configuration on a specific node — useful before running updates, after a PVE version upgrade, or when troubleshooting package availability. Requires Sys.Audit on /nodes/{node}; the node must be online and reachable by the API. Check the 'errors' array in the response first — parse failures on malformed .list or .sources files will appear there and may silently block package operations.",
+  "examples": [
+    {
+      "summary": "Fetch APT repository info for node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'digest' field in the top-level response covers all parsed files; use it as an optimistic-concurrency token when pairing with a write operation that modifies repositories.",
+    "The 'standard-repos' array lists well-known Proxmox repositories (e.g., pve-no-subscription, enterprise) and shows whether each is enabled — a quick way to confirm subscription vs. community repo state.",
+    "Repositories with 'Enabled: false' are still parsed and returned; check the 'Enabled' field on each entry rather than assuming all returned repos are active.",
+    "The 'infos' array surfaces warnings (e.g., deprecated suite names or redundant entries) that do not prevent parsing but may cause unexpected behavior during upgrades."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_update",
+    "post_nodes_node_apt_repositories",
+    "get_nodes_node_apt_changelog",
+    "get_nodes_node_apt_versions"
+  ]
+}

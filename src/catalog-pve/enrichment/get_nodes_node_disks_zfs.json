@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_disks_zfs",
+  "usageNotes": "Use this to list all ZFS zpools on a specific node, including their health status, allocated/free space, fragmentation, and deduplication ratio. The target node must be online and have ZFS kernel modules loaded; nodes without any zpools return an empty array. Requires the Sys.Audit privilege at the root path — a read-only audit token is sufficient.",
+  "examples": [
+    {
+      "summary": "List all zpools on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'health' field mirrors 'zpool status' output: ONLINE, DEGRADED, FAULTED, OFFLINE, UNAVAIL, or REMOVED — anything other than ONLINE warrants immediate investigation.",
+    "alloc, free, and size values are in bytes; divide by 1073741824 for GiB.",
+    "A high frag percentage (>50%) on a pool can indicate performance degradation; consider scrubbing or expanding the pool.",
+    "dedup ratio of 1.00 means deduplication is off or not saving space — enabling dedup has significant RAM overhead (roughly 5 GB RAM per 1 TB of deduplicated data).",
+    "This endpoint lists zpools only, not individual datasets or zvols — use the ZFS dataset APIs for deeper inspection."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_disks_zfs_name",
+    "post_nodes_node_disks_zfs",
+    "delete_nodes_node_disks_zfs_name",
+    "get_nodes_node_disks_list",
+    "get_nodes_node_storage"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster",
+  "usageNotes": "Use this as a discovery entry point to enumerate all top-level cluster API namespaces (e.g. config, ha, log, resources, tasks). It requires no parameters and is accessible to any authenticated user or API token, making it a safe first call for capability probing. The response is an array of child resource descriptors, not cluster status data — use get_cluster_resources for live node/VM/storage state.",
+  "examples": [
+    {
+      "summary": "List all top-level cluster API namespaces",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'name' field in each returned object matches the href link relation and can be appended to /cluster/ to form the child endpoint path.",
+    "This endpoint returns structural metadata only — it does not reflect cluster health or membership. Use get_cluster_status for that.",
+    "Works on standalone (non-clustered) PVE nodes as well; the child namespaces returned are the same regardless of cluster membership."
+  ],
+  "relatedOperations": [
+    "get_cluster_status",
+    "get_cluster_resources",
+    "get_cluster_config",
+    "get_cluster_log"
+  ]
+}

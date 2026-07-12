@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_access_users_userid",
+  "usageNotes": "Permanently removes a user account from the Proxmox authentication realm. The caller must hold both `Realm.AllocateUser` on the target realm and `User.Modify` on any group the user belongs to — both checks must pass. Built-in accounts (e.g., `root@pam`) cannot be deleted.",
+  "examples": [
+    {
+      "summary": "Delete a local PAM user named jsmith",
+      "path_params": {
+        "userid": "jsmith@pam"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Immediately and permanently deletes the user account; all associated API tokens are also removed and any active sessions for that user will lose access.",
+  "tips": [
+    "The `userid` must be in `name@realm` format (e.g., `alice@pve`, `bob@pam`) — bare usernames are rejected.",
+    "Deleting a user does not remove files, VMs, or permissions assigned to that user ID; revoke or reassign those first.",
+    "API tokens belonging to the deleted user are also destroyed — ensure no automation depends on them before proceeding.",
+    "To temporarily disable access without deleting, use update_access_users_userid (PUT) and set `enable=0` instead."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid",
+    "put_access_users_userid",
+    "post_access_users",
+    "get_access_users"
+  ]
+}

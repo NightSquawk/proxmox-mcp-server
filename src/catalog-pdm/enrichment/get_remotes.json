@@ -1,0 +1,19 @@
+{
+  "operationId": "get_remotes",
+  "usageNotes": "Use this to list all remote endpoints (PVE and PBS) configured in Proxmox Datacenter Manager. This is the top-level directory index for the /remotes tree, and is typically called first to discover available remote names before drilling into type-specific paths like /pve/remotes or /pbs/remotes. No parameters are required and any authenticated user can call it.",
+  "examples": [
+    {
+      "summary": "List all configured remotes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a directory index, not a typed remote list — use get_pve_remotes or get_pbs_remotes to get structured remote details with connection status.",
+    "Accessible to all authenticated users including API tokens; no special privilege is needed."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes",
+    "get_pbs_remotes"
+  ]
+}

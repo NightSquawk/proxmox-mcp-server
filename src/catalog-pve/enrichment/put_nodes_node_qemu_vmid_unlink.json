@@ -1,0 +1,29 @@
+{
+  "operationId": "put_nodes_node_qemu_vmid_unlink",
+  "usageNotes": "Use this to detach or permanently delete one or more disk images from a VM's configuration. Without `force`, disks are moved to `unused[n]` entries rather than deleted — use this safer default when you may need to recover the volume later. To permanently destroy the underlying storage volume, either set `force: true` or run unlink a second time targeting the resulting `unused[n]` entry. The VM does not need to be stopped, but the disk must not be in active use (e.g., avoid unlinking the boot disk while the VM is running).",
+  "examples": [
+    {
+      "summary": "Detach scsi1 from VM 105 without deleting the volume (moves to unused)",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105
+      },
+      "params": {
+        "idlist": "scsi1",
+        "force": false
+      }
+    }
+  ],
+  "tips": [
+    "Omitting `force` is the safe default — the volume remains on storage as `unused[n]` and can be reattached or deleted later.",
+    "To permanently remove the volume in one step, set `force: true`.",
+    "Unlinking an `unused[n]` entry (e.g., `unused0`) always performs physical removal regardless of the `force` flag.",
+    "`idlist` accepts a comma-separated list (e.g., `scsi1,scsi2`) to unlink multiple disks in a single call.",
+    "This operation returns null synchronously — there is no UPID; the change is applied immediately to the VM config."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_config",
+    "put_nodes_node_qemu_vmid_config",
+    "post_nodes_node_qemu_vmid_move_disk"
+  ]
+}

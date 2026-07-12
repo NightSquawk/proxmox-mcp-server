@@ -1,0 +1,46 @@
+{
+  "operationId": "put_cluster_sdn",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "reload",
+  "method": "PUT",
+  "path": "/cluster/sdn",
+  "description": "Apply sdn controller changes && reload.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    },
+    {
+      "name": "release-lock",
+      "type": "boolean",
+      "required": false,
+      "description": "When lock-token has been provided and configuration successfully committed, release the lock automatically afterwards",
+      "default": 1,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/sdn'"
+}

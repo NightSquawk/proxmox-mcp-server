@@ -1,0 +1,23 @@
+{
+  "operationId": "post_nodes_node_wakeonlan",
+  "usageNotes": "Sends a Wake-on-LAN magic packet to bring an offline Proxmox node back up. The target node must have WoL enabled in its BIOS/UEFI and the network interface must support it; the API call is made against a currently online node that forwards the magic packet on behalf of the offline one. Returns the MAC address that was used to construct the packet — useful for confirming the correct NIC was targeted.",
+  "examples": [
+    {
+      "summary": "Wake an offline node named 'pve2' via WoL",
+      "path_params": {
+        "node": "pve2"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This endpoint is called on an online node (e.g. pve1) to wake a peer node (pve2) — not on the offline node itself.",
+    "The MAC address in the response reflects what Proxmox has configured for that node's WoL NIC; verify it matches the physical NIC in the BIOS if WoL silently fails.",
+    "WoL requires the offline node to be on the same broadcast domain (L2 segment) as the sending node or a properly configured directed broadcast."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_status",
+    "post_nodes_node_shutdown",
+    "post_nodes_node_startall"
+  ]
+}

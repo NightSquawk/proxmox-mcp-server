@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_pending",
+  "usageNotes": "Use this endpoint to inspect a VM's configuration diff — it returns every config key alongside its current live value and any pending value that will take effect after the next VM reboot. This is the right call before rebooting a VM to confirm what changes are queued, or after editing config to verify the pending state was recorded correctly. Requires VM.Audit permission on /vms/{vmid}; the node must be online.",
+  "examples": [
+    {
+      "summary": "Check pending configuration changes on VM 105 before a scheduled reboot",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A row with only 'value' (no 'pending') means that key has no queued changes.",
+    "A row with 'delete' set to 1 means the key is queued for removal on next reboot; value 2 means a force-delete is pending.",
+    "A row with 'pending' but no 'value' means the key is being added for the first time.",
+    "Compare 'value' vs 'pending' on the 'memory' or 'cores' keys to confirm a resize will take effect without a live migration.",
+    "If there are no pending changes, the response array will still list all current config keys with only 'value' populated."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_config",
+    "put_nodes_node_qemu_vmid_config",
+    "post_nodes_node_qemu_vmid_reboot"
+  ]
+}

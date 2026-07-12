@@ -1,0 +1,57 @@
+{
+  "operationId": "get_access_groups_groupid",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "read_group",
+  "method": "GET",
+  "path": "/access/groups/{groupid}",
+  "description": "Get group configuration.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "groupid",
+      "type": "string",
+      "required": true,
+      "format": "pve-groupid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": 0,
+    "properties": {
+      "comment": {
+        "optional": 1,
+        "type": "string"
+      },
+      "members": {
+        "items": {
+          "description": "Full User ID, in the `name@realm` format.",
+          "format": "pve-userid",
+          "maxLength": 64,
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/access/groups",
+      [
+        "Sys.Audit",
+        "Group.Allocate"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/groups/<groupid>'"
+}

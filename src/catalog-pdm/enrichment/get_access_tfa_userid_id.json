@@ -1,0 +1,26 @@
+{
+  "operationId": "get_access_tfa_userid_id",
+  "usageNotes": "Use this to inspect a specific TFA entry (TOTP, WebAuthn, YubiKey, recovery, or U2F) for a given user — useful when you need to check whether a particular second factor is enabled or to retrieve its type and creation timestamp. The caller must either have the `Access.Modify` privilege on `/access/users` or be the same user referenced by `userid`. The `id` path parameter is the opaque entry ID returned by the list-TFA endpoints, not a human-readable label.",
+  "examples": [
+    {
+      "summary": "Retrieve a specific TOTP entry for a PDM user",
+      "path_params": {
+        "userid": "admin@pve",
+        "id": "totp-7f3a1c9b2e4d"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `userid` must match the pattern user@realm (e.g. admin@pve, kevin@pbs); bare usernames without a realm are invalid.",
+    "TFA entry IDs are opaque strings — obtain them first from the list endpoint (GET /access/tfa/{userid}) before calling this endpoint.",
+    "The `enable` field indicates if the entry is active; a user may have multiple entries where some are disabled.",
+    "API tokens are permitted (allowtoken: true), so automation scripts can query TFA state without interactive credentials."
+  ],
+  "relatedOperations": [
+    "get_access_tfa_userid",
+    "post_access_tfa_userid",
+    "put_access_tfa_userid_id",
+    "delete_access_tfa_userid_id"
+  ]
+}

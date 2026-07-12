@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_rules",
+  "usageNotes": "Returns the ordered list of container-level firewall rules for a specific LXC guest; rules are applied in position order (pos field), so sequence matters for policy evaluation. Requires VM.Audit permission on /vms/{vmid} — read-only and safe to call at any time regardless of container run state. Use this before modifying rules to capture current state or to verify a rule was applied correctly after a create/update operation.",
+  "examples": [
+    {
+      "summary": "List all firewall rules for LXC container 110 on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Rules are returned in ascending pos order; lower pos values are evaluated first.",
+    "The 'enable' field is an integer flag (1 = enabled, 0 = disabled) — a rule present in the list is not necessarily active.",
+    "Container-level rules are evaluated after datacenter and node-level firewall policies; check those layers if a rule here appears to have no effect.",
+    "An empty array response means no container-level rules are defined — inherited cluster/datacenter rules may still apply if the firewall is enabled on the container."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_options",
+    "post_nodes_node_lxc_vmid_firewall_rules",
+    "get_nodes_node_lxc_vmid_firewall_rules_pos",
+    "put_nodes_node_lxc_vmid_firewall_rules_pos",
+    "delete_nodes_node_lxc_vmid_firewall_rules_pos"
+  ]
+}

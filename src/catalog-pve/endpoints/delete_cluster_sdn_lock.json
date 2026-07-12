@@ -1,0 +1,46 @@
+{
+  "operationId": "delete_cluster_sdn_lock",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "release_lock",
+  "method": "DELETE",
+  "path": "/cluster/sdn/lock",
+  "description": "Release global lock for SDN configuration",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "force",
+      "type": "boolean",
+      "required": false,
+      "description": "if true, allow releasing lock without providing the token",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/lock'"
+}

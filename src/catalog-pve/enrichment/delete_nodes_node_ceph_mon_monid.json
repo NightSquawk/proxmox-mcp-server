@@ -1,0 +1,27 @@
+{
+  "operationId": "delete_nodes_node_ceph_mon_monid",
+  "usageNotes": "Removes a Ceph Monitor daemon from the specified node; requires at least one other monitor in the cluster (Proxmox refuses to remove the last mon). The caller needs `Sys.Modify` at the root level. Returns a task UPID string — poll the task API to confirm completion before treating the monitor as gone.",
+  "examples": [
+    {
+      "summary": "Remove a monitor named 'pve2' from node pve2 after adding a replacement monitor elsewhere",
+      "path_params": {
+        "node": "pve2",
+        "monid": "pve2"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the Ceph Monitor daemon from the node, reducing quorum capacity; if only two monitors remain after removal, a single further failure will cause the cluster to lose quorum and become read-only.",
+  "tips": [
+    "Verify monitor count with GET /nodes/{node}/ceph/mon before deleting — the API blocks removal of the last mon, but dropping below three mons reduces fault tolerance.",
+    "The monid typically matches the node hostname; confirm the exact ID from the mon list endpoint before issuing the delete.",
+    "Manager daemons on the same node are unaffected — use DELETE /nodes/{node}/ceph/mgr/{id} separately if the mgr also needs removal.",
+    "The return value is a UPID string; use the tasks API (GET /nodes/{node}/tasks/{upid}/status) to poll for completion."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_mon",
+    "post_nodes_node_ceph_mon",
+    "delete_nodes_node_ceph_mgr_id",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

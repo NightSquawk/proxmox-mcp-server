@@ -1,0 +1,85 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_firewall_refs",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "refs",
+  "method": "GET",
+  "path": "/nodes/{node}/lxc/{vmid}/firewall/refs",
+  "description": "Lists possible IPSet/Alias reference which are allowed in source/dest properties.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "description": "Only list references of specified type.",
+      "enum": [
+        "alias",
+        "ipset"
+      ]
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "comment": {
+          "optional": 1,
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "alias",
+            "ipset"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100/firewall/refs'"
+}

@@ -1,0 +1,32 @@
+{
+  "operationId": "post_access_users_userid_token_tokenid",
+  "usageNotes": "Use this to generate a scoped API token for a user — the only call that returns the raw token secret, which is shown exactly once and cannot be retrieved again, so callers must capture and store the `value` field immediately. Requires either acting as the token owner (`self`) or holding `User.Modify` on the user's group. By default, `privsep` is enabled, meaning the token's effective privileges are the intersection of its own ACLs and the user's ACLs; set `privsep` to false only when you need the token to act with the user's full permissions.",
+  "examples": [
+    {
+      "summary": "Create a 90-day automation token for an API service account with privilege separation enabled",
+      "path_params": {
+        "userid": "automation@pve",
+        "tokenid": "ci-runner"
+      },
+      "params": {
+        "comment": "CI pipeline token — expires 2026-09-26",
+        "expire": 1790438400,
+        "privsep": true
+      }
+    }
+  ],
+  "tips": [
+    "The returned `value` field is the raw secret — store it in a secrets manager immediately; this is the only time it is visible.",
+    "The `full-tokenid` in the response (format: `userid!tokenid`) is the identifier used in the `Authorization: PVEAPIToken=` header alongside the secret value.",
+    "Set `expire` to 0 for non-expiring tokens; omitting the field inherits the parent user's expiration, which may be unintentionally short.",
+    "Even with `privsep: false`, the token cannot exceed the user's own privileges — it does not grant escalation.",
+    "Token IDs must start with a letter and contain only alphanumerics, dots, hyphens, or underscores."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid_token_tokenid",
+    "put_access_users_userid_token_tokenid",
+    "delete_access_users_userid_token_tokenid",
+    "get_access_users_userid",
+    "post_access_users"
+  ]
+}

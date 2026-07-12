@@ -1,0 +1,23 @@
+{
+  "operationId": "get_config_acme_tos",
+  "usageNotes": "Call this before registering an ACME account to retrieve the Terms of Service URL that the user must agree to. If no directory parameter is supplied, PDM uses its default ACME directory. Returns an empty/null response when the directory does not publish a ToS URL.",
+  "examples": [
+    {
+      "summary": "Fetch ToS URL for the Let's Encrypt production directory",
+      "path_params": {},
+      "params": {
+        "directory": "https://acme-v02.api.letsencrypt.org/directory"
+      }
+    }
+  ],
+  "tips": [
+    "Omit the 'directory' parameter to get the ToS for PDM's default ACME directory (typically Let's Encrypt staging or production depending on configuration).",
+    "Store the returned URL and present it to the user before calling any account-registration endpoint that accepts a ToS agreement flag.",
+    "A null/empty return means the ACME provider has no ToS requirement — account creation can proceed without agreement."
+  ],
+  "relatedOperations": [
+    "get_config_acme_directories",
+    "get_config_acme_accounts",
+    "post_config_acme_account"
+  ]
+}

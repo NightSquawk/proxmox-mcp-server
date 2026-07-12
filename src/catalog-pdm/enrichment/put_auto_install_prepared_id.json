@@ -1,0 +1,44 @@
+{
+  "operationId": "put_auto_install_prepared_id",
+  "usageNotes": "Use this to update an existing prepared auto-installer answer configuration by its ID — for example, to change network settings, disk selection, root credentials, or target-filter rules after the config was initially created. The operation is synchronous and returns the updated config object immediately (no task UPID). Requires `System.Modify` on the `system/auto-installation` path; pass the `digest` field from a prior GET to guard against concurrent edits overwriting each other.",
+  "examples": [
+    {
+      "summary": "Update a prepared config to use static networking and pin a specific disk",
+      "path_params": {
+        "id": "pve-rack1-node3"
+      },
+      "params": {
+        "cidr": "192.168.10.53/24",
+        "gateway": "192.168.10.1",
+        "dns": "192.168.10.1",
+        "use-dhcp-network": false,
+        "fqdn": "rack1-node3.internal.example.com",
+        "use-dhcp-fqdn": false,
+        "disk-mode": "list",
+        "disk-list": ["sda"],
+        "filesystem": {
+          "filesystem": "zfs",
+          "ashift": 12
+        },
+        "timezone": "America/Los_Angeles",
+        "keyboard": "en-us",
+        "reboot-mode": "reboot",
+        "digest": "a3f1c2e4b5d6789012345678901234567890abcdef1234567890abcdef123456"
+      }
+    }
+  ],
+  "tips": [
+    "Only one config can have `is-default: true`; setting it on this record clears the flag from whichever config previously held it.",
+    "Fields with MiniJinja template support (cidr, gateway, dns, fqdn, mailto) are validated at render time, not at save time — invalid templates will not be caught here.",
+    "Use the `delete` array to remove optional fields (e.g., `[\"target-filter\"]`) rather than sending a null value.",
+    "If `authorized-tokens` is set, only those PDM API token IDs can fetch this answer during installation; omit the field to allow any authenticated requester.",
+    "The `target-filter` field uses RFC6901 JSON Pointers as keys and glob patterns as values; it is ignored when `is-default` is true.",
+    "Setting `root-password-hashed` is preferred over `root-password` for security — the plaintext password is stored in the config on disk."
+  ],
+  "relatedOperations": [
+    "get_auto_install",
+    "post_auto_install_prepared",
+    "delete_auto_install_prepared_id",
+    "post_auto_install_installations"
+  ]
+}

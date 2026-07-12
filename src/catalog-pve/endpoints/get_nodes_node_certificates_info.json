@@ -1,0 +1,95 @@
+{
+  "operationId": "get_nodes_node_certificates_info",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "info",
+  "method": "GET",
+  "path": "/nodes/{node}/certificates/info",
+  "description": "Get information about node's certificates.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "filename": {
+          "optional": 1,
+          "type": "string"
+        },
+        "fingerprint": {
+          "description": "Certificate SHA 256 fingerprint.",
+          "optional": 1,
+          "pattern": "([A-Fa-f0-9]{2}:){31}[A-Fa-f0-9]{2}",
+          "type": "string"
+        },
+        "issuer": {
+          "description": "Certificate issuer name.",
+          "optional": 1,
+          "type": "string"
+        },
+        "notafter": {
+          "description": "Certificate's notAfter timestamp (UNIX epoch).",
+          "optional": 1,
+          "renderer": "timestamp",
+          "type": "integer"
+        },
+        "notbefore": {
+          "description": "Certificate's notBefore timestamp (UNIX epoch).",
+          "optional": 1,
+          "renderer": "timestamp",
+          "type": "integer"
+        },
+        "pem": {
+          "description": "Certificate in PEM format",
+          "format": "pem-certificate",
+          "optional": 1,
+          "type": "string"
+        },
+        "public-key-bits": {
+          "description": "Certificate's public key size",
+          "optional": 1,
+          "type": "integer"
+        },
+        "public-key-type": {
+          "description": "Certificate's public key algorithm",
+          "optional": 1,
+          "type": "string"
+        },
+        "san": {
+          "description": "List of Certificate's SubjectAlternativeName entries.",
+          "items": {
+            "type": "string"
+          },
+          "optional": 1,
+          "renderer": "yaml",
+          "type": "array"
+        },
+        "subject": {
+          "description": "Certificate subject name.",
+          "optional": 1,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/certificates/info'"
+}

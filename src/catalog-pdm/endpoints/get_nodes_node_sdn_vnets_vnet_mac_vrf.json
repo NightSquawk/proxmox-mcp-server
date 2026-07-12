@@ -1,0 +1,63 @@
+{
+  "operationId": "get_nodes_node_sdn_vnets_vnet_mac_vrf",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "mac-vrf",
+  "method": "GET",
+  "path": "/nodes/{node}/sdn/vnets/{vnet}/mac-vrf",
+  "description": "Get the MAC-VRF for an EVPN vnet for a node on a given remote",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "vnet",
+      "type": "string",
+      "required": true,
+      "description": "The name for an SDN object (zone / vnet / fabric)."
+    }
+  ],
+  "params": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object.",
+    "properties": {
+      "ip": {
+        "description": "The IP address of the MAC VRF entry.",
+        "type": "string"
+      },
+      "mac": {
+        "description": "The MAC address of the MAC VRF entry.",
+        "pattern": "/^(?i)[a-f0-9][02468ace](?::[a-f0-9]{2}){5}$/",
+        "type": "string"
+      },
+      "nexthop": {
+        "description": "The IP address of the nexthop.",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/sdn/vnets/<vnet>/mac-vrf?remote=<remote>'"
+}

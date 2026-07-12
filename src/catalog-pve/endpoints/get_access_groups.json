@@ -1,0 +1,50 @@
+{
+  "operationId": "get_access_groups",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "index",
+  "method": "GET",
+  "path": "/access/groups",
+  "description": "Group index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "comment": {
+          "optional": 1,
+          "type": "string"
+        },
+        "groupid": {
+          "format": "pve-groupid",
+          "type": "string"
+        },
+        "users": {
+          "description": "list of users which form this group",
+          "format": "pve-userid-list",
+          "optional": 1,
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{groupid}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "The returned list is restricted to groups where you have 'User.Modify', 'Sys.Audit'  or 'Group.Allocate' permissions on /access/groups/<group>.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/groups'"
+}

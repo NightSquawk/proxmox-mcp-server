@@ -1,0 +1,57 @@
+{
+  "operationId": "post_nodes_node_ceph_mds_name",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "createmds",
+  "method": "POST",
+  "path": "/nodes/{node}/ceph/mds/{name}",
+  "description": "Create Ceph Metadata Server (MDS)",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": false,
+      "description": "The ID for the mds, when omitted the same as the nodename",
+      "default": "nodename",
+      "maxLength": 200,
+      "pattern": "[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?"
+    }
+  ],
+  "params": [
+    {
+      "name": "hotstandby",
+      "type": "boolean",
+      "required": false,
+      "description": "Determines whether a ceph-mds daemon should poll and replay the log of an active MDS. Faster switch on MDS failure, but needs more idle resources.",
+      "default": 0,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/mds/<name>'"
+}

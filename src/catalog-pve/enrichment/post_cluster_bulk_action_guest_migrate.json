@@ -1,0 +1,28 @@
+{
+  "operationId": "post_cluster_bulk_action_guest_migrate",
+  "usageNotes": "Use this to evacuate all (or a filtered set of) guests from the cluster to a single target node in one API call — common for scheduled maintenance or emergency node drain. The `online` flag enables live migration for VMs and restart migration for containers, minimizing downtime; omitting it causes VMs to be shut down before moving. Returns a worker UPID immediately; track progress via the tasks API, as the actual migrations run asynchronously.",
+  "examples": [
+    {
+      "summary": "Live-migrate all guests to node pve2, up to 4 concurrent workers",
+      "path_params": {},
+      "params": {
+        "target": "pve2",
+        "online": true,
+        "max-workers": 4
+      }
+    }
+  ],
+  "destructiveReason": "Migrating all guests disrupts any VMs/CTs that cannot live-migrate (e.g., those using local disks without with-local-disks), causing a full shutdown-and-restart cycle and a service outage for those workloads.",
+  "tips": [
+    "Use the `vms` parameter to limit the operation to specific VMIDs rather than migrating every guest on the cluster — safer for production environments.",
+    "Set `with-local-disks: true` only if the target node has sufficient storage and network bandwidth; live storage migration is significantly slower than shared-storage migration.",
+    "Prefer `max-workers` (not the deprecated `maxworkers`) and keep it low (2–4) to avoid saturating cluster network bandwidth during migration.",
+    "The caller needs VM.Migrate on '/' for a full cluster sweep; if scoping to specific VMIDs via `vms`, the permission can be scoped per VM instead."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_status",
+    "get_cluster_tasks",
+    "post_nodes_node_qemu_vmid_migrate",
+    "post_nodes_node_lxc_vmid_migrate"
+  ]
+}

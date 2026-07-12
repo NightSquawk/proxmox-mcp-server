@@ -1,0 +1,56 @@
+{
+  "operationId": "delete_cluster_sdn_route_maps_entries_route_map_id_entry_order",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete_route_map_entry",
+  "method": "DELETE",
+  "path": "/cluster/sdn/route-maps/entries/{route-map-id}/entry/{order}",
+  "description": "Delete Route Map Entry",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "route-map-id",
+      "type": "string",
+      "required": true,
+      "description": "The SDN route map identifier",
+      "format": "pve-sdn-route-map-id",
+      "typetext": "<string>"
+    },
+    {
+      "name": "order",
+      "type": "integer",
+      "required": true,
+      "description": "The index of this route map entry",
+      "minimum": 0,
+      "maximum": 65535,
+      "typetext": "<integer> (0 - 65535)"
+    }
+  ],
+  "params": [
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/route-maps/{route-map-id}",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/route-maps/entries/<route-map-id>/entry/0'"
+}

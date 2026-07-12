@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_get_vcpus",
+  "usageNotes": "Retrieves the list of vCPUs visible to the guest OS via the QEMU Guest Agent (QGA); use this to verify CPU hot-plug operations have taken effect inside the VM. The QEMU Guest Agent must be installed and running inside the guest, and the VM must be in a powered-on state, otherwise the call will fail. Requires either VM.GuestAgent.Audit or VM.GuestAgent.Unrestricted on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "Get vCPU list for VM 105 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If the guest agent is not running, the API returns an error rather than an empty result — check agent status with get_nodes_node_qemu_vmid_agent_get_osinfo first.",
+    "The returned vCPU list reflects the guest OS perspective, which may differ from the host-configured vCPU count if hot-plug changes have not yet been acknowledged by the guest.",
+    "CPU online/offline state per vCPU is included in the result; useful for confirming that CPU hot-add actually brought a new vCPU online inside the guest."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_get_osinfo",
+    "get_nodes_node_qemu_vmid_agent_info",
+    "get_nodes_node_qemu_vmid_config"
+  ]
+}

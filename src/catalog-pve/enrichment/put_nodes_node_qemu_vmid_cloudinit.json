@@ -1,0 +1,25 @@
+{
+  "operationId": "put_nodes_node_qemu_vmid_cloudinit",
+  "usageNotes": "Regenerates the cloud-init config drive ISO in-place for the specified VM; use this after changing any cloud-init parameters (user, network, meta) via the VM config endpoints so the drive reflects the current settings. The VM does not need to be running — the drive is rebuilt from the stored config — but the updated data is only applied on the next VM boot. Requires the VM.Config.Cloudinit privilege on /vms/{vmid}; returns null synchronously (no UPID), so no task polling is needed.",
+  "examples": [
+    {
+      "summary": "Regenerate the cloud-init drive on VM 201 after updating its network config",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 201
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This call is a no-op if the VM has no cloud-init drive attached — attach one via the disk config first.",
+    "Returns null (not a UPID), so the operation completes synchronously; no need to poll task status.",
+    "Cloud-init data is applied at boot time, not immediately — reboot the VM after regenerating to activate the new config.",
+    "If you updated cloud-init settings via the QEMU config PUT endpoint, always follow up with this call to keep the drive in sync."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_cloudinit",
+    "put_nodes_node_qemu_vmid_config",
+    "post_nodes_node_qemu_vmid_status_reboot"
+  ]
+}

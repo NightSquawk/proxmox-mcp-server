@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pve_remotes_remote_firewall_rules",
+  "usageNotes": "Use this to audit or display the ordered cluster-level firewall ruleset for a PVE remote managed by PDM. Rules are returned in positional order (pos field); the effective policy is applied top-down, so position matters when reasoning about overlapping rules. Requires Resource.Audit on the target remote — read-only tokens are sufficient.",
+  "examples": [
+    {
+      "summary": "List all cluster firewall rules for the 'prod-pve' remote",
+      "path_params": {
+        "remote": "prod-pve"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'pos' field is the rule's index in the ordered ruleset — lower pos values are evaluated first.",
+    "Rules with 'enable' set to 0 (or omitted as falsy) are inactive; check this field before assuming a rule is enforced.",
+    "The 'action' field can be ACCEPT, DROP, REJECT, or a security group name — security group references expand to their member rules at evaluation time.",
+    "Cluster-level rules apply to all nodes in the remote; for per-VM or per-node rules use the appropriate guest/host firewall endpoints instead."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_firewall_options",
+    "get_pve_remotes_remote_firewall_groups",
+    "get_pve_remotes_remote_firewall_ipset"
+  ]
+}

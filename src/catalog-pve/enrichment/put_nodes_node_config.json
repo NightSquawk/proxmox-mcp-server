@@ -1,0 +1,29 @@
+{
+  "operationId": "put_nodes_node_config",
+  "usageNotes": "Use this to update node-level settings such as ACME certificate domains, wake-on-LAN configuration, boot delay for VMs/CTs, or the node's descriptive notes. Requires the Sys.Modify privilege at the root path (/), so a dedicated API token must be granted that role. Changes take effect immediately and the call returns null on success — use the digest parameter when making concurrent updates to prevent race conditions.",
+  "examples": [
+    {
+      "summary": "Set a node description and add a 30-second boot delay before guests start on reboot",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "description": "Primary Proxmox hypervisor — Hetzner AX102, 64 GB RAM, NVMe pool.",
+        "startall-onboot-delay": 30
+      }
+    }
+  ],
+  "tips": [
+    "Send only the fields you want to change; omit all others — unset fields are not cleared.",
+    "To remove an optional setting (e.g. location or wakeonlan), pass its key name in the 'delete' parameter as a comma-separated string rather than sending an empty value.",
+    "The 'acmedomain[n]' parameter is indexed (acmedomain0, acmedomain1, …); each index maps to one SAN entry on the node's ACME-issued certificate.",
+    "ballooning-target is a node-level hint for the memory ballooning driver; tuning it does not restart running VMs.",
+    "Use get_nodes_node_config (GET /nodes/{node}/config) first to retrieve the current digest, then pass it here to guard against concurrent edits."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_config",
+    "post_nodes_node_certificates_acme_certificate",
+    "delete_nodes_node_certificates_acme_certificate",
+    "get_nodes_node_status"
+  ]
+}

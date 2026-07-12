@@ -1,0 +1,68 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_apt_changelog",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "changelog",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/nodes/{node}/apt/changelog",
+  "description": "Retrieve the changelog of the specified package for a remote PVE node.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "Package name to get changelog of.",
+      "pattern": "/^[a-z0-9][-+.a-z0-9:]+$/"
+    },
+    {
+      "name": "version",
+      "type": "string",
+      "required": false,
+      "description": "Package version to get changelog of. Omit to use candidate version."
+    }
+  ],
+  "returns": {
+    "description": "The Package changelog.",
+    "type": "string"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}",
+        "node",
+        "{node}",
+        "system"
+      ],
+      "privs": [
+        "Resource.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/nodes/<node>/apt/changelog?name=<name>'"
+}

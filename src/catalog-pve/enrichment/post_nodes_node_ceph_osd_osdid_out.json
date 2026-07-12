@@ -1,0 +1,25 @@
+{
+  "operationId": "post_nodes_node_ceph_osd_osdid_out",
+  "usageNotes": "Marks a Ceph OSD as 'out', causing the cluster to begin migrating its data to other OSDs — use this as the first step before physically removing a drive or decommissioning an OSD. The operation completes synchronously and returns null; data rebalancing happens asynchronously in the background and can be monitored via Ceph cluster status. The target OSD does not need to be running, but the Ceph cluster must be reachable from the specified node and the caller needs Sys.Modify at the root level.",
+  "examples": [
+    {
+      "summary": "Mark OSD 3 as out before removing a failed drive on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "osdid": 3
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "After marking out, watch 'ceph -s' or the Proxmox dashboard until recovery I/O drops to zero before proceeding with physical removal.",
+    "To reverse the action and bring the OSD back into the cluster, use the sibling 'in' endpoint (post_nodes_node_ceph_osd_osdid_in).",
+    "Marking out does not stop the OSD process — follow up with the destroy endpoint if you intend full decommission.",
+    "Avoid marking multiple OSDs out simultaneously on small clusters (< 3x replication factor worth of OSDs remaining) to prevent data unavailability."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_ceph_osd_osdid_in",
+    "delete_nodes_node_ceph_osd_osdid",
+    "get_nodes_node_ceph_osd"
+  ]
+}

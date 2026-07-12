@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_scan_lvm",
+  "usageNotes": "Use this endpoint to discover existing LVM volume groups on a node before provisioning new LVM-backed storage. The caller requires the Datastore.Allocate privilege on /storage, so API tokens used for storage setup must hold that permission. Only volume groups already present on the node's block devices are returned — run this before calling the storage creation endpoint to verify the VG name.",
+  "examples": [
+    {
+      "summary": "List all LVM volume groups on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The node must be online and reachable within the cluster; scanning a node that is down returns an error rather than an empty list.",
+    "Volume group names returned here (the 'vg' field) map directly to the 'vgname' parameter used when creating an LVM storage entry via POST /storage.",
+    "If a VG you expect is missing, check that the underlying physical volume is visible to the OS (pvs/vgs in a node shell) — Proxmox scans what the kernel sees at call time."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_scan_lvmthin",
+    "get_nodes_node_scan_disks",
+    "get_storage",
+    "post_storage"
+  ]
+}

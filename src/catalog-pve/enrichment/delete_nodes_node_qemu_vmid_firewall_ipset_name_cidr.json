@@ -1,0 +1,31 @@
+{
+  "operationId": "delete_nodes_node_qemu_vmid_firewall_ipset_name_cidr",
+  "usageNotes": "Use this to remove a specific IP address, network CIDR, or alias from a named IPSet on a VM's firewall. The operation returns null synchronously — no UPID is issued — so changes take effect immediately without polling. The caller must hold the VM.Config.Network privilege on /vms/{vmid}, and the target IPSet must already exist; deleting the last entry from an IPSet does not auto-delete the IPSet itself.",
+  "examples": [
+    {
+      "summary": "Remove 10.10.20.0/24 from the 'trusted-mgmt' IPSet on VM 105",
+      "path_params": {
+        "node": "pve-htz-01",
+        "vmid": 105,
+        "name": "trusted-mgmt",
+        "cidr": "10.10.20.0/24"
+      },
+      "params": {
+        "digest": "a3f1c2e9b84d76f0a1c3e5b2d4f6a8c0e2b4d6f8"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the specified IP/CIDR entry from the IPSet; any firewall rules that relied on this entry to permit or deny traffic will immediately stop matching it, potentially exposing or blocking access without further warning.",
+  "tips": [
+    "Pass the 'digest' query parameter (obtained from the IPSet GET response) to guard against concurrent edits overwriting each other.",
+    "If you need to remove all entries from an IPSet before deleting the set itself, enumerate entries first via the corresponding GET endpoint and delete them one by one.",
+    "The 'cidr' path segment must exactly match the stored value (e.g., '10.0.0.1' and '10.0.0.1/32' are treated as distinct entries).",
+    "Aliases (e.g., '+datacenter') are valid 'cidr' values when the IPorCIDRorAlias format is used — match the alias name exactly as stored."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_firewall_ipset_name",
+    "post_nodes_node_qemu_vmid_firewall_ipset_name",
+    "get_nodes_node_qemu_vmid_firewall_ipset",
+    "delete_nodes_node_qemu_vmid_firewall_ipset_name"
+  ]
+}

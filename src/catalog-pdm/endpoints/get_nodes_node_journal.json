@@ -1,0 +1,80 @@
+{
+  "operationId": "get_nodes_node_journal",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "journal",
+  "method": "GET",
+  "path": "/nodes/{node}/journal",
+  "description": "Read syslog entries.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "endcursor",
+      "type": "string",
+      "required": false,
+      "description": "End before the given Cursor. Conflicts with 'until'"
+    },
+    {
+      "name": "lastentries",
+      "type": "integer",
+      "required": false,
+      "description": "Limit to the last X lines. Conflicts with a range.",
+      "minimum": 0
+    },
+    {
+      "name": "since",
+      "type": "integer",
+      "required": false,
+      "description": "Display all log since this UNIX epoch. Conflicts with 'startcursor'.",
+      "minimum": 0
+    },
+    {
+      "name": "startcursor",
+      "type": "string",
+      "required": false,
+      "description": "Start after the given Cursor. Conflicts with 'since'."
+    },
+    {
+      "name": "until",
+      "type": "integer",
+      "required": false,
+      "description": "Display all log until this UNIX epoch. Conflicts with 'endcursor'.",
+      "minimum": 0
+    }
+  ],
+  "returns": {
+    "description": "Returns a list of journal entries.",
+    "items": {
+      "description": "Line text.",
+      "type": "string"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "log"
+      ],
+      "privs": [
+        "System.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/journal'"
+}

@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_sdn_dns_dns",
+  "usageNotes": "Use this endpoint to retrieve the current configuration of a specific SDN DNS provider object (e.g., PowerDNS) by its identifier. Requires the SDN.Allocate privilege on the /sdn/dns/{dns} path — typically held by administrators. SDN must be enabled on the cluster and the DNS object must already exist; use list_cluster_sdn_dns to enumerate available identifiers first.",
+  "examples": [
+    {
+      "summary": "Read configuration for an SDN DNS provider named 'pdns1'",
+      "path_params": {
+        "dns": "pdns1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The dns identifier must start with a letter, end with a letter or digit, and contain only alphanumeric characters (min length 2).",
+    "This is a cluster-level read — it queries the cluster configuration database, not a specific node, so any online cluster member can serve it.",
+    "After modifying an SDN DNS object, call POST /cluster/sdn to apply pending changes cluster-wide before they take effect in the data plane."
+  ],
+  "relatedOperations": [
+    "list_cluster_sdn_dns",
+    "create_cluster_sdn_dns",
+    "update_cluster_sdn_dns",
+    "delete_cluster_sdn_dns",
+    "apply_cluster_sdn"
+  ]
+}

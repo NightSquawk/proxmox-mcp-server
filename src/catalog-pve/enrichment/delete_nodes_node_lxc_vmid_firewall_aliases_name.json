@@ -1,0 +1,31 @@
+{
+  "operationId": "delete_nodes_node_lxc_vmid_firewall_aliases_name",
+  "usageNotes": "Use this to permanently remove a named IP/network alias from a specific LXC container's firewall configuration. The caller must hold VM.Config.Network on the target VMID. Pass the current config digest to guard against concurrent modifications overwriting each other.",
+  "examples": [
+    {
+      "summary": "Delete the 'mgmt-net' alias from LXC 201 on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 201,
+        "name": "mgmt-net"
+      },
+      "params": {
+        "digest": "a3f1c8b2e94d7021bc56f3a901234def56789abc"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the named firewall alias from the container; any firewall rules that reference this alias by name will break and must be updated or removed separately.",
+  "tips": [
+    "Check for firewall rules referencing this alias before deleting — orphaned alias references can silently block or allow traffic unexpectedly.",
+    "Alias names are container-scoped; deleting here does not affect cluster-level or node-level aliases with the same name.",
+    "The operation returns null on success with no UPID — it is synchronous and takes effect immediately.",
+    "Omitting digest is safe in single-operator environments but risky if multiple admins may be editing firewall config concurrently."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_aliases_name",
+    "get_nodes_node_lxc_vmid_firewall_aliases",
+    "post_nodes_node_lxc_vmid_firewall_aliases",
+    "put_nodes_node_lxc_vmid_firewall_aliases_name",
+    "get_nodes_node_lxc_vmid_firewall_rules"
+  ]
+}

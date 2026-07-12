@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_notifications_matchers",
+  "usageNotes": "Use this to retrieve all notification matchers configured at the cluster level, which control which notification targets receive alerts based on severity, field conditions, calendar windows, and other criteria. Requires at least Mapping.Use, Mapping.Audit, or Mapping.Modify on /mapping/notifications. Matchers with 'disable: true' are still returned in the list but will not route notifications at runtime.",
+  "examples": [
+    {
+      "summary": "List all cluster notification matchers",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'origin' field distinguishes user-created matchers from PVE built-ins ('builtin') and built-ins that have been customized ('modified-builtin') — useful for auditing drift from defaults.",
+    "match-field entries use the format (regex|exact):<field>=<value>, e.g. 'exact:type=vzdump' to target only backup notifications.",
+    "When 'mode' is 'all' (default), every specified match condition must be satisfied; use 'any' if any single condition being true should trigger the matcher.",
+    "Matchers reference targets by their pve-configid name; cross-check against get_cluster_notifications_targets to confirm referenced targets still exist."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_matcher",
+    "create_cluster_notifications_matcher",
+    "update_cluster_notifications_matcher",
+    "delete_cluster_notifications_matcher",
+    "get_cluster_notifications_targets",
+    "get_cluster_notifications_endpoints_sendmail"
+  ]
+}

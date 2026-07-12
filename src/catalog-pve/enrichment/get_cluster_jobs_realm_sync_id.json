@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_jobs_realm_sync_id",
+  "usageNotes": "Use this to inspect the configuration of a specific realm-sync scheduled job by its job ID (a pve-configid string). The caller must hold Sys.Audit on the root path (/); API tokens are supported. This is a read-only call and returns immediately with the job definition object — no UPID or async behavior.",
+  "examples": [
+    {
+      "summary": "Read the definition of a realm-sync job named 'sync-ad-daily'",
+      "path_params": {
+        "id": "sync-ad-daily"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Job IDs follow the pve-configid format: alphanumeric plus hyphens/underscores, no spaces.",
+    "To discover valid job IDs, list all realm-sync jobs first with get_cluster_jobs_realm_sync.",
+    "The returned object includes the realm, schedule, sync options, and remove-vanished settings — useful for auditing before triggering a manual sync."
+  ],
+  "relatedOperations": [
+    "get_cluster_jobs_realm_sync",
+    "post_cluster_jobs_realm_sync",
+    "put_cluster_jobs_realm_sync_id",
+    "delete_cluster_jobs_realm_sync_id"
+  ]
+}

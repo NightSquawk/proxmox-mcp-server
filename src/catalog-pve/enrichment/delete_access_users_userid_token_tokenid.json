@@ -1,0 +1,25 @@
+{
+  "operationId": "delete_access_users_userid_token_tokenid",
+  "usageNotes": "Use this to permanently revoke an API token from a user account — for example, when rotating credentials, offboarding a user, or retiring an automation. The caller must either be the token's owner or hold User.Modify on the relevant user group. Deletion is immediate and irreversible; any service using the revoked token will lose API access instantly.",
+  "examples": [
+    {
+      "summary": "Revoke the 'automation' token for a local admin user",
+      "path_params": {
+        "userid": "admin@pam",
+        "tokenid": "automation"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the API token secret; the token cannot be recovered and any service or script using it will immediately lose API access.",
+  "tips": [
+    "Token IDs must start with a letter and contain only alphanumeric characters, dots, hyphens, or underscores.",
+    "Audit active tokens with get_access_users_userid_token_tokenid or list_access_users_userid_tokens before deleting to confirm which services depend on the token.",
+    "If rotating rather than permanently revoking, create the replacement token first so dependent services have zero-downtime transition."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid_token_tokenid",
+    "create_access_users_userid_token_tokenid",
+    "get_access_users_userid"
+  ]
+}

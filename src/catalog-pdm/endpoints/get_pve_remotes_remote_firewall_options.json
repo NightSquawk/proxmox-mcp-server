@@ -1,0 +1,122 @@
+{
+  "operationId": "get_pve_remotes_remote_firewall_options",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "options",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/firewall/options",
+  "description": "Get cluster firewall options.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Object.",
+    "properties": {
+      "ebtables": {
+        "default": true,
+        "description": "Enable ebtables rules cluster wide.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "enable": {
+        "default": 0,
+        "description": "Enable or disable the firewall cluster wide.",
+        "minimum": 0,
+        "optional": 1,
+        "type": "integer"
+      },
+      "log_ratelimit": {
+        "description": "Log ratelimiting settings",
+        "format": {
+          "additionalProperties": false,
+          "default_key": "enable",
+          "description": "Object.",
+          "properties": {
+            "burst": {
+              "default": 5,
+              "description": "Initial burst of packages which will always get logged before the rate\nis applied",
+              "minimum": 0,
+              "optional": 1,
+              "type": "integer"
+            },
+            "enable": {
+              "default": true,
+              "description": "Enable or disable log rate limiting",
+              "type": "boolean"
+            },
+            "rate": {
+              "default": "1/second",
+              "description": "Frequency with which the burst bucket gets refilled",
+              "optional": 1,
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "optional": 1,
+        "type": "string",
+        "typetext": "[enable=<1|0> [,burst=<integer>] [,rate=<string>]]"
+      },
+      "policy_forward": {
+        "default": "ACCEPT",
+        "description": "Firewall IO policies.",
+        "enum": [
+          "ACCEPT",
+          "DROP"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "policy_in": {
+        "description": "Firewall IO policies.",
+        "enum": [
+          "ACCEPT",
+          "DROP",
+          "REJECT"
+        ],
+        "optional": 1,
+        "type": "string"
+      },
+      "policy_out": {
+        "description": "Firewall IO policies.",
+        "enum": [
+          "ACCEPT",
+          "DROP",
+          "REJECT"
+        ],
+        "optional": 1,
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/firewall/options'"
+}

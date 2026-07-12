@@ -1,0 +1,66 @@
+{
+  "operationId": "get_nodes_node_sdn_fabrics_fabric_interfaces",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "interfaces",
+  "method": "GET",
+  "path": "/nodes/{node}/sdn/fabrics/{fabric}/interfaces",
+  "description": "Get all interfaces for a fabric.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "fabric",
+      "type": "string",
+      "required": true,
+      "description": "Identifier for SDN fabrics",
+      "format": "pve-sdn-fabric-id",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "name": {
+          "description": "The name of the network interface.",
+          "type": "string"
+        },
+        "state": {
+          "description": "The current state of the interface.",
+          "type": "string"
+        },
+        "type": {
+          "description": "The type of this interface in the fabric (e.g. Point-to-Point, Broadcast, ..).",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/fabrics/{fabric}",
+      [
+        "SDN.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/sdn/fabrics/<fabric>/interfaces'"
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_status_reboot",
+  "usageNotes": "Use this to apply pending container configuration changes (e.g. CPU, memory, network edits) without a full stop/start cycle; Proxmox performs a clean shutdown then immediately starts the container again. The container must be in a running state and the target node must be online; calling this on a stopped container will fail. Returns a task UPID string — poll the node's task log to confirm completion.",
+  "examples": [
+    {
+      "summary": "Reboot LXC container 110 on node pve1 with a 60-second shutdown timeout",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 110
+      },
+      "params": {
+        "timeout": 60
+      }
+    }
+  ],
+  "destructiveReason": "Rebooting the container interrupts all running services inside it for the duration of the shutdown and startup cycle.",
+  "tips": [
+    "If timeout is omitted, Proxmox uses its default shutdown timeout (typically 60 s); set an explicit value for containers with slow-stopping services.",
+    "The returned UPID can be passed to GET /nodes/{node}/tasks/{upid}/status to monitor reboot progress.",
+    "Pending config changes saved via PUT /nodes/{node}/lxc/{vmid}/config are applied automatically during the reboot without needing a separate commit step."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_status_shutdown",
+    "post_nodes_node_lxc_vmid_status_start",
+    "post_nodes_node_lxc_vmid_status_stop",
+    "get_nodes_node_lxc_vmid_status_current",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

@@ -1,0 +1,129 @@
+{
+  "operationId": "get_ceph_clusters_cluster_pools",
+  "surface": "pdm",
+  "resource": "ceph",
+  "category": "Ceph",
+  "name": "pools",
+  "method": "GET",
+  "path": "/ceph/clusters/{cluster}/pools",
+  "description": "List the cluster's Ceph pools.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "cluster",
+      "type": "string",
+      "required": true,
+      "description": "Ceph cluster identifier (fsid).",
+      "minLength": 8,
+      "maxLength": 64,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "Ceph pools of the cluster.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Object.",
+      "properties": {
+        "application_metadata": {
+          "additionalProperties": false,
+          "description": "Application tags attached to the pool (mapping of application name to its metadata object).",
+          "optional": 1,
+          "properties": {},
+          "type": "object"
+        },
+        "autoscale_status": {
+          "additionalProperties": false,
+          "description": "Raw pg_autoscaler status object for this pool; shape varies between Ceph releases.",
+          "optional": 1,
+          "properties": {},
+          "type": "object"
+        },
+        "bytes_used": {
+          "description": "Bytes currently used in the pool; absent if no usage statistics are\nreported.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "crush_rule": {
+          "description": "Numeric id of the CRUSH rule used by this pool.",
+          "type": "integer"
+        },
+        "crush_rule_name": {
+          "description": "Human-readable name of the CRUSH rule used by this pool; absent if the\nrule id is not in the current CRUSH map.",
+          "optional": 1,
+          "type": "string"
+        },
+        "min_size": {
+          "description": "Minimum number of replicas required to accept writes.",
+          "type": "integer"
+        },
+        "percent_used": {
+          "description": "Percentage of pool capacity currently used; absent if no usage\nstatistics are reported.",
+          "optional": 1,
+          "type": "number"
+        },
+        "pg_autoscale_mode": {
+          "description": "Placement-group autoscaler mode ('on', 'warn' or 'off').",
+          "optional": 1,
+          "type": "string"
+        },
+        "pg_num": {
+          "description": "Current placement-group count.",
+          "type": "integer"
+        },
+        "pg_num_final": {
+          "description": "Optimal placement-group count computed by pg_autoscaler.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "pg_num_min": {
+          "description": "Minimum placement-group count the pg_autoscaler may choose.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "pool": {
+          "description": "Numeric pool id assigned by Ceph.",
+          "type": "integer"
+        },
+        "pool_name": {
+          "description": "Operator-visible name of the pool.",
+          "type": "string"
+        },
+        "size": {
+          "description": "Replication factor (target number of object replicas).",
+          "type": "integer"
+        },
+        "target_size": {
+          "description": "Operator-supplied target size in bytes; hints the pg_autoscaler.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "target_size_ratio": {
+          "description": "Operator-supplied target ratio of total pool capacity; hints the\npg_autoscaler.",
+          "optional": 1,
+          "type": "number"
+        },
+        "type": {
+          "description": "Pool type: 'replicated' for n-way replication, 'erasure' for an\nerasure-coded pool, 'unknown' for types PVE does not yet map.",
+          "enum": [
+            "replicated",
+            "erasure",
+            "unknown"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/ceph/clusters/<cluster>/pools'"
+}

@@ -1,0 +1,21 @@
+{
+  "operationId": "get_access_domains",
+  "usageNotes": "Use this to enumerate all configured authentication realms on the PDM instance — useful before attempting login, provisioning users, or validating that a specific realm (e.g. an LDAP or OpenID provider) is registered. Requires no authentication, so it can be called before any token is available. Returns only basic realm metadata; for detailed realm configuration use an authenticated admin endpoint.",
+  "examples": [
+    {
+      "summary": "List all authentication realms configured on the PDM instance",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'default' boolean field identifies the realm pre-selected on the login page; there will be at most one entry with default=true.",
+    "Realm type 'pam' refers to Linux PAM (local OS users), 'pdm' is the built-in PDM realm, 'openid'/'ad'/'ldap' are external providers.",
+    "This endpoint is unauthenticated (user: world) — safe to call before obtaining a session token or API token.",
+    "Use the returned 'realm' string as the realm component when constructing user IDs (e.g. 'root@pam', 'admin@ldap')."
+  ],
+  "relatedOperations": [
+    "get_access_users",
+    "get_access_ticket"
+  ]
+}

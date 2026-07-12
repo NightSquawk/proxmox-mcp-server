@@ -1,0 +1,27 @@
+{
+  "operationId": "post_pve_remotes_remote_qemu_vmid_start",
+  "usageNotes": "Use this to power on a stopped or suspended QEMU VM managed by a PDM-registered PVE remote. Requires Resource.Manage privilege on the target remote/VM resource path. Returns a remote UPID string — the VM start is asynchronous, so poll the task status endpoint with that UPID to confirm the VM reached a running state before taking dependent actions.",
+  "examples": [
+    {
+      "summary": "Start VM 101 on the prod-pve remote, pinned to a specific node",
+      "path_params": {
+        "remote": "prod-pve",
+        "vmid": 101
+      },
+      "params": {
+        "node": "pve-node1"
+      }
+    }
+  ],
+  "tips": [
+    "The 'node' body param is optional — omit it to let PDM resolve the VM's current node automatically via the remote cluster.",
+    "The returned UPID is a remote UPID (prefixed for the PDM remote), not a local PVE UPID; use the PDM task-status endpoint, not the PVE node tasks endpoint, to poll it.",
+    "If the VM has a pending snapshot or lock on the source PVE cluster, the start will fail immediately at the PVE side and the UPID will reflect a failed task."
+  ],
+  "relatedOperations": [
+    "post_pve_remotes_remote_qemu_vmid_stop",
+    "post_pve_remotes_remote_qemu_vmid_shutdown",
+    "get_pve_remotes_remote_qemu_vmid_status",
+    "get_pve_remotes_remote_qemu"
+  ]
+}

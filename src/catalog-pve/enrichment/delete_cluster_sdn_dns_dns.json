@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_sdn_dns_dns",
+  "usageNotes": "Permanently removes an SDN DNS integration object from the cluster configuration. Requires the SDN.Allocate privilege on /sdn/dns and must be called before the deletion is propagated — run apply_cluster_sdn (POST /cluster/sdn) afterward to push the change to all nodes. If the SDN config is currently locked, obtain the lock token first and pass it via lock-token.",
+  "examples": [
+    {
+      "summary": "Delete the SDN DNS object named 'powerdns1'",
+      "path_params": {
+        "dns": "powerdns1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the SDN DNS object and its configuration; any VNets or subnets relying on this DNS provider will lose DNS integration until a replacement object is created and applied.",
+  "tips": [
+    "The dns identifier must match the pattern [a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9] (alphanumeric, starts with a letter, minimum 2 chars).",
+    "Deletion only removes the pending config record; you must call POST /cluster/sdn to apply and propagate the change cluster-wide.",
+    "If the SDN layer is locked by another operation, the request will fail unless you supply the correct lock-token."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_dns_dns",
+    "get_cluster_sdn_dns",
+    "create_cluster_sdn_dns",
+    "update_cluster_sdn_dns_dns",
+    "apply_cluster_sdn"
+  ]
+}

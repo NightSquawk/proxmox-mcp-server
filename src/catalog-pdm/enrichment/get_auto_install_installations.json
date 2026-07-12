@@ -1,0 +1,23 @@
+{
+  "operationId": "get_auto_install_installations",
+  "usageNotes": "Use this to monitor all automated bare-metal installations managed by proxmox-auto-installer instances connected to PDM. Each record shows the current lifecycle status ('in-progress', 'answer-sent', 'no-answer-found', 'finished') and includes rich post-hook hardware/network data once the installation completes. Requires the 'System.Audit' privilege on the '/system/auto-installation' path; the post-hook-token field is scrubbed from all API responses and never returned.",
+  "examples": [
+    {
+      "summary": "List all automated installations to check for any stuck or unanswered installs",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Filter client-side on 'status' field: 'no-answer-found' means no matching answer file was located for the machine — check answer templates and hardware identifiers.",
+    "The 'uuid' field uniquely identifies each installation session; correlate it with auto-installer logs or answer files when troubleshooting.",
+    "Post-hook data (SSH host keys, FQDN, disk layout, machine-id) is only populated after a successful installation completes and the post-install webhook fires.",
+    "The 'received-at' field is a Unix epoch integer — convert to human-readable time when triaging stalled installs.",
+    "The 'post-hook-token' is intentionally omitted from all API responses; it exists only on disk for webhook authentication."
+  ],
+  "relatedOperations": [
+    "get_auto_install_answers",
+    "create_auto_install_answer",
+    "delete_auto_install_installation"
+  ]
+}

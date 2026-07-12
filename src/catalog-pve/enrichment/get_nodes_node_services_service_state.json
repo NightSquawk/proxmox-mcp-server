@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_services_service_state",
+  "usageNotes": "Use this to check the live runtime state of a specific PVE-managed system service on a given node — useful for health checks, troubleshooting, or pre-flight validation before restarting or reconfiguring a service. The node must be online and reachable; requires Sys.Audit on /nodes/{node}. Returns three distinct systemd state dimensions (active-state, state/SubState, unit-state) which together give a full picture: a service can be enabled (unit-state) but not currently running (active-state=inactive).",
+  "examples": [
+    {
+      "summary": "Check whether pveproxy is running on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "service": "pveproxy"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "active-state is the high-level systemd ActiveState (e.g. 'active', 'failed'); state is the finer-grained SubState (e.g. 'running', 'dead') — check both when diagnosing failures.",
+    "unit-state reflects whether the service is enabled to start at boot ('enabled'), disabled, or masked — a service can be running but 'disabled' if it was started manually.",
+    "Poll this endpoint after issuing a service restart (post_nodes_node_services_service_restart) to confirm the state transitions from 'activating' to 'active'.",
+    "The 'corosync' and 'pve-cluster' services are cluster-critical — if either shows active-state='failed', expect degraded quorum or HA instability across all nodes."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_services",
+    "post_nodes_node_services_service_restart",
+    "post_nodes_node_services_service_start",
+    "post_nodes_node_services_service_stop",
+    "post_nodes_node_services_service_reload"
+  ]
+}

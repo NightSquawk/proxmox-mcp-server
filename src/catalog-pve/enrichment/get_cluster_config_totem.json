@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_config_totem",
+  "usageNotes": "Returns the active Corosync totem protocol settings for the cluster, including transport, crypto cipher/hash, token/join/consensus timers, and interface bindings. Useful when diagnosing cluster communication problems or verifying that totem parameters match expectations after a config change. Requires Sys.Audit on / — a read-only API token with that privilege is sufficient.",
+  "examples": [
+    {
+      "summary": "Retrieve current Corosync totem settings",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Totem settings are written to /etc/pve/corosync.conf — this endpoint reflects what Corosync is currently configured with, not necessarily what is live in memory if the daemon has not reloaded.",
+    "Key fields to watch: 'token' (ms before a node is declared dead, default 3000), 'crypto_cipher' and 'crypto_hash' (should be non-none in production clusters), and 'transport' (udpu for unicast, knet for Proxmox 7.1+).",
+    "If the returned object is empty or missing expected keys, the cluster config may not yet be fully initialized — confirm with get_cluster_status first."
+  ],
+  "relatedOperations": [
+    "get_cluster_config",
+    "get_cluster_status",
+    "get_cluster_config_nodes",
+    "get_cluster_config_join"
+  ]
+}

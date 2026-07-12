@@ -1,0 +1,146 @@
+{
+  "operationId": "get_nodes_node_tasks",
+  "surface": "pdm",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "tasks",
+  "method": "GET",
+  "path": "/nodes/{node}/tasks",
+  "description": "List tasks.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    }
+  ],
+  "params": [
+    {
+      "name": "errors",
+      "type": "boolean",
+      "required": false,
+      "description": "Only list erroneous tasks.",
+      "default": false
+    },
+    {
+      "name": "limit",
+      "type": "integer",
+      "required": false,
+      "description": "Only list this amount of tasks. (0 means no limit)",
+      "default": 50
+    },
+    {
+      "name": "running",
+      "type": "boolean",
+      "required": false,
+      "description": "Only list running tasks.",
+      "default": false
+    },
+    {
+      "name": "since",
+      "type": "integer",
+      "required": false,
+      "description": "Only list tasks since this UNIX epoch."
+    },
+    {
+      "name": "start",
+      "type": "integer",
+      "required": false,
+      "description": "List tasks beginning from this offset.",
+      "default": 0
+    },
+    {
+      "name": "statusfilter",
+      "type": "array",
+      "required": false,
+      "description": "Only list tasks which have any one of the listed status."
+    },
+    {
+      "name": "typefilter",
+      "type": "string",
+      "required": false,
+      "description": "Only list tasks whose type contains this."
+    },
+    {
+      "name": "until",
+      "type": "integer",
+      "required": false,
+      "description": "Only list tasks until this UNIX epoch."
+    },
+    {
+      "name": "userfilter",
+      "type": "string",
+      "required": false,
+      "description": "Only list tasks from this user."
+    }
+  ],
+  "returns": {
+    "description": "A list of tasks.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Task properties.",
+      "properties": {
+        "endtime": {
+          "description": "The task end time (Epoch)",
+          "optional": 1,
+          "type": "integer"
+        },
+        "node": {
+          "description": "The node name where the task is running on.",
+          "type": "string"
+        },
+        "pid": {
+          "description": "The Unix PID",
+          "type": "integer"
+        },
+        "pstart": {
+          "description": "The task start time (Epoch)",
+          "minimum": 0,
+          "type": "integer"
+        },
+        "starttime": {
+          "description": "The task start time (Epoch)",
+          "type": "integer"
+        },
+        "status": {
+          "description": "Task end status",
+          "optional": 1,
+          "type": "string"
+        },
+        "upid": {
+          "description": "Unique Process/Task Identifier",
+          "minLength": 36,
+          "pattern": "/^UPID:(?P<node>[a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?):(?P<pid>[0-9A-Fa-f]{8}):(?P<pstart>[0-9A-Fa-f]{8,9}):(?P<task_id>[0-9A-Fa-f]{8,16}):(?P<starttime>[0-9A-Fa-f]{8}):(?P<wtype>[^:\\s]+):(?P<wid>[^:\\s]*):(?P<authid>[^:\\s]+):$/",
+          "type": "string"
+        },
+        "user": {
+          "description": "The authenticated entity who started the task",
+          "type": "string"
+        },
+        "worker_id": {
+          "description": "Worker ID (arbitrary ASCII string)",
+          "optional": 1,
+          "type": "string"
+        },
+        "worker_type": {
+          "description": "Worker type (arbitrary ASCII string)",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Users can only see their own tasks, unless they have Sys.Audit on /system/tasks.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/nodes/<node>/tasks'"
+}

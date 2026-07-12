@@ -1,0 +1,25 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_template",
+  "usageNotes": "Converts an existing LXC container into a template, allowing it to be cloned for rapid deployment of new containers. The container must be stopped before conversion — running containers cannot be templated. The operation is synchronous (returns null, not a UPID) and is irreversible; once converted, the container is no longer a deployable instance.",
+  "examples": [
+    {
+      "summary": "Convert LXC 200 on node pve1 into a reusable template",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 200
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Stop the container before calling this endpoint — Proxmox will reject the request if the container is running.",
+    "Conversion is one-way: there is no API call to revert a template back to a regular container.",
+    "After conversion, clone this template using POST /nodes/{node}/lxc/{vmid}/clone to spin up new instances.",
+    "Templates are visible in the Proxmox UI with a distinct icon and cannot be started directly."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_clone",
+    "post_nodes_node_lxc_vmid_status_stop",
+    "get_nodes_node_lxc_vmid_status_current"
+  ]
+}

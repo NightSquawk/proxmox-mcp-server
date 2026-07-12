@@ -1,0 +1,32 @@
+{
+  "operationId": "put_cluster_sdn_prefix_lists_id_entries_url_seq",
+  "usageNotes": "Use this to modify an existing entry within a named SDN prefix list — changing its CIDR prefix, permit/deny action, or prefix-length range constraints (ge/le). The caller must hold SDN.Allocate on the specific prefix-list path; changes do not take effect cluster-wide until the SDN configuration is applied (reload). Use the digest parameter when making concurrent-safe updates to avoid overwriting another process's changes.",
+  "examples": [
+    {
+      "summary": "Update entry seq 10 in prefix-list 'rfc1918' to permit with a le constraint of 28",
+      "path_params": {
+        "id": "rfc1918",
+        "url_seq": "10"
+      },
+      "params": {
+        "action": "permit",
+        "prefix": "10.0.0.0/8",
+        "le": 28,
+        "seq": 10
+      }
+    }
+  ],
+  "tips": [
+    "ge and le set inclusive prefix-length bounds for more-specific match ranges (e.g., ge=24 le=28 matches /24 through /28 within the base prefix).",
+    "The 'delete' array can be used to unset optional fields (such as ge or le) on the entry without recreating it.",
+    "After updating, call the SDN apply endpoint to push the revised prefix-list to all nodes.",
+    "Obtain the current digest via GET on the entry or parent prefix-list before writing to enable optimistic concurrency control."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_prefix_lists_id_entries_url_seq",
+    "get_cluster_sdn_prefix_lists_id_entries",
+    "post_cluster_sdn_prefix_lists_id_entries",
+    "delete_cluster_sdn_prefix_lists_id_entries_url_seq",
+    "put_cluster_sdn"
+  ]
+}

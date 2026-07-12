@@ -1,0 +1,23 @@
+{
+  "operationId": "get_access_users_userid",
+  "usageNotes": "Use this to retrieve the current configuration of a specific PDM user — their display name, email, enabled state, and expiration. The caller must hold System.Audit on /access/users or be reading their own account (the userid path param matches the authenticated identity). The userid must be in user@realm format (e.g. admin@pam); supplying only a username without a realm will fail validation.",
+  "examples": [
+    {
+      "summary": "Fetch configuration for the built-in admin account",
+      "path_params": {
+        "userid": "admin@pam"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A returned 'enable: false' means the account is disabled and cannot authenticate — useful for auditing stale or locked-out accounts.",
+    "The 'expire' field is a Unix epoch integer; value 0 means the account never expires.",
+    "API tokens (allowtoken: true) can call this endpoint, making it safe to use from automation without a full session ticket."
+  ],
+  "relatedOperations": [
+    "get_access_users",
+    "put_access_users_userid",
+    "delete_access_users_userid"
+  ]
+}

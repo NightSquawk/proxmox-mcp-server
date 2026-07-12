@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_ha_status_current",
+  "usageNotes": "Use this endpoint to get a real-time snapshot of the entire HA subsystem in one call — it returns entries for quorum, the CRM master, each node's LRM, every HA-managed service, and fencing state. Requires Sys.Audit on the root path, so API tokens scoped to that privilege work fine. The response is an array of typed entries; always filter by the 'type' field ('quorum', 'master', 'lrm', 'service', 'fencing') since available properties differ per type.",
+  "examples": [
+    {
+      "summary": "Fetch current HA status for the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Check 'quorate' on the type='quorum' entry first — if false, the cluster has lost quorum and HA decisions are frozen.",
+    "The type='fencing' entry's 'armed-state' field indicates whether STONITH fencing is active ('armed'), standing by ('standby'), or in the process of disarming — 'disarmed' means fencing is off and node failures won't trigger automatic recovery.",
+    "Service entries (type='service') expose both 'request_state' (what the CRM wants) and 'crm_state' (what it observes) — a mismatch between these two indicates the manager is still reconciling.",
+    "The 'timestamp' on type='lrm' and type='master' entries is a Unix epoch; stale timestamps (many minutes behind wall-clock) can indicate a node's LRM is unresponsive even if the node appears online.",
+    "This endpoint is cluster-wide and does not require specifying a node — query it from any cluster member."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_resources",
+    "get_cluster_ha_groups",
+    "get_cluster_status",
+    "get_nodes"
+  ]
+}

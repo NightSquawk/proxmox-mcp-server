@@ -1,0 +1,21 @@
+{
+  "operationId": "get_sdn",
+  "usageNotes": "Use this as a discovery call to confirm that the PDM SDN API surface is reachable and to enumerate available SDN sub-resources before drilling into zones, vnets, or subnets. No parameters are required and it is accessible to all authenticated users, so it is safe to call as a health-check or capability probe. The endpoint returns a directory index (null body per the spec), so meaningful SDN data must be retrieved from child endpoints such as those under /sdn/zones or /sdn/vnets.",
+  "examples": [
+    {
+      "summary": "Probe the SDN directory index to confirm API availability",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns a directory index with null body — do not expect SDN configuration data from this call; follow up with child-resource endpoints.",
+    "Accessible to all authenticated users (permissions: user=all), making it safe to use for capability detection without elevated privileges.",
+    "If this endpoint returns an error, SDN may be disabled or not licensed on the PDM instance."
+  ],
+  "relatedOperations": [
+    "get_sdn_zones",
+    "get_sdn_vnets",
+    "get_sdn_controllers"
+  ]
+}

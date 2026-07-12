@@ -1,0 +1,27 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_suspend_ram",
+  "usageNotes": "Sends a RAM-only suspend (ACPI S3 sleep) command to a running VM via the QEMU Guest Agent; the VM's memory contents are preserved in RAM while the CPU and most devices are powered down. Requires the QEMU Guest Agent to be installed and running inside the guest, and the caller needs either VM.PowerMgmt or VM.GuestAgent.Unrestricted on /vms/{vmid}. Unlike suspend-disk, this does not checkpoint to storage, so state is lost if the host loses power while the VM is suspended.",
+  "examples": [
+    {
+      "summary": "RAM-suspend VM 105 on node pve01",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The guest OS must support ACPI S3 suspend; Windows guests generally do, but some Linux guests require acpid and appropriate kernel support.",
+    "Confirm the QEMU Guest Agent service is active inside the VM before calling this endpoint — the call will fail silently or return an error if the agent is not responding.",
+    "Use get_nodes_node_qemu_vmid_status_current to verify the VM transitions to 'paused' or 'suspended' state after issuing this command.",
+    "Because state lives only in RAM, avoid this on hosts with unstable power or during planned maintenance windows; use suspend-disk for persistence across host reboots."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_agent_suspend_disk",
+    "post_nodes_node_qemu_vmid_agent_suspend_hybrid",
+    "post_nodes_node_qemu_vmid_status_resume",
+    "get_nodes_node_qemu_vmid_agent",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

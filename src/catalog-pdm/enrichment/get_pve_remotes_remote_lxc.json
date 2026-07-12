@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc",
+  "usageNotes": "Use this to list all LXC containers across a registered PDM remote, optionally scoped to a single node. Omitting the `node` parameter queries every node in the cluster, which is useful for a full inventory but may return a large result set on busy clusters. The caller must hold the `Resource.Audit` privilege on the remote resource path; API tokens are supported.",
+  "examples": [
+    {
+      "summary": "List all LXC containers on a specific node of a remote cluster",
+      "path_params": {
+        "remote": "hetzner-pve"
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "All resource metrics (cpu, mem, disk, netin, netout) are live point-in-time snapshots and are absent for stopped containers.",
+    "Containers marked as templates (template: true) are included in the result; filter them out if you only want running or manageable instances.",
+    "The `lock` field being set means the container is mid-operation (backup, migration, snapshot) — avoid actions on locked containers.",
+    "Pressure stall fields (pressurecpusome, pressureiofull, etc.) are only populated on kernels with PSI support (Linux 4.20+)."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu",
+    "get_pve_remotes_remote_nodes",
+    "get_pve_remotes"
+  ]
+}

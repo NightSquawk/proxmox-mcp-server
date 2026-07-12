@@ -1,0 +1,29 @@
+{
+  "operationId": "delete_cluster_firewall_ipset_name_cidr",
+  "usageNotes": "Use this to remove a specific IP address or CIDR block from a cluster-level firewall IPSet. The caller must hold the Sys.Modify privilege on the root path (/). Pass the current configuration digest to guard against concurrent edits overwriting each other — omitting it skips the optimistic-lock check. This operation is synchronous and returns null on success; the firewall rule referencing this IPSet takes effect immediately after removal.",
+  "examples": [
+    {
+      "summary": "Remove a specific host IP from the 'trusted-mgmt' IPSet",
+      "path_params": {
+        "name": "trusted-mgmt",
+        "cidr": "192.168.10.50"
+      },
+      "params": {
+        "digest": "a3f1c2e9b7d04561ef238940dcb12345"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the specified IP/CIDR entry from the IPSet; any firewall rules that allowed or denied traffic based on this entry will stop matching that address immediately.",
+  "tips": [
+    "Fetch the current digest via GET /cluster/firewall/ipset/{name} before deleting to avoid optimistic-lock conflicts in automation scripts.",
+    "The 'cidr' path param accepts bare IPs (e.g. 10.0.0.1), CIDR notation (e.g. 10.0.0.0/24), or an alias name — match exactly what is stored in the IPSet.",
+    "Removing an entry from an IPSet that is actively referenced by cluster firewall rules takes effect instantly; verify no production traffic depends on the entry before deleting."
+  ],
+  "relatedOperations": [
+    "get_cluster_firewall_ipset_name",
+    "create_cluster_firewall_ipset_name_cidr",
+    "update_cluster_firewall_ipset_name_cidr",
+    "delete_cluster_firewall_ipset_name",
+    "get_cluster_firewall_ipsets"
+  ]
+}

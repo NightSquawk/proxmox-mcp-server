@@ -1,0 +1,158 @@
+{
+  "operationId": "get_pve_firewall_status",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "status",
+  "method": "GET",
+  "path": "/pve/firewall/status",
+  "description": "Get firewall status of all PVE remotes.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "description": "Get firewall status of remotes",
+    "items": {
+      "additionalProperties": false,
+      "description": "Firewall status of a PVE remote.",
+      "properties": {
+        "nodes": {
+          "description": "Nodes in the cluster",
+          "items": {
+            "additionalProperties": false,
+            "description": "Firewall status of a node",
+            "properties": {
+              "guests": {
+                "description": "Guests on a node",
+                "items": {
+                  "additionalProperties": false,
+                  "description": "Firewall status of a guest",
+                  "properties": {
+                    "kind": {
+                      "description": "The type of the guest",
+                      "enum": [
+                        "lxc",
+                        "qemu"
+                      ],
+                      "type": "string"
+                    },
+                    "name": {
+                      "description": "Name of the guest.",
+                      "type": "string"
+                    },
+                    "status": {
+                      "additionalProperties": false,
+                      "description": "Firewall status.",
+                      "optional": 1,
+                      "properties": {
+                        "active": {
+                          "description": "The amount of enabled rules",
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "all": {
+                          "description": "The total amount of rules present",
+                          "minimum": 0,
+                          "type": "integer"
+                        },
+                        "enabled": {
+                          "description": "True if the firewall is enabled",
+                          "type": "boolean"
+                        }
+                      },
+                      "type": "object"
+                    },
+                    "vmid": {
+                      "description": "A guest ID",
+                      "minimum": 1,
+                      "type": "integer"
+                    }
+                  },
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              "node": {
+                "description": "Node name (or 'localhost')",
+                "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/",
+                "type": "string"
+              },
+              "status": {
+                "additionalProperties": false,
+                "description": "Firewall status.",
+                "optional": 1,
+                "properties": {
+                  "active": {
+                    "description": "The amount of enabled rules",
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "all": {
+                    "description": "The total amount of rules present",
+                    "minimum": 0,
+                    "type": "integer"
+                  },
+                  "enabled": {
+                    "description": "True if the firewall is enabled",
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "remote": {
+          "description": "Remote ID.",
+          "maxLength": 32,
+          "minLength": 2,
+          "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/",
+          "type": "string"
+        },
+        "status": {
+          "additionalProperties": false,
+          "description": "Firewall status.",
+          "optional": 1,
+          "properties": {
+            "active": {
+              "description": "The amount of enabled rules",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "all": {
+              "description": "The total amount of rules present",
+              "minimum": 0,
+              "type": "integer"
+            },
+            "enabled": {
+              "description": "True if the firewall is enabled",
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/firewall/status'"
+}

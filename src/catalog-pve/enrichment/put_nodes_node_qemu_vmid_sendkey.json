@@ -1,0 +1,27 @@
+{
+  "operationId": "put_nodes_node_qemu_vmid_sendkey",
+  "usageNotes": "Injects a raw keypress into a running VM's console via the QEMU monitor — useful for sending keys that the guest OS would otherwise intercept (e.g. Ctrl-Alt-Del, SysRq sequences) or for automating BIOS-level interactions. The VM must be in a running state on the specified node; sending to a stopped or paused VM will error. Key strings use QEMU monitor encoding (e.g. 'ctrl-alt-delete', 'ret', 'shift-f10').",
+  "examples": [
+    {
+      "summary": "Send Ctrl-Alt-Delete to a Windows VM to trigger a graceful restart",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {
+        "key": "ctrl-alt-delete"
+      }
+    }
+  ],
+  "tips": [
+    "Key names follow QEMU monitor conventions, not X11 or Windows virtual-key names — use 'ret' for Enter, 'spc' for Space, 'esc' for Escape.",
+    "To send a key chord, join key names with '-' (e.g. 'ctrl-alt-delete'). For individual keys in sequence, make separate API calls.",
+    "Only root (PAM) may use skiplock=true; API tokens for regular users cannot bypass locks even with VM.Console.",
+    "This returns null synchronously — there is no UPID or task to poll; the keypress is delivered immediately or the call fails."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_monitor",
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_status_start"
+  ]
+}

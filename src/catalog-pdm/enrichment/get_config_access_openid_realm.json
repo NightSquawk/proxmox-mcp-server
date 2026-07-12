@@ -1,0 +1,26 @@
+{
+  "operationId": "get_config_access_openid_realm",
+  "usageNotes": "Use this to inspect the full OpenID Connect configuration for a specific realm before modifying it or troubleshooting SSO login failures. The caller must hold the System.Audit privilege on /access/domains — API tokens are supported. Note that client-key (the client secret) is returned in the response, so treat the output as sensitive.",
+  "examples": [
+    {
+      "summary": "Retrieve the configuration for an OpenID realm named 'sso-azure'",
+      "path_params": {
+        "realm": "sso-azure"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The realm name must be 2–32 characters and match /^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/ — names starting with a dot or hyphen are rejected.",
+    "client-key (the OIDC client secret) is included in the response; avoid logging or storing the output in plain text.",
+    "If autocreate is false and a user does not yet exist in PDM, their first SSO login will fail even if the IdP authenticates them successfully.",
+    "scopes defaults to 'email profile'; if username-claim references a non-standard claim (e.g. 'preferred_username'), ensure that scope is included in the realm config.",
+    "Use this endpoint to capture the current state before calling the corresponding update operation, so you can diff and restore if needed."
+  ],
+  "relatedOperations": [
+    "get_config_access_openid",
+    "put_config_access_openid_realm",
+    "delete_config_access_openid_realm",
+    "post_config_access_openid"
+  ]
+}

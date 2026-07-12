@@ -1,0 +1,57 @@
+{
+  "operationId": "delete_cluster_firewall_ipset_name_cidr",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "remove_ip",
+  "method": "DELETE",
+  "path": "/cluster/firewall/ipset/{name}/{cidr}",
+  "description": "Remove IP or Network from IPSet.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "IP set name.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    },
+    {
+      "name": "cidr",
+      "type": "string",
+      "required": true,
+      "description": "Network/IP specification in CIDR format.",
+      "format": "IPorCIDRorAlias",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/firewall/ipset/<name>/<cidr>'"
+}

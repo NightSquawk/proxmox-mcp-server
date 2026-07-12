@@ -1,0 +1,23 @@
+{
+  "operationId": "get_ceph_clusters_cluster_osd_tree",
+  "usageNotes": "Use this endpoint to retrieve the CRUSH tree structure for a Ceph cluster managed by PDM, which shows how OSDs are organized into buckets (hosts, racks, zones) and their weights. The `cluster` path parameter must be the cluster's FSID (UUID-like identifier), not a display name. This is a read-only operation accessible to all authenticated users.",
+  "examples": [
+    {
+      "summary": "Fetch the OSD tree for a specific Ceph cluster by FSID",
+      "path_params": {
+        "cluster": "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The cluster FSID can be obtained from list-clusters or get-cluster endpoints — it is the UUID that Ceph uses internally, not a human-readable name.",
+    "The returned CRUSH tree reflects OSD placement, replication domains, and weights, which are useful for verifying failure domain configuration before making storage policy changes.",
+    "An empty or malformed tree may indicate the cluster is not fully initialized or PDM has lost connectivity to it."
+  ],
+  "relatedOperations": [
+    "get_ceph_clusters_cluster",
+    "get_ceph_clusters_cluster_osds",
+    "get_ceph_clusters"
+  ]
+}

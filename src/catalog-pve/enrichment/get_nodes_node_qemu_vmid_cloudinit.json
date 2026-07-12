@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_cloudinit",
+  "usageNotes": "Use this to inspect the cloud-init configuration of a QEMU VM, showing both the values that were used to generate the currently active cloud-init image and any pending changes not yet applied. A config change is only reflected in the VM after a cloud-init image regeneration (via the update endpoint) followed by a reboot — this endpoint lets you detect that drift before it bites you. Requires VM.Audit on the target VM.",
+  "examples": [
+    {
+      "summary": "Get cloud-init config for VM 105 on node pve1, showing current vs pending values",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 105
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Items with a 'pending' field but no 'value' field are newly added options not yet baked into the drive image.",
+    "Items with 'delete': 1 are staged for removal but still active until the cloud-init drive is regenerated.",
+    "Both 'value' and 'pending' being present on the same key means the option was changed but the drive hasn't been rebuilt yet — the VM is still running with the old value.",
+    "Cloud-init changes only take effect after regenerating the drive (POST /cloudinit) and rebooting the VM; this read endpoint is safe to poll without side effects."
+  ],
+  "relatedOperations": [
+    "put_nodes_node_qemu_vmid_cloudinit",
+    "get_nodes_node_qemu_vmid_config",
+    "post_nodes_node_qemu_vmid_cloudinit"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_config_nodes_node",
+  "usageNotes": "Use this to remove a node from the Proxmox cluster configuration — typically after the node has already been shut down or when evicting a dead/unreachable node. The target node should be offline before removal; removing an active, healthy node without migrating its VMs/containers and storage first can leave workloads unmanageable. This operation returns null synchronously, but the underlying cluster config propagation (corosync quorum) takes effect immediately.",
+  "examples": [
+    {
+      "summary": "Remove a decommissioned node named 'pve-node3' from the cluster",
+      "path_params": {
+        "node": "pve-node3"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the node's membership from the cluster configuration; any VMs, storage mappings, or HA rules still assigned to the node become orphaned and must be manually reassigned or cleaned up.",
+  "tips": [
+    "Migrate all VMs and containers off the node before removal — orphaned guests are not automatically reassigned.",
+    "Remove the node from any HA groups and storage replication jobs before deleting it from the cluster config.",
+    "After removal, the evicted node's local corosync/pmxcfs state is not automatically wiped — reinstall or manually clean it to prevent split-brain if the node is reused.",
+    "Requires quorum: if the cluster already lacks quorum, this call may fail or produce unexpected results."
+  ],
+  "relatedOperations": [
+    "get_cluster_config_nodes",
+    "post_cluster_config_nodes",
+    "get_cluster_status",
+    "get_nodes_node_status"
+  ]
+}

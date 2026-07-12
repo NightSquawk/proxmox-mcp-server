@@ -1,0 +1,31 @@
+{
+  "operationId": "post_cluster_sdn_fabrics_fabric",
+  "usageNotes": "Use this to define a new SDN fabric — the routing/overlay protocol backbone (OpenFabric, OSPF, WireGuard, or BGP) that interconnects Proxmox cluster nodes. Requires the SDN.Allocate privilege on /sdn/fabrics. After creating a fabric, you must apply the SDN configuration (PUT /cluster/sdn) for changes to take effect on nodes.",
+  "examples": [
+    {
+      "summary": "Create a WireGuard fabric with a persistent keepalive and an IPv4 node prefix",
+      "path_params": {},
+      "params": {
+        "id": "wg-core",
+        "protocol": "wireguard",
+        "redistribute": [],
+        "ip_prefix": "10.10.0.0/24",
+        "persistent_keepalive": 25
+      }
+    }
+  ],
+  "tips": [
+    "The 'id' field must be 2–8 alphanumeric characters (hyphens allowed in the middle); it cannot be changed after creation.",
+    "For OSPF fabrics, 'area' accepts either a dotted-quad IPv4 address (e.g. 0.0.0.0) or a plain 32-bit integer.",
+    "The 'redistribute' array is required but can be an empty array if no route redistribution is needed.",
+    "Use 'digest' to guard against concurrent writes when multiple operators may modify SDN config simultaneously.",
+    "After adding a fabric, call PUT /cluster/sdn to push the configuration to all cluster nodes; nodes will not use the new fabric until that apply step completes."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics",
+    "get_cluster_sdn_fabrics_fabric",
+    "put_cluster_sdn_fabrics_fabric",
+    "delete_cluster_sdn_fabrics_fabric",
+    "put_cluster_sdn"
+  ]
+}

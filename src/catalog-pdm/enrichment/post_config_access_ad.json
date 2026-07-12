@@ -1,0 +1,39 @@
+{
+  "operationId": "post_config_access_ad",
+  "usageNotes": "Use this to register a new Active Directory realm in Proxmox Datacenter Manager so PDM-managed nodes can authenticate users against your AD/LDAP server. Requires the `Realm.Allocate` privilege on the `access/domains` ACL path — API tokens are accepted. The realm name must be unique across all realms and cannot be changed after creation; set `bind-dn` and `password` if the AD server requires authenticated binds.",
+  "examples": [
+    {
+      "summary": "Create a corporate AD realm with LDAPS, authenticated bind, and attribute sync",
+      "path_params": {},
+      "params": {
+        "realm": "corp-ad",
+        "server1": "dc1.corp.example.com",
+        "server2": "dc2.corp.example.com",
+        "base-dn": "DC=corp,DC=example,DC=com",
+        "bind-dn": "CN=pdm-svc,OU=Service Accounts,DC=corp,DC=example,DC=com",
+        "password": "S3cr3tBindP@ss",
+        "mode": "ldaps",
+        "port": 636,
+        "verify": true,
+        "sync-attributes": "email=mail,firstname=givenName,lastname=sn",
+        "sync-defaults-options": "enable-new=1,remove-vanished=entry;properties",
+        "user-classes": "user,person",
+        "comment": "Corporate Active Directory realm",
+        "default": false
+      }
+    }
+  ],
+  "tips": [
+    "The `realm` value becomes part of every synced user's login name (user@realm) and cannot be renamed — choose it carefully before first use.",
+    "Use `mode: ldaps` with `port: 636` and `verify: true` for production; the default `ldap` on port 389 sends credentials in plaintext.",
+    "If your AD enforces authenticated queries, `bind-dn` and `password` are effectively required even though the spec marks them optional.",
+    "After creating the realm, trigger a user sync via the corresponding sync endpoint to populate PDM users from the AD directory.",
+    "Setting `default: true` makes this realm pre-selected on the PDM login page — only one realm should have this flag."
+  ],
+  "relatedOperations": [
+    "get_config_access_ad",
+    "put_config_access_ad_realm",
+    "delete_config_access_ad_realm",
+    "post_config_access_ad_realm_sync"
+  ]
+}

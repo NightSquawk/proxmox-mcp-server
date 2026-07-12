@@ -1,0 +1,76 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_file_write",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "file-write",
+  "method": "POST",
+  "path": "/nodes/{node}/qemu/{vmid}/agent/file-write",
+  "description": "Writes the given file via guest agent.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "content",
+      "type": "string",
+      "required": true,
+      "description": "The content to write into the file.",
+      "maxLength": 61440,
+      "typetext": "<string>"
+    },
+    {
+      "name": "encode",
+      "type": "boolean",
+      "required": false,
+      "description": "If set, the content will be encoded as base64 (required by QEMU).Otherwise the content needs to be encoded beforehand - defaults to true.",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "file",
+      "type": "string",
+      "required": true,
+      "description": "The path to the file.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.GuestAgent.FileWrite",
+        "VM.GuestAgent.Unrestricted"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"content\":\"<content>\",\"file\":\"<file>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/qemu/100/agent/file-write'"
+}

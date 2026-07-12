@@ -1,0 +1,24 @@
+{
+  "operationId": "post_cluster_sdn_lock",
+  "usageNotes": "Acquires a cluster-wide exclusive lock before making SDN configuration changes; any subsequent apply or edit operation requires this lock to succeed first. The caller must hold the SDN.Allocate privilege on /sdn. By default the lock will be denied if there are already pending (unapplied) SDN changes — pass allow-pending: true only when you intentionally want to layer additional changes on top of an existing pending diff.",
+  "examples": [
+    {
+      "summary": "Acquire SDN lock before editing zone/VNET configuration",
+      "path_params": {},
+      "params": {
+        "allow-pending": false
+      }
+    }
+  ],
+  "tips": [
+    "The returned string is a lock token or confirmation value — retain it for debugging; the lock is cluster-scoped so concurrent SDN edits from other sessions will block until it is released.",
+    "Always pair this call with the corresponding unlock or apply operation to avoid leaving the SDN config locked and blocking other administrators.",
+    "Use allow-pending: true with caution in automation — it means you may apply a config that includes changes from a prior, unreviewed session."
+  ],
+  "relatedOperations": [
+    "delete_cluster_sdn_lock",
+    "put_cluster_sdn",
+    "post_cluster_sdn_reload",
+    "get_cluster_sdn"
+  ]
+}

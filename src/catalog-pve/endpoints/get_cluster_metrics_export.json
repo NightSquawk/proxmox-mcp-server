@@ -1,0 +1,100 @@
+{
+  "operationId": "get_cluster_metrics_export",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "export",
+  "method": "GET",
+  "path": "/cluster/metrics/export",
+  "description": "Retrieve metrics of the cluster.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "history",
+      "type": "boolean",
+      "required": false,
+      "description": "Also return historic values. Returns full available metric history unless `start-time` is also set",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "local-only",
+      "type": "boolean",
+      "required": false,
+      "description": "Only return metrics for the current node instead of the whole cluster",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "node-list",
+      "type": "string",
+      "required": false,
+      "description": "Only return metrics from nodes passed as comma-separated list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "start-time",
+      "type": "integer",
+      "required": false,
+      "description": "Only include metrics with a timestamp > start-time.",
+      "default": 0,
+      "typetext": "<integer>"
+    }
+  ],
+  "returns": {
+    "additionalProperties": 0,
+    "properties": {
+      "data": {
+        "description": "Array of system metrics. Metrics are sorted by their timestamp.",
+        "items": {
+          "additionalProperties": 0,
+          "properties": {
+            "id": {
+              "description": "Unique identifier for this metric object, for instance 'node/<nodename>' or 'qemu/<vmid>'.",
+              "type": "string"
+            },
+            "metric": {
+              "description": "Name of the metric.",
+              "type": "string"
+            },
+            "timestamp": {
+              "description": "Time at which this metric was observed",
+              "type": "integer"
+            },
+            "type": {
+              "description": "Type of the metric.",
+              "enum": [
+                "gauge",
+                "counter",
+                "derive"
+              ],
+              "type": "string"
+            },
+            "value": {
+              "description": "Metric value.",
+              "type": "number"
+            }
+          },
+          "type": "object"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/metrics/export'"
+}

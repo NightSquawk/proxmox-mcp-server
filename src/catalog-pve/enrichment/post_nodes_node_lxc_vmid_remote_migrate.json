@@ -1,0 +1,33 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_remote_migrate",
+  "usageNotes": "Use this to migrate an LXC container to a different Proxmox cluster (cross-cluster migration); this is distinct from intra-cluster migration and is marked EXPERIMENTAL — avoid in production without prior testing. The three required body params — target-endpoint, target-bridge, and target-storage — must all be resolvable on the destination cluster before the task is submitted. Returns a UPID task string; poll GET /nodes/{node}/tasks/{upid}/status to track completion. By default the source container is left stopped on the source cluster after migration; pass delete=true only if you are certain the migration succeeded and want automatic cleanup.",
+  "examples": [
+    {
+      "summary": "Live-migrate CT 201 from node pve1 to a remote cluster, mapping bridges and storage, keeping the source after migration",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 201
+      },
+      "params": {
+        "target-endpoint": "apitoken=PVEAPIToken=root@pam!migrate-token=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx,host=10.0.1.50,fingerprint=AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67:89:AB:CD:EF:01:23:45:67,port=8006",
+        "target-bridge": "vmbr0",
+        "target-storage": "local-lvm",
+        "online": true,
+        "delete": false,
+        "bwlimit": 102400
+      }
+    }
+  ],
+  "tips": [
+    "The target-endpoint API token must have VM.Allocate and Datastore.AllocateSpace on the destination cluster, not just on the source.",
+    "Use target-vmid to assign a different VMID on the destination if the original VMID is already in use there.",
+    "If the container uses multiple storage volumes on different source storages, supply a full mapping string (e.g. 'local-lvm:remote-lvm,local:remote-data') rather than a single storage ID.",
+    "restart migration (restart=true) shuts the CT down gracefully, transfers it, then boots it on the destination — useful when the workload cannot tolerate live-migration overhead.",
+    "The TLS fingerprint in target-endpoint can be obtained from the destination node's certificate via: openssl s_client -connect HOST:8006 2>/dev/null | openssl x509 -fingerprint -sha256 -noout"
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_migrate",
+    "get_nodes_node_tasks",
+    "get_nodes_node_lxc_vmid_status_current"
+  ]
+}

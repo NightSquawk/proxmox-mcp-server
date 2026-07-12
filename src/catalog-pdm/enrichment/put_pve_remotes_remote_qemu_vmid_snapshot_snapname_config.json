@@ -1,0 +1,29 @@
+{
+  "operationId": "put_pve_remotes_remote_qemu_vmid_snapshot_snapname_config",
+  "usageNotes": "Use this to update the human-readable description on an existing QEMU VM snapshot managed by a PDM remote. This is one of the few snapshot operations that is fully synchronous — it returns null immediately with no UPID or task to poll. The caller must hold Resource.Manage on the remote/VM resource path.",
+  "examples": [
+    {
+      "summary": "Add a description to a pre-upgrade snapshot on a remote VM",
+      "path_params": {
+        "remote": "hetzner-pve1",
+        "vmid": 105,
+        "snapname": "pre-upgrade-2026-06"
+      },
+      "params": {
+        "description": "Taken before upgrading Ubuntu 22.04 to 24.04 on 2026-06-29.",
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "This endpoint only updates the description field — snapshot content, RAM state, and disk state cannot be changed after creation.",
+    "Omitting the node parameter lets PDM resolve the host automatically; supply it when targeting a specific node in a cluster.",
+    "Snapshot names follow the same alphanumeric-plus-dot-dash-underscore pattern as remote IDs — spaces are not allowed."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_snapshot_snapname_config",
+    "get_pve_remotes_remote_qemu_vmid_snapshot",
+    "post_pve_remotes_remote_qemu_vmid_snapshot",
+    "delete_pve_remotes_remote_qemu_vmid_snapshot_snapname"
+  ]
+}

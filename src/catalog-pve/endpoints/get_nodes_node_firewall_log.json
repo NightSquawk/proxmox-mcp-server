@@ -1,0 +1,83 @@
+{
+  "operationId": "get_nodes_node_firewall_log",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "log",
+  "method": "GET",
+  "path": "/nodes/{node}/firewall/log",
+  "description": "Read firewall log",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "limit",
+      "type": "integer",
+      "required": false,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "since",
+      "type": "integer",
+      "required": false,
+      "description": "Display log since this UNIX epoch.",
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "start",
+      "type": "integer",
+      "required": false,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "until",
+      "type": "integer",
+      "required": false,
+      "description": "Display log until this UNIX epoch.",
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "n": {
+          "description": "Line number",
+          "type": "integer"
+        },
+        "t": {
+          "description": "Line text",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/nodes/{node}",
+      [
+        "Sys.Syslog"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/firewall/log'"
+}

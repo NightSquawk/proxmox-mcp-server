@@ -1,0 +1,27 @@
+{
+  "operationId": "get_cluster_sdn_zones_zone",
+  "usageNotes": "Use this to inspect the full configuration of a single SDN zone by its identifier. The `pending` flag is especially useful after making edits — it surfaces changes that have been saved but not yet applied via `applysdn`; the `running` flag shows the live kernel state. Requires `SDN.Allocate` on `/sdn/zones/{zone}`, which is typically an administrator-level privilege.",
+  "examples": [
+    {
+      "summary": "Fetch the configuration of an EVPN zone, including any unapplied pending changes",
+      "path_params": {
+        "zone": "evpnzone"
+      },
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "Zone identifiers are 2–8 characters, start with a letter, and contain only alphanumeric characters — plan names accordingly before creation.",
+    "Most returned fields are zone-type-specific (e.g., `exitnodes`, `vrf-vxlan` are EVPN-only; `peers` is VXLAN-only; `tag` and `bridge` are QinQ/VLAN-only). Fields irrelevant to the zone type are omitted from the response.",
+    "The `state` field (`new`, `changed`, `deleted`) indicates whether the stored config differs from what is currently applied; a non-empty `pending` sub-object alongside `state: changed` means an apply cycle is needed.",
+    "The `digest` field can be passed to update operations as an optimistic-lock check to prevent overwriting concurrent changes."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_zones",
+    "put_cluster_sdn_zones_zone",
+    "delete_cluster_sdn_zones_zone",
+    "put_cluster_sdn"
+  ]
+}

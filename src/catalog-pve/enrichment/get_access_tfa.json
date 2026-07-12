@@ -1,0 +1,23 @@
+{
+  "operationId": "get_access_tfa",
+  "usageNotes": "Use this to audit TFA enrollment across all users in the cluster — useful for compliance checks or onboarding reviews. Unprivileged users only receive their own entry; the full list requires Sys.Audit or equivalent realm-admin privilege. The response also surfaces lockout state (tfa-locked-until, totp-locked), making it useful for diagnosing why a user cannot complete login.",
+  "examples": [
+    {
+      "summary": "List all TFA configurations as an admin token",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "An empty 'entries' array for a user means they have no TFA methods registered — not that TFA is disabled globally.",
+    "Check 'tfa-locked-until' (unix timestamp) and 'totp-locked' on a user's record before resetting credentials; a lockout may clear on its own.",
+    "TFA type 'recovery' indicates one-time recovery codes; if this is the only entry for a user, they have no active second factor.",
+    "u2f is legacy — users with only u2f entries should migrate to webauthn."
+  ],
+  "relatedOperations": [
+    "get_access_tfa_userid",
+    "post_access_tfa_userid",
+    "delete_access_tfa_userid_id",
+    "get_access_users"
+  ]
+}

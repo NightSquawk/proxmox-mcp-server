@@ -1,0 +1,25 @@
+{
+  "operationId": "get_access_tfa_userid",
+  "usageNotes": "Use this to audit or inspect all TFA entries registered for a specific Proxmox user. A user can read their own TFA entries without elevated privileges; reading another user's entries requires User.Modify or Sys.Audit on the root path. Each entry includes the type (totp, webauthn, u2f, recovery, yubico) and whether it is currently enabled, making it useful for verifying MFA posture before disabling or rotating credentials.",
+  "examples": [
+    {
+      "summary": "List all TFA entries for a local admin user",
+      "path_params": {
+        "userid": "admin@pam"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "An empty array means the user has no TFA configured — treat this as a security gap for privileged accounts.",
+    "The 'enable' field defaults to true; a disabled entry (enable: false) still exists but will not be challenged at login.",
+    "Recovery entries (type: 'recovery') are one-time-use codes — their presence in the list does not indicate how many remain.",
+    "API tokens are allowed (allowtoken: true), so this endpoint can be called from automation without an interactive session."
+  ],
+  "relatedOperations": [
+    "post_access_tfa_userid",
+    "put_access_tfa_userid_id",
+    "delete_access_tfa_userid_id",
+    "get_access_users"
+  ]
+}

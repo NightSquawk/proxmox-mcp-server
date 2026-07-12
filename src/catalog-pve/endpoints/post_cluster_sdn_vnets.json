@@ -1,0 +1,94 @@
+{
+  "operationId": "post_cluster_sdn_vnets",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "create",
+  "method": "POST",
+  "path": "/cluster/sdn/vnets",
+  "description": "Create a new sdn vnet object.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "alias",
+      "type": "string",
+      "required": false,
+      "description": "Alias name of the VNet.",
+      "maxLength": 256,
+      "pattern": "(?^i:[\\(\\)-_.\\w\\d\\s]{0,256})"
+    },
+    {
+      "name": "isolate-ports",
+      "type": "boolean",
+      "required": false,
+      "description": "If true, sets the isolated property for all interfaces on the bridge of this VNet.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    },
+    {
+      "name": "tag",
+      "type": "integer",
+      "required": false,
+      "description": "VLAN Tag (for VLAN or QinQ zones) or VXLAN VNI (for VXLAN or EVPN zones).",
+      "minimum": 1,
+      "maximum": 16777215,
+      "typetext": "<integer> (1 - 16777215)"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": false,
+      "description": "Type of the VNet.",
+      "enum": [
+        "vnet"
+      ]
+    },
+    {
+      "name": "vlanaware",
+      "type": "boolean",
+      "required": false,
+      "description": "Allow VLANs to pass through this vnet.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "vnet",
+      "type": "string",
+      "required": true,
+      "description": "The SDN vnet object identifier.",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    },
+    {
+      "name": "zone",
+      "type": "string",
+      "required": true,
+      "description": "Name of the zone this VNet belongs to.",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/zones/{zone}",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"vnet\":\"<vnet>\",\"zone\":\"<zone>\"}' 'https://PVE_HOST:8006/api2/json/cluster/sdn/vnets'"
+}

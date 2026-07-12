@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_options",
+  "usageNotes": "Use this to read datacenter-wide settings such as keyboard layout, HTTP proxy, email address, migration network, console type, and HA/bandwidth defaults. Requires the `Sys.Audit` privilege on `/`; without it, the response is silently filtered and only a subset of options is returned. No parameters are required — the endpoint always returns the current cluster configuration object.",
+  "examples": [
+    {
+      "summary": "Fetch all datacenter options for the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response shape varies by privilege level — a token scoped below `Sys.Audit` on `/` will receive a reduced object without warning.",
+    "Pair with `update_cluster_options` (PUT /cluster/options) when you need to read-then-modify a specific setting.",
+    "Useful as a pre-flight check to confirm migration network, HA settings, or email relay before making cluster-wide changes."
+  ],
+  "relatedOperations": [
+    "update_cluster_options",
+    "get_cluster_status",
+    "get_cluster_config"
+  ]
+}

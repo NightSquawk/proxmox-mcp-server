@@ -1,0 +1,85 @@
+{
+  "operationId": "get_access_acl",
+  "surface": "pdm",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "acl",
+  "method": "GET",
+  "path": "/access/acl",
+  "description": "Get ACL entries, can be filter by path.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "all-for-authid",
+      "type": "boolean",
+      "required": false,
+      "description": "Whether to return all ACL entries for the exact current authid only. All ACL entries will appear as `AclUgidType::User` ACLs, regardles of whether they are stored as user or group entries. Hence, when using this parameter this endpoint cannot be used to retrieve information for updating the ACL tree directly.",
+      "default": false
+    },
+    {
+      "name": "exact",
+      "type": "boolean",
+      "required": false,
+      "description": "If set, returns only ACL for the exact path.",
+      "default": false
+    },
+    {
+      "name": "path",
+      "type": "string",
+      "required": false,
+      "description": "Access control path.",
+      "minLength": 1,
+      "maxLength": 128,
+      "pattern": "/^(?:/|(?:/(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))+)$/"
+    }
+  ],
+  "returns": {
+    "description": "ACL entry list.",
+    "items": {
+      "additionalProperties": false,
+      "description": "Access control list entry.",
+      "properties": {
+        "path": {
+          "description": "Access control path.",
+          "maxLength": 128,
+          "minLength": 1,
+          "pattern": "/^(?:/|(?:/(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*))+)$/",
+          "type": "string"
+        },
+        "propagate": {
+          "default": true,
+          "description": "Allow to propagate (inherit) permissions.",
+          "type": "boolean"
+        },
+        "roleid": {
+          "description": "A role represented as a string.",
+          "type": "string"
+        },
+        "ugid": {
+          "description": "User or Group ID.",
+          "type": "string"
+        },
+        "ugid_type": {
+          "description": "Type of the 'ugid' property in the ACL entry list.",
+          "enum": [
+            "user",
+            "group"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Returns all ACLs if a user has sufficient privileges on this endpoint. Otherwise it is limited to the user's API tokens. However, if `all-for-authid` is specified, all ACLs of the current Authid will be returned, whether the Authid has privileges to list other ACLs here or not.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/access/acl'"
+}

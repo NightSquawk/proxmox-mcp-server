@@ -1,0 +1,31 @@
+{
+  "operationId": "put_cluster_notifications_endpoints_webhook_name",
+  "usageNotes": "Use this to update an existing webhook notification endpoint in the cluster — change its URL, HTTP method, headers, secrets, or toggle it on/off without recreating it. Requires 'Mapping.Modify' on '/mapping/notifications' plus either 'Sys.Modify'/'Sys.Audit' or 'Sys.AccessNetwork' on '/'. Supply the 'digest' field (from the GET response) to guard against concurrent edits; omit it only if race conditions are acceptable.",
+  "examples": [
+    {
+      "summary": "Update the target URL and re-enable a previously disabled webhook endpoint",
+      "path_params": {
+        "name": "alerts-webhook"
+      },
+      "params": {
+        "url": "https://hooks.example.com/proxmox/v2/alerts",
+        "method": "post",
+        "disable": false,
+        "comment": "Updated to v2 endpoint URL",
+        "digest": "a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+      }
+    }
+  ],
+  "tips": [
+    "Header values and secret values must be base64-encoded before being passed in the 'header' and 'secret' arrays, formatted as 'name=<name>,value=<base64>'.",
+    "Use the 'delete' array to remove individual optional fields (e.g. 'body', 'comment') rather than overwriting them with empty strings.",
+    "Fetch the current config with get_cluster_notifications_endpoints_webhook_name first to obtain a fresh 'digest' before submitting updates.",
+    "Returns null on success; any HTTP error indicates the config was not applied."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_webhook_name",
+    "post_cluster_notifications_endpoints_webhook",
+    "delete_cluster_notifications_endpoints_webhook_name",
+    "get_cluster_notifications_endpoints"
+  ]
+}

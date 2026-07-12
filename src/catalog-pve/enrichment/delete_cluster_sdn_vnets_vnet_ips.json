@@ -1,0 +1,29 @@
+{
+  "operationId": "delete_cluster_sdn_vnets_vnet_ips",
+  "usageNotes": "Use this to remove a specific IP mapping from a VNet's DHCP/IPAM table within a given SDN zone — for example, when decommissioning a VM or reclaiming a static lease. The `zone` and `ip` parameters are both required; `mac` is optional and can be supplied to disambiguate when the same IP may appear under multiple MAC entries. The operation returns null synchronously; changes only take effect after running `apply_cluster_sdn` to push the updated SDN config to nodes.",
+  "examples": [
+    {
+      "summary": "Remove an IP mapping for a decommissioned VM in zone 'prodz' on vnet 'vnet10'",
+      "path_params": {
+        "vnet": "vnet10"
+      },
+      "params": {
+        "zone": "prodz",
+        "ip": "10.10.10.50",
+        "mac": "bc:24:11:ab:cd:ef"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the IP-to-MAC mapping from the VNet's IPAM table; the released IP may be immediately reassigned by DHCP, potentially causing conflicts if the original host is still active.",
+  "tips": [
+    "After deleting the IP mapping, call apply_cluster_sdn to propagate the change — without it, the mapping remains active in the running SDN until the next apply.",
+    "Omitting the `mac` parameter deletes by IP alone; if multiple MACs share the same IP (misconfiguration), verify which entry you're targeting first via get_cluster_sdn_vnets_vnet_ips.",
+    "Requires SDN.Allocate on the specific zone+vnet path — a Proxmox API token scoped to /sdn/zones/{zone}/{vnet} is sufficient."
+  ],
+  "relatedOperations": [
+    "create_cluster_sdn_vnets_vnet_ips",
+    "get_cluster_sdn_vnets_vnet_ips",
+    "apply_cluster_sdn",
+    "get_cluster_sdn_vnets_vnet"
+  ]
+}

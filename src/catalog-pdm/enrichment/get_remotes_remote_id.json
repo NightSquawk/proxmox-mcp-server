@@ -1,0 +1,21 @@
+{
+  "operationId": "get_remotes_remote_id",
+  "usageNotes": "Use this endpoint to retrieve the directory index for a specific PDM remote by its ID, confirming the remote exists and is registered. No query parameters are accepted; authentication is required but the endpoint is accessible to all authenticated users including API tokens. Note that the API returns null as its declared return type, so this acts more as an existence check or sub-resource anchor than a data-returning call.",
+  "examples": [
+    {
+      "summary": "Fetch the directory index for a remote named 'pve-hetzner'",
+      "path_params": {
+        "id": "pve-hetzner"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returns type is 'null', so do not expect a structured body — use this call to verify a remote ID is valid before attempting sub-resource operations.",
+    "Remote IDs in PDM typically correspond to the name given when the remote was added; check 'list_remotes' if the exact ID is unknown.",
+    "API token authentication is supported (allowtoken: true), making this safe to call from automation without a full session."
+  ],
+  "relatedOperations": [
+    "list_remotes"
+  ]
+}

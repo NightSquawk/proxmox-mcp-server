@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_ceph_flags_flag",
+  "usageNotes": "Use this to check whether a specific Ceph OSD flag is currently set on the cluster before deciding whether to enable or clear it. Requires Sys.Audit on the root path and a running Ceph cluster; the call returns a single boolean (true = flag is active). Commonly called before maintenance windows to confirm flags like 'noout' or 'nobackfill' are set or cleared as expected.",
+  "examples": [
+    {
+      "summary": "Check if the noout flag is currently enabled",
+      "path_params": {
+        "flag": "noout"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A 'true' response means the flag is active and OSD behavior is modified — e.g., 'noout' prevents OSDs from being marked out during downtime.",
+    "This is a read-only companion to set_cluster_ceph_flags_flag; pair them to verify flag state before and after a change.",
+    "All valid flag values are enumerated in the spec; any other string will return a 400 error."
+  ],
+  "relatedOperations": [
+    "get_cluster_ceph_flags",
+    "set_cluster_ceph_flags_flag"
+  ]
+}

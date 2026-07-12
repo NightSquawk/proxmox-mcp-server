@@ -1,0 +1,47 @@
+{
+  "operationId": "delete_cluster_sdn_prefix_lists_id",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete_prefix_list",
+  "method": "DELETE",
+  "path": "/cluster/sdn/prefix-lists/{id}",
+  "description": "Delete Prefix List",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "The SDN prefix list identifier",
+      "format": "pve-sdn-prefix-list-id",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/prefix-lists/{id}",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/prefix-lists/<id>'"
+}

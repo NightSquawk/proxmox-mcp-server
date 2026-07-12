@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_notifications_endpoints_sendmail_name",
+  "usageNotes": "Use this to inspect the configuration of a specific sendmail notification endpoint by its config ID (name). The response includes the digest field, which you should pass to update operations to prevent concurrent modification conflicts. Requires either Mapping.Modify or Mapping.Audit privilege on /mapping/notifications.",
+  "examples": [
+    {
+      "summary": "Retrieve the 'default-mail' sendmail endpoint configuration",
+      "path_params": {
+        "name": "default-mail"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The returned 'digest' value should be supplied to update/delete calls to guard against concurrent config changes.",
+    "Recipients can be specified as direct email addresses (mailto) or as PVE user IDs (mailto-user); both fields may be present simultaneously.",
+    "If 'disable' is true in the response, this endpoint is configured but will not actually send notifications until re-enabled.",
+    "The 'from-address' field is optional; if absent, Proxmox uses the system's default MTA sender address."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_sendmail",
+    "create_cluster_notifications_endpoints_sendmail",
+    "update_cluster_notifications_endpoints_sendmail_name",
+    "delete_cluster_notifications_endpoints_sendmail_name"
+  ]
+}

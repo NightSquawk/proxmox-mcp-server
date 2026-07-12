@@ -1,0 +1,108 @@
+{
+  "operationId": "post_cluster_config_nodes_node",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "addnode",
+  "method": "POST",
+  "path": "/cluster/config/nodes/{node}",
+  "description": "Adds a node to the cluster configuration. This call is for internal use.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "apiversion",
+      "type": "integer",
+      "required": false,
+      "description": "The JOIN_API_VERSION of the new node.",
+      "typetext": "<integer>"
+    },
+    {
+      "name": "force",
+      "type": "boolean",
+      "required": false,
+      "description": "Do not throw error if node already exists.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "link[n]",
+      "type": "string",
+      "required": false,
+      "description": "Address and priority information of a single corosync link. (up to 8 links supported; link0..link7)",
+      "format": {
+        "address": {
+          "default_key": 1,
+          "description": "Hostname (or IP) of this corosync link address.",
+          "format": "address",
+          "format_description": "IP",
+          "type": "string"
+        },
+        "priority": {
+          "default": 0,
+          "description": "The priority for the link when knet is used in 'passive' mode (default). Lower value means higher priority. Only valid for cluster create, ignored on node add.",
+          "maximum": 255,
+          "minimum": 0,
+          "optional": 1,
+          "type": "integer"
+        }
+      },
+      "typetext": "[address=]<IP> [,priority=<integer>]"
+    },
+    {
+      "name": "new_node_ip",
+      "type": "string",
+      "required": false,
+      "description": "IP Address of node to add. Used as fallback if no links are given.",
+      "format": "ip",
+      "typetext": "<string>"
+    },
+    {
+      "name": "nodeid",
+      "type": "integer",
+      "required": false,
+      "description": "Node id for this node.",
+      "minimum": 1,
+      "typetext": "<integer> (1 - N)"
+    },
+    {
+      "name": "votes",
+      "type": "integer",
+      "required": false,
+      "description": "Number of votes for this node",
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    }
+  ],
+  "returns": {
+    "properties": {
+      "corosync_authkey": {
+        "type": "string"
+      },
+      "corosync_conf": {
+        "type": "string"
+      },
+      "warnings": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{}' 'https://PVE_HOST:8006/api2/json/cluster/config/nodes/<node>'"
+}

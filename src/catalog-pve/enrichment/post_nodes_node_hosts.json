@@ -1,0 +1,25 @@
+{
+  "operationId": "post_nodes_node_hosts",
+  "usageNotes": "Use this to overwrite `/etc/hosts` on a specific Proxmox node — for example, to add or update static hostname-to-IP mappings needed before DNS is available, or to propagate cluster-wide hostname entries to a node that hasn't rejoined DNS yet. The caller must hold `Sys.Modify` on `/nodes/{node}`. Always retrieve the current file first (via `get_nodes_node_hosts`) and pass its digest to prevent concurrent-write conflicts.",
+  "examples": [
+    {
+      "summary": "Add a static host entry for a new VM to pve1's /etc/hosts",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "data": "127.0.0.1 localhost\n::1 localhost ip6-localhost ip6-loopback\n\n192.168.10.10 pve1.lab.local pve1\n192.168.10.11 pve2.lab.local pve2\n192.168.10.100 vm-web01.lab.local vm-web01\n",
+        "digest": "a3f1e2b4c5d6e7f8a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4"
+      }
+    }
+  ],
+  "tips": [
+    "Fetch the current content and digest with get_nodes_node_hosts before writing — the digest field is your optimistic-lock guard against concurrent edits.",
+    "Returns null on success; any HTTP error (403, 500) means the write did not occur.",
+    "Changes take effect immediately — no service restart required — but only affect the targeted node; repeat the call for each node in the cluster.",
+    "The `data` field must contain the complete file content, not just new lines; partial updates are not supported."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_hosts"
+  ]
+}

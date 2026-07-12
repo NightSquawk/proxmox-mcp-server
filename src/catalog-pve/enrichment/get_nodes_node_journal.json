@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_journal",
+  "usageNotes": "Reads the systemd journal (journald) for a specific cluster node, returning an array of log line strings. Requires the `Sys.Syslog` privilege on `/nodes/{node}`, so API tokens must be granted that privilege explicitly. Use cursor-based pagination (`startcursor`/`endcursor`) for efficient incremental reads; time-range filters (`since`/`until`) accept UNIX epoch integers — note that `since` conflicts with `startcursor` and `until` conflicts with `endcursor`, so only one pagination strategy can be used per request.",
+  "examples": [
+    {
+      "summary": "Fetch the last 100 journal entries from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "lastentries": 100
+      }
+    }
+  ],
+  "tips": [
+    "Use `lastentries` for a quick tail-style view; omit all filters to retrieve the full journal (can be very large on busy nodes).",
+    "Cursor values are opaque strings returned in prior responses; store them to implement reliable forward pagination without duplicates.",
+    "Time-range (`since`/`until`) and cursor (`startcursor`/`endcursor`) filters are mutually exclusive pairs — mixing them will result in an API error.",
+    "The node must be online and reachable by the Proxmox API; offline nodes will return an error rather than cached logs."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_syslog",
+    "get_nodes_node_status",
+    "get_nodes_node_tasks"
+  ]
+}

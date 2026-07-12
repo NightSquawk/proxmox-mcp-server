@@ -1,0 +1,28 @@
+{
+  "operationId": "post_nodes_node_qemu_vmid_agent_exec",
+  "usageNotes": "Use this to run a command inside a running VM via the QEMU guest agent; the VM must be powered on and have the guest agent service running (qemu-guest-agent installed and active). The call returns immediately with the spawned process PID — the command runs asynchronously inside the guest, so use get_nodes_node_qemu_vmid_agent_exec_status with the returned PID to poll for exit code and output. Requires the VM.GuestAgent.Unrestricted privilege on /vms/{vmid}; pass the command as an array (program + args) to avoid shell quoting issues.",
+  "examples": [
+    {
+      "summary": "Run a one-shot hostname check inside VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "command": ["hostname", "-f"]
+      }
+    }
+  ],
+  "tips": [
+    "Pass command as an array, not a shell string — the guest agent does not invoke a shell, so redirection and pipes will not work unless you explicitly invoke the shell (e.g. [\"/bin/sh\", \"-c\", \"echo hello > /tmp/out\"]).",
+    "Use the 'input-data' field to send data to the process's stdin (up to 64 KiB); useful for scripting or piping payloads without writing temp files inside the guest.",
+    "The returned PID belongs to the guest OS namespace, not the hypervisor — it cannot be tracked from the Proxmox host side.",
+    "If the guest agent is not running, the API returns an error immediately; check agent status with get_nodes_node_qemu_vmid_agent_info first."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_exec_status",
+    "get_nodes_node_qemu_vmid_agent_info",
+    "post_nodes_node_qemu_vmid_agent_file_write",
+    "get_nodes_node_qemu_vmid_agent_file_read"
+  ]
+}

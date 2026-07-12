@@ -1,0 +1,19 @@
+{
+  "operationId": "get_config_notes",
+  "usageNotes": "Retrieves the PDM instance-level notes as a UTF-8 encoded Markdown string — useful for storing and reading shared operational notes visible to all Datacenter Manager admins. No parameters are required; the call simply returns whatever Markdown content has been saved at the system level. Requires the System.Audit privilege on the /system ACL path.",
+  "examples": [
+    {
+      "summary": "Fetch the current PDM instance notes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is raw Markdown text — render it client-side if displaying to users.",
+    "If no notes have been set, the API may return an empty string or null; handle both cases.",
+    "API tokens are supported (allowtoken: true), so a read-only service account token with System.Audit is sufficient."
+  ],
+  "relatedOperations": [
+    "put_config_notes"
+  ]
+}

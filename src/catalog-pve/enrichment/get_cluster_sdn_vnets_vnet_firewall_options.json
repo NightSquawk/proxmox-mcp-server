@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_sdn_vnets_vnet_firewall_options",
+  "usageNotes": "Use this to read the current firewall configuration for a specific SDN vnet, including whether the firewall is enabled and the forward policy and log level in effect. Requires SDN.Audit or SDN.Allocate on the vnet's zone path, so API tokens with read-only SDN scope are sufficient. The vnet identifier must be 2–8 alphanumeric characters starting with a letter, matching the pattern used when the vnet was created.",
+  "examples": [
+    {
+      "summary": "Retrieve firewall options for the vnet 'prodvn01'",
+      "path_params": {
+        "vnet": "prodvn01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'enable' field defaults to 0 (disabled); if it is absent from the response, the firewall is off for this vnet.",
+    "A missing 'policy_forward' in the response means no explicit forward policy is set — check the zone-level firewall for inherited defaults.",
+    "Use the companion set operation to update these options; this endpoint is read-only."
+  ],
+  "relatedOperations": [
+    "set_cluster_sdn_vnets_vnet_firewall_options",
+    "get_cluster_sdn_vnets_vnet_firewall_rules",
+    "get_cluster_sdn_vnets_vnet"
+  ]
+}

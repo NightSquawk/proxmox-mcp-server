@@ -1,0 +1,20 @@
+{
+  "operationId": "get_access",
+  "usageNotes": "Returns the top-level access directory index for Proxmox Datacenter Manager, listing available sub-resources under /access (such as /access/users, /access/roles, /access/tickets). Useful as a discovery call to confirm which access-management endpoints are available on the connected PDM instance. Requires no special privileges — any authenticated user or API token can call it.",
+  "examples": [
+    {
+      "summary": "Retrieve the access directory index",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns null per the spec; the actual value is the HTTP response body listing child endpoints — parse the 'data' array from the JSON envelope.",
+    "Use this as a lightweight connectivity/auth check: a 200 response confirms the API token and host are reachable."
+  ],
+  "relatedOperations": [
+    "get_access_users",
+    "get_access_roles",
+    "get_access_ticket"
+  ]
+}

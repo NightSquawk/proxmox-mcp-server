@@ -1,0 +1,23 @@
+{
+  "operationId": "get_nodes_node_ceph_cfg_raw",
+  "usageNotes": "Use this to retrieve the raw text of the Ceph configuration file (ceph.conf) as seen by a specific cluster node. The calling principal needs either Sys.Audit or Datastore.Audit on the root path. The targeted node must be online and have Ceph configured — calling against a node without Ceph will return an error.",
+  "examples": [
+    {
+      "summary": "Fetch the raw Ceph config from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is a plain string (the raw ceph.conf content), not a structured JSON object — handle it as text.",
+    "All nodes in a healthy Ceph cluster should return identical ceph.conf content; comparing output across nodes is a quick consistency check.",
+    "Use this as a read-only audit tool before making Ceph configuration changes to capture a baseline snapshot."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_cfg_db",
+    "get_nodes_node_ceph_status",
+    "get_nodes_node_ceph_mon"
+  ]
+}

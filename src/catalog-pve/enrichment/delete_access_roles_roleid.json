@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_access_roles_roleid",
+  "usageNotes": "Use this to permanently remove a custom role from the Proxmox cluster. Built-in roles (e.g., Administrator, PVEAdmin, NoAccess) cannot be deleted and will return an error. Before deleting, verify the role is not assigned to any users or groups via ACLs, as deletion does not automatically revoke existing ACL entries referencing the role.",
+  "examples": [
+    {
+      "summary": "Delete a custom helpdesk role",
+      "path_params": {
+        "roleid": "HelpDesk-Readonly"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the role definition from the cluster; any ACL entries that still reference this roleid will become orphaned and may behave unexpectedly.",
+  "tips": [
+    "List existing roles first with GET /access/roles to confirm the roleid and that it is not a built-in role.",
+    "Audit ACLs with GET /access/acl before deleting to find and clean up any assignments that reference the role.",
+    "Requires Sys.Modify on /access — a privilege held by the built-in Administrator role but not PVEAdmin."
+  ],
+  "relatedOperations": [
+    "get_access_roles",
+    "get_access_roles_roleid",
+    "post_access_roles",
+    "put_access_roles_roleid",
+    "get_access_acl"
+  ]
+}

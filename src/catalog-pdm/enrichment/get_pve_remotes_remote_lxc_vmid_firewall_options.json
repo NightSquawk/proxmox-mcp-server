@@ -1,0 +1,28 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid_firewall_options",
+  "usageNotes": "Use this to read the firewall configuration for a specific LXC container on a PDM-managed PVE remote, including whether the firewall is enabled, default inbound/outbound policies, and protocol-level options like DHCP, NDP, IP filtering, and MAC filtering. Requires the Resource.Audit privilege on the remote/guest path. The optional 'node' query param is only needed when PDM cannot infer the node automatically from the VMID.",
+  "examples": [
+    {
+      "summary": "Fetch firewall options for LXC 201 on remote 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 201
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "All returned fields are optional; missing fields indicate the cluster/host default applies (e.g., macfilter defaults to true, enable defaults to false).",
+    "If 'enable' is false, any firewall rules on the container are defined but inactive — check this field first when debugging unexpected traffic behavior.",
+    "ipfilter being enabled adds implicit IP restrictions per interface; combined with policy_in DROP this is a strong deny-by-default posture for containers.",
+    "log_level_in and log_level_out default to 'nolog'; set to 'info' or 'debug' on PVE directly to capture iptables hits without modifying the policy."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc_vmid_firewall_rules",
+    "get_pve_remotes_remote_lxc_vmid_firewall_ipsets",
+    "get_pve_remotes_remote_lxc_vmid_firewall_aliases",
+    "get_pve_remotes_remote_lxc_vmid_firewall_log"
+  ]
+}

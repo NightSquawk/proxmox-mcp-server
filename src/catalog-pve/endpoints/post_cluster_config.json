@@ -1,0 +1,81 @@
+{
+  "operationId": "post_cluster_config",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "create",
+  "method": "POST",
+  "path": "/cluster/config",
+  "description": "Generate new cluster configuration. If no links given, default to local IP address as link0.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "clustername",
+      "type": "string",
+      "required": true,
+      "description": "The name of the cluster.",
+      "format": "pve-node",
+      "maxLength": 15,
+      "typetext": "<string>"
+    },
+    {
+      "name": "link[n]",
+      "type": "string",
+      "required": false,
+      "description": "Address and priority information of a single corosync link. (up to 8 links supported; link0..link7)",
+      "format": {
+        "address": {
+          "default_key": 1,
+          "description": "Hostname (or IP) of this corosync link address.",
+          "format": "address",
+          "format_description": "IP",
+          "type": "string"
+        },
+        "priority": {
+          "default": 0,
+          "description": "The priority for the link when knet is used in 'passive' mode (default). Lower value means higher priority. Only valid for cluster create, ignored on node add.",
+          "maximum": 255,
+          "minimum": 0,
+          "optional": 1,
+          "type": "integer"
+        }
+      },
+      "typetext": "[address=]<IP> [,priority=<integer>]"
+    },
+    {
+      "name": "nodeid",
+      "type": "integer",
+      "required": false,
+      "description": "Node id for this node.",
+      "minimum": 1,
+      "typetext": "<integer> (1 - N)"
+    },
+    {
+      "name": "token-coefficient",
+      "type": "integer",
+      "required": false,
+      "description": "Coefficient used to determine Corosync's token timeout. See the corosync.conf(5) manual for more details.",
+      "default": 125,
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "votes",
+      "type": "integer",
+      "required": false,
+      "description": "Number of votes for this node.",
+      "minimum": 1,
+      "typetext": "<integer> (1 - N)"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": null,
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"clustername\":\"<clustername>\"}' 'https://PVE_HOST:8006/api2/json/cluster/config'"
+}

@@ -1,0 +1,33 @@
+{
+  "operationId": "put_nodes_node_ceph_pool_name",
+  "usageNotes": "Use this to change settings on an existing Ceph pool — such as replica counts, PG autoscaling mode, CRUSH rule, or application type — without recreating it. Requires the Sys.Modify privilege at the root path and the pool must already exist on the cluster. The call returns a task UPID string; poll the task to confirm completion before making further changes to the pool.",
+  "examples": [
+    {
+      "summary": "Enable PG autoscaling and set a target size on an RBD pool",
+      "path_params": {
+        "node": "pve1",
+        "name": "vm-storage"
+      },
+      "params": {
+        "application": "rbd",
+        "pg_autoscale_mode": "on",
+        "target_size": "500G",
+        "size": 3,
+        "min_size": 2
+      }
+    }
+  ],
+  "tips": [
+    "Reducing size or min_size below the current replica count can trigger a rebalance — watch cluster health after the change.",
+    "Setting pg_autoscale_mode to 'warn' is a safe intermediate step: the autoscaler calculates recommendations without automatically applying them.",
+    "target_size and target_size_ratio are mutually exclusive hints to the PG autoscaler; setting both can produce unexpected PG counts.",
+    "CRUSH rule changes cause immediate data migration; only change crush_rule during a maintenance window with enough cluster headroom.",
+    "The node path parameter must be any online node in the cluster — it does not have to be the primary MON node."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_ceph_pool_name",
+    "post_nodes_node_ceph_pool",
+    "delete_nodes_node_ceph_pool_name",
+    "get_nodes_node_ceph_pool"
+  ]
+}

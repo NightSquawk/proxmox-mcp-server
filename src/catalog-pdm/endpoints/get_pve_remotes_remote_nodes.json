@@ -1,0 +1,100 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes",
+  "surface": "pdm",
+  "resource": "pve",
+  "category": "PVE Remotes",
+  "name": "nodes",
+  "method": "GET",
+  "path": "/pve/remotes/{remote}/nodes",
+  "description": "Query the remote's version.\n\nFIXME: Should we add an option to explicitly query the entire cluster to get a full version\noverview?",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "List of basic PVE node information",
+    "items": {
+      "additionalProperties": false,
+      "description": "Object.",
+      "properties": {
+        "cpu": {
+          "description": "CPU utilization.",
+          "optional": 1,
+          "type": "number"
+        },
+        "level": {
+          "description": "Support level.",
+          "optional": 1,
+          "type": "string"
+        },
+        "maxcpu": {
+          "description": "Number of available CPUs.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "maxmem": {
+          "description": "Number of available memory in bytes.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "mem": {
+          "description": "Used memory in bytes.",
+          "optional": 1,
+          "type": "integer"
+        },
+        "node": {
+          "description": "The cluster node name.",
+          "pattern": "/^(?i:[a-z0-9](?i:[a-z0-9\\-]*[a-z0-9])?)$/",
+          "type": "string"
+        },
+        "ssl_fingerprint": {
+          "description": "The SSL fingerprint for the node certificate.",
+          "optional": 1,
+          "type": "string"
+        },
+        "status": {
+          "description": "Node status.",
+          "enum": [
+            "unknown",
+            "online",
+            "offline"
+          ],
+          "type": "string"
+        },
+        "uptime": {
+          "description": "Node uptime in seconds.",
+          "optional": 1,
+          "type": "integer"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "resource",
+        "{remote}"
+      ],
+      "privs": [
+        "Resource.Audit"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/pve/remotes/<remote>/nodes'"
+}

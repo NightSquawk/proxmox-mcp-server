@@ -1,0 +1,31 @@
+{
+  "operationId": "put_config_acme_plugins_id",
+  "usageNotes": "Use this to update an existing ACME DNS challenge plugin's configuration — for example, to rotate API credentials, change the DNS provider, or adjust the validation delay. The caller must hold System.Modify on /system/certificates. Pass the current config digest to guard against concurrent overwrites; use the 'delete' array to remove optional fields rather than leaving them stale.",
+  "examples": [
+    {
+      "summary": "Rotate Cloudflare API token for an existing DNS plugin and increase validation delay for a slow-propagating zone",
+      "path_params": {
+        "id": "cf-prod"
+      },
+      "params": {
+        "api": "cf",
+        "data": "Q0ZfVE9LRU49bmV3dG9rZW5oZXJlMTIz",
+        "validation-delay": 120,
+        "digest": "a3f1c2e4b5d6a7e8f9012345678901234567890abcdef1234567890abcdef12"
+      }
+    }
+  ],
+  "tips": [
+    "The 'data' field must be base64-encoded with standard padding (not URL-safe); encode key=value pairs per the DNS plugin's expected format before submitting.",
+    "validation-delay defaults to 30 s but DNS providers with TTLs > 60 s (e.g. Cloudflare's 300 s minimum) typically need 120–300 s to avoid validation failures.",
+    "Use the 'delete' array to explicitly remove fields like 'data' or 'api' — omitting them from the body leaves the existing values intact.",
+    "Set 'disable: true' to temporarily suspend a plugin without deleting it, then re-enable by sending 'disable: false' in a follow-up call.",
+    "This endpoint returns null on success; retrieve updated state with get_config_acme_plugins_id to confirm changes."
+  ],
+  "relatedOperations": [
+    "get_config_acme_plugins_id",
+    "post_config_acme_plugins",
+    "delete_config_acme_plugins_id",
+    "get_config_acme_plugins"
+  ]
+}

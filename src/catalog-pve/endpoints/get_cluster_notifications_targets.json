@@ -1,0 +1,93 @@
+{
+  "operationId": "get_cluster_notifications_targets",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "get_all_targets",
+  "method": "GET",
+  "path": "/cluster/notifications/targets",
+  "description": "Returns a list of all entities that can be used as notification targets.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "comment": {
+          "description": "Comment",
+          "optional": 1,
+          "type": "string"
+        },
+        "disable": {
+          "default": 0,
+          "description": "Show if this target is disabled",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Name of the target.",
+          "format": "pve-configid",
+          "type": "string"
+        },
+        "origin": {
+          "description": "Show if this entry was created by a user or was built-in",
+          "enum": [
+            "user-created",
+            "builtin",
+            "modified-builtin"
+          ],
+          "type": "string"
+        },
+        "type": {
+          "description": "Type of the target.",
+          "enum": [
+            "sendmail",
+            "gotify",
+            "smtp",
+            "webhook"
+          ],
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{name}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "check": [
+      "or",
+      [
+        "perm",
+        "/mapping/notifications",
+        [
+          "Mapping.Modify"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/notifications",
+        [
+          "Mapping.Audit"
+        ]
+      ],
+      [
+        "perm",
+        "/mapping/notifications",
+        [
+          "Mapping.Use"
+        ]
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/notifications/targets'"
+}

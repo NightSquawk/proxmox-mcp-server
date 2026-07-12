@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_syslog",
+  "usageNotes": "Use this endpoint to read the system journal/syslog of a specific cluster node for troubleshooting services, boot issues, or auditing activity. Requires the Sys.Syslog privilege on /nodes/{node}; API tokens must also have that privilege explicitly granted. Results are paginated via start/limit — omitting both returns the full log, which can be very large on busy nodes.",
+  "examples": [
+    {
+      "summary": "Fetch the last 100 syslog lines from pve01 for the pve-cluster service since June 1",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "service": "pve-cluster",
+        "since": "2026-06-01",
+        "limit": 100,
+        "start": 0
+      }
+    }
+  ],
+  "tips": [
+    "The 'since' and 'until' patterns accept date-only (YYYY-MM-DD) or datetime with optional seconds (YYYY-MM-DD HH:MM or YYYY-MM-DD HH:MM:SS).",
+    "Use 'start' + 'limit' together for pagination; 'n' in each returned object is the absolute line number and can anchor the next page's 'start' value.",
+    "The 'service' filter maps to systemd unit names (e.g. 'pve-cluster', 'pvedaemon', 'qemu-server'); omit it to see all journal entries.",
+    "Output can be extremely large on nodes with many VMs or active services — always set a reasonable 'limit' in production use."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks",
+    "get_nodes_node_journal",
+    "get_nodes_node_status"
+  ]
+}

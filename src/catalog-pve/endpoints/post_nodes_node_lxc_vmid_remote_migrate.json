@@ -1,0 +1,124 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_remote_migrate",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "remote_migrate_vm",
+  "method": "POST",
+  "path": "/nodes/{node}/lxc/{vmid}/remote_migrate",
+  "description": "Migrate the container to another cluster. Creates a new migration task. EXPERIMENTAL feature!",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    }
+  ],
+  "params": [
+    {
+      "name": "bwlimit",
+      "type": "number",
+      "required": false,
+      "description": "Override I/O bandwidth limit (in KiB/s).",
+      "default": "migrate limit from datacenter or storage config",
+      "minimum": "0",
+      "typetext": "<number> (0 - N)"
+    },
+    {
+      "name": "delete",
+      "type": "boolean",
+      "required": false,
+      "description": "Delete the original CT and related data after successful migration. By default the original CT is kept on the source cluster in a stopped state.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "online",
+      "type": "boolean",
+      "required": false,
+      "description": "Use online/live migration.",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "restart",
+      "type": "boolean",
+      "required": false,
+      "description": "Use restart migration",
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "target-bridge",
+      "type": "string",
+      "required": true,
+      "description": "Mapping from source to target bridges. Providing only a single bridge ID maps all source bridges to that bridge. Providing the special value '1' will map each source bridge to itself.",
+      "format": "bridge-pair-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "target-endpoint",
+      "type": "string",
+      "required": true,
+      "description": "Remote target endpoint",
+      "format": "proxmox-remote",
+      "typetext": "apitoken=<PVEAPIToken=user@realm!token=SECRET> ,host=<ADDRESS> [,fingerprint=<FINGERPRINT>] [,port=<PORT>]"
+    },
+    {
+      "name": "target-storage",
+      "type": "string",
+      "required": true,
+      "description": "Mapping from source to target storages. Providing only a single storage ID maps all source storages to that storage. Providing the special value '1' will map each source storage to itself.",
+      "format": "storage-pair-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "target-vmid",
+      "type": "integer",
+      "required": false,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    },
+    {
+      "name": "timeout",
+      "type": "integer",
+      "required": false,
+      "description": "Timeout in seconds for shutdown for restart migration",
+      "default": 180,
+      "typetext": "<integer>"
+    }
+  ],
+  "returns": {
+    "description": "the task ID.",
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Migrate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"target-bridge\":\"<target-bridge>\",\"target-endpoint\":\"<target-endpoint>\",\"target-storage\":\"<target-storage>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100/remote_migrate'"
+}

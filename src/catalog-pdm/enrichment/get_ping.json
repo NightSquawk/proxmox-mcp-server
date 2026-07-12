@@ -1,0 +1,19 @@
+{
+  "operationId": "get_ping",
+  "usageNotes": "Use this as a lightweight liveness check to verify the PDM API daemon is reachable before issuing heavier requests. It requires no authentication and accepts no parameters, making it safe to call from health monitors or pre-flight checks. Returns the literal string \"pong\" on success.",
+  "examples": [
+    {
+      "summary": "Check PDM API daemon liveness",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Because permissions are 'world', API tokens are accepted but not required — useful for unauthenticated health probes.",
+    "A successful 200 response with body \"pong\" confirms the HTTP layer is up, but does not verify backend cluster health or database connectivity.",
+    "Use this before bulk operations to fail fast if the PDM host is unreachable."
+  ],
+  "relatedOperations": [
+    "get_version"
+  ]
+}

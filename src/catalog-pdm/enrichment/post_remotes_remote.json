@@ -1,0 +1,33 @@
+{
+  "operationId": "post_remotes_remote",
+  "usageNotes": "Use this endpoint to register a new PVE cluster or PBS instance as a managed remote in Proxmox Datacenter Manager. The caller must hold the Resource.Modify privilege. Supply a pre-created API token via `authid` and `token`, or let PDM create one automatically by providing the `create-token` param — the latter requires the authid credentials to have token-creation rights on the remote.",
+  "examples": [
+    {
+      "summary": "Register a Proxmox VE cluster as a PDM remote using an existing API token",
+      "path_params": {},
+      "params": {
+        "id": "hetzner-pve",
+        "type": "pve",
+        "authid": "root@pam!pdm-monitor",
+        "token": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "nodes": [
+          "192.168.10.10:8006",
+          "192.168.10.11:8006"
+        ],
+        "web-url": "https://pve.nightsquawk.tech"
+      }
+    }
+  ],
+  "tips": [
+    "The `id` field becomes the stable reference key for this remote across all PDM operations — choose a short, descriptive slug (e.g., 'hetzner-pve', 'ovh-pbs') since it cannot be changed after creation.",
+    "Each entry in `nodes` should be a host:port pair matching the API port of the target cluster node (8006 for PVE, 8007 for PBS).",
+    "If using `create-token`, PDM will call back to the remote to provision the token; the remote must be reachable at registration time and the authid credentials must have the Sys.Audit + User.Modify privileges on the remote.",
+    "Returns null on success (HTTP 200); absence of an error is the confirmation. Use get_remotes_remote to verify the entry was stored."
+  ],
+  "relatedOperations": [
+    "get_remotes",
+    "get_remotes_remote",
+    "put_remotes_remote",
+    "delete_remotes_remote"
+  ]
+}

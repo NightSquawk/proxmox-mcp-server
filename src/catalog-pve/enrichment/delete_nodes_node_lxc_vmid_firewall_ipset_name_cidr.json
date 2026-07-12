@@ -1,0 +1,32 @@
+{
+  "operationId": "delete_nodes_node_lxc_vmid_firewall_ipset_name_cidr",
+  "usageNotes": "Use this to remove a specific IP address, CIDR block, or IP alias from a named IPSet on an LXC container's firewall; the IPSet itself remains intact with any other entries. The caller must hold VM.Config.Network on the container's VM path. Pass the current config digest to guard against concurrent modifications before deleting.",
+  "examples": [
+    {
+      "summary": "Remove a trusted management subnet from the 'mgmt-allowed' IPSet on container 110",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110,
+        "name": "mgmt-allowed",
+        "cidr": "10.10.0.0/24"
+      },
+      "params": {
+        "digest": "a3f2c1b4e7d8901234567890abcdef1234567890"
+      }
+    }
+  ],
+  "destructiveReason": "Permanently removes the specified IP/CIDR entry from the IPSet, which may immediately allow or block traffic that was previously matched by that entry depending on the firewall rules referencing this IPSet.",
+  "tips": [
+    "The IPSet name must match the pattern [A-Za-z][A-Za-z0-9\\-\\_]+ — it cannot start with a digit.",
+    "The cidr path parameter accepts a plain IP (e.g. 192.168.1.5), a CIDR range (e.g. 10.0.0.0/8), or a defined IP alias name.",
+    "Omitting the digest parameter skips optimistic-locking; always supply it in automated scripts to avoid overwriting concurrent changes.",
+    "Returns null on success — check HTTP 200 status rather than response body to confirm deletion.",
+    "Firewall rules referencing this IPSet take effect immediately after the entry is removed; no container restart required."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_ipset_name",
+    "post_nodes_node_lxc_vmid_firewall_ipset_name",
+    "get_nodes_node_lxc_vmid_firewall_ipset",
+    "delete_nodes_node_lxc_vmid_firewall_ipset_name"
+  ]
+}

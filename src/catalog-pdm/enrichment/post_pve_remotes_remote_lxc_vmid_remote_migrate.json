@@ -1,0 +1,34 @@
+{
+  "operationId": "post_pve_remotes_remote_lxc_vmid_remote_migrate",
+  "usageNotes": "Use this to migrate an LXC container from a source PVE remote to a different PVE remote managed by PDM; both the source and target remotes must be registered in PDM and the caller needs Resource.Migrate on both the source and target guest paths. The operation is asynchronous — it returns a remote UPID that must be polled for completion status. Bridge and storage mappings are required even for simple migrations; omitting or mismatching them will cause the task to fail immediately.",
+  "examples": [
+    {
+      "summary": "Live-migrate a running LXC (VMID 200) from remote 'pve-hetzner' to remote 'pve-ovh', mapping storage and bridge, keeping the source after migration",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 200
+      },
+      "params": {
+        "target": "pve-ovh",
+        "target-bridge": ["vmbr0=vmbr0"],
+        "target-storage": ["local-lvm=local-lvm"],
+        "target-vmid": 200,
+        "online": true,
+        "delete": false,
+        "bwlimit": 102400
+      }
+    }
+  ],
+  "tips": [
+    "Set 'delete': true only when you are certain the migration succeeded; there is no automatic rollback once the source is deleted.",
+    "Use 'restart' + 'timeout' instead of 'online' when live migration is not supported by the container's configuration (e.g., containers with certain mounts).",
+    "Bridge and storage mapping arrays use 'source=target' string format (e.g., 'vmbr0=vmbr0'); every interface and disk must be covered or the task errors.",
+    "Poll the returned remote UPID against the target remote's task API to track progress and detect failures.",
+    "Specify 'target-vmid' explicitly if the VMID is already in use on the target cluster to avoid ID conflicts."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc_vmid_status",
+    "get_pve_remotes_remote_lxc",
+    "post_pve_remotes_remote_qemu_vmid_remote_migrate"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "post_config_acme_account",
+  "usageNotes": "Use this to register a new ACME account with a certificate authority (e.g. Let's Encrypt) so PDM can automate TLS certificate issuance. The operation is asynchronous — it returns a UPID that must be polled for completion. If the CA requires External Account Binding (EAB), supply both eab_kid and eab_hmac_key together; omitting either will cause registration to fail.",
+  "examples": [
+    {
+      "summary": "Register a Let's Encrypt production account named 'letsencrypt'",
+      "path_params": {},
+      "params": {
+        "name": "letsencrypt",
+        "contact": "hello@nightsquawk.tech",
+        "directory": "https://acme-v02.api.letsencrypt.org/directory",
+        "tos_url": "https://letsencrypt.org/documents/LE-SA-v1.4-April-3-2024.pdf"
+      }
+    }
+  ],
+  "tips": [
+    "Omit 'name' to register the account as the default (name defaults to 'default').",
+    "Use the Let's Encrypt staging directory (https://acme-staging-v02.api.letsencrypt.org/directory) for testing to avoid rate limits.",
+    "Setting 'tos_url' is how PDM records your acceptance of the CA's Terms of Service — required by most CAs.",
+    "Poll the returned UPID via the task log endpoints to confirm successful registration before attempting certificate orders."
+  ],
+  "relatedOperations": [
+    "get_config_acme_account",
+    "get_config_acme_account_name",
+    "put_config_acme_account_name",
+    "delete_config_acme_account_name",
+    "post_config_acme_certificate"
+  ]
+}

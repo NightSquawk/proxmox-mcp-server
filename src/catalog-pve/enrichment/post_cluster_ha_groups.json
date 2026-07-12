@@ -1,0 +1,32 @@
+{
+  "operationId": "post_cluster_ha_groups",
+  "usageNotes": "Creates a new HA group that controls which cluster nodes can run HA-managed resources and in what priority order. Note: Proxmox has deprecated HA groups in favor of HA rules, so prefer the rules API for new deployments. Requires `Sys.Console` at the root path (`/`); all nodes listed in the `nodes` parameter must already be members of the cluster.",
+  "examples": [
+    {
+      "summary": "Create a restricted HA group pinning two VMs to primary node with a failover node",
+      "path_params": {},
+      "params": {
+        "group": "prod_ha_group",
+        "nodes": "pve-node1:100,pve-node2:50",
+        "restricted": true,
+        "nofailback": false,
+        "comment": "Production VMs - prefer pve-node1, failover to pve-node2"
+      }
+    }
+  ],
+  "tips": [
+    "Node priority is specified as `nodename:priority` (integer, higher = preferred); omit priority to treat all nodes equally.",
+    "With `restricted: true`, HA services in this group will never migrate to nodes outside the group list — use this when VMs must stay on licensed or high-spec nodes.",
+    "With `nofailback: false` (default), the CRM will migrate services back to the highest-priority node once it recovers; set `nofailback: true` to suppress that automatic migration.",
+    "The `group` identifier follows `pve-configid` format: lowercase alphanumeric and underscores only, no spaces.",
+    "This endpoint returns null on success; verify creation with GET /cluster/ha/groups/{group}."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_groups",
+    "get_cluster_ha_groups_group",
+    "put_cluster_ha_groups_group",
+    "delete_cluster_ha_groups_group",
+    "get_cluster_ha_resources",
+    "post_cluster_ha_resources"
+  ]
+}

@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_storage_storage_file_restore_list",
+  "usageNotes": "Use this to browse the directory tree inside a PBS backup snapshot before restoring individual files. The `filepath` parameter must be base64-encoded; pass `/` (literal slash, not encoded) to start at the root of the archive. Currently limited to Proxmox Backup Server (PBS) snapshots — other backup types are not supported.",
+  "examples": [
+    {
+      "summary": "List root-level entries inside a PBS VM backup snapshot",
+      "path_params": {
+        "node": "pve01",
+        "storage": "pbs-main"
+      },
+      "params": {
+        "volume": "vm/101/2024-06-15T02:00:00Z",
+        "filepath": "/"
+      }
+    }
+  ],
+  "tips": [
+    "Leaf entries (leaf: true) are files; non-leaf entries are directories — recurse into them with another call using the returned `filepath` value.",
+    "The `filepath` values in the response are already base64-encoded and can be passed directly as `filepath` in the next request without re-encoding.",
+    "mtime and size are optional and may be absent for directory entries.",
+    "This endpoint only works when the target node is online and can reach the PBS datastore; ensure the storage is mounted before calling."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_file_restore_download",
+    "get_nodes_node_storage_storage_content",
+    "get_nodes_node_storage_storage_status"
+  ]
+}

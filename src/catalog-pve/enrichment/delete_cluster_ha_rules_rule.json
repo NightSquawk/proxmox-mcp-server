@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_ha_rules_rule",
+  "usageNotes": "Permanently deletes a named HA rule from the cluster configuration. The rule must already exist (use get_cluster_ha_rules or list_cluster_ha_rules to verify) and the caller must hold the Sys.Console privilege at the root path ('/'). Deletion takes effect immediately with no grace period — any resources currently matched by the rule will fall back to default HA behavior.",
+  "examples": [
+    {
+      "summary": "Delete an HA location rule named 'prefer-node1'",
+      "path_params": {
+        "rule": "prefer-node1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "The HA rule is permanently removed from cluster configuration; any resource placement or migration preferences it enforced are immediately lost and cannot be recovered without manual recreation.",
+  "tips": [
+    "The 'rule' path param must match a valid pve-configid (alphanumeric and hyphens, no spaces).",
+    "Returns null on success — a 404-equivalent error is returned if the rule does not exist.",
+    "Changes are cluster-wide and take effect immediately; no node restart or HA manager reload is needed.",
+    "Review dependent HA groups or resources before deleting a rule to avoid unexpected migration behavior."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_rules_rule",
+    "get_cluster_ha_rules",
+    "post_cluster_ha_rules",
+    "put_cluster_ha_rules_rule"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_lxc_vmid_vncwebsocket",
+  "usageNotes": "This endpoint upgrades an HTTP GET request to a WebSocket connection carrying VNC traffic for an LXC container console. It must be called immediately after `post_nodes_node_lxc_vmid_vncproxy`, using the port and vncticket values returned by that call — the ticket is short-lived and single-use. The client must perform the WebSocket upgrade on the same connection; this is not a standard REST call and cannot be used with a plain HTTP client.",
+  "examples": [
+    {
+      "summary": "Open VNC WebSocket for LXC container 101 on node pve1 using ticket from a prior vncproxy call",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "port": 5900,
+        "vncticket": "PVEVNC:6543210a:AbCdEfGhIjKlMnOpQrStUvWxYz012345678901234567890123456789012345"
+      }
+    }
+  ],
+  "tips": [
+    "Always call post_nodes_node_lxc_vmid_vncproxy first — this endpoint is the second step of a two-step handshake.",
+    "The vncticket is tied to the session and expires quickly; complete the WebSocket upgrade immediately after obtaining it.",
+    "Port is always in the range 5900–5999; use the exact value returned by vncproxy, not a hardcoded default.",
+    "The caller requires VM.Console permission on /vms/{vmid}; API tokens are accepted if that privilege is granted.",
+    "noVNC and other browser-based VNC clients expect this WebSocket endpoint — pass the ticket as a query parameter, not in the Authorization header."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_lxc_vmid_vncproxy",
+    "get_nodes_node_lxc_vmid_termproxy",
+    "get_nodes_node_qemu_vmid_vncwebsocket"
+  ]
+}

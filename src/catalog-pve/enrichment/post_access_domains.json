@@ -1,0 +1,38 @@
+{
+  "operationId": "post_access_domains",
+  "usageNotes": "Use this to register a new authentication realm (AD, LDAP, OpenID Connect, PAM, or local PVE) so users can log in via that backend. Requires the `Realm.Allocate` privilege on `/access/realm`. The required parameters differ by `type`: AD/LDAP need `server1`, `base_dn`, and `user_attr`; OpenID needs `issuer-url`, `client-id`, and `client-key`; PAM and PVE need only `realm` and `type`.",
+  "examples": [
+    {
+      "summary": "Add an LDAP realm backed by an internal directory server",
+      "path_params": {},
+      "params": {
+        "realm": "corp-ldap",
+        "type": "ldap",
+        "server1": "ldap.corp.example.com",
+        "server2": "ldap2.corp.example.com",
+        "base_dn": "dc=corp,dc=example,dc=com",
+        "bind_dn": "cn=pve-bind,ou=svcaccts,dc=corp,dc=example,dc=com",
+        "user_attr": "uid",
+        "mode": "ldap+starttls",
+        "verify": true,
+        "autocreate": true,
+        "comment": "Corporate LDAP directory"
+      }
+    }
+  ],
+  "tips": [
+    "Set `check-connection: true` to validate bind credentials and server reachability at creation time rather than discovering failures on first login.",
+    "Use `mode: ldap+starttls` or `mode: ldaps` instead of the deprecated `secure` boolean; enforce `sslversion: tlsv1_2` or higher.",
+    "For OpenID realms, `username-claim` defaults to `sub` (an opaque identifier); set it to `email` or `preferred_username` for human-readable PVE usernames.",
+    "The `autocreate` flag creates PVE user records on first successful login but does not assign permissions — assign roles separately after users appear.",
+    "To make this realm the default shown on the login screen, set `default: true`; only one realm can hold this flag at a time.",
+    "The LDAP bind password is stored in `/etc/pve/priv/realm/<REALM>.pw` on the PVE host — treat that file as a secret."
+  ],
+  "relatedOperations": [
+    "get_access_domains",
+    "get_access_domains_realm",
+    "put_access_domains_realm",
+    "delete_access_domains_realm",
+    "post_access_domains_realm_sync"
+  ]
+}

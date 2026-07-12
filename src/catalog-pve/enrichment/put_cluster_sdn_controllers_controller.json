@@ -1,0 +1,33 @@
+{
+  "operationId": "put_cluster_sdn_controllers_controller",
+  "usageNotes": "Use this to modify an existing SDN controller object's configuration (e.g. updating BGP peers, ASN, or IS-IS parameters); the controller must already exist (create it first with POST /cluster/sdn/controllers). Requires the SDN.Allocate privilege on /sdn/controllers. Changes are staged in the cluster SDN config and must be applied via POST /cluster/sdn (reload) before they take effect on nodes.",
+  "examples": [
+    {
+      "summary": "Update an EVPN BGP controller to add a new peer and enable eBGP multipath relaxation",
+      "path_params": {
+        "controller": "evpn-ctrl01"
+      },
+      "params": {
+        "asn": 65001,
+        "bgp-mode": "external",
+        "peers": "10.10.0.1,10.10.0.2",
+        "bgp-multipath-as-path-relax": true,
+        "loopback": "lo"
+      }
+    }
+  ],
+  "tips": [
+    "Use the 'digest' param to guard against concurrent edits — fetch the current digest from GET /cluster/sdn/controllers/{controller} and pass it here.",
+    "The 'delete' param accepts a comma-separated list of property names (pve-configid-list format) to unset optional fields rather than setting them to a blank value.",
+    "After any SDN controller update, always call POST /cluster/sdn to push the staged config to all cluster nodes; without the reload, network changes are not applied.",
+    "For IS-IS controllers, 'isis-net' must follow the NSAP NET format (e.g. '49.0001.0100.1001.0001.00') and be unique per node in the IS-IS domain.",
+    "BGP mode 'auto' selects eBGP when a BGP controller is present, otherwise falls back to iBGP — use explicit 'external' or 'internal' to avoid ambiguity in mixed topologies."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_controllers_controller",
+    "post_cluster_sdn_controllers",
+    "delete_cluster_sdn_controllers_controller",
+    "get_cluster_sdn_controllers",
+    "post_cluster_sdn"
+  ]
+}

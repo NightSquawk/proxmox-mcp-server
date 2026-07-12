@@ -1,0 +1,35 @@
+{
+  "operationId": "post_storage",
+  "usageNotes": "Use this to register a new storage backend in the cluster-wide Proxmox storage configuration. Both 'storage' (the unique ID) and 'type' are required; all other params are type-specific — for example, NFS requires 'server' and 'export', PBS requires 'server' and 'datastore', and CIFS requires 'server' and 'share'. The operation is synchronous and returns the created storage ID and type immediately (no UPID); requires the Datastore.Allocate privilege on /storage.",
+  "examples": [
+    {
+      "summary": "Add an NFS share as a storage backend available to all nodes for VM images and backups",
+      "path_params": {},
+      "params": {
+        "storage": "nas-nfs",
+        "type": "nfs",
+        "server": "192.168.10.50",
+        "export": "/mnt/pool/proxmox",
+        "content": "images,backup",
+        "nodes": "pve01,pve02",
+        "shared": true
+      }
+    }
+  ],
+  "tips": [
+    "The 'storage' ID must be unique across the cluster and follow pve-storage-id format (alphanumeric, hyphens allowed, no spaces).",
+    "Setting 'shared: true' only marks the storage as shared in the config — it does not mount or replicate data; the underlying share must already be accessible on all listed nodes.",
+    "For PBS storage, set 'datastore' to the PBS datastore name and 'fingerprint' to the PBS server's TLS certificate fingerprint to avoid using skip-cert-verification.",
+    "If using 'encryption-key: autogen' for PBS, save the returned key from the response 'config.encryption-key' field immediately — it cannot be retrieved again.",
+    "The 'content' field controls what can be stored: use 'images' for VM disks, 'rootdir' for CT volumes, 'backup' for vzdump archives, 'iso' for ISO images, 'snippets' for hook scripts.",
+    "Omitting 'nodes' makes the storage available cluster-wide; specify 'nodes' to restrict to specific hosts (useful for local storage types like dir or lvmthin)."
+  ],
+  "relatedOperations": [
+    "get_storage",
+    "get_storage_storage",
+    "put_storage_storage",
+    "delete_storage_storage",
+    "get_nodes_node_storage",
+    "get_nodes_node_storage_storage_status"
+  ]
+}

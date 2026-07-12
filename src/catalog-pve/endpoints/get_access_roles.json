@@ -1,0 +1,49 @@
+{
+  "operationId": "get_access_roles",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "index",
+  "method": "GET",
+  "path": "/access/roles",
+  "description": "Role index.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "items": {
+      "properties": {
+        "privs": {
+          "format": "pve-priv-list",
+          "optional": 1,
+          "type": "string"
+        },
+        "roleid": {
+          "format": "pve-roleid",
+          "type": "string"
+        },
+        "special": {
+          "default": 0,
+          "optional": 1,
+          "type": "boolean"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{roleid}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/access/roles'"
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "get_cluster_sdn_fabrics_fabric",
+  "usageNotes": "Use this endpoint to list all SDN fabric configurations defined in the cluster, including OSPF, BGP, OpenFabric, and WireGuard fabrics. Requires 'SDN.Audit' or 'SDN.Allocate' permission on '/sdn/fabrics/<fabric>' — results are automatically scoped to fabrics the caller can see. Use the 'pending' flag to inspect staged-but-not-yet-applied changes, or 'running' to see the actively deployed configuration (the two may differ after edits before an SDN apply).",
+  "examples": [
+    {
+      "summary": "List all fabrics showing pending (staged) configuration",
+      "path_params": {},
+      "params": {
+        "pending": true
+      }
+    }
+  ],
+  "tips": [
+    "Omitting both 'pending' and 'running' returns the saved (committed) configuration — not necessarily what is currently running on nodes.",
+    "Each returned object includes a 'protocol' field (openfabric, ospf, wireguard, bgp) that determines which other fields are present; filter by protocol to avoid acting on irrelevant fabric types.",
+    "The 'digest' field in each entry can be passed to write operations to guard against concurrent modifications.",
+    "SDN fabrics are a cluster-wide resource; this endpoint hits the cluster API layer and does not require a specific node to be targeted."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics_fabric_fabric",
+    "post_cluster_sdn_fabrics",
+    "put_cluster_sdn_fabrics_fabric",
+    "delete_cluster_sdn_fabrics_fabric",
+    "put_cluster_sdn_apply"
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_ceph_mon_monid",
+  "usageNotes": "Use this to add a Ceph Monitor (and, for the very first monitor, also a Ceph Manager) to an existing Ceph cluster on a given PVE node. The target node must be online and already have Ceph installed; the caller requires Sys.Modify at the root level. Returns a task UPID string — poll the task API to confirm the monitor comes up before continuing with additional cluster changes.",
+  "examples": [
+    {
+      "summary": "Add a monitor on pve2 using the node name as the monitor ID",
+      "path_params": {
+        "node": "pve2",
+        "monid": "pve2"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Omitting monid defaults it to the node name, which is the standard Ceph convention and avoids ID mismatches.",
+    "Only supply mon-address if autodetection picks the wrong interface (e.g., on multi-homed nodes where the storage/Ceph network differs from the management network).",
+    "A healthy Ceph cluster requires an odd number of monitors (3 or 5) for quorum; plan additions accordingly.",
+    "The first monitor created on a fresh cluster also auto-creates a Manager (ceph-mgr) process on the same node."
+  ],
+  "relatedOperations": [
+    "delete_nodes_node_ceph_mon_monid",
+    "get_nodes_node_ceph_mon",
+    "post_nodes_node_ceph_mgr_id",
+    "get_nodes_node_ceph_status"
+  ]
+}

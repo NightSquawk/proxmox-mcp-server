@@ -1,0 +1,56 @@
+{
+  "operationId": "post_subscriptions_adopt_key",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "adopt-key",
+  "method": "POST",
+  "path": "/subscriptions/adopt-key",
+  "description": "Adopt the live subscription on a remote node into the pool.\n\nReads the live current key from `remote`/`node` and brings the pool under management of it\nwithout touching the remote (no DELETE / push). Three sub-cases for the live key:\n\n- Not in the pool: a fresh `Adopted` entry is inserted, bound to (remote, node).\n- In the pool, unbound: rebound to (remote, node); the source is left untouched so a key\nthat was originally added manually keeps its `Manual` label even after a remote re-import.\n- In the pool, bound elsewhere: refused; the operator has to reconcile the binding first.\n\nRefuses if a pool entry is already bound to (remote, node): adopting a node that is already\npool-managed would either be a no-op or a footgun (rebinding the same node to a different\nkey in the pool), so the caller has to pick the right Assign/Clear path explicitly.\n\nPer-remote `PRIV_RESOURCE_MODIFY` is enforced inside the handler so an operator with global\nsystem access alone cannot pull subscriptions off remotes they have no other authority on\n(an adopted key bound to (remote, node) is itself an audit-side surface against that node).",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has different SHA256 digest. This can be used to prevent concurrent modifications.",
+      "pattern": "/^[a-f0-9]{64}$/"
+    },
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "Node name (or 'localhost')",
+      "pattern": "/^(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)$/"
+    },
+    {
+      "name": "remote",
+      "type": "string",
+      "required": true,
+      "description": "Remote ID.",
+      "minLength": 2,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"node\":\"<node>\",\"remote\":\"<remote>\"}' 'https://PDM_HOST:8443/api2/json/subscriptions/adopt-key'"
+}

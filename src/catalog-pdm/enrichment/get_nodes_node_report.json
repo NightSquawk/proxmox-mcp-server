@@ -1,0 +1,22 @@
+{
+  "operationId": "get_nodes_node_report",
+  "usageNotes": "Returns a plain-text diagnostic report for the specified PDM node, similar to the output of `pvereport` on PVE; useful for support bundles, health checks, and auditing node configuration. Requires the `System.Audit` privilege on the `system/status` ACL path. The response is a raw string (not JSON-structured), so parse or display it as-is.",
+  "examples": [
+    {
+      "summary": "Fetch the system report for a PDM node named 'pdm01'",
+      "path_params": {
+        "node": "pdm01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Pass 'localhost' as the node value to target the PDM host you are directly connected to without knowing its registered node name.",
+    "The returned string can be large; when storing for support use, pipe it to a file rather than holding it in memory.",
+    "API tokens are accepted (allowtoken: true), so a read-only audit token with System.Audit is sufficient — no user session required."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_status",
+    "get_nodes_node_syslog"
+  ]
+}

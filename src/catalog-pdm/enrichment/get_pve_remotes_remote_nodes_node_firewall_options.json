@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_firewall_options",
+  "usageNotes": "Use this to audit or baseline the host-level firewall configuration for a specific node managed by a PDM remote — particularly useful before making changes via the corresponding PUT endpoint. Requires Resource.Audit on the remote resource; the node must be reachable through PDM. All returned fields are optional with documented defaults, so absent fields should be interpreted as their default values (e.g., firewall enabled, all log levels nolog).",
+  "examples": [
+    {
+      "summary": "Fetch firewall options for node 'pve1' on the remote 'hetzner-de'",
+      "path_params": {
+        "remote": "hetzner-de",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "All fields in the response are optional — a missing field means the node is using the compiled-in default (e.g., enable=true, nftables=false).",
+    "Check 'enable' first: if false, all firewall rules on the node are inactive regardless of other settings.",
+    "nftables support is marked as tech preview; treat its presence cautiously in production environments.",
+    "nf_conntrack_max defaults to 262144; high-traffic nodes may need this tuned upward to avoid dropped connections.",
+    "Use this endpoint to diff configurations across nodes in a cluster to detect configuration drift."
+  ],
+  "relatedOperations": [
+    "set_pve_remotes_remote_nodes_node_firewall_options",
+    "get_pve_remotes_remote_nodes_node_firewall_rules",
+    "get_pve_remotes_remote_nodes_node_firewall_log"
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "operationId": "get_nodes_node_sdn_vnets_vnet_mac_vrf",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "mac-vrf",
+  "method": "GET",
+  "path": "/nodes/{node}/sdn/vnets/{vnet}/mac-vrf",
+  "description": "Get the MAC VRF for a VNet in an EVPN zone.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vnet",
+      "type": "string",
+      "required": true,
+      "description": "The SDN vnet object identifier.",
+      "minLength": 2,
+      "maxLength": 8,
+      "pattern": "[a-zA-Z][a-zA-Z0-9]*[a-zA-Z0-9]"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "description": "All routes from the MAC VRF that this node self-originates or has learned via BGP.",
+    "items": {
+      "properties": {
+        "ip": {
+          "description": "The IP address of the MAC VRF entry.",
+          "format": "ip",
+          "type": "string"
+        },
+        "mac": {
+          "description": "The MAC address of the MAC VRF entry.",
+          "format": "mac-addr",
+          "type": "string"
+        },
+        "nexthop": {
+          "description": "The IP address of the nexthop.",
+          "format": "ip",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Require 'SDN.Audit' permissions on '/sdn/zones/<zone>/<vnet>'",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/sdn/vnets/<vnet>/mac-vrf'"
+}

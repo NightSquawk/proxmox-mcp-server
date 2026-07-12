@@ -1,0 +1,27 @@
+{
+  "operationId": "get_pve_remotes_remote_tasks_upid_log",
+  "usageNotes": "Use this endpoint to read the task log of an async operation running on a PVE remote — for example, after triggering a migration, backup, or snapshot task that returned a UPID. The caller must have Resource.Audit on the remote resource path; the UPID must be at least 42 characters and refer to a task on the named remote. Use start+limit together to page through long logs without loading the entire file at once; set limit=0 only when you need the complete log.",
+  "examples": [
+    {
+      "summary": "Fetch the first 100 lines of a migration task log from remote 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "upid": "UPID:pve-hetzner:00001A2B:5F3C4D00:67AB12EF:qmmigrate:101:root@pam:"
+      },
+      "params": {
+        "start": 0,
+        "limit": 100
+      }
+    }
+  ],
+  "tips": [
+    "Poll this endpoint repeatedly (incrementing 'start' by your last 'limit') to stream a running task's log in near-real-time until 'status' changes to 'stopped'.",
+    "When 'status' is 'stopped', check 'exitstatus' for the final outcome (e.g. 'OK' or an error message).",
+    "Setting 'download=true' returns the raw log file for download and is mutually exclusive with 'start' and 'limit' — use it only when you need the full log as a file rather than paged JSON.",
+    "UPIDs are returned by task-launching endpoints (e.g. migrations, backups); capture the UPID from those responses before calling this endpoint."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_tasks_upid_status",
+    "get_pve_remotes_remote_tasks"
+  ]
+}

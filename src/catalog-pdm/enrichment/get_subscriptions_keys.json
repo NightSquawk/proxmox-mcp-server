@@ -1,0 +1,23 @@
+{
+  "operationId": "get_subscriptions_keys",
+  "usageNotes": "Use this to audit the full subscription key pool managed by PDM — listing every key the caller has access to, along with its binding (remote/node), status, and level. Requires the `System.Audit` privilege; bound entries for remotes where the caller lacks `PRIV_RESOURCE_AUDIT` are silently hidden, so a partial result does not imply an incomplete pool. Check `pending-clear: true` entries to identify keys queued for unbinding that need an Apply or Discard Pending action.",
+  "examples": [
+    {
+      "summary": "List all subscription keys visible to the current token",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "A missing `remote`/`node` on an entry means the key is unbound and available for assignment.",
+    "Keys with `status: expired` or `status: suspended` are still listed — filter client-side if you only want actionable keys.",
+    "The `check-time` field is an epoch timestamp; use it to detect stale data if a key has not been refreshed recently.",
+    "Entries with `pending-clear: true` have a queued unbind that has not been applied yet — either apply or discard the pending operation before reassigning the key.",
+    "API tokens are allowed (`allowtoken: true`), so a read-only audit token scoped to System.Audit is sufficient for this call."
+  ],
+  "relatedOperations": [
+    "add_subscriptions_keys",
+    "delete_subscriptions_key",
+    "get_subscriptions_keys_keyed"
+  ]
+}

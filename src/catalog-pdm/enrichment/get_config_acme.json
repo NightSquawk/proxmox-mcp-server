@@ -1,0 +1,16 @@
+{
+  "operationId": "get_config_acme",
+  "usageNotes": "Returns the ACME configuration directory index for Proxmox Datacenter Manager, listing available ACME sub-resources (accounts, plugins, etc.). Use this as a discovery call before working with ACME certificate automation. Requires no special privileges — any authenticated user or API token can call it.",
+  "examples": [
+    {
+      "summary": "List available ACME config sub-resources",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is a directory index endpoint — it lists sub-resource paths, not ACME account or plugin data itself. Follow up with more specific ACME endpoints to read or manage accounts and plugins.",
+    "The returns type is 'null' in the spec, meaning the response structure is not formally typed; treat the response as an informational directory listing."
+  ],
+  "relatedOperations": []
+}

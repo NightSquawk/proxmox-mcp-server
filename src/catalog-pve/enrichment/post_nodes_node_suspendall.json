@@ -1,0 +1,26 @@
+{
+  "operationId": "post_nodes_node_suspendall",
+  "usageNotes": "Use this to suspend (RAM-to-disk or RAM freeze) all running VMs on a node simultaneously — typical before node maintenance when a full shutdown is not desired and VMs should resume where they left off. Requires 'VM.PowerMgmt' on '/' or per-VM, plus 'VM.Config.Disk' and 'Datastore.AllocateSpace' for the state storage; ensure sufficient free space on the configured suspend storage before calling. Returns a task UPID string — poll the task API to confirm completion before proceeding with maintenance.",
+  "examples": [
+    {
+      "summary": "Suspend all VMs on node 'pve01' using up to 4 parallel workers",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "max-workers": 4
+      }
+    }
+  ],
+  "tips": [
+    "Omitting 'vms' suspends every running VM on the node; pass a comma-separated VMID list to target specific guests only.",
+    "Suspend writes VM RAM state to disk — ensure the configured state-storage has free space equal to or greater than the combined RAM of all targeted VMs.",
+    "The returned UPID can be tracked via GET /nodes/{node}/tasks/{upid}/status to detect failures on individual VMs before starting maintenance.",
+    "KVM hardware-assisted suspend ('freeze') is faster than full hibernate but may not be supported by all guest OSes; verify guest tools are installed."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_startall",
+    "get_nodes_node_tasks",
+    "get_nodes_node_tasks_upid_status"
+  ]
+}

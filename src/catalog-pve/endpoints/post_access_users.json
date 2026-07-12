@@ -1,0 +1,117 @@
+{
+  "operationId": "post_access_users",
+  "surface": "pve",
+  "resource": "access",
+  "category": "Access & Auth",
+  "name": "create_user",
+  "method": "POST",
+  "path": "/access/users",
+  "description": "Create new user.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "maxLength": 2048,
+      "typetext": "<string>"
+    },
+    {
+      "name": "email",
+      "type": "string",
+      "required": false,
+      "format": "email-opt",
+      "maxLength": 254,
+      "typetext": "<string>"
+    },
+    {
+      "name": "enable",
+      "type": "boolean",
+      "required": false,
+      "description": "Enable the account (default). You can set this to '0' to disable the account",
+      "default": 1,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "expire",
+      "type": "integer",
+      "required": false,
+      "description": "Account expiration date (seconds since epoch). '0' means no expiration date.",
+      "minimum": 0,
+      "typetext": "<integer> (0 - N)"
+    },
+    {
+      "name": "firstname",
+      "type": "string",
+      "required": false,
+      "maxLength": 1024,
+      "typetext": "<string>"
+    },
+    {
+      "name": "groups",
+      "type": "string",
+      "required": false,
+      "format": "pve-groupid-list",
+      "typetext": "<string>"
+    },
+    {
+      "name": "keys",
+      "type": "string",
+      "required": false,
+      "description": "Keys for two factor auth (yubico).",
+      "pattern": "[0-9a-zA-Z!=]{0,4096}"
+    },
+    {
+      "name": "lastname",
+      "type": "string",
+      "required": false,
+      "maxLength": 1024,
+      "typetext": "<string>"
+    },
+    {
+      "name": "password",
+      "type": "string",
+      "required": false,
+      "description": "Initial password.",
+      "minLength": 8,
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "userid",
+      "type": "string",
+      "required": true,
+      "description": "Full User ID, in the `name@realm` format.",
+      "format": "pve-userid",
+      "maxLength": 64,
+      "typetext": "<string>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "and",
+      [
+        "userid-param",
+        "Realm.AllocateUser"
+      ],
+      [
+        "userid-group",
+        [
+          "User.Modify"
+        ],
+        "groups_param",
+        "create"
+      ]
+    ],
+    "description": "You need 'Realm.AllocateUser' on '/access/realm/<realm>' on the realm of user <userid>, and 'User.Modify' permissions to '/access/groups/<group>' for any group specified (or 'User.Modify' on '/access/groups' if you pass no groups."
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"userid\":\"<userid>\"}' 'https://PVE_HOST:8006/api2/json/access/users'"
+}

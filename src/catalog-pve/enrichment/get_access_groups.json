@@ -1,0 +1,22 @@
+{
+  "operationId": "get_access_groups",
+  "usageNotes": "Use this to enumerate all Proxmox VE access groups visible to the authenticated token or user. Results are automatically filtered by privilege — only groups where the caller holds 'User.Modify', 'Sys.Audit', or 'Group.Allocate' on /access/groups/<group> are returned, so an empty list does not mean no groups exist. No parameters are required; this is a lightweight read suitable for populating dropdowns or validating group names before assignment.",
+  "examples": [
+    {
+      "summary": "List all access groups visible to the current token",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'users' field in each returned object is a comma-separated list in pve-userid-list format (e.g. 'alice@pam,bob@pve'); it may be absent if the group has no members.",
+    "A non-admin token will silently see only the groups it has privilege on — always validate with a Sys.Audit-capable token when auditing the full group roster.",
+    "Use the returned 'groupid' values directly with create_access_group_role_mapping or delete_access_group to act on a specific group."
+  ],
+  "relatedOperations": [
+    "get_access_group",
+    "create_access_group",
+    "delete_access_group",
+    "get_access_acl"
+  ]
+}

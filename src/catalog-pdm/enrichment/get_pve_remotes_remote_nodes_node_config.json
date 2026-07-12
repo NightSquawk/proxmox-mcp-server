@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_config",
+  "usageNotes": "Retrieves the configuration for a specific node within a registered PVE remote in Proxmox Datacenter Manager. Use this to inspect per-node settings (e.g., address, fingerprint, capabilities) for a remote cluster node. Requires the Resource.Audit privilege on the remote/node ACL path; the remote must already be registered in PDM.",
+  "examples": [
+    {
+      "summary": "Fetch config for node 'pve1' on the remote named 'hetzner-cluster'",
+      "path_params": {
+        "remote": "hetzner-cluster",
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'node' path param accepts 'localhost' as a special value to reference the local node of the remote.",
+    "Returns null (empty body) per the spec — the actual node config data is embedded in the HTTP response payload; check for a non-error status code rather than parsing a typed return value.",
+    "Remote IDs must be 2–32 characters and match [A-Za-z0-9_][A-Za-z0-9._-]* — avoid spaces or special characters when registering remotes."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes",
+    "get_pve_remotes_remote_config",
+    "get_pve_remotes"
+  ]
+}

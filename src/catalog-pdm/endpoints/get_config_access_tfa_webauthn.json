@@ -1,0 +1,47 @@
+{
+  "operationId": "get_config_access_tfa_webauthn",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "webauthn",
+  "method": "GET",
+  "path": "/config/access/tfa/webauthn",
+  "description": "Get the TFA configuration.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "additionalProperties": false,
+    "description": "Server side webauthn server configuration.",
+    "optional": 1,
+    "properties": {
+      "allow-subdomains": {
+        "description": "If an `origin` is specified, this specifies whether subdomains should be considered valid\nas well.\n\nMay be changed at any time.\n\nDefaults to `true`.",
+        "optional": 1,
+        "type": "boolean"
+      },
+      "id": {
+        "description": "Relying party ID. Must be the domain name without protocol, port or location.\n\nChanging this *will* break existing credentials.",
+        "type": "string"
+      },
+      "origin": {
+        "description": "Site origin. Must be a `https://` URL (or `http://localhost`). Should contain the address\nusers type in their browsers to access the web interface.\n\nChanging this *may* break existing credentials.",
+        "optional": 1,
+        "type": "string"
+      },
+      "rp": {
+        "description": "Relying party name. Any text identifier.\n\nChanging this *may* break existing credentials.",
+        "type": "string"
+      }
+    },
+    "type": "object"
+  },
+  "permissions": {
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' 'https://PDM_HOST:8443/api2/json/config/access/tfa/webauthn'"
+}

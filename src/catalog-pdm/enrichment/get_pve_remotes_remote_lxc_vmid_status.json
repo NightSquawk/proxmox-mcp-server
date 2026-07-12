@@ -1,0 +1,28 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid_status",
+  "usageNotes": "Use this to poll real-time runtime state (CPU, memory, disk I/O, network counters, uptime, and PSI pressure metrics) for a specific LXC container on a remote PVE cluster. The remote must already be registered in PDM and the caller needs Resource.Audit on the remote/guest path. Omit the optional 'node' query parameter to let PDM locate the container automatically; supply it only when you know the exact node and want to enforce a placement assertion.",
+  "examples": [
+    {
+      "summary": "Get live status of LXC container 112 on remote 'pve-hetzner', auto-resolving the node",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "vmid": 112
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "cpu is a float ratio (0.0–1.0 × cpus), not a percentage — multiply by 100 to display as %.",
+    "disk I/O counters (diskread, diskwrite) reset to 0 on container restart; compare deltas between polls, not absolute values.",
+    "PSI pressure fields (pressurecpusome, pressureiosome, etc.) are only populated when cgroup v2 is active on the PVE host; they will be absent on older kernels.",
+    "A non-empty 'lock' field means the container is mid-operation (backup, migration, snapshot) — avoid issuing state-change calls while locked.",
+    "status will be 'stopped' for templates (template: true); runtime metrics like cpu/mem/uptime will be absent in that case."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc",
+    "get_pve_remotes_remote_lxc_vmid_config",
+    "post_pve_remotes_remote_lxc_vmid_status_start",
+    "post_pve_remotes_remote_lxc_vmid_status_stop",
+    "get_pve_remotes_remote_nodes"
+  ]
+}

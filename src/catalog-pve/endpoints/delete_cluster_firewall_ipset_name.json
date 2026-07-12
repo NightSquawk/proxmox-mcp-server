@@ -1,0 +1,48 @@
+{
+  "operationId": "delete_cluster_firewall_ipset_name",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete_ipset",
+  "method": "DELETE",
+  "path": "/cluster/firewall/ipset/{name}",
+  "description": "Delete IPSet",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "IP set name.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    }
+  ],
+  "params": [
+    {
+      "name": "force",
+      "type": "boolean",
+      "required": false,
+      "description": "Delete all members of the IPSet, if there are any.",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/firewall/ipset/<name>'"
+}

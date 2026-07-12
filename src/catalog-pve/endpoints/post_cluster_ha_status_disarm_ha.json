@@ -1,0 +1,41 @@
+{
+  "operationId": "post_cluster_ha_status_disarm_ha",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "disarm-ha",
+  "method": "POST",
+  "path": "/cluster/ha/status/disarm-ha",
+  "description": "Request disarming the HA stack, releasing all watchdogs cluster-wide.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "resource-mode",
+      "type": "string",
+      "required": true,
+      "description": "Controls how HA managed resources are handled while disarmed. The current state of resources is not affected. 'freeze': new commands and state changes are not applied. 'ignore': resources are removed from HA tracking and can be managed as if they were not HA managed.",
+      "enum": [
+        "freeze",
+        "ignore"
+      ]
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Console"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"resource-mode\":\"freeze\"}' 'https://PVE_HOST:8006/api2/json/cluster/ha/status/disarm-ha'"
+}

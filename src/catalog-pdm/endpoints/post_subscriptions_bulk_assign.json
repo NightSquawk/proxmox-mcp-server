@@ -1,0 +1,71 @@
+{
+  "operationId": "post_subscriptions_bulk_assign",
+  "surface": "pdm",
+  "resource": "subscriptions",
+  "category": "Subscriptions",
+  "name": "bulk-assign",
+  "method": "POST",
+  "path": "/subscriptions/bulk-assign",
+  "description": "Apply a proposal previously returned by `auto_assign`.\n\nRejects with 409 if the pool config digest has moved or the live node-status hash differs\nfrom what the proposal was computed against; the caller is expected to refresh the proposal\nand retry. Per-remote `PRIV_RESOURCE_MODIFY` is checked inside the handler so an audit-only\ncaller's previously-rendered preview cannot be applied on their behalf.\n\nThe request body is a nested `AutoAssignProposal`; callers must submit it as\n`application/json`, the form-urlencoded path cannot encode the nested structure.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "proposal",
+      "type": "object",
+      "required": true,
+      "description": "The full plan returned by auto-assign and accepted by bulk-assign.\n\n`keys_digest` and `node_status_digest` are snapshots taken when the plan was computed.\n`bulk_assign` rejects the plan with 409 if either has changed in the meantime, so the\noperator never silently commits a plan that no longer matches the live state."
+    }
+  ],
+  "returns": {
+    "description": "Assignments that were actually persisted.",
+    "items": {
+      "additionalProperties": false,
+      "description": "A proposed key-to-node assignment from the auto-assign algorithm.",
+      "properties": {
+        "key": {
+          "description": "The subscription key to assign.",
+          "type": "string"
+        },
+        "key-sockets": {
+          "description": "Socket count of the key (PVE only).",
+          "maximum": 4294967295,
+          "minimum": 0,
+          "optional": 1,
+          "type": "integer"
+        },
+        "node": {
+          "description": "Target node.",
+          "type": "string"
+        },
+        "node-sockets": {
+          "description": "Socket count of the node (PVE only).",
+          "optional": 1,
+          "type": "integer"
+        },
+        "remote": {
+          "description": "Target remote.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "type": "array"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"proposal\":\"<proposal>\"}' 'https://PDM_HOST:8443/api2/json/subscriptions/bulk-assign'"
+}

@@ -1,0 +1,24 @@
+{
+  "operationId": "get_cluster_ha_resources",
+  "usageNotes": "Use this endpoint to list all resources currently managed by the Proxmox HA manager; each entry's `sid` (service ID) is the handle used by all other HA resource operations such as get, update, migrate, and delete. Requires `Sys.Audit` on `/` — a cluster-level privilege, so API tokens scoped to a single node or resource will be denied. Filter by `type` (`vm` or `ct`) to narrow results when working with a mixed cluster.",
+  "examples": [
+    {
+      "summary": "List all HA-managed VMs (exclude containers)",
+      "path_params": {},
+      "params": {
+        "type": "vm"
+      }
+    }
+  ],
+  "tips": [
+    "The returned `sid` format is `<type>:<vmid>` (e.g. `vm:100`, `ct:201`); use it verbatim as the path segment when calling per-resource HA endpoints.",
+    "A resource appearing here does not guarantee it is currently running — check `state` and `crm_state` fields on the individual resource detail endpoint.",
+    "HA resources are cluster-wide config; this endpoint is valid against any cluster node, not just the primary."
+  ],
+  "relatedOperations": [
+    "get_cluster_ha_resources_sid",
+    "create_cluster_ha_resources",
+    "get_cluster_ha_status_current",
+    "get_cluster_ha_groups"
+  ]
+}

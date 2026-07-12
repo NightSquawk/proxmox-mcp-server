@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_apt_update",
+  "usageNotes": "Returns the list of pending APT package updates already cached on the node — this is a read of the local apt cache, not a live network refresh. Call `post_nodes_node_apt_update` first to refresh the cache if you need current results. The caller needs `Sys.Modify` on `/nodes/{node}`, so API tokens scoped only to VM operations will be denied.",
+  "examples": [
+    {
+      "summary": "List pending updates on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Results reflect whatever apt last fetched; run `post_nodes_node_apt_update` (the POST variant) to trigger a live `apt-get update` before calling this.",
+    "Check the `Origin` field to distinguish Proxmox-specific packages (Origin: 'Proxmox') from upstream Debian packages — useful when deciding whether to delay updates pending PVE release notes.",
+    "NotifyStatus indicates the version for which PVE already sent an email/notification; if it matches Version the update is pending but the admin has already been alerted.",
+    "This endpoint is per-node — loop across all cluster nodes to get a full cluster-wide pending-update picture."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_apt_update",
+    "get_nodes_node_apt_changelog",
+    "get_nodes_node_apt_repositories",
+    "get_nodes_node_apt_versions"
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "operationId": "get_version",
+  "usageNotes": "Use this endpoint to confirm the running Proxmox Datacenter Manager version before scripting against version-specific behavior or after an upgrade. No parameters are required, and any authenticated user (including API tokens) can call it. Returns immediately with no async task.",
+  "examples": [
+    {
+      "summary": "Retrieve PDM version info",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns three fields: version (e.g. '0.5.1'), release (package release tag), and repoid (git commit hash) — use repoid to pinpoint the exact build when filing bug reports.",
+    "This endpoint is the lightest possible health/connectivity check: if it succeeds, the PDM API is reachable and credentials are valid."
+  ],
+  "relatedOperations": []
+}

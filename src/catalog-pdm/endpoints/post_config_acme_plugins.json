@@ -1,0 +1,77 @@
+{
+  "operationId": "post_config_acme_plugins",
+  "surface": "pdm",
+  "resource": "config",
+  "category": "Configuration",
+  "name": "plugins",
+  "method": "POST",
+  "path": "/config/acme/plugins",
+  "description": "Add ACME plugin configuration.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "api",
+      "type": "string",
+      "required": true,
+      "description": "DNS API Plugin Id."
+    },
+    {
+      "name": "data",
+      "type": "string",
+      "required": true,
+      "description": "DNS plugin data (base64 encoded with padding)."
+    },
+    {
+      "name": "disable",
+      "type": "boolean",
+      "required": false,
+      "description": "Flag to disable the config.",
+      "default": false
+    },
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "ACME Challenge Plugin ID.",
+      "minLength": 1,
+      "maxLength": 32,
+      "pattern": "/^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/"
+    },
+    {
+      "name": "type",
+      "type": "string",
+      "required": true,
+      "description": "The ACME challenge plugin type."
+    },
+    {
+      "name": "validation-delay",
+      "type": "integer",
+      "required": false,
+      "description": "Extra delay in seconds to wait before requesting validation.\n\nAllows to cope with long TTL of DNS records.",
+      "default": 30,
+      "minimum": 0,
+      "maximum": 172800
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": {
+      "partial": false,
+      "path": [
+        "system",
+        "certificates"
+      ],
+      "privs": [
+        "System.Modify"
+      ]
+    }
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PDMAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"api\":\"<api>\",\"data\":\"<data>\",\"id\":\"<id>\",\"type\":\"<type>\"}' 'https://PDM_HOST:8443/api2/json/config/acme/plugins'"
+}

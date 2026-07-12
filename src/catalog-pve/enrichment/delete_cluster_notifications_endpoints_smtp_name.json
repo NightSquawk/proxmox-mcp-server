@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_notifications_endpoints_smtp_name",
+  "usageNotes": "Use this to permanently remove an SMTP notification endpoint from the cluster. Before deleting, ensure no notification rules or matchers reference this endpoint — Proxmox will reject the deletion if the endpoint is still in use by an active rule. This operation is synchronous and returns null on success; no UPID is issued.",
+  "examples": [
+    {
+      "summary": "Delete an SMTP endpoint named 'alerts-smtp'",
+      "path_params": {
+        "name": "alerts-smtp"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the SMTP endpoint configuration from the cluster; any notification rules that referenced it will stop delivering email alerts.",
+  "tips": [
+    "Check existing notification matchers and rules first (GET /cluster/notifications/matchers and /cluster/notifications/targets) to confirm nothing references this endpoint.",
+    "The 'name' must match the pve-configid format — lowercase alphanumeric and hyphens, no spaces.",
+    "Requires Mapping.Modify on /mapping/notifications; API tokens need this privilege explicitly granted."
+  ],
+  "relatedOperations": [
+    "get_cluster_notifications_endpoints_smtp_name",
+    "create_cluster_notifications_endpoints_smtp",
+    "update_cluster_notifications_endpoints_smtp_name",
+    "get_cluster_notifications_endpoints_smtp",
+    "get_cluster_notifications_matchers"
+  ]
+}

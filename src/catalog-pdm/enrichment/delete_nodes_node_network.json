@@ -1,0 +1,24 @@
+{
+  "operationId": "delete_nodes_node_network",
+  "usageNotes": "Use this to discard pending (uncommitted) network changes on a PDM node — it deletes `/etc/network/interfaces.new`, leaving the live `/etc/network/interfaces` untouched. Call this after a failed or unwanted `PUT /nodes/{node}/network` before applying changes, not after. Requires `System.Modify` on the node and returns null synchronously (no UPID).",
+  "examples": [
+    {
+      "summary": "Revert staged network changes on node 'pdm-node1'",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the staged network configuration file (`/etc/network/interfaces.new`), discarding any unsaved interface edits without recovery.",
+  "tips": [
+    "This only removes the staged config — the live running network config is unaffected.",
+    "If `interfaces.new` does not exist the call still returns null without error.",
+    "Run before `POST /nodes/{node}/network` (apply) if you want to abort pending changes rather than commit them."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_network",
+    "put_nodes_node_network",
+    "post_nodes_node_network"
+  ]
+}

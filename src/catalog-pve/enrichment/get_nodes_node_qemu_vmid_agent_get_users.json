@@ -1,0 +1,25 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_get_users",
+  "usageNotes": "Retrieves the list of local user accounts from inside a running QEMU VM via the QEMU Guest Agent (QGA). The VM must be running and the guest agent must be installed and active; otherwise the call will fail with a timeout or agent error. Caller requires either VM.GuestAgent.Audit or VM.GuestAgent.Unrestricted on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "List local users on VM 101 hosted on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The guest agent daemon (qemu-guest-agent) must be running inside the VM; check its status with get_nodes_node_qemu_vmid_agent_info before calling.",
+    "The response wraps the raw QGA payload in a 'result' key; parse result.return to access the array of user objects (name, domain, full-name where available).",
+    "On Windows guests, domain-joined accounts appear with a domain prefix; on Linux, domain is typically empty.",
+    "If the agent is unresponsive, consider calling get_nodes_node_qemu_vmid_status_current first to confirm the VM is running."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_info",
+    "get_nodes_node_qemu_vmid_agent_get_osinfo",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

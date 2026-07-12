@@ -1,0 +1,23 @@
+{
+  "operationId": "get_cluster_qemu_custom_cpu_models",
+  "usageNotes": "Use this to discover which custom CPU model definitions are available cluster-wide before assigning a 'custom-*' cputype to a VM. Results are visibility-filtered by the caller's permissions on '/mapping/cpu/<name>', so an unprivileged token may see fewer entries than a root-equivalent user. Custom CPU model names are always prefixed with 'custom-' (e.g. 'custom-secure-baseline'); if no custom models have been defined the response will be an empty array.",
+  "examples": [
+    {
+      "summary": "List all custom CPU models visible to the current API token",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The 'digest' field in each returned entry can be passed to update/delete operations to prevent concurrent modification races.",
+    "The 'reported-model' field controls what the guest OS sees (e.g. 'Skylake-Server'), while 'cputype' is the internal Proxmox reference name; they are independent.",
+    "If the list is unexpectedly empty, verify the API token has at least 'Mapping.Audit' on '/mapping/cpu/' — without it, no entries will be returned even if models exist.",
+    "Setting 'hidden: true' on a custom model suppresses the KVM hypervisor signature, which can help with anti-VM software in Windows guests."
+  ],
+  "relatedOperations": [
+    "get_cluster_qemu_custom_cpu_models_cputype",
+    "create_cluster_qemu_custom_cpu_models",
+    "update_cluster_qemu_custom_cpu_models_cputype",
+    "delete_cluster_qemu_custom_cpu_models_cputype"
+  ]
+}

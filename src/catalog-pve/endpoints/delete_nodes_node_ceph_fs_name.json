@@ -1,0 +1,63 @@
+{
+  "operationId": "delete_nodes_node_ceph_fs_name",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "destroyfs",
+  "method": "DELETE",
+  "path": "/nodes/{node}/ceph/fs/{name}",
+  "description": "Destroy a Ceph filesystem. Refuses if any PVE storage entry of type 'cephfs' still references the filesystem and is not disabled. Optionally also removes the storage entries and/or the underlying metadata and data pools.",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "The Ceph filesystem name.",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "remove-pools",
+      "type": "boolean",
+      "required": false,
+      "description": "Remove the metadata and data pools used by this filesystem.",
+      "default": 0,
+      "typetext": "<boolean>"
+    },
+    {
+      "name": "remove-storages",
+      "type": "boolean",
+      "required": false,
+      "description": "Remove pveceph-managed storages configured for this filesystem.",
+      "default": 0,
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "type": "string"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/ceph/fs/<name>'"
+}

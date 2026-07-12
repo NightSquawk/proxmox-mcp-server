@@ -1,0 +1,30 @@
+{
+  "operationId": "delete_nodes_node_qemu_vmid",
+  "usageNotes": "Use this to permanently destroy a QEMU VM and all of its owned disk volumes; the VM must be stopped first (use stop_nodes_node_qemu_vmid_status) or the API will return an error unless skiplock is set. The call is asynchronous — it returns a task UPID string that you should poll with get_nodes_node_tasks_upid_status to confirm completion before treating the VM as gone. Pass purge=true to also remove the VMID from backup schedules, replication jobs, and HA configuration; omit it and those references will linger.",
+  "examples": [
+    {
+      "summary": "Destroy stopped VM 108 on pve1, purging all backup/HA references and scrubbing unreferenced disks",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 108
+      },
+      "params": {
+        "purge": true,
+        "destroy-unreferenced-disks": true
+      }
+    }
+  ],
+  "destructiveReason": "Permanently deletes the VM configuration and all attached/owned disk volumes from storage; this action is irreversible and data cannot be recovered without an external backup.",
+  "tips": [
+    "Always stop the VM before calling this endpoint; a running VM will cause the request to fail with a locked-VM error.",
+    "skiplock is root-only and should only be used to recover from a stuck lock after confirming the VM is truly stopped.",
+    "destroy-unreferenced-disks is false by default; enable it after cloning operations that may have left orphaned disk images with the same VMID.",
+    "The returned UPID can be polled via get_nodes_node_tasks_upid_status to wait for full cleanup before reclaiming the VMID."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_status_current",
+    "post_nodes_node_qemu_vmid_status_stop",
+    "get_nodes_node_tasks_upid_status",
+    "get_nodes_node_qemu"
+  ]
+}

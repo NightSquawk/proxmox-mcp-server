@@ -1,0 +1,25 @@
+{
+  "operationId": "put_config_access_tfa_webauthn",
+  "usageNotes": "Use this to configure or update the WebAuthn (FIDO2) relying-party settings for Proxmox Datacenter Manager's two-factor authentication. The `id` (relying party ID) and `origin` fields must match the domain users access PDM on — changing `id` invalidates all existing WebAuthn credentials, and changing `origin` or `rp` may also break them. Pass `digest` from a prior GET to guard against concurrent config changes.",
+  "examples": [
+    {
+      "summary": "Set WebAuthn relying party to match PDM's public HTTPS origin",
+      "path_params": {},
+      "params": {
+        "id": "pdm.example.com",
+        "origin": "https://pdm.example.com",
+        "rp": "Proxmox Datacenter Manager",
+        "allow-subdomains": false
+      }
+    }
+  ],
+  "tips": [
+    "Retrieve the current config and its SHA256 digest via the corresponding GET endpoint before writing, then pass `digest` to prevent race conditions.",
+    "Set `allow-subdomains` to false when PDM is accessed only on one exact hostname to prevent credential reuse from unrelated subdomains.",
+    "Use the `delete` array to unset individual properties (e.g., remove a previously set `origin`) rather than sending a full replacement object.",
+    "Changing `id` is non-recoverable for existing hardware keys — users will need to re-register their security tokens."
+  ],
+  "relatedOperations": [
+    "get_config_access_tfa_webauthn"
+  ]
+}

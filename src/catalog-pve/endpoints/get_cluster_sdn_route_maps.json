@@ -1,0 +1,49 @@
+{
+  "operationId": "get_cluster_sdn_route_maps",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "list_route_maps",
+  "method": "GET",
+  "path": "/cluster/sdn/route-maps",
+  "description": "List Route Maps",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [
+    {
+      "name": "running",
+      "type": "boolean",
+      "required": false,
+      "description": "Display running config.",
+      "typetext": "<boolean>"
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "id": {
+          "description": "The SDN route map identifier",
+          "format": "pve-sdn-route-map-id",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "entries/{id}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Only returns route maps where you have 'SDN.Audit' or 'SDN.Allocate' permissions.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/sdn/route-maps'"
+}

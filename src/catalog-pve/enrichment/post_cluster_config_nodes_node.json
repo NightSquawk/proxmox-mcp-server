@@ -1,0 +1,33 @@
+{
+  "operationId": "post_cluster_config_nodes_node",
+  "usageNotes": "Called internally by the PVE join process to register a new node in the cluster's corosync configuration; do not call directly — use the cluster join workflow (pvecm add) instead, which invokes this endpoint on the existing cluster. The response returns the corosync authkey and updated corosync.conf that the joining node needs to bootstrap cluster membership. Supplying at least one link[n] parameter is strongly recommended for multi-NIC corosync configurations; if omitted, new_node_ip is used as fallback and a single link is assumed.",
+  "examples": [
+    {
+      "summary": "Register a new node 'pve-node3' with a dedicated corosync link",
+      "path_params": {
+        "node": "pve-node3"
+      },
+      "params": {
+        "link0": "192.168.10.13",
+        "new_node_ip": "192.168.10.13",
+        "nodeid": 3,
+        "votes": 1,
+        "apiversion": 1
+      }
+    }
+  ],
+  "tips": [
+    "The returned corosync_authkey and corosync_conf must be written to the joining node before it can participate in quorum — this is handled automatically by pvecm/pvejoin.",
+    "Check the warnings array in the response; non-fatal issues (e.g. link address not reachable) are reported there rather than as errors.",
+    "Use force=true only when retrying a partially failed join where the node entry already exists in the config — not as a general workaround.",
+    "nodeid must be unique across all cluster members; if omitted, PVE assigns the next available ID automatically.",
+    "link[n] supports up to 8 corosync rings (link0..link7); the priority field is silently ignored on node-add (it only applies during cluster creation)."
+  ],
+  "relatedOperations": [
+    "get_cluster_config_nodes",
+    "delete_cluster_config_nodes_node",
+    "get_cluster_config_join",
+    "post_cluster_config_join",
+    "get_cluster_config_totem"
+  ]
+}

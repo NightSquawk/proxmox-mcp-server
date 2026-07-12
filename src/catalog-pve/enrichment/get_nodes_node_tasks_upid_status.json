@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_tasks_upid_status",
+  "usageNotes": "Use this endpoint to poll the completion state of any async Proxmox operation (VM start, backup, migration, etc.) after receiving its UPID. The target node must be online and reachable; the UPID is node-scoped, so always query the node that originated the task. Non-owners need 'Sys.Audit' on '/nodes/<node>'; task owners can read their own status without that privilege.",
+  "examples": [
+    {
+      "summary": "Check the status of a VM backup task on pve1",
+      "path_params": {
+        "node": "pve1",
+        "upid": "UPID:pve1:00001A2B:0012D4E5:67A3F100:vzdump:101:root@pam:"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "When 'status' is 'stopped', check 'exitstatus' — 'OK' means success; any other value (e.g. 'ERROR') means the task failed.",
+    "Poll this endpoint on a short interval (2–5 s) after triggering long-running operations like backups, migrations, or snapshot creation rather than assuming instant completion.",
+    "The UPID encodes the originating node; querying a different node for a UPID it did not create will return a 404 or error — always use the node from the UPID string itself."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_tasks_upid_log",
+    "get_nodes_node_tasks",
+    "delete_nodes_node_tasks_upid"
+  ]
+}

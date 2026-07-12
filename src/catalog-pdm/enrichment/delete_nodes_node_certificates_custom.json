@@ -1,0 +1,23 @@
+{
+  "operationId": "delete_nodes_node_certificates_custom",
+  "usageNotes": "Use this to remove a custom (e.g. Let's Encrypt or manually uploaded) TLS certificate from a PDM node and immediately replace it with a freshly generated self-signed certificate. The operation is synchronous and returns null on success; the web UI and API become reachable again without a service restart. Requires the System.Modify privilege on the calling token or user.",
+  "examples": [
+    {
+      "summary": "Revert pdm-node1 to a self-signed certificate after a bad custom cert upload",
+      "path_params": {
+        "node": "pdm-node1"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently deletes the current custom certificate and its associated private key, replacing them with a new self-signed certificate; any browser or client trust pinned to the previous certificate will immediately fail until re-accepted.",
+  "tips": [
+    "The 'restart' query parameter is accepted for UI compatibility but has no effect — no service restart is triggered.",
+    "After this call completes, clients connecting to the node's web UI will receive an untrusted certificate warning until a new custom cert is uploaded or trust is re-established.",
+    "Use 'localhost' as the node value only when calling from the node itself; always use the real node name when targeting a remote node."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_certificates_custom",
+    "get_nodes_node_certificates"
+  ]
+}

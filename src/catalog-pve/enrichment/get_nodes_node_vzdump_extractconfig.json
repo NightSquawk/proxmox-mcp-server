@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_vzdump_extractconfig",
+  "usageNotes": "Use this to retrieve the guest configuration (VM or CT) embedded inside a vzdump backup archive without restoring it — useful for inspecting what a backup contains before a restore or for auditing historical configs. The `volume` parameter must be a valid storage volume identifier accessible from the specified node (e.g., a backup stored on that node's configured backup storage). The caller needs 'VM.Backup' on the guest and 'Datastore.AllocateSpace' on the backup storage, so API tokens scoped to a single guest may be sufficient.",
+  "examples": [
+    {
+      "summary": "Extract the config from a CT backup stored on local backup storage",
+      "path_params": {
+        "node": "pve01"
+      },
+      "params": {
+        "volume": "local:backup/vzdump-lxc-101-2024_06_01-03_00_01.tar.zst"
+      }
+    }
+  ],
+  "tips": [
+    "The returned string is the raw config file content (e.g., `/etc/pve/lxc/101.conf` for containers, `/etc/pve/qemu-server/101.conf` for VMs) — parse it as key=value pairs.",
+    "Volume identifiers follow the pattern `<storage>:<path>` or `<storage>:backup/<filename>`; check your storage browser or list backups via the storage API to get exact volume strings.",
+    "This is a read-only, synchronous call — it returns the config string directly with no UPID or polling needed.",
+    "Useful as a pre-restore sanity check: compare the backed-up config against the current running config before committing to a full restore."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_storage_storage_content",
+    "post_nodes_node_vzdump_defaults",
+    "post_nodes_node_qemu_vmid_mtunnelwebsocket"
+  ]
+}

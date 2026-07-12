@@ -1,0 +1,73 @@
+{
+  "operationId": "get_nodes_node_capabilities_qemu_cpu",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "index",
+  "method": "GET",
+  "path": "/nodes/{node}/capabilities/qemu/cpu",
+  "description": "List all custom and default CPU models.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": false,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "arch",
+      "type": "string",
+      "required": false,
+      "description": "Virtual processor architecture. Defaults to the host architecture.",
+      "enum": [
+        "x86_64",
+        "aarch64"
+      ]
+    }
+  ],
+  "returns": {
+    "items": {
+      "properties": {
+        "abstract": {
+          "description": "True for PVE-internal abstract profiles like x86-64-v2, -v3, -v4. These do not correspond to a QEMU CPU type and cannot be used as a custom model's 'reported-model'.",
+          "optional": 1,
+          "type": "boolean"
+        },
+        "custom": {
+          "description": "True if this is a custom CPU model.",
+          "type": "boolean"
+        },
+        "name": {
+          "description": "Name of the CPU model. Identifies it for subsequent API calls. Prefixed with 'custom-' for custom models.",
+          "type": "string"
+        },
+        "vendor": {
+          "description": "CPU vendor visible to the guest when this model is selected. Vendor of 'reported-model' in case of custom models.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "links": [
+      {
+        "href": "{name}",
+        "rel": "child"
+      }
+    ],
+    "type": "array"
+  },
+  "permissions": {
+    "description": "Custom models are filtered to those the current user has any of Mapping.{Audit,Use,Modify} on /mapping/cpu/<name>; Sys.Audit on /nodes continues to grant visibility of all custom models for back-compat.",
+    "user": "all"
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/nodes/<node>/capabilities/qemu/cpu'"
+}

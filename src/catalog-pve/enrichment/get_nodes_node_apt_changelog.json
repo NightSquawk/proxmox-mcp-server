@@ -1,0 +1,27 @@
+{
+  "operationId": "get_nodes_node_apt_changelog",
+  "usageNotes": "Use this to review the changelog of an installed or available APT package on a specific node before applying updates, helping you assess risk. The target node must be online and reachable by the API. Requires Sys.Modify on /nodes/{node}, which is a privileged permission — API tokens scoped to read-only roles will be denied.",
+  "examples": [
+    {
+      "summary": "Fetch the changelog for the proxmox-ve meta-package on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "name": "proxmox-ve",
+        "version": "8.2.2"
+      }
+    }
+  ],
+  "tips": [
+    "Omitting 'version' returns the changelog for the currently available (candidate) version from the APT cache.",
+    "The response is a plain-text string (the raw Debian changelog), not JSON — handle it as a text blob.",
+    "Run get_nodes_node_apt_update first to refresh the package index so the returned changelog reflects the latest available version.",
+    "Package names must match the Debian naming pattern (lowercase, digits, hyphens, plus, dots, colons) — invalid names will be rejected."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_apt_update",
+    "get_nodes_node_apt_versions",
+    "post_nodes_node_apt_update"
+  ]
+}

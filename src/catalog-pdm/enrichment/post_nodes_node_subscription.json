@@ -1,0 +1,21 @@
+{
+  "operationId": "post_nodes_node_subscription",
+  "usageNotes": "Triggers a subscription status refresh on the specified PDM node, causing it to re-check its license key validity against the Proxmox subscription server. No request body parameters are accepted — the call itself is the trigger. Requires System.Modify on the system path; API tokens are supported.",
+  "examples": [
+    {
+      "summary": "Refresh subscription status on the local PDM node",
+      "path_params": {
+        "node": "localhost"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns null on success — a 200 with no body is the expected response; treat non-200 as failure.",
+    "Use 'localhost' as the node name when targeting the PDM host itself rather than a managed PVE node.",
+    "Run this after applying or changing a subscription key to force an immediate status update without waiting for the scheduled refresh."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_subscription"
+  ]
+}

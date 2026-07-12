@@ -1,0 +1,28 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_rrddata",
+  "usageNotes": "Returns historical RRD metric data points (CPU, memory, disk I/O, network) for a specific QEMU VM. The `timeframe` parameter is required and determines the data resolution and range — shorter timeframes give finer granularity. Use `cf=AVERAGE` for trend analysis and `cf=MAX` for spike detection; omitting `cf` defaults to AVERAGE on most Proxmox versions. The VM must exist on the specified node and the caller needs `VM.Audit` on `/vms/{vmid}`.",
+  "examples": [
+    {
+      "summary": "Fetch last hour of average metrics for VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "timeframe": "hour",
+        "cf": "AVERAGE"
+      }
+    }
+  ],
+  "tips": [
+    "Data resolution decreases as timeframe increases (e.g. 'year' returns one point per week, 'hour' returns one point per minute).",
+    "RRD data lags real-time by up to one RRD step interval (~70 seconds for the hour timeframe); do not use for live monitoring.",
+    "If the VM was recently created or migrated, older timeframes may return sparse or empty arrays for the period before the VM existed on that node.",
+    "Use `cf=MAX` when alerting on peak resource usage; `cf=AVERAGE` smooths out transient spikes and is better for capacity trending."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_rrd",
+    "get_nodes_node_qemu_vmid_status_current",
+    "get_nodes_node_rrddata"
+  ]
+}

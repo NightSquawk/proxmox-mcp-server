@@ -1,0 +1,25 @@
+{
+  "operationId": "get_cluster_sdn_fabrics_fabric_id",
+  "usageNotes": "Retrieves the full configuration of a single SDN fabric by its ID, including protocol type (openfabric, ospf, wireguard, or bgp) and all protocol-specific properties. Use this before issuing an update to capture the current `digest` value, which acts as an optimistic concurrency lock to prevent overwriting concurrent changes. Requires either SDN.Audit or SDN.Allocate on the fabric's ACL path; API tokens are supported.",
+  "examples": [
+    {
+      "summary": "Fetch configuration for an OSPF fabric named 'dc1fab'",
+      "path_params": {
+        "id": "dc1fab"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The `digest` field in the response should be passed back in any subsequent update call to guard against concurrent modification.",
+    "Protocol-specific fields (e.g. `area` for ospf, `csnp_interval`/`hello_interval` for openfabric, `persistent_keepalive` for wireguard) are only present when the fabric's `protocol` matches their `instance-types`.",
+    "The fabric `id` must be 2–8 alphanumeric characters (hyphens allowed in the middle); exact pattern is `[a-zA-Z0-9][a-zA-Z0-9-]{0,6}[a-zA-Z0-9]`.",
+    "A `lock-token` in the response indicates the global SDN configuration is currently locked; avoid writes until it clears."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_fabrics",
+    "put_cluster_sdn_fabrics_fabric_id",
+    "delete_cluster_sdn_fabrics_fabric_id",
+    "post_cluster_sdn_fabrics"
+  ]
+}

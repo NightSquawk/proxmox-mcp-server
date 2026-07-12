@@ -1,0 +1,87 @@
+{
+  "operationId": "post_cluster_sdn_prefix_lists_id_entries",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "create_prefix_list_entry",
+  "method": "POST",
+  "path": "/cluster/sdn/prefix-lists/{id}/entries",
+  "description": "Create Prefix List Entry",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "id",
+      "type": "string",
+      "required": true,
+      "description": "The SDN prefix list identifier",
+      "format": "pve-sdn-prefix-list-id",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [
+    {
+      "name": "action",
+      "type": "string",
+      "required": true,
+      "enum": [
+        "permit",
+        "deny"
+      ]
+    },
+    {
+      "name": "ge",
+      "type": "integer",
+      "required": false,
+      "minimum": 0,
+      "maximum": 128,
+      "typetext": "<integer> (0 - 128)"
+    },
+    {
+      "name": "le",
+      "type": "integer",
+      "required": false,
+      "minimum": 0,
+      "maximum": 128,
+      "typetext": "<integer> (0 - 128)"
+    },
+    {
+      "name": "lock-token",
+      "type": "string",
+      "required": false,
+      "description": "the token for unlocking the global SDN configuration",
+      "typetext": "<string>"
+    },
+    {
+      "name": "prefix",
+      "type": "string",
+      "required": true,
+      "format": "FullRangeCIDR",
+      "typetext": "<string>"
+    },
+    {
+      "name": "seq",
+      "type": "integer",
+      "required": false,
+      "minimum": 1,
+      "maximum": 4294967295,
+      "typetext": "<integer> (1 - 4294967295)"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/sdn/prefix-lists/{id}",
+      [
+        "SDN.Allocate"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X POST -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"action\":\"permit\",\"prefix\":\"<prefix>\"}' 'https://PVE_HOST:8006/api2/json/cluster/sdn/prefix-lists/<id>/entries'"
+}

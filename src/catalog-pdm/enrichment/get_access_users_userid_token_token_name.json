@@ -1,0 +1,25 @@
+{
+  "operationId": "get_access_users_userid_token_token_name",
+  "usageNotes": "Use this to inspect the metadata (enabled state, expiry, comment) of a specific API token belonging to a user. The caller must either hold System.Audit on /access/users or be the owner of the token (the userid path param must match the authenticated principal). Note that the raw secret value is never returned — only the token's configuration properties.",
+  "examples": [
+    {
+      "summary": "Fetch metadata for the 'automation' token belonging to admin@pam",
+      "path_params": {
+        "userid": "admin@pam",
+        "token-name": "automation"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The token-name alone does not uniquely identify a token across users — the full tokenid (user@realm!token-name) is returned in the response and serves as the canonical identifier.",
+    "A response with enable: false means the token exists but is disabled and will be rejected by the API.",
+    "expire: 0 means the token never expires; any non-zero value is a Unix timestamp cutoff."
+  ],
+  "relatedOperations": [
+    "get_access_users_userid_token",
+    "post_access_users_userid_token_token_name",
+    "put_access_users_userid_token_token_name",
+    "delete_access_users_userid_token_token_name"
+  ]
+}

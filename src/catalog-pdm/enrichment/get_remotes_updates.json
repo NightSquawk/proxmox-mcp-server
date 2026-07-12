@@ -1,0 +1,20 @@
+{
+  "operationId": "get_remotes_updates",
+  "usageNotes": "Use this endpoint to discover which update-related sub-resources or actions are available under the /remotes/updates namespace. It is a directory index that requires no parameters and is accessible by all authenticated users. Because it returns null, it is most useful for capability probing rather than retrieving actual update data.",
+  "examples": [
+    {
+      "summary": "List available update sub-resources under remotes",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Returns null — treat this as a capability or namespace probe, not a data fetch.",
+    "No privilege escalation needed; any valid API token or session can call this.",
+    "Pair with specific update-action endpoints discovered via this index to perform actual remote update operations."
+  ],
+  "relatedOperations": [
+    "get_remotes",
+    "get_remotes_remote"
+  ]
+}

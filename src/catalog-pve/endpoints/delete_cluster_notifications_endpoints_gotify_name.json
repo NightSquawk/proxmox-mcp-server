@@ -1,0 +1,38 @@
+{
+  "operationId": "delete_cluster_notifications_endpoints_gotify_name",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "delete_gotify_endpoint",
+  "method": "DELETE",
+  "path": "/cluster/notifications/endpoints/gotify/{name}",
+  "description": "Remove gotify endpoint",
+  "writeOperation": true,
+  "destructive": true,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "format": "pve-configid",
+      "typetext": "<string>"
+    }
+  ],
+  "params": [],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/mapping/notifications",
+      [
+        "Mapping.Modify"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X DELETE -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/notifications/endpoints/gotify/<name>'"
+}

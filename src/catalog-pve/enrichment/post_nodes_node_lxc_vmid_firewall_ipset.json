@@ -1,0 +1,30 @@
+{
+  "operationId": "post_nodes_node_lxc_vmid_firewall_ipset",
+  "usageNotes": "Creates a named IPSet on an LXC container's firewall, which can then be populated with IP/CIDR entries and referenced in firewall rules. The caller needs VM.Config.Network on the container. The 'rename' param doubles as an in-place update: pass it with the same value as 'name' to update only the comment on an existing IPSet without recreating it.",
+  "examples": [
+    {
+      "summary": "Create an IPSet named 'trusted-mgmt' for management traffic on LXC 110",
+      "path_params": {
+        "node": "pve01",
+        "vmid": 110
+      },
+      "params": {
+        "name": "trusted-mgmt",
+        "comment": "Management subnet whitelist"
+      }
+    }
+  ],
+  "tips": [
+    "IPSet names must start with a letter and match [A-Za-z][A-Za-z0-9\\-\\_]+ (2–64 chars) — purely numeric names are rejected.",
+    "Creating the IPSet is a two-step process: create it here, then add individual IP/CIDR entries via the corresponding PUT endpoint for IPSet members.",
+    "Use the 'digest' param when scripting concurrent changes to avoid race conditions overwriting the firewall config.",
+    "Returns null on success — check for a 2xx HTTP status rather than parsing a body."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_lxc_vmid_firewall_ipset",
+    "post_nodes_node_lxc_vmid_firewall_ipset_name",
+    "get_nodes_node_lxc_vmid_firewall_ipset_name",
+    "delete_nodes_node_lxc_vmid_firewall_ipset_name",
+    "get_nodes_node_lxc_vmid_firewall_rules"
+  ]
+}

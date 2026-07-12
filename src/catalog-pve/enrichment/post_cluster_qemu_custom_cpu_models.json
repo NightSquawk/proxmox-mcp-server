@@ -1,0 +1,31 @@
+{
+  "operationId": "post_cluster_qemu_custom_cpu_models",
+  "usageNotes": "Use this to define a cluster-wide custom CPU model that VMs can reference by name, allowing you to lock in a specific CPU baseline with additional feature flags independent of host CPU changes. Requires the `Mapping.Modify` privilege on `/mapping/cpu`. The `cputype` name is stored without the `custom-` prefix internally, but VMs reference it as `custom-<name>`; omit the prefix when calling this endpoint and Proxmox will normalize it.",
+  "examples": [
+    {
+      "summary": "Create a hardened Skylake-Server custom CPU model with security mitigations enabled",
+      "path_params": {},
+      "params": {
+        "cputype": "skylake-hardened",
+        "reported-model": "Skylake-Server-IBRS",
+        "flags": "+spec-ctrl;+ssbd;+md-clear;+ibpb",
+        "hidden": false,
+        "phys-bits": "host"
+      }
+    }
+  ],
+  "tips": [
+    "The `cputype` value must conform to pve-configid format (alphanumeric plus hyphens/underscores, max 40 chars); keep names short since VMs will reference them as `custom-<name>`.",
+    "Setting `phys-bits` to `host` improves performance but breaks live migration to hosts with different physical address bit widths — use an explicit numeric value for migrateable VMs.",
+    "Setting `level` to 30 is a well-known workaround for Hyper-V boot failures on Windows guests running on recent Intel hosts.",
+    "The `hidden` flag suppresses KVM identification and can help with guest software that behaves differently in virtualized environments, but only affects x86-64 vCPUs.",
+    "Flags prefixed with `+` enable a feature; `-` disables it. The special alias `nested-virt` maps to `svm` (AMD) or `vmx` (Intel) automatically.",
+    "This endpoint returns null on success — validate creation by calling GET /cluster/qemu/custom-cpu-models afterward."
+  ],
+  "relatedOperations": [
+    "get_cluster_qemu_custom_cpu_models",
+    "get_cluster_qemu_custom_cpu_models_cputype",
+    "put_cluster_qemu_custom_cpu_models_cputype",
+    "delete_cluster_qemu_custom_cpu_models_cputype"
+  ]
+}

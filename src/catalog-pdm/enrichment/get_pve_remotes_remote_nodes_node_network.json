@@ -1,0 +1,26 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes_node_network",
+  "usageNotes": "Use this to inspect the network interface configuration of a specific node on a managed PVE remote — useful before provisioning VMs, validating bridge availability, or auditing SDN topology. The target node must be reachable by PDM and the caller needs Resource.Audit on the remote/node path. Use the 'interface-type' filter (e.g. 'bridge' or 'any_bridge') to narrow results when you only care about VM-facing bridges rather than the full interface list.",
+  "examples": [
+    {
+      "summary": "List all bridge interfaces on a PVE node to find available VM bridges",
+      "path_params": {
+        "remote": "pve-hetzner",
+        "node": "pve1"
+      },
+      "params": {
+        "interface-type": "bridge"
+      }
+    }
+  ],
+  "tips": [
+    "The 'active' field reflects runtime state; 'exists' reflects whether the interface is physically present. An interface can exist but be inactive.",
+    "SDN-managed interfaces appear when 'interface-type' is set to 'include_sdn' or 'vnet' — omit the filter to see all types including SDN.",
+    "Results reflect the current on-disk /etc/network/interfaces config plus runtime state; pending unapplied changes may differ from what this returns.",
+    "Use 'any_bridge' to include both standard Linux bridges and OVS bridges in a single filtered call."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_nodes_node",
+    "get_pve_remotes_remote_nodes_node_network_iface"
+  ]
+}

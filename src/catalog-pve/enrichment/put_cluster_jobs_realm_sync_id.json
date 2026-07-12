@@ -1,0 +1,32 @@
+{
+  "operationId": "put_cluster_jobs_realm_sync_id",
+  "usageNotes": "Use this to update an existing realm-sync job's schedule, scope, vanish policy, or enabled state — the job must already exist (create it first with POST /cluster/jobs/realm-sync). The calling token or user needs both 'Realm.AllocateUser' on the target realm path and 'User.Modify' on /access/groups; lacking either will result in a 403. The operation returns null synchronously — no UPID is issued — but the updated schedule takes effect on the next systemd-calendar trigger.",
+  "examples": [
+    {
+      "summary": "Change an LDAP realm-sync job to run nightly, sync both users and groups, and remove vanished entries plus their ACLs",
+      "path_params": {
+        "id": "ldap-nightly-sync"
+      },
+      "params": {
+        "schedule": "daily",
+        "scope": "both",
+        "remove-vanished": "entry;acl",
+        "enable-new": true,
+        "enabled": true,
+        "comment": "Nightly full sync for corp-ldap realm"
+      }
+    }
+  ],
+  "tips": [
+    "Use the 'delete' param (comma-separated field names) to revert optional fields like 'comment' or 'remove-vanished' back to their defaults rather than explicitly setting them to empty strings.",
+    "The 'remove-vanished' default is 'none', meaning users and groups that disappear from the directory are kept in Proxmox — set 'entry;acl' if you want automated cleanup.",
+    "schedule follows systemd calendar event syntax (e.g., 'daily', 'hourly', 'Mon 03:00') — test the expression with 'systemd-analyze calendar <expr>' on a cluster node before applying.",
+    "Disabling the job via 'enabled: false' is the safest way to pause syncs during directory maintenance without deleting the job definition."
+  ],
+  "relatedOperations": [
+    "post_cluster_jobs_realm_sync",
+    "get_cluster_jobs_realm_sync_id",
+    "delete_cluster_jobs_realm_sync_id",
+    "get_cluster_jobs_realm_sync"
+  ]
+}

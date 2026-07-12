@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_scan_iscsi",
+  "usageNotes": "Use this to discover available iSCSI targets on a remote portal before configuring iSCSI storage in Proxmox. The scan is executed on the specified node, so that node must be online and able to reach the portal over the network. Requires Datastore.Allocate on /storage; the portal parameter accepts an IP address or DNS name with an optional port (e.g. '192.168.1.100' or 'iscsi.example.com:3260').",
+  "examples": [
+    {
+      "summary": "Scan an iSCSI portal at 192.168.10.50 from node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {
+        "portal": "192.168.10.50"
+      }
+    }
+  ],
+  "tips": [
+    "Run this scan from the node that will actually mount the iSCSI storage — network reachability is node-specific.",
+    "If the portal uses a non-standard port, append it with a colon, e.g. '192.168.10.50:3260'.",
+    "Use the returned target IQNs directly when adding an iSCSI storage definition via the storage API."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_scan_lvm",
+    "get_nodes_node_scan_lvmthin",
+    "get_storage",
+    "post_storage"
+  ]
+}

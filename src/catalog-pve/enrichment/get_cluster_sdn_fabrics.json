@@ -1,0 +1,21 @@
+{
+  "operationId": "get_cluster_sdn_fabrics",
+  "usageNotes": "Returns the top-level index of SDN fabric subdirectories available in the cluster. Use this as a discovery call to enumerate fabric types before drilling into specific fabric configurations. Requires the SDN.Audit privilege on /sdn/fabrics; SDN must be enabled in the cluster (Datacenter > SDN).",
+  "examples": [
+    {
+      "summary": "List available SDN fabric subdirectories",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "SDN fabrics is a newer subsystem; this endpoint may return an empty array on clusters that have not configured any fabrics.",
+    "Use get_cluster_sdn to get the parent SDN index and confirm SDN is active before calling fabric-specific endpoints.",
+    "API tokens need SDN.Audit on /sdn/fabrics explicitly — cluster-level Admin does not automatically inherit SDN privileges in all PVE versions."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn",
+    "get_cluster_sdn_controllers",
+    "get_cluster_sdn_dns"
+  ]
+}

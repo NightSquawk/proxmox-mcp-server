@@ -1,0 +1,33 @@
+{
+  "operationId": "get_cluster_ceph_status",
+  "surface": "pve",
+  "resource": "cluster",
+  "category": "Cluster",
+  "name": "status",
+  "method": "GET",
+  "path": "/cluster/ceph/status",
+  "description": "Get ceph status.",
+  "writeOperation": false,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "query",
+  "pathParams": [],
+  "params": [],
+  "returns": {
+    "type": "object"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/",
+      [
+        "Sys.Audit",
+        "Datastore.Audit"
+      ],
+      "any",
+      1
+    ]
+  },
+  "requestSample": "curl -k -X GET -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' 'https://PVE_HOST:8006/api2/json/cluster/ceph/status'"
+}

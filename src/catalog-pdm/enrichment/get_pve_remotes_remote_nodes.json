@@ -1,0 +1,23 @@
+{
+  "operationId": "get_pve_remotes_remote_nodes",
+  "usageNotes": "Use this to enumerate all nodes in a PVE remote managed by PDM, including their live status, CPU/memory utilization, and uptime. The remote must already be registered in PDM and the caller must hold Resource.Audit on the remote resource. Node-level metrics (cpu, mem, maxcpu, maxmem, uptime) are optional fields and may be absent if a node is offline or unreachable.",
+  "examples": [
+    {
+      "summary": "List all nodes for a registered PVE remote named 'pve-hetzner'",
+      "path_params": {
+        "remote": "pve-hetzner"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Check the 'status' field on each returned node before acting on it — only 'online' nodes will have valid cpu/mem metrics.",
+    "The 'ssl_fingerprint' field can be used to verify node identity if you need to cross-check TLS trust.",
+    "Remote name must match the PDM-registered ID exactly (2–32 chars, alphanumeric/dot/dash/underscore, no leading dot or dash)."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes",
+    "get_pve_remotes_remote_version",
+    "get_pve_nodes_node_status"
+  ]
+}

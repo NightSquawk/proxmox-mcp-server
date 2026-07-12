@@ -1,0 +1,24 @@
+{
+  "operationId": "get_pve_remotes_remote_qemu",
+  "usageNotes": "Use this to list all QEMU VMs across a registered PDM remote (or on a specific node within that remote). Omitting the `node` parameter queries every node in the cluster, which is the preferred way to get a full inventory. The caller must hold `Resource.Audit` on the remote resource path; live runtime fields (cpu, mem, disk I/O, pressure stats) are only populated for running VMs.",
+  "examples": [
+    {
+      "summary": "List all QEMU VMs across every node on the 'hetzner-pve' remote",
+      "path_params": {
+        "remote": "hetzner-pve"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Filter by `status` in the response to quickly isolate stopped vs. running VMs without a separate call.",
+    "The `template` boolean field lets you exclude template VMs from inventory counts.",
+    "Pressure stall fields (pressurecpufull, pressureiofull, pressurememoryfull) are Linux PSI metrics — only present on kernels that expose /proc/pressure.",
+    "Use the `node` query param to scope results to a single node if the cluster is large, reducing response size and remote API load."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_lxc",
+    "get_pve_remotes",
+    "get_pve_remotes_remote_nodes"
+  ]
+}

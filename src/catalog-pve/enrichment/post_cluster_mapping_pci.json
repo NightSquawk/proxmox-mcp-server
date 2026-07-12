@@ -1,0 +1,33 @@
+{
+  "operationId": "post_cluster_mapping_pci",
+  "usageNotes": "Use this to create a cluster-wide logical PCI device mapping that can be referenced in VM configurations instead of hard-coding physical addresses. The `map` array must list per-node entries in `node=<name>,path=<DDDD:BB:SS.F>,id=<vendor:device>` format so Proxmox can resolve the correct physical device on each node at VM start time. Requires the `Mapping.Modify` privilege on `/mapping/pci`; returns null on success (no UPID — operation is synchronous).",
+  "examples": [
+    {
+      "summary": "Create a logical PCI mapping for a GPU present on two cluster nodes",
+      "path_params": {},
+      "params": {
+        "id": "rtx3090",
+        "description": "NVIDIA RTX 3090 GPU — available on pve1 and pve2",
+        "map": [
+          "node=pve1,path=0000:01:00.0,id=10de:2204",
+          "node=pve2,path=0000:03:00.0,id=10de:2204"
+        ],
+        "mdev": false,
+        "live-migration-capable": false
+      }
+    }
+  ],
+  "tips": [
+    "The `id` field must follow the pve-configid format: lowercase alphanumeric plus hyphens, no spaces.",
+    "Each entry in `map` is a comma-separated key=value string: node, path (PCI address in DDDD:BB:SS.F notation), and id (vendor:device hex).",
+    "Set `mdev: true` only for devices that expose mediated device (vGPU) interfaces; setting it on a bare-passthrough device has no effect.",
+    "`live-migration-capable` is experimental — only set it when both hardware IOMMU ACS and the guest driver explicitly support peer-to-peer DMA migration.",
+    "After creating a mapping here, reference it in a VM config via `hostpci0: mapping=<id>` rather than a raw PCI address."
+  ],
+  "relatedOperations": [
+    "get_cluster_mapping_pci",
+    "get_cluster_mapping_pci_id",
+    "put_cluster_mapping_pci_id",
+    "delete_cluster_mapping_pci_id"
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_vncwebsocket",
+  "usageNotes": "This endpoint upgrades the HTTP connection to a WebSocket tunnel for VNC traffic and must always be preceded by a call to the vncproxy endpoint (post_nodes_node_qemu_vmid_vncproxy), which returns the required port (5900–5999) and vncticket. The WebSocket handshake is handled by the Proxmox noVNC proxy; callers should not attempt to open this as a plain HTTP GET — it will only work when the client negotiates a WebSocket upgrade. The vncticket is short-lived, so the WebSocket connection must be initiated immediately after the vncproxy call.",
+  "examples": [
+    {
+      "summary": "Open VNC WebSocket for VM 101 on node pve1 using port and ticket from a prior vncproxy call",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {
+        "port": 5901,
+        "vncticket": "PVEVNC:65f3a1b2::abcdef1234567890abcdef1234567890"
+      }
+    }
+  ],
+  "tips": [
+    "Always call post_nodes_node_qemu_vmid_vncproxy first — the port and vncticket it returns are required inputs here.",
+    "The port range is 5900–5999; Proxmox allocates from this pool dynamically per vncproxy call.",
+    "The vncticket expires quickly; open the WebSocket connection within a few seconds of receiving it.",
+    "API tokens are allowed (allowtoken: true), so service accounts can automate console access without a user session.",
+    "The caller needs VM.Console privilege on /vms/{vmid} — ensure the token or user has this role assigned."
+  ],
+  "relatedOperations": [
+    "post_nodes_node_qemu_vmid_vncproxy",
+    "get_nodes_node_qemu_vmid_termproxy",
+    "get_nodes_node_qemu_vmid_status_current"
+  ]
+}

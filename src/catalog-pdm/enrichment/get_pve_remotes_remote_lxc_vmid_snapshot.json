@@ -1,0 +1,27 @@
+{
+  "operationId": "get_pve_remotes_remote_lxc_vmid_snapshot",
+  "usageNotes": "Use this to list all snapshots for a specific LXC container on a remote PVE node managed by PDM. The response always includes a synthetic 'current' entry representing the live container state, so filter it out when you only want committed snapshots. The optional 'node' query param is useful when the remote cluster has multiple nodes and the container may be running on a specific one.",
+  "examples": [
+    {
+      "summary": "List all snapshots for LXC 101 on the 'prod-hetzner' remote",
+      "path_params": {
+        "remote": "prod-hetzner",
+        "vmid": 101
+      },
+      "params": {
+        "node": "pve1"
+      }
+    }
+  ],
+  "tips": [
+    "The 'current' snapshot in the results is not a real snapshot — it represents the live running state of the container and has no snaptime.",
+    "snaptime values are Unix timestamps; convert them to ISO 8601 for human-readable output.",
+    "The 'parent' field is absent on root snapshots and on 'current'; check for its presence before traversing snapshot chains.",
+    "Requires Resource.Audit privilege on the {remote}/{vmid} ACL path — read-only API tokens scoped to that resource are sufficient."
+  ],
+  "relatedOperations": [
+    "get_pve_remotes_remote_qemu_vmid_snapshot",
+    "get_pve_remotes_remote_lxc_vmid_snapshot_snapname_config",
+    "get_pve_remotes_remote_lxc_vmid_status_current"
+  ]
+}

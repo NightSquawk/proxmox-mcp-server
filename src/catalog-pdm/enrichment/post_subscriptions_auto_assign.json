@@ -1,0 +1,23 @@
+{
+  "operationId": "post_subscriptions_auto_assign",
+  "usageNotes": "Call this to preview which unused pool subscription keys would be assigned to which unsubscribed nodes — no changes are committed by this call. The returned plan (including `keys-digest` and `node-status-digest` snapshots) must be passed to `post_subscriptions_bulk_assign` to actually apply it; if cluster state drifts between preview and commit, bulk-assign will reject the plan with 409. Requires `System.Modify` at the system path to preview; callers lacking `Resource.Modify` on a specific remote will still see proposals for it but the commit step will silently skip writes to that remote.",
+  "examples": [
+    {
+      "summary": "Preview the auto-assign plan for all nodes in the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The POST body is empty (no params required) — always send an empty JSON object `{}` or an empty body with Content-Type: application/json.",
+    "Store the returned `keys-digest` and `node-status-digest` immediately; they are required inputs for the follow-up bulk-assign call and expire conceptually the moment cluster state changes.",
+    "If `assignments` comes back empty, all nodes already have active subscriptions or the pool has no unused keys — check subscription pool status before troubleshooting.",
+    "The commit step (bulk-assign) uses an application/json body to carry the nested assignment structure; form-urlencoded cannot represent it and will fail.",
+    "An audit-only operator scoped to a subset of remotes can safely call this endpoint to inspect the global plan; unauthorized remotes are filtered at commit time, not preview time."
+  ],
+  "relatedOperations": [
+    "post_subscriptions_bulk_assign",
+    "get_subscriptions",
+    "get_nodes_subscription"
+  ]
+}

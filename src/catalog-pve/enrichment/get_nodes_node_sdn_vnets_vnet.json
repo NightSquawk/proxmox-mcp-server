@@ -1,0 +1,24 @@
+{
+  "operationId": "get_nodes_node_sdn_vnets_vnet",
+  "usageNotes": "Returns the list of available subdirectory endpoints (e.g. 'firewall') under a specific SDN VNet on a node — this is a navigation/index endpoint, not a data endpoint. Use it to discover which sub-resources are accessible for a given VNet before drilling into them. Requires 'SDN.Audit' on '/sdn/zones/<zone>/<vnet>'; the VNet name must be 2–8 alphanumeric characters starting with a letter.",
+  "examples": [
+    {
+      "summary": "List available sub-resources for SDN VNet 'vnet01' on node 'pve1'",
+      "path_params": {
+        "node": "pve1",
+        "vnet": "vnet01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "The response is an array of objects with a 'subdir' field (e.g. 'firewall') — use these values to construct further API calls under this VNet.",
+    "VNet names are case-sensitive and must match the exact identifier used when the VNet was created in the SDN configuration.",
+    "SDN must be configured and applied at the cluster level before VNet sub-resources are reachable via individual nodes."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_sdn_vnets",
+    "get_cluster_sdn_vnets_vnet",
+    "get_nodes_node_sdn"
+  ]
+}

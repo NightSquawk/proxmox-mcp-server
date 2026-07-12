@@ -1,0 +1,28 @@
+{
+  "operationId": "get_remotes_tasks_statistics",
+  "usageNotes": "Use this endpoint to get a high-level summary of task outcomes grouped by remote and by worker type — useful for health dashboards and spotting which remotes or task types have elevated error rates. All query parameters are optional; omit them to get aggregate statistics across all remotes and all time. The caller only sees statistics for remotes on which they hold Resource.Audit privilege; filter results may appear empty rather than returning an error if privilege is absent for a given remote.",
+  "examples": [
+    {
+      "summary": "Fetch error statistics for a specific remote over the last 7 days",
+      "path_params": {},
+      "params": {
+        "remote": "hetzner-de",
+        "errors": true,
+        "since": 1750982400,
+        "limit": 100
+      }
+    }
+  ],
+  "tips": [
+    "The 'since' and 'until' params accept UNIX epoch integers — convert human-readable dates before passing them.",
+    "Set 'errors: true' together with a 'remote' filter to quickly triage a specific remote after a known incident window.",
+    "The 'by-remote' and 'by-type' maps in the response use dynamic keys; iterate them rather than assuming fixed property names.",
+    "A limit of 0 disables the cap — use with caution on busy PDM instances with long task histories.",
+    "The 'running' and 'errors' flags are mutually exclusive in intent; combining them will typically return zero results since running tasks have no final error status yet."
+  ],
+  "relatedOperations": [
+    "get_remotes_tasks",
+    "get_remotes_tasks_upid_status",
+    "get_remotes_tasks_upid_log"
+  ]
+}

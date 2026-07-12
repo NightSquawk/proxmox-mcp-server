@@ -1,0 +1,22 @@
+{
+  "operationId": "get_cluster_sdn",
+  "usageNotes": "Use this to enumerate the top-level SDN API sub-resources available on the cluster (e.g. vnets, zones, controllers, ipams). It is a directory index only — it returns child resource IDs, not SDN configuration data itself. Requires the SDN.Audit privilege on /sdn; SDN must be enabled in the cluster (datacenter configuration) for child resources to be present.",
+  "examples": [
+    {
+      "summary": "List SDN sub-resource categories available on the cluster",
+      "path_params": {},
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If the returned array is empty or SDN child routes are missing, verify that SDN is enabled in Datacenter > Options > SDN.",
+    "This endpoint is a navigation index — follow the returned 'id' values as path segments to reach actual SDN objects (e.g. GET /cluster/sdn/vnets, /cluster/sdn/zones).",
+    "API tokens are supported; ensure the token has SDN.Audit on /sdn."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_vnets",
+    "get_cluster_sdn_zones",
+    "get_cluster_sdn_controllers",
+    "get_cluster_sdn_ipams"
+  ]
+}

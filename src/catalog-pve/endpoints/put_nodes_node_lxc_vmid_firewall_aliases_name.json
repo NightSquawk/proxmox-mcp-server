@@ -1,0 +1,90 @@
+{
+  "operationId": "put_nodes_node_lxc_vmid_firewall_aliases_name",
+  "surface": "pve",
+  "resource": "nodes",
+  "category": "Nodes & Guests",
+  "name": "update_alias",
+  "method": "PUT",
+  "path": "/nodes/{node}/lxc/{vmid}/firewall/aliases/{name}",
+  "description": "Update IP or Network alias.",
+  "writeOperation": true,
+  "destructive": false,
+  "protected": true,
+  "allowtoken": true,
+  "paramLocation": "body",
+  "pathParams": [
+    {
+      "name": "node",
+      "type": "string",
+      "required": true,
+      "description": "The cluster node name.",
+      "format": "pve-node",
+      "typetext": "<string>"
+    },
+    {
+      "name": "vmid",
+      "type": "integer",
+      "required": true,
+      "description": "The (unique) ID of the VM.",
+      "format": "pve-vmid",
+      "minimum": 100,
+      "maximum": 999999999,
+      "typetext": "<integer> (100 - 999999999)"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "required": true,
+      "description": "Alias name.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    }
+  ],
+  "params": [
+    {
+      "name": "cidr",
+      "type": "string",
+      "required": true,
+      "description": "Network/IP specification in CIDR format.",
+      "format": "IPorCIDR",
+      "typetext": "<string>"
+    },
+    {
+      "name": "comment",
+      "type": "string",
+      "required": false,
+      "typetext": "<string>"
+    },
+    {
+      "name": "digest",
+      "type": "string",
+      "required": false,
+      "description": "Prevent changes if current configuration file has a different digest. This can be used to prevent concurrent modifications.",
+      "maxLength": 64,
+      "typetext": "<string>"
+    },
+    {
+      "name": "rename",
+      "type": "string",
+      "required": false,
+      "description": "Rename an existing alias.",
+      "minLength": 2,
+      "maxLength": 64,
+      "pattern": "[A-Za-z][A-Za-z0-9\\-\\_]+"
+    }
+  ],
+  "returns": {
+    "type": "null"
+  },
+  "permissions": {
+    "check": [
+      "perm",
+      "/vms/{vmid}",
+      [
+        "VM.Config.Network"
+      ]
+    ]
+  },
+  "requestSample": "curl -k -X PUT -H 'Authorization: PVEAPIToken=USER@REALM!TOKENID=SECRET' -H 'Content-Type: application/json' \\\n  -d '{\"cidr\":\"<cidr>\"}' 'https://PVE_HOST:8006/api2/json/nodes/<node>/lxc/100/firewall/aliases/<name>'"
+}

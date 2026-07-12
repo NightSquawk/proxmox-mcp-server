@@ -1,0 +1,22 @@
+{
+  "operationId": "get_nodes_node_config",
+  "usageNotes": "Use this to read a PDM node's active configuration, including TLS cipher settings, HTTP proxy, notification email, and UI language. Requires the System.Audit privilege on the /system path — API tokens are supported. The special value 'localhost' can be used for the node name when targeting the PDM node itself; all returned fields are optional and may be absent if not configured.",
+  "examples": [
+    {
+      "summary": "Fetch configuration for the PDM node named 'pdm01'",
+      "path_params": {
+        "node": "pdm01"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "Use 'localhost' as the node value to target the PDM node you are directly connected to without needing its hostname.",
+    "All response fields are optional — an unconfigured node returns an empty object, which is valid.",
+    "TLS cipher fields ('ciphers-tls-1.2' and 'ciphers-tls-1.3') follow OpenSSL cipher list/ciphersuites syntax respectively; these affect the PDM API server's TLS negotiation.",
+    "Pair with the corresponding PUT/POST config endpoint to audit before making changes."
+  ],
+  "relatedOperations": [
+    "put_nodes_node_config"
+  ]
+}

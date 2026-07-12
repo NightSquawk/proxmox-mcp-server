@@ -1,0 +1,26 @@
+{
+  "operationId": "delete_cluster_sdn_controllers_controller",
+  "usageNotes": "Removes an SDN controller object from the cluster SDN configuration. The controller must not be referenced by any VNet zone before deletion; remove or reassign dependent zones first. After deletion, call the SDN apply operation to push the change to all nodes.",
+  "examples": [
+    {
+      "summary": "Delete an EVPN controller named 'evpn-core'",
+      "path_params": {
+        "controller": "evpn-core"
+      },
+      "params": {}
+    }
+  ],
+  "destructiveReason": "Permanently removes the named SDN controller configuration; any zones that depend on it will lose their controller binding and SDN connectivity will break until the configuration is applied with a valid replacement.",
+  "tips": [
+    "Returns null synchronously — there is no UPID; the change is staged and takes effect only after running the SDN apply endpoint.",
+    "Use the optional 'lock-token' param when coordinating concurrent SDN config changes to prevent conflicts.",
+    "Requires SDN.Allocate on /sdn/controllers — cluster-level privilege, not per-node."
+  ],
+  "relatedOperations": [
+    "get_cluster_sdn_controllers",
+    "get_cluster_sdn_controllers_controller",
+    "create_cluster_sdn_controllers",
+    "update_cluster_sdn_controllers_controller",
+    "put_cluster_sdn"
+  ]
+}

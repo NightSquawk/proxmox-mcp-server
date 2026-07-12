@@ -1,0 +1,22 @@
+{
+  "operationId": "get_nodes_node_capabilities_qemu",
+  "usageNotes": "Returns the list of QEMU capability sub-endpoints available on a specific node, functioning as a discovery index rather than returning capability data directly. Use this to enumerate what QEMU capability categories (e.g., cpu, machines) the node exposes before querying them individually. The node must be online and reachable; no special privileges are required beyond authenticated access.",
+  "examples": [
+    {
+      "summary": "List available QEMU capability sub-endpoints on node pve1",
+      "path_params": {
+        "node": "pve1"
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "This is an index endpoint — it returns child link names, not actual capability values. Follow the returned 'name' entries to reach the real data (e.g., /nodes/{node}/capabilities/qemu/cpu).",
+    "Accessible to all authenticated users (permissions: user=all), so API tokens with any role can call it.",
+    "If the node is offline or the node name is wrong, the API returns a 500-level error rather than an empty array."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_capabilities_qemu_cpu",
+    "get_nodes_node_capabilities_qemu_machines"
+  ]
+}

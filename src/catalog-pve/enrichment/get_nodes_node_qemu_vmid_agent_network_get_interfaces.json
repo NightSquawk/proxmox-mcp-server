@@ -1,0 +1,26 @@
+{
+  "operationId": "get_nodes_node_qemu_vmid_agent_network_get_interfaces",
+  "usageNotes": "Queries the QEMU Guest Agent (qemu-guest-agent) running inside the VM to return all network interface names, MAC addresses, IP addresses (v4 and v6), and their associated prefixes. The guest agent must be installed and running inside the VM, and the VM must be powered on; if the agent is not responsive the call will return an error rather than empty data. Requires either VM.GuestAgent.Audit or VM.GuestAgent.Unrestricted on /vms/{vmid}.",
+  "examples": [
+    {
+      "summary": "List network interfaces for VM 101 on node pve1",
+      "path_params": {
+        "node": "pve1",
+        "vmid": 101
+      },
+      "params": {}
+    }
+  ],
+  "tips": [
+    "If the call fails with 'guest agent is not running', check that qemu-guest-agent is installed in the guest OS and that the virtio-serial channel is present in the VM config.",
+    "The returned result object structure mirrors the QEMU Guest Agent protocol: an array of interface objects each containing 'name', 'hardware-address', and 'ip-addresses'.",
+    "IP addresses include both IPv4 and IPv6 entries; filter by 'ip-address-type' field ('ipv4' or 'ipv6') to isolate the address family you need.",
+    "This is the reliable way to discover guest IPs when DHCP leases or cloud-init records may be stale — the agent reads directly from the OS network stack."
+  ],
+  "relatedOperations": [
+    "get_nodes_node_qemu_vmid_agent_info",
+    "get_nodes_node_qemu_vmid_agent_get_host_name",
+    "get_nodes_node_qemu_vmid_agent_get_osinfo",
+    "get_nodes_node_qemu_vmid_config"
+  ]
+}
