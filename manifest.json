@@ -1,0 +1,176 @@
+{
+  "manifest_version": "0.4",
+  "name": "proxmox-mcp-server",
+  "display_name": "Proxmox MCP Server",
+  "version": "0.1.0",
+  "description": "MCP server for Proxmox VE and Proxmox Datacenter Manager.",
+  "long_description": "Connect Claude to your [Proxmox](https://www.proxmox.com) infrastructure. All 993 API endpoints (675 Proxmox VE + 318 Proxmox Datacenter Manager) behind 6 catalog-backed list/describe/call tools. Reads execute by default; writes are blocked unless enabled via the write-gate settings, and destructive operations additionally require confirm:true per call. Configure one or both surfaces.",
+  "author": {
+    "name": "NightSquawk Tech",
+    "email": "hello@nightsquawk.tech",
+    "url": "https://nightsquawk.tech"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NightSquawk/proxmox-mcp-server"
+  },
+  "homepage": "https://github.com/NightSquawk/proxmox-mcp-server",
+  "documentation": "https://github.com/NightSquawk/proxmox-mcp-server#readme",
+  "support": "https://github.com/NightSquawk/proxmox-mcp-server/issues",
+  "server": {
+    "type": "node",
+    "entry_point": "dist/index.js",
+    "mcp_config": {
+      "command": "node",
+      "args": ["${__dirname}/dist/index.js"],
+      "env": {
+        "PVE_HOST": "${user_config.pve_host}",
+        "PVE_BASE_URL": "${user_config.pve_base_url}",
+        "PVE_TOKEN_ID": "${user_config.pve_token_id}",
+        "PVE_TOKEN_SECRET": "${user_config.pve_token_secret}",
+        "PVE_AUTH_SCHEME": "${user_config.pve_auth_scheme}",
+        "PVE_AUTH_SEP": "${user_config.pve_auth_sep}",
+        "PVE_TLS_REJECT_UNAUTHORIZED": "${user_config.pve_tls_reject_unauthorized}",
+        "PVE_ALLOW_WRITES": "${user_config.pve_allow_writes}",
+        "PDM_HOST": "${user_config.pdm_host}",
+        "PDM_BASE_URL": "${user_config.pdm_base_url}",
+        "PDM_TOKEN_ID": "${user_config.pdm_token_id}",
+        "PDM_TOKEN_SECRET": "${user_config.pdm_token_secret}",
+        "PDM_AUTH_SCHEME": "${user_config.pdm_auth_scheme}",
+        "PDM_AUTH_SEP": "${user_config.pdm_auth_sep}",
+        "PDM_TLS_REJECT_UNAUTHORIZED": "${user_config.pdm_tls_reject_unauthorized}",
+        "PDM_ALLOW_WRITES": "${user_config.pdm_allow_writes}",
+        "PROXMOX_ALLOW_WRITES": "${user_config.proxmox_allow_writes}"
+      }
+    }
+  },
+  "user_config": {
+    "pve_host": {
+      "type": "string",
+      "title": "Proxmox VE Host",
+      "description": "PVE hostname, for example pve.example.com (expands to https://<host>:8006/api2/json). Both surfaces are optional: configure PVE, PDM, or both.",
+      "required": false
+    },
+    "pve_base_url": {
+      "type": "string",
+      "title": "Proxmox VE Base URL",
+      "description": "Full PVE API base URL, for example https://pve.example.com:8006/api2/json. Overrides the host field when set; leave blank otherwise.",
+      "required": false
+    },
+    "pve_token_id": {
+      "type": "string",
+      "title": "PVE API Token ID",
+      "description": "For example root@pam!mcp. Create one in PVE under Datacenter > Permissions > API Tokens.",
+      "required": false
+    },
+    "pve_token_secret": {
+      "type": "string",
+      "title": "PVE API Token Secret",
+      "description": "The token secret UUID shown once at token creation.",
+      "sensitive": true,
+      "required": false
+    },
+    "pve_auth_scheme": {
+      "type": "string",
+      "title": "PVE Auth Scheme",
+      "description": "Auth header scheme for PVE. Leave the default unless auth fails.",
+      "default": "PVEAPIToken",
+      "required": false
+    },
+    "pve_auth_sep": {
+      "type": "string",
+      "title": "PVE Auth Separator",
+      "description": "Separator between token id and secret in the auth header. Leave the default unless auth fails.",
+      "default": "=",
+      "required": false
+    },
+    "pve_tls_reject_unauthorized": {
+      "type": "string",
+      "title": "PVE TLS Verification",
+      "description": "Set to false to accept Proxmox's default self-signed certificate; true verifies the TLS certificate.",
+      "default": "false",
+      "required": false
+    },
+    "pve_allow_writes": {
+      "type": "string",
+      "title": "PVE Allow Writes",
+      "description": "Set to true to enable write operations (POST/PUT/DELETE) on the PVE surface. Read-only by default.",
+      "default": "false",
+      "required": false
+    },
+    "pdm_host": {
+      "type": "string",
+      "title": "Proxmox Datacenter Manager Host",
+      "description": "PDM hostname, for example pdm.example.com (expands to https://<host>:8443/api2/json). Optional: leave blank if you only use PVE.",
+      "required": false
+    },
+    "pdm_base_url": {
+      "type": "string",
+      "title": "PDM Base URL",
+      "description": "Full PDM API base URL, for example https://pdm.example.com:8443/api2/json. Overrides the host field when set; leave blank otherwise.",
+      "required": false
+    },
+    "pdm_token_id": {
+      "type": "string",
+      "title": "PDM API Token ID",
+      "description": "For example root@pam!mcp.",
+      "required": false
+    },
+    "pdm_token_secret": {
+      "type": "string",
+      "title": "PDM API Token Secret",
+      "description": "The token secret shown once at token creation.",
+      "sensitive": true,
+      "required": false
+    },
+    "pdm_auth_scheme": {
+      "type": "string",
+      "title": "PDM Auth Scheme",
+      "description": "Auth header scheme for PDM. PDM is newer and its scheme may differ; adjust if auth fails.",
+      "default": "PDMAPIToken",
+      "required": false
+    },
+    "pdm_auth_sep": {
+      "type": "string",
+      "title": "PDM Auth Separator",
+      "description": "Separator between token id and secret in the auth header. Leave the default unless auth fails.",
+      "default": "=",
+      "required": false
+    },
+    "pdm_tls_reject_unauthorized": {
+      "type": "string",
+      "title": "PDM TLS Verification",
+      "description": "Set to false to accept a self-signed certificate; true verifies the TLS certificate.",
+      "default": "false",
+      "required": false
+    },
+    "pdm_allow_writes": {
+      "type": "string",
+      "title": "PDM Allow Writes",
+      "description": "Set to true to enable write operations (POST/PUT/DELETE) on the PDM surface. Read-only by default.",
+      "default": "false",
+      "required": false
+    },
+    "proxmox_allow_writes": {
+      "type": "string",
+      "title": "Allow Writes (All Surfaces)",
+      "description": "Set to true to enable write operations on both surfaces at once. Read-only by default. Destructive operations still require confirm:true per call.",
+      "default": "false",
+      "required": false
+    }
+  },
+  "tools": [
+    { "name": "pve_list_endpoints", "description": "Discover Proxmox VE endpoints by category, resource, method, or search" },
+    { "name": "pve_describe_endpoint", "description": "Full param + response spec for one PVE endpoint" },
+    { "name": "pve_call_endpoint", "description": "Validate, write-gate, and execute a PVE API call" },
+    { "name": "pdm_list_endpoints", "description": "Discover Proxmox Datacenter Manager endpoints" },
+    { "name": "pdm_describe_endpoint", "description": "Full param + response spec for one PDM endpoint" },
+    { "name": "pdm_call_endpoint", "description": "Validate, write-gate, and execute a PDM API call" }
+  ],
+  "compatibility": {
+    "platforms": ["darwin", "win32", "linux"],
+    "runtimes": { "node": ">=20" }
+  },
+  "keywords": ["proxmox", "proxmox-ve", "pve", "proxmox-datacenter-manager", "virtualization", "homelab", "mcp"],
+  "license": "AGPL-3.0-only"
+}

@@ -5,3 +5,6 @@ dist/
 # Regeneration inputs/intermediates (re-downloadable; see README).
 # The shippable source of truth is src/catalog-pve and src/catalog-pdm.
 _source/
+
+# Claude Desktop extension bundles (built by scripts/build-mcpb.mjs).
+*.mcpb
