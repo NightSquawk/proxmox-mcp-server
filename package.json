@@ -1,7 +1,7 @@
 {
   "name": "@nightsquawktech/proxmox-mcp-server",
   "version": "0.1.0",
-  "description": "MCP server for Proxmox VE and Proxmox Datacenter Manager — every API endpoint behind catalog-backed list/describe/call tools, reads live, writes ENV-gated.",
+  "description": "Proxmox MCP server for Claude, Cursor, and AI agents: all 993 PVE + PDM API endpoints behind 6 catalog-backed tools, writes env-gated.",
   "license": "AGPL-3.0-only",
   "keywords": [
     "mcp",
